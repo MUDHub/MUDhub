@@ -1,5 +1,4 @@
-name: .NET Core
-
+name: Unit Tests
 on:
 
 
