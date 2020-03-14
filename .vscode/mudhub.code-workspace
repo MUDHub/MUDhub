@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"name": "Source",
+			"path": "..\\"
+		},
+		{
+			"name": "Wiki",
+			"path": "..\\..\\dhbw-mudhub.wiki"
+		},
+	],
+	"settings": {
+		"editor.renderWhitespace": "all",
+		"editor.insertSpaces": true,
+		"editor.tabSize": 2,
+	}
+}
