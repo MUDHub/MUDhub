@@ -20,7 +20,7 @@ jobs:
           node-version: 12.x
       - name: Install Angular
         run: npm ci
-        working-directory: src/test-frontend
+        working-directory: src/test-frontend/
 
       - name: Build Angular Client
         run: npm run build -- --prod
