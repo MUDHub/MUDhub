@@ -3,6 +3,7 @@ on:
   push:
     branches: 
       - master
+    paths-ignore: "**.md"
 
 env:
   WORKDIR_CLIENT: src/test-frontend
