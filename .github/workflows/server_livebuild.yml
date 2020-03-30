@@ -39,18 +39,26 @@ jobs:
       run: dotnet restore
       working-directory: ${{env.CORETESTS_DIR}}
     - name: Build Core Library Tests
-      run: dotnet build --no-restore
+      run: dotnet build --no-restore -o result
       working-directory: ${{env.CORETESTS_DIR}}
     - name: Run Tests
       run: dotnet test --no-restore --verbosity normal
       working-directory: ${{env.CORETESTS_DIR}}
-    - name: Install OpenCover
-      run: dotnet add package OpenCover --version 4.7.922
+    - name: Install Coverlet
+      run: dotnet tool install --global coverlet.console
+    - name: Generate Codecoverage
+      run: coverlet result/MUDhub.Core.Tests.dll \
+           --target "dotnet" \
+           --targetargs "test ${{env.CORETESTS_DIR}} --no-build" \
+           --format opencover \
+           --output "result.xml"
       working-directory: ${{env.CORETESTS_DIR}}
-    - name: Create CodeCoverage Report
-      run: OpenCover.Console.exe -register:user -targetargs:test -output:".\sever_coverage.xml" -oldstyle
+    - name: Install Report uploader
+      run: dotnet tool install --global Codecov.Tool
+    - name: Upload CodeCoverage Report
+      run: codecov -f result.xml -t ${{secrets.CODECOV_TOKEN}}
       working-directory: ${{env.CORETESTS_DIR}}
-
+    
   Build_Server:
     runs-on: ubuntu-latest
     steps:
