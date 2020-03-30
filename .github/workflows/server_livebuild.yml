@@ -49,7 +49,7 @@ jobs:
     - name: Generate Codecoverage
       run: coverlet result/MUDhub.Core.Tests.dll 
            --target "dotnet" 
-           --targetargs "test ${{env.CORETESTS_DIR}} --no-build" 
+           --targetargs "test ${{env.CORETESTS_DIR}}/MUDhub.Core.Tests.csproj --no-build" 
            --format opencover 
            --output "result.xml"
       working-directory: ${{env.CORETESTS_DIR}}
