@@ -46,6 +46,7 @@ jobs:
       working-directory: ${{env.CORETESTS_DIR}}
     - name: Install OpenCover
       run: dotnet add package OpenCover --version 4.7.922
+      working-directory: ${{env.CORETESTS_DIR}}
     - name: Create CodeCoverage Report
       run: OpenCover.Console.exe -register:user -targetargs:test -output:".\sever_coverage.xml" -oldstyle
       working-directory: ${{env.CORETESTS_DIR}}
