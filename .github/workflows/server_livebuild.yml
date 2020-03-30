@@ -39,10 +39,15 @@ jobs:
       run: dotnet restore
       working-directory: ${{env.CORETESTS_DIR}}
     - name: Build Core Library Tests
-      run: dotnet build --configuration Release --no-restore
+      run: dotnet build --no-restore
       working-directory: ${{env.CORETESTS_DIR}}
     - name: Run Tests
       run: dotnet test --no-restore --verbosity normal
+      working-directory: ${{env.CORETESTS_DIR}}
+    - name: Install OpenCover
+      run: dotnet add package OpenCover --version 4.7.922
+    - name: Create CodeCoverage Report
+      run: OpenCover.Console.exe -register:user -targetargs:test -output:".\sever_coverage.xml" -oldstyle
       working-directory: ${{env.CORETESTS_DIR}}
 
   Build_Server:
