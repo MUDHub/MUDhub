@@ -50,10 +50,10 @@ jobs:
     - name: Generate Codecoverage
       run: coverlet result/MUDhub.Core.Tests.dll 
            --target "dotnet" 
-           --targetargs "test ${{env.SOLUTION_DIR}} --no-build -p:CollectCoverage=true" 
+           --targetargs "test --no-build -p:CollectCoverage=true" 
            --format opencover 
            --output "result.xml"
-             
+      continue-on-error: true
       working-directory: ${{env.CORETESTS_DIR}}
     - name: Install Report uploader
       run: dotnet tool install --global Codecov.Tool
