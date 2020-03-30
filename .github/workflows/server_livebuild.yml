@@ -1,0 +1,62 @@
+name: Server Build Check
+
+on:
+  push:
+    branches: '**'
+  pull_request:
+    branches: [ master, develop ]
+env:
+  CORE_DIR: src/server/MUDhub.Core
+  CORETESTS_DIR: src/server/MUDhub.Core.Tests
+  SERVER_DIR: src/server/MUDhub.Server
+  DOTNET_SDK_VERSION: 3.1.101 
+
+jobs:
+  "build Core Library":
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: ${{env.DOTNET_SDK_VERSION}}
+    - name: Install dependencies
+      run: dotnet restore
+      working-directory: ${{env.CORE_DIR}}
+    - name: Build Core Library
+      run: dotnet build --configuration Release --no-restore
+      working-directory: ${{env.CORE_DIR}}
+      
+  "build Core Library Tests":
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: ${{env.DOTNET_SDK_VERSION}}
+    - name: Install dependencies
+      run: dotnet restore
+      working-directory: ${{env.CORETESTS_DIR}}
+    - name: Build Core Library Tests
+      run: dotnet build --configuration Release --no-restore
+      working-directory: ${{env.CORETESTS_DIR}}
+    - name: Run Tests
+      run: dotnet test --no-restore --verbosity normal
+      working-directory: ${{env.CORETESTS_DIR}}
+
+  "build Server":
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: ${{env.DOTNET_SDK_VERSION}}
+    - name: Install dependencies
+      run: dotnet restore
+      working-directory: ${{SERVER_DIR}}
+    - name: Build Server
+      run: dotnet build --configuration Release --no-restore
+      working-directory: ${{SERVER_DIR}}
+      
