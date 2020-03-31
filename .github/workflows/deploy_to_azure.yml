@@ -22,7 +22,7 @@ jobs:
       working-directory: ${{env.SERVER_DIR}}
     - name: Build Server
       run: dotnet build ${{env.SERVER_DIR}}/*.csproj --configuration Release --no-restore -o ${{env.WORKDIR_DEST}}
-      
+
 #    - name: Setup Node.js 12
 #      uses: actions/setup-node@v1
 #      with:
