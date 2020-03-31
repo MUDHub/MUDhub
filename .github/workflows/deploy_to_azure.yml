@@ -7,7 +7,7 @@ env:
   SERVER_DIR: src/server/MUDhub.Server
   SOLUTION_DIR: src/server
   DOTNET_SDK_VERSION: 3.1.101 
-  WORKDIR_DEST: dest
+  WORKDIR_DEST: ~/dest
 jobs:
   deploy_server:
     runs-on: ubuntu-latest
@@ -21,7 +21,7 @@ jobs:
       run: dotnet restore
       working-directory: ${{env.SERVER_DIR}}
     - name: Build Server
-      run: dotnet build *.csproj --configuration Release --no-restore -o ~/${{env.WORKDIR_DEST}}
+      run: dotnet build *.csproj --configuration Release --no-restore -o ${{env.WORKDIR_DEST}}
       working-directory: ${{env.SERVER_DIR}}
       
 #    - name: Setup Node.js 12
