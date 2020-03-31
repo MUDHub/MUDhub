@@ -10,9 +10,17 @@ namespace MUDhub.Core.Tests
         [Fact]
         public void TestMethode()
         {
-
-            Assert.True(true);
-
+            MyTestClass @class = new MyTestClass();
+            var str = @class.MyTest(true);
+            Assert.Contains("hallo", str);
         }
+
+        //[Fact]
+        //public void TestMethode2()
+        //{
+        //    MyTestClass @class = new MyTestClass();
+        //    var str = @class.MyTest(false);
+        //    Assert.Contains("welt", str);
+        //}
     }
 }
