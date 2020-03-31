@@ -21,7 +21,7 @@ jobs:
       run: dotnet restore
       working-directory: ${{env.SERVER_DIR}}
     - name: Build Server
-      run: dotnet build --configuration Release --no-restore -o ${{env.WORKDIR_DEST}}
+      run: dotnet build *.csproj --configuration Release --no-restore -o ${{env.WORKDIR_DEST}}
       working-directory: ${{env.SERVER_DIR}}
       
 #    - name: Setup Node.js 12
