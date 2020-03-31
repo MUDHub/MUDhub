@@ -52,10 +52,8 @@ jobs:
            --format opencover 
            --output "result.xml"
       working-directory: ${{env.CORETESTS_DIR}}
-    - name: Install Report uploader
-      run: dotnet tool install --global Codecov.Tool
     - name: Upload CodeCoverage Report
-      run: codecov -f result.xml
+      run: bash <(curl -s https://codecov.io/bash) -f result.xml
       working-directory: ${{env.CORETESTS_DIR}}
     
   Build_Server:
