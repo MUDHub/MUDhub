@@ -1,0 +1,36 @@
+name: .NET Core
+
+on:
+  push:
+    branches: [ master, develop ]
+
+jobs:
+  upload_develop_codecoverage:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: ${{env.DOTNET_SDK_VERSION}}
+    - name: Install dependencies
+      run: dotnet restore
+      working-directory: ${{env.CORETESTS_DIR}}
+    - name: Build Core Library Tests
+      run: dotnet build --no-restore -o result
+      working-directory: ${{env.CORETESTS_DIR}}
+    - name: Run Tests
+      run: dotnet test --no-restore --verbosity normal
+      working-directory: ${{env.CORETESTS_DIR}}
+    - name: Install Coverlet
+      run: dotnet tool install --global coverlet.console
+    - name: Generate Codecoverage
+      run: coverlet result/MUDhub.Core.Tests.dll 
+           --target "dotnet" 
+           --targetargs "test --no-build -p:CollectCoverage=true" 
+           --format opencover 
+           --output "result.xml"
+      working-directory: ${{env.CORETESTS_DIR}}
+    - name: Upload CodeCoverage Report
+      run: bash <(curl -s https://codecov.io/bash) -f result.xml
+      working-directory: ${{env.CORETESTS_DIR}}
