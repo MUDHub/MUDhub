@@ -24,18 +24,18 @@ jobs:
       run: dotnet build --configuration Release --no-restore -o ${{env.WORKDIR_DEST}}
       working-directory: ${{env.SERVER_DIR}}
       
-//    - name: Setup Node.js 12
-//      uses: actions/setup-node@v1
-//      with:
-//        node-version: 12.x
-//    - name: Install Angular
-//      run: npm ci
-//      working-directory: ${{env.WORKDIR_CLIENT}}      
-//    - name: Build Angular Client
-//      run: npm run build -- --prod
-//      working-directory: ${{env.WORKDIR_CLIENT}}    
-//    - name: Copy dist Files
-//      run: cp -r ${{env.WORKDIR_CLIENT}}/dist ${{env.WORKDIR_DEST}}
+#    - name: Setup Node.js 12
+#      uses: actions/setup-node@v1
+#      with:
+#        node-version: 12.x
+#    - name: Install Angular
+#      run: npm ci
+#      working-directory: ${{env.WORKDIR_CLIENT}}      
+#    - name: Build Angular Client
+#      run: npm run build -- --prod
+#      working-directory: ${{env.WORKDIR_CLIENT}}    
+#    - name: Copy dist Files
+#      run: cp -r ${{env.WORKDIR_CLIENT}}/dist ${{env.WORKDIR_DEST}}
     
     - name: Publish to Azure Web services
       uses: azure/webapps-deploy@v1
