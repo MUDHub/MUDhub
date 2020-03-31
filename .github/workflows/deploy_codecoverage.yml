@@ -2,7 +2,7 @@ name: .NET Core
 
 on:
   push:
-    branches: [ master, develop ]
+    branches: [ develop ]
 env:
   CORE_DIR: src/server/MUDhub.Core
   CORETESTS_DIR: src/server/MUDhub.Core.Tests
