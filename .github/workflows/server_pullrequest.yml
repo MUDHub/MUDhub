@@ -1,8 +1,6 @@
 name: Server Build Check
 
 on:
-  push:
-    branches: '**'
   pull_request:
     branches: [ master, develop ]
 env:
@@ -53,7 +51,6 @@ jobs:
            --targetargs "test --no-build -p:CollectCoverage=true" 
            --format opencover 
            --output "result.xml"
-      continue-on-error: true
       working-directory: ${{env.CORETESTS_DIR}}
     - name: Install Report uploader
       run: dotnet tool install --global Codecov.Tool
