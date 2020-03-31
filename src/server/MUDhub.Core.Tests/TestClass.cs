@@ -15,12 +15,12 @@ namespace MUDhub.Core.Tests
             Assert.Contains("hallo", str);
         }
 
-        //[Fact]
-        //public void TestMethode2()
-        //{
-        //    MyTestClass @class = new MyTestClass();
-        //    var str = @class.MyTest(false);
-        //    Assert.Contains("welt", str);
-        //}
+        [Fact]
+        public void TestMethode2()
+        {
+            MyTestClass @class = new MyTestClass();
+            var str = @class.MyTest(false);
+            Assert.Contains("welt", str);
+        }
     }
 }
