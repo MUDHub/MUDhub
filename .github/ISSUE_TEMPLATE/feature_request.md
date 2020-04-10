@@ -1,20 +1,35 @@
 ---
 name: Feature request
-about: Suggest an idea for this project
-title: ''
-labels: ''
+about: Featurebeschreibung
+title: 'Nummer(n) der Funktionsbeschreibung: <Beschreibung>'
+labels: 'feature'
 assignees: ''
-
 ---
 
-**Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+## Ziel des Features(__Nummer(n) der Funktionsbeschreibung__)
+in ein paar Sätzen beschreiben was das Ziel des Features ist.
 
-**Describe the solution you'd like**
-A clear and concise description of what you want to happen.
+## Abhängigkeiten
+- Von welchen anderen Komponenten hängt das Feature ab, gerne auch mit Links zu den Issues!
+- Oder dem Gesamtsystem
+  
+## Technische Abhängigkeiten
 
-**Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
+- Abhängigkeiten z.B. Änderungen an der Datenbank
+- Änderung am Server oder Client
 
-**Additional context**
-Add any other context or screenshots about the feature request here.
+## Funktionsbeschreibung
+- Beschreibe die Teilaspekte des Features
+
+### Server
+- Welche Aspekte sind im Server zu beachten.
+- [ ] Wird eine Konfiguationsmöglichkeit angeboten/benötigt?_(z.B. ein SQL Connectionstring oder Speicherort mit Bilder)_
+
+### Client
+- Welche Aspekte sind im Client zu beachten.
+- Am besten mit Bildern
+- Akteur
+
+## Offene Fragen
+- Beschreibe wo es noch offene Punkte zum Diskutieren gibt
+- Welche Fragen noch zu klären sind
