@@ -1,20 +1,36 @@
 ---
 name: Feature request
-about: Suggest an idea for this project
-title: ''
+about: Beschreibe ein neues Feature
+title: 'Nummer(n) der Funktionsbeschreibung: <Beschreibung>'
 labels: 'feature'
 assignees: ''
 ---
 
-**Ziel des Features**
-<in ein paar Sätzen beschreiben was das Ziel des Features ist>
+## Ziel des Features(__Nummer(n) der Funktionsbeschreibung__)
+in ein paar Sätzen beschreiben was das Ziel des Features ist
 
-**Abhänigkeiten**
-<Von welchen anderen Komponenten hängt das Feature ab, gerne auch mit Links zu den Issues!>
-<Oder dem Gesamtsystem>
+## Abhängigkeiten
 
-**Funktionsbeschreibung**
-<Beschreibe die Teilaspekte des Features>
+- Von welchen anderen Komponenten hängt das Feature ab, gerne auch mit Links zu den Issues!
+- Oder dem Gesamtsystem
+  
+## Technische Abhängigkeiten
 
-**Offene Fragen**
-<Beschreibe wo es noch offene Punkte zum diskutieren gibt>
+- Abhängigkeiten z.B. Änderungen an der Datenbank
+- Änderung am Server oder Client
+
+## Funktionsbeschreibung
+- Beschreibe die Teilaspekte des Features
+
+### Server
+- Welche Aspekte sind im Server zu beachten.
+- [ ] Wird eine Konfiguationsmöglichkeit angeboten/benötigt?_(z.B. ein SQL Connectionstring oder Speicherort mit Bilder)_
+
+### Client
+- Welche Aspekte sind im Client zu beachten.
+- Am besten mit Bildern
+- Akteur
+
+## Offene Fragen
+- Beschreibe wo es noch offene Punkte zum Diskutieren gibt
+- Welche Fragen noch zu klären sind
