@@ -1,16 +1,15 @@
 ---
 name: Feature request
-about: Beschreibe ein neues Feature
+about: Featurebeschreibung
 title: 'Nummer(n) der Funktionsbeschreibung: <Beschreibung>'
 labels: 'feature'
 assignees: ''
 ---
 
 ## Ziel des Features(__Nummer(n) der Funktionsbeschreibung__)
-in ein paar Sätzen beschreiben was das Ziel des Features ist
+in ein paar Sätzen beschreiben was das Ziel des Features ist.
 
 ## Abhängigkeiten
-
 - Von welchen anderen Komponenten hängt das Feature ab, gerne auch mit Links zu den Issues!
 - Oder dem Gesamtsystem
   
