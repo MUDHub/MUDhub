@@ -1,37 +1,54 @@
 ---
-name: Tech Spezigikation
+name: Tech Spezifikation
 about: Beschreibt das technische Umsetzten von Feature Issues
 title: 'Tech: <Beschreibung>'
 labels: 'tech spec'
 assignees: ''
 ---
 
-## Ziel des Features(__Nummer(n) der Funktionsbeschreibung__)
-in ein paar Sätzen beschreiben was das Ziel des Features ist.
+## Feature Issues
+- Issue1
+- Issue2
 
-## Abhängigkeiten
-- Von welchen anderen Komponenten hängt das Feature ab, gerne auch mit Links zu den Issues!
-- Oder dem Gesamtsystem
-  
-## Technische Abhängigkeiten
-- Abhängigkeiten z.B. Änderungen an der Datenbank
-- Änderung am Server oder Client
+// Die jeweiligen Komponeneten die nicht benötigt werden herrauslöschen.
+// Generell überall wo es geht, ein bis zwei Sätze beschreibenden Text.
 
-## Funktionsbeschreibung
-- Beschreibe die Teilaspekte des Features
+## Client
+### Statisches Modell
+### Dynamisches Modell
 
-### Server
-- Welche Aspekte sind im Server zu beachten.
-- [ ] Wird eine Konfiguationsmöglichkeit angeboten/benötigt?_(z.B. ein SQL Connectionstring oder Speicherort mit Bilder)_
+## Communikation
+### Api Schnittstelle
 
-### Client
-- Welche Aspekte sind im Client zu beachten.
-- Am besten mit Bildern
-- Akteur
+```
+# get
+http://game.mudhub.de/api/rooms
+# post
+http://game.mudhub.de/api/rooms
+```
 
-## Designvorschlag
-Hier kommt ein Bild rein
+### SignalR
+
+
+Client => Server
+```csharp
+public interface IServer {
+  Task SendMessage(string msg);
+}
+```
+
+
+Server => Client
+```csharp
+public interface IClient {
+  Task ReceiveMessage(string msg, string name);  
+}
+```
+
+## Sever
+### Statisches Modell
+### Dynamisches Modell
 
 ## Offene Fragen
-- Beschreibe wo es noch offene Punkte zum Diskutieren gibt
-- Welche Fragen noch zu klären sind
+-[ ] Beschreibe wo es noch offene Punkte zum Diskutieren gibt
+-[ ] Welche Fragen noch zu klären sind
