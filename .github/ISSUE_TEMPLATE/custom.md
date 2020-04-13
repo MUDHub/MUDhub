@@ -1,6 +1,6 @@
 ---
-name: Custom issue template
-about: Describe this issue template's purpose here.
+name: Leere Issue Templatevorlage
+about: Vorlage fall die anderen Vorlagen nicht zutreffen.
 title: ''
 labels: ''
 assignees: ''
