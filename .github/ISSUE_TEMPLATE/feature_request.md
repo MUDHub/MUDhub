@@ -29,8 +29,9 @@ in ein paar Sätzen beschreiben was das Ziel des Features ist.
 - Am besten mit Bildern
 - Akteur
 
+## Designvorschlag
+Hier kommt ein Bild rein
+
 ## Offene Fragen
 - Beschreibe wo es noch offene Punkte zum Diskutieren gibt
 - Welche Fragen noch zu klären sind
-
-## Designvorschlag
