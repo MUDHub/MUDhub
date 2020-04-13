@@ -2,8 +2,9 @@
 name: Feature request
 about: Featurebeschreibung
 title: 'Nummer(n) der Funktionsbeschreibung: <Beschreibung>'
-labels: 'feature'
+labels: feature
 assignees: ''
+
 ---
 
 ## Ziel des Features(__Nummer(n) der Funktionsbeschreibung__)
