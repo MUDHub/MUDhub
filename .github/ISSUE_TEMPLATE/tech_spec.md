@@ -11,6 +11,7 @@ assignees: ''
 - Issue2
 
 // Die jeweiligen Komponeneten die nicht benötigt werden herrauslöschen.
+
 // Generell überall wo es geht, ein bis zwei Sätze beschreibenden Text.
 
 ## Client
@@ -50,5 +51,5 @@ public interface IClient {
 ### Dynamisches Modell
 
 ## Offene Fragen
--[ ] Beschreibe wo es noch offene Punkte zum Diskutieren gibt
--[ ] Welche Fragen noch zu klären sind
+- [ ] Beschreibe wo es noch offene Punkte zum Diskutieren gibt
+- [ ] Welche Fragen noch zu klären sind
