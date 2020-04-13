@@ -14,7 +14,6 @@ in ein paar Sätzen beschreiben was das Ziel des Features ist.
 - Oder dem Gesamtsystem
   
 ## Technische Abhängigkeiten
-
 - Abhängigkeiten z.B. Änderungen an der Datenbank
 - Änderung am Server oder Client
 
@@ -33,3 +32,5 @@ in ein paar Sätzen beschreiben was das Ziel des Features ist.
 ## Offene Fragen
 - Beschreibe wo es noch offene Punkte zum Diskutieren gibt
 - Welche Fragen noch zu klären sind
+
+## Designvorschlag
