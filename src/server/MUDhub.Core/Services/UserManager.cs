@@ -42,42 +42,52 @@ namespace MUDhub.Core.Services
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
 
-            _logger?.LogInformation($"User: {user.Name} {user.Lastname}, removed.");
+            _logger?.LogInformation($"User: '{user.Name} {user.Lastname}' is removed.");
             return true;
         }
 
         public async Task<bool> AddRoleToUserAsync(string userId, Roles role)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId)
-                .ConfigureAwait(false);
+            var user = await GetUserByIdAsync(userId).ConfigureAwait(false);
             if (user == null)
             {
-                //Todo: add logmessage
+                _logger?.LogWarning($"The role: '{role}' could not be added to user: '{user.Name} {user.Lastname}'. => User does not exist");
                 return false;
             }
             if ((user.Role & role) == role)
             {
-                //Todo: add logmessage
+                _logger?.LogWarning($"The role: '{role}' could not be added to user: '{user.Name} {user.Lastname}'. => User already has the role");
                 return false;
             }
             user.Role |= role;
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
+            _logger?.LogInformation($"The role: '{role}' was added to user: '{user.Name} {user.Lastname}'.");
             return true;
         }
 
         public async Task<bool> RemoveRoleFromUserAsync(string userId, Roles role)
         {
-            var user = _context.Users.FirstOrDefaultAsync(u => u.Id == userId).Result;
-            if ((user.Role & role) != role) return false;
+            var user = await GetUserByIdAsync(userId).ConfigureAwait(false);
+            if (user == null)
+            {
+                _logger?.LogWarning($"The role: '{role}' could not be removed from user: '{user.Name} {user.Lastname}'. => User does not exist");
+                return false;
+            }
+            if ((user.Role & role) != role)
+            {
+                _logger?.LogWarning($"The role: '{role}' could not be removed from user: '{user.Name} {user.Lastname}'. => User has not the role");
+                return false;
+            }
             user.Role &= ~role;
-            _context.Users.Update(user);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync()
+                .ConfigureAwait(false);
+            _logger?.LogInformation($"The role: '{role}' was removed from user: '{user.Name} {user.Lastname}'.");
             return true;
         }
         public async Task<bool> IsUserInRoleAsync(string userId, Roles role)
         {
-            var user = _context.Users.FirstOrDefaultAsync(u => u.Id == userId).Result;
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId).ConfigureAwait(false);
             if (user is null)
             {
                 return false;
@@ -98,12 +108,21 @@ namespace MUDhub.Core.Services
 
         public async Task<bool> UpdatePasswortAsync(string userId, string oldPassword, string newPassword)
         {
-            //Todo: async and logmessages
-            var user = _context.Users.FirstOrDefaultAsync(u => u.PasswortHash == CreatePasswordHash(oldPassword)).Result;
-            user.PasswortHash = CreatePasswordHash(newPassword);
-            _context.Users.Update(user);
-            _context.SaveChanges();
-            throw new NotImplementedException();
+            var user = await GetUserByIdAsync(userId).ConfigureAwait(false);
+            if (user == null)
+            {
+                _logger?.LogWarning($"The Password of '{user.Name} {user.Lastname}' could not be updated. => User does not exist.");
+                return false;
+            }
+            if (oldPassword == newPassword)
+            {
+                _logger?.LogWarning($"The Password of '{user.Name} {user.Lastname}' could not be updated. => Old password same as new password.");
+                return false;
+            }
+            user.PasswordHash = CreatePasswordHash(newPassword);
+            await _context.SaveChangesAsync().ConfigureAwait(false);
+            _logger?.LogInformation($"The Password of '{user.Name} {user.Lastname}' was updated.");
+            return true;
         }
 
         private string CreatePasswordHash(string password)
@@ -122,6 +141,10 @@ namespace MUDhub.Core.Services
                 }
             });
             return passwordHash;
+        }
+        private async Task<User> GetUserByIdAsync(string userId)
+        {
+            return await _context.Users.FirstOrDefaultAsync(u => u.Id == userId).ConfigureAwait(false);
         }
     }
 }
