@@ -12,5 +12,6 @@ namespace MUDhub.Core.Services
             : base(options)
         {
         }
+
     }
 }
