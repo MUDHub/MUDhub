@@ -1,39 +1,50 @@
-﻿using MUDhub.Core.Abstracts;
+﻿using Microsoft.Extensions.Options;
+using MUDhub.Core.Abstracts;
 using MUDhub.Core.Services.Models;
 using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace MUDhub.Core.Services
 {
     public class EmailService : IEmailService
     {
-        public bool Send(MailMaker mailmaker)
+        private readonly MailConfiguration _mailConfiguration;
+        public EmailService(IOptions<MailConfiguration> mailConfiguration)
         {
-            if (mailmaker != null)
+            if (mailConfiguration is null)
             {
-                var email = new MailMessage();
-                var sender = new MailAddress(mailmaker.Sender);
-                email.From = sender;
-
-                email.To.Add(mailmaker.Receiver);
-
-                email.Subject = mailmaker.Subject;
-
-                email.Body = mailmaker.Message;
-
-                var mailClient = new SmtpClient(mailmaker.Servername, int.Parse(mailmaker.Port));
-
-                var credentials = new NetworkCredential(mailmaker.Username, mailmaker.Password);
-
-                mailClient.Credentials = credentials;
-
-                mailClient.Send(email);
-                return true;
+                throw new ArgumentNullException(nameof(mailConfiguration));
             }
-            return false;
+
+            _mailConfiguration = mailConfiguration.Value;
+        }
+        public async Task<bool> SendAsync(string receiver, string resetKey)
+        {
+
+            using var email = new MailMessage();
+            var sender = new MailAddress(_mailConfiguration.Sender);
+            email.From = sender;
+
+            email.To.Add(receiver);
+
+            email.Subject = _mailConfiguration.Subject;
+
+            email.Body = _mailConfiguration.Message;
+            //Todo: String Interpolation
+
+            using var mailClient = new SmtpClient(_mailConfiguration.Servername, _mailConfiguration.Port);
+            
+
+            var credentials = new NetworkCredential(_mailConfiguration.Username, _mailConfiguration.Password);
+
+            mailClient.Credentials = credentials;
+
+            await mailClient.SendMailAsync(email ).ConfigureAwait(false);
+            return true;
         }
     }
 }

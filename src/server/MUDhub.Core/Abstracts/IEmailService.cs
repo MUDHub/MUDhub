@@ -2,11 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace MUDhub.Core.Abstracts
 {
     public interface IEmailService
     {
-        bool Send(MailMaker mailmaker);
+        Task<bool> SendAsync(string receiver, string resetKey);
     }
 }

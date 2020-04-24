@@ -18,13 +18,14 @@ namespace MUDhub.Core.Services
 
         private readonly MudDbContext _context;
         private readonly ILogger? _logger;
+        private readonly IEmailService _emailService;
 
         
-        public UserManager(MudDbContext context, ILogger<UserManager>? logger = null)
+        public UserManager(MudDbContext context, IEmailService emailService, ILogger<UserManager>? logger = null)
         {
-            //Todo: add Mailservice
             _context = context;
             _logger = logger;
+            _emailService = emailService;
         }
 
 
@@ -55,7 +56,7 @@ namespace MUDhub.Core.Services
             }
             else
             {
-                return new RegisterResult(false);
+                return new RegisterResult(false, true);
             }
             
         }
@@ -123,21 +124,9 @@ namespace MUDhub.Core.Services
             return ((user.Role & role) == role);
         }
 
-        public bool GeneratePasswortResetAsync(string email)
+        public async Task<bool> GeneratePasswortResetAsync(string email)
         {
-            var mailService = new EmailService();
-            var mailMaker = new MailMaker()
-            {
-                Sender = "??@??.de",
-                Receiver = email,
-                Subject = "Registrierung bei MUDhub",
-                Message = "Drücke hier ink",
-                Servername = "????",
-                Port = "22",
-                Username = "???",
-                Password = "????"
-            };
-            return mailService.Send(mailMaker);
+            return await _emailService.SendAsync(email, string.Empty).ConfigureAwait(false);
         }
 
         public Task<bool> UpdatePasswortFromResetAsync(string passwordresetkey, string newPassword)
