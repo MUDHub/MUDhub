@@ -146,6 +146,22 @@ namespace MUDhub.Core.Tests
             Assert.False(registerResult.Succeeded);
         }
         [Fact]
+        public async Task Test_RegisterUserAsync_ReturnFalseUserExist()
+        {
+            var context = CreateInMemoryDbContext();
+            await AddTestingData(context);
+            var userManager = new UserManager(context);
+            var regiArgs = new RegistrationArgs()
+            {
+                Name = "Tobi",
+                Lastname = "Kartoffel",
+                Email = "max@test.de",
+                Password = "Test1234"
+            };
+            RegisterResult registerResult = await userManager.RegisterUserAsync(regiArgs);
+            Assert.True(registerResult.Succeeded);
+        }
+        [Fact]
         public async Task Test_RegisterUserAsync_ReturnTrue()
         {
             var context = CreateInMemoryDbContext();
@@ -159,7 +175,7 @@ namespace MUDhub.Core.Tests
                 Password = "Test1234"
             };
             RegisterResult registerResult = await userManager.RegisterUserAsync(regiArgs);
-            Assert.True(registerResult.Succeeded);
+            Assert.False(registerResult.Succeeded);
         }
 
 
@@ -178,6 +194,8 @@ namespace MUDhub.Core.Tests
             context.Users.Add(new User("1")
             {
                 Role = Roles.Master,
+                Name = "Max",
+                Lastname = "Mustermann",
                 PasswordHash = UserHelpers.CreatePasswordHash("PW1234")
             });
             await context.SaveChangesAsync();

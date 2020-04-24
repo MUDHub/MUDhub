@@ -19,6 +19,7 @@ namespace MUDhub.Core.Tests
             collection.AddUserManagment();
             Assert.Contains(collection, s => s.ImplementationType == typeof(UserManager));
             Assert.Contains(collection, s => s.ImplementationType == typeof(LoginService));
+            Assert.Contains(collection, s => s.ImplementationType == typeof(EmailService));
             Assert.Equal(2, collection.Count); //Checking for new Services
         }
     }

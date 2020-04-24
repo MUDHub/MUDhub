@@ -13,9 +13,6 @@ namespace MUDhub.Core.Helper
     internal class UserHelpers
     {
 
-        private UserSettings _userSettings;
-
-
         public static string CreatePasswordHash(string password)
         {
             byte[] data;
@@ -32,27 +29,6 @@ namespace MUDhub.Core.Helper
                 }
             });
             return passwordHash;
-        }
-
-        private string CreateToken(string userId)
-        {
-            // authentication successful so generate jwt token
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_userSettings.Secret);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                    new Claim(ClaimTypes.Name, userId),
-                    new Claim(ClaimTypes.NameIdentifier, userId),
-                    new Claim(ClaimTypes.Role, "Administrator"),
-                    new Claim(ClaimTypes.Role, "MUD Master"),
-                }),
-                Expires = DateTime.UtcNow.AddDays(1),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
         }
     }
 }

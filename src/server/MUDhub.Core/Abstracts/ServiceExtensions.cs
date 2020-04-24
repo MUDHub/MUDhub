@@ -20,6 +20,7 @@ namespace MUDhub.Core.Abstracts
             //Todo: Later change this to scoped.
             services.AddSingleton<ILoginService, LoginService>();
             services.AddSingleton<IUserManager, UserManager>();
+            services.AddSingleton<IEmailService, EmailService>();
             return services;
         }
     }

@@ -1,6 +1,5 @@
 ﻿using MUDhub.Core.Abstracts;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using MUDhub.Core.Models;
@@ -9,9 +8,10 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MUDhub.Core.Services.Models;
+using System.Net.Mail;
 
 namespace MUDhub.Core.Services
-{ 
+{
     internal class UserManager : IUserManager
     {
 
@@ -37,17 +37,27 @@ namespace MUDhub.Core.Services
             {
                 return new RegisterResult(false);
             }
-            var user = new User
-            {
-                Name = model.Name,
-                Lastname = model.Lastname,
-                Email = model.Email,
-                PasswordHash = CreatePasswordHash(model.Password)
-            };
-            await _context.AddAsync(user);
-            await _context.SaveChangesAsync()
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Name == model.Name && u.Lastname == model.Lastname)
                 .ConfigureAwait(false);
-            return new RegisterResult(true);
+            if(user == null)
+            {
+                var newUser = new User
+                {
+                    Name = model.Name,
+                    Lastname = model.Lastname,
+                    Email = model.Email,
+                    PasswordHash = CreatePasswordHash(model.Password)
+                };
+                await _context.AddAsync(newUser);
+                await _context.SaveChangesAsync()
+                    .ConfigureAwait(false);
+                return new RegisterResult(true);
+            }
+            else
+            {
+                return new RegisterResult(false);
+            }
+            
         }
         
         public async Task<bool> RemoveUserAsync(string userId)
@@ -113,9 +123,21 @@ namespace MUDhub.Core.Services
             return ((user.Role & role) == role);
         }
 
-        public Task GeneratePasswortResetAsync(string email)
+        public bool GeneratePasswortResetAsync(string email)
         {
-            throw new NotImplementedException();
+            var mailService = new EmailService();
+            var mailMaker = new MailMaker()
+            {
+                Sender = "??@??.de",
+                Receiver = email,
+                Subject = "Registrierung bei MUDhub",
+                Message = "Drücke hier ink",
+                Servername = "????",
+                Port = "22",
+                Username = "???",
+                Password = "????"
+            };
+            return mailService.Send(mailMaker);
         }
 
         public Task<bool> UpdatePasswortFromResetAsync(string passwordresetkey, string newPassword)
