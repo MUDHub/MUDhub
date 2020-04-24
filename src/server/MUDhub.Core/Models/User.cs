@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace MUDhub.Core.Models
 {
     public class User
     {
+        public User()
+        {
+        }
+
         public User(string id)
         {
             Id = id;

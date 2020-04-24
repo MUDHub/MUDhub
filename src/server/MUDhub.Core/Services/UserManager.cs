@@ -78,6 +78,10 @@ namespace MUDhub.Core.Services
         public async Task<bool> IsUserInRoleAsync(string userId, Roles role)
         {
             var user = _context.Users.FirstOrDefaultAsync(u => u.Id == userId).Result;
+            if (user is null)
+            {
+                return false;
+            }
             return ((user.Role & role) == role);
         }
 
