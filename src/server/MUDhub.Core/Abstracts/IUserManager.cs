@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using MUDhub.Core.Models;
+using MUDhub.Core.Services.Models;
 
 namespace MUDhub.Core.Abstracts
 {
     public interface IUserManager
     {
-        //RegisterResult RegisterUser(RegistrationArgs model);
+        Task<RegisterResult> RegisterUserAsync(RegistrationArgs model);
         Task<bool> RemoveUserAsync(string userId);
         Task<bool> AddRoleToUserAsync(string userId, Roles role);
         Task<bool> RemoveRoleFromUserAsync(string userId, Roles role);

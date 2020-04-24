@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using Microsoft.Extensions.Logging;
 using MUDhub.Core.Configurations;
+using MUDhub.Core.Services.Models;
 
 namespace MUDhub.Core.Services
 {
@@ -18,7 +19,7 @@ namespace MUDhub.Core.Services
         private readonly IUserManager _userManager;
         //Todo: Moris => Brauchen wir UserSettings?
         private UserSettings _userSettings;
-        private readonly ILogger _logger;
+        private readonly ILogger? _logger;
         public LoginService(IMudDbContext context, IUserManager userManager, UserSettings options)
         {
             _dbContext = context;

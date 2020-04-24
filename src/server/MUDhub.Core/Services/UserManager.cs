@@ -8,6 +8,7 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using MUDhub.Core.Services.Models;
 
 namespace MUDhub.Core.Services
 { 
@@ -16,7 +17,7 @@ namespace MUDhub.Core.Services
 
 
         private readonly MudDbContext _context;
-        private readonly ILogger _logger;
+        private readonly ILogger? _logger;
 
         
         public UserManager(MudDbContext context, ILogger<UserManager>? logger = null)
@@ -27,11 +28,28 @@ namespace MUDhub.Core.Services
         }
 
 
-        /*public RegisterResult RegisterUser(RegistrationArgs model)
+        public async Task<RegisterResult> RegisterUserAsync(RegistrationArgs model)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(model.Name) || 
+                string.IsNullOrEmpty(model.Lastname) ||
+                string.IsNullOrEmpty(model.Email) ||
+                string.IsNullOrEmpty(model.Password))
+            {
+                return new RegisterResult(false);
+            }
+            var user = new User
+            {
+                Name = model.Name,
+                Lastname = model.Lastname,
+                Email = model.Email,
+                PasswordHash = CreatePasswordHash(model.Password)
+            };
+            await _context.AddAsync(user);
+            await _context.SaveChangesAsync()
+                .ConfigureAwait(false);
+            return new RegisterResult(true);
         }
-        */
+        
         public async Task<bool> RemoveUserAsync(string userId)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId)
@@ -51,7 +69,7 @@ namespace MUDhub.Core.Services
             var user = await GetUserByIdAsync(userId).ConfigureAwait(false);
             if (user == null)
             {
-                _logger?.LogWarning($"The role: '{role}' could not be added to user: '{user.Name} {user.Lastname}'. => User does not exist");
+                _logger?.LogWarning($"The role: '{role}' could not be added to user: '{user?.Name} {user?.Lastname}'. => User does not exist");
                 return false;
             }
             if ((user.Role & role) == role)
@@ -71,7 +89,7 @@ namespace MUDhub.Core.Services
             var user = await GetUserByIdAsync(userId).ConfigureAwait(false);
             if (user == null)
             {
-                _logger?.LogWarning($"The role: '{role}' could not be removed from user: '{user.Name} {user.Lastname}'. => User does not exist");
+                _logger?.LogWarning($"The role: '{role}' could not be removed from user: '{user?.Name} {user?.Lastname}'. => User does not exist");
                 return false;
             }
             if ((user.Role & role) != role)
@@ -111,7 +129,7 @@ namespace MUDhub.Core.Services
             var user = await GetUserByIdAsync(userId).ConfigureAwait(false);
             if (user == null)
             {
-                _logger?.LogWarning($"The Password of '{user.Name} {user.Lastname}' could not be updated. => User does not exist.");
+                _logger?.LogWarning($"The Password of '{user?.Name} {user?.Lastname}' could not be updated. => User does not exist.");
                 return false;
             }
             if (oldPassword == newPassword)

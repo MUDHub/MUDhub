@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MUDhub.Core.Models
+namespace MUDhub.Core.Services.Models
 {
     public class RegisterResult
     {

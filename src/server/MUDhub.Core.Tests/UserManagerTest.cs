@@ -9,6 +9,7 @@ using MUDhub.Core.Abstracts;
 using MUDhub.Core.Helper;
 using MUDhub.Core.Models;
 using MUDhub.Core.Services;
+using MUDhub.Core.Services.Models;
 using Xunit;
 
 namespace MUDhub.Core.Tests
@@ -112,6 +113,53 @@ namespace MUDhub.Core.Tests
             await AddTestingData(context);
             var userManager = new UserManager(context);
             Assert.True(await userManager.UpdatePasswortAsync("1", "PW1234", "1234PW"));
+        }
+
+        [Fact]
+        public async Task Test_RemoveUserAsync_ReturnFalseBecauseNull()
+        {
+            var context = CreateInMemoryDbContext();
+            await AddTestingData(context);
+            var userManager = new UserManager(context);
+            Assert.False(await userManager.RemoveUserAsync("2"));
+        }
+        [Fact]
+        public async Task Test_RemoveUserAsync_ReturnTrue()
+        {
+            var context = CreateInMemoryDbContext();
+            await AddTestingData(context);
+            var userManager = new UserManager(context);
+            Assert.True(await userManager.RemoveUserAsync("1"));
+        }
+
+        [Fact]
+        public async Task Test_RegisterUserAsync_ReturnFalseBecauseNullOrEmpty()
+        {
+            var context = CreateInMemoryDbContext();
+            await AddTestingData(context);
+            var userManager = new UserManager(context);
+            var regiArgs = new RegistrationArgs()
+            {
+
+            };
+            RegisterResult registerResult = await userManager.RegisterUserAsync(regiArgs);
+            Assert.False(registerResult.Succeeded);
+        }
+        [Fact]
+        public async Task Test_RegisterUserAsync_ReturnTrue()
+        {
+            var context = CreateInMemoryDbContext();
+            await AddTestingData(context);
+            var userManager = new UserManager(context);
+            var regiArgs = new RegistrationArgs()
+            {
+                Name = "Max",
+                Lastname = "Mustermann",
+                Email = "max@test.de",
+                Password = "Test1234"
+            };
+            RegisterResult registerResult = await userManager.RegisterUserAsync(regiArgs);
+            Assert.True(registerResult.Succeeded);
         }
 
 

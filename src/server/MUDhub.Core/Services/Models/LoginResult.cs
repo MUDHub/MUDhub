@@ -1,8 +1,9 @@
-﻿using System;
+﻿using MUDhub.Core.Models;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MUDhub.Core.Models
+namespace MUDhub.Core.Services.Models
 {
     public class LoginResult
     {
