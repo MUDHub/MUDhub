@@ -13,32 +13,60 @@ namespace MUDhub.Core.Services
 { 
     internal class UserManager : IUserManager
     {
+
+
         private readonly MudDbContext _context;
         private readonly ILogger _logger;
+
+        
+        public UserManager(MudDbContext context, ILogger<UserManager>? logger = null)
+        {
+            //Todo: add Mailservice
+            _context = context;
+            _logger = logger;
+        }
+
+
         /*public RegisterResult RegisterUser(RegistrationArgs model)
         {
             throw new NotImplementedException();
         }
         */
-        public bool RemoveUser(string userId)
+        public async Task<bool> RemoveUserAsync(string userId)
         {
-            var user = _context.Users.FirstOrDefaultAsync(u => u.Id == userId).Result;
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId)
+                .ConfigureAwait(false);
+
             if (user == null) return false;
             _context.Users.Remove(user);
+            await _context.SaveChangesAsync()
+                .ConfigureAwait(false);
+
+            _logger?.LogInformation($"User: {user.Name} {user.Lastname}, removed.");
             return true;
         }
 
-        public bool AddRoleToUser(string userId, Roles role)
+        public async Task<bool> AddRoleToUserAsync(string userId, Roles role)
         {
-            var user = _context.Users.FirstOrDefaultAsync(u => u.Id == userId).Result;
-            if ((user.Role & role) == role) return false;
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId)
+                .ConfigureAwait(false);
+            if (user == null)
+            {
+                //Todo: add logmessage
+                return false;
+            }
+            if ((user.Role & role) == role)
+            {
+                //Todo: add logmessage
+                return false;
+            }
             user.Role |= role;
-            _context.Users.Update(user);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync()
+                .ConfigureAwait(false);
             return true;
         }
 
-        public bool RemoveRoleFromUser(string userId, Roles role)
+        public async Task<bool> RemoveRoleFromUserAsync(string userId, Roles role)
         {
             var user = _context.Users.FirstOrDefaultAsync(u => u.Id == userId).Result;
             if ((user.Role & role) != role) return false;
@@ -47,33 +75,34 @@ namespace MUDhub.Core.Services
             _context.SaveChanges();
             return true;
         }
-        public bool IsUserInRole(string userId, Roles role)
+        public async Task<bool> IsUserInRoleAsync(string userId, Roles role)
         {
             var user = _context.Users.FirstOrDefaultAsync(u => u.Id == userId).Result;
             return ((user.Role & role) == role);
         }
 
-        public void GeneratePasswortReset(string email)
+        public Task GeneratePasswortResetAsync(string email)
         {
             throw new NotImplementedException();
         }
 
-        public bool UpdatePasswortFromReset(string email, string newPassword)
+        public Task<bool> UpdatePasswortFromResetAsync(string passwordresetkey, string newPassword)
         {
             
             throw new NotImplementedException();
         }
 
-        public bool UpdatePasswort(string userId, string oldPassword, string newPassword)
+        public async Task<bool> UpdatePasswortAsync(string userId, string oldPassword, string newPassword)
         {
-            var user = _context.Users.FirstOrDefaultAsync(u => u.PasswortHash == oldPassword).Result;
-            user.PasswortHash = newPassword;
+            //Todo: async and logmessages
+            var user = _context.Users.FirstOrDefaultAsync(u => u.PasswortHash == CreatePasswordHash(oldPassword)).Result;
+            user.PasswortHash = CreatePasswordHash(newPassword);
             _context.Users.Update(user);
             _context.SaveChanges();
             throw new NotImplementedException();
         }
 
-        public string CreatePasswortHash(string password)
+        private string CreatePasswordHash(string password)
         {
             byte[] data;
             using (HashAlgorithm algorithm = SHA256.Create())

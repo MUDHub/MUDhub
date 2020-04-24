@@ -14,8 +14,7 @@ namespace MUDhub.Core.Tests
         [Fact]
         public void CheckForAddingUserManagmentServices()
         {
-            var manager = new UserManager();
-            Assert.True(manager.IsUserInRole("2", Roles.Master));
+               
         }
     }
 }
