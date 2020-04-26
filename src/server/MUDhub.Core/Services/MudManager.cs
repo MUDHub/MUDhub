@@ -103,7 +103,7 @@ namespace MUDhub.Core.Services
 
         public async Task<bool> RequestUserForJoinAsync(string userId, string mudId)
         {
-            //Todo: Later handle User references.
+            //Todo: Later handle User references, check if exists
 
             var joinRequest = await _context.MudJoinRequests.FindAsync(mudId, userId);
             if (joinRequest != null)
@@ -128,7 +128,6 @@ namespace MUDhub.Core.Services
                 return false;
             }
 
-            //Todo: Check if the User exists
             joinRequest = new MudJoinRequest(mudId, userId)
             {
                 State = MudJoinState.Requested

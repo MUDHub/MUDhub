@@ -23,15 +23,5 @@ namespace MUDhub.Core.Tests
             Assert.Equal(2, collection.Count); //Checking for new Services
         }
 
-
-
-        private static MudDbContext CreateInMemoryDbContext()
-        {
-            var options = new DbContextOptionsBuilder<MudDbContext>()
-                .UseInMemoryDatabase("Testdatabase")
-                .Options;
-
-            return new MudDbContext(options);
-        }
     }
 }
