@@ -7,7 +7,9 @@ namespace MUDhub.Core.Abstracts
 {
     public interface IGameService
     {
-        Task StartMudAsync(string mudId);
-        Task StopMudAsync(string mudId);
+        Task<bool> StartMudAsync(string mudId);
+        Task<bool> StopMudAsync(string mudId);
+
+
     }
 }

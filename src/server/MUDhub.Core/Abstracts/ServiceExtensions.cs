@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using MUDhub.Core.Services;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,15 @@ namespace MUDhub.Core.Abstracts
     {
 
         /// <summary>
+        public static IServiceCollection AddMudGame(this IServiceCollection services)
+        {
+            //Todo: Later change this to scoped.
+            services.AddUserManagment();
+            services.AddMudGameCore();
+            return services;
+        }
+
+
         /// Adds all Services they relate to the mudhub usermanagent, e.g. 
         /// LoginService, UserManagent
         /// </summary>
@@ -18,8 +28,17 @@ namespace MUDhub.Core.Abstracts
         public static IServiceCollection AddUserManagment(this IServiceCollection services)
         {
             //Todo: Later change this to scoped.
-            services.AddSingleton<ILoginService, LoginService>();
-            services.AddSingleton<IUserManager, UserManager>();
+            services.TryAddSingleton<ILoginService, LoginService>();
+            services.TryAddSingleton<IUserManager, UserManager>();
+            return services;
+        }
+
+
+        public static IServiceCollection AddMudGameCore(this IServiceCollection services)
+        {
+            //Todo: Later change this to scoped.
+            services.TryAddSingleton<IMudManager, MudManager>();
+            services.TryAddSingleton<IGameService, GameService>();
             return services;
         }
     }
