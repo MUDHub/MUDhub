@@ -24,88 +24,88 @@ namespace MUDhub.Core.Tests
         }
 
         [Fact]
-        public async Task Test_IsUserInRoleAsync_ReturnTrue()
+        public async Task IsUserInRoleAsync_ReturnTrue()
         {
-            var userManager = await AddTestingDataAsync();
+            var userManager = CreateInMemoryDataBaseWithTestingDataAsync();
             Assert.True(await userManager.IsUserInRoleAsync("1", Roles.Master));
         }
 
         [Fact]
-        public async Task Test_IsUserInRoleAsync_ReturnFalse()
+        public async Task IsUserInRoleAsync_ReturnFalse()
         {
-            var userManager = await AddTestingDataAsync();
+            var userManager = CreateInMemoryDataBaseWithTestingDataAsync();
             Assert.False(await userManager.IsUserInRoleAsync("2", Roles.Master));
         }
 
         [Fact]
-        public async Task Test_AddRoleToUserAsync_ReturnFalseBecauseNull()
+        public async Task AddRoleToUserAsync_ReturnFalseBecauseNull()
         {
-            var userManager = await AddTestingDataAsync();
+            var userManager = CreateInMemoryDataBaseWithTestingDataAsync();
             Assert.False(await userManager.AddRoleToUserAsync("2", Roles.Master));
         }
         [Fact]
-        public async Task Test_AddRoleToUserAsync_ReturnFalseBecauseRole()
+        public async Task AddRoleToUserAsync_ReturnFalseBecauseRole()
         {
-            var userManager = await AddTestingDataAsync();
+            var userManager = CreateInMemoryDataBaseWithTestingDataAsync();
             Assert.False(await userManager.AddRoleToUserAsync("1", Roles.Master));
         }
         [Fact]
-        public async Task Test_AddRoleToUserAsync_ReturnTrue()
+        public async Task AddRoleToUserAsync_ReturnTrue()
         {
-            var userManager = await AddTestingDataAsync();
+            var userManager = CreateInMemoryDataBaseWithTestingDataAsync();
             Assert.True(await userManager.AddRoleToUserAsync("1", Roles.Admin));
         }
 
         [Fact]
-        public async Task Test_RemoveRoleFromUserAsync_ReturnFalseBecauseNull()
+        public async Task RemoveRoleFromUserAsync_ReturnFalseBecauseNull()
         {
-            var userManager = await AddTestingDataAsync();
+            var userManager = CreateInMemoryDataBaseWithTestingDataAsync();
             Assert.False(await userManager.RemoveRoleFromUserAsync("2", Roles.Master));
         }
 
 
         [Fact]
-        public async Task Test_RemoveRoleFromUserAsync_ReturnFalseBecauseRole()
+        public async Task RemoveRoleFromUserAsync_ReturnFalseBecauseRole()
         {
-            var userManager = await AddTestingDataAsync();
+            var userManager = CreateInMemoryDataBaseWithTestingDataAsync();
             Assert.False(await userManager.RemoveRoleFromUserAsync("1", Roles.Admin));
         }
         [Fact]
-        public async Task Test_RemoveRoleFromUserAsync_ReturnTrue()
+        public async Task RemoveRoleFromUserAsync_ReturnTrue()
         {
-            var userManager = await AddTestingDataAsync();
+            var userManager = CreateInMemoryDataBaseWithTestingDataAsync();
             Assert.True(await userManager.RemoveRoleFromUserAsync("1", Roles.Master));
         }
 
         [Fact]
-        public async Task Test_UpdatePasswortAsync_ReturnFalseBecauseNull()
+        public async Task UpdatePasswortAsync_ReturnFalseBecauseNull()
         {
-            var userManager = await AddTestingDataAsync();
+            var userManager = CreateInMemoryDataBaseWithTestingDataAsync();
             Assert.False(await userManager.UpdatePasswortAsync("2", "PW1234", "PW1234"));
         }
         [Fact]
-        public async Task Test_UpdatePasswortAsync_ReturnFalseBecauseEqual()
+        public async Task UpdatePasswortAsync_ReturnFalseBecauseEqual()
         {
-            var userManager = await AddTestingDataAsync();
+            var userManager = CreateInMemoryDataBaseWithTestingDataAsync();
             Assert.False(await userManager.UpdatePasswortAsync("1", "PW1234", "PW1234"));
         }
         [Fact]
-        public async Task Test_UpdatePasswortAsync_ReturnTrue()
+        public async Task UpdatePasswortAsync_ReturnTrue()
         {
-            var userManager = await AddTestingDataAsync();
+            var userManager = CreateInMemoryDataBaseWithTestingDataAsync();
             Assert.True(await userManager.UpdatePasswortAsync("1", "PW1234", "1234PW"));
         }
 
         [Fact]
-        public async Task Test_RemoveUserAsync_ReturnFalseBecauseNull()
+        public async Task RemoveUserAsync_ReturnFalseBecauseNull()
         {
-            var userManager = await AddTestingDataAsync();
+            var userManager = CreateInMemoryDataBaseWithTestingDataAsync();
             Assert.False(await userManager.RemoveUserAsync("2"));
         }
         [Fact]
-        public async Task Test_RemoveUserAsync_ReturnTrue()
+        public async Task RemoveUserAsync_ReturnTrue()
         {
-            var userManager = await AddTestingDataAsync();
+            var userManager = CreateInMemoryDataBaseWithTestingDataAsync();
             Assert.True(await userManager.RemoveUserAsync("1"));
         }
 
@@ -113,7 +113,7 @@ namespace MUDhub.Core.Tests
         {
             yield return new object[]{ new RegistrationArgs()
             {
-                Name = null,
+                Name = null!,
                 Lastname = "Kartoffel",
                 Email = "max@test.de",
                 Password = "Test1234"
@@ -121,7 +121,7 @@ namespace MUDhub.Core.Tests
             yield return new object[]{ new RegistrationArgs()
             {
                 Name = "Tobi",
-                Lastname = null,
+                Lastname = null!,
                 Email = "max@test.de",
                 Password = "Test1234"
             } };
@@ -129,7 +129,7 @@ namespace MUDhub.Core.Tests
             {
                 Name = "Tobi",
                 Lastname = "Kartoffel",
-                Email = null,
+                Email = null!,
                 Password = "Test1234"
             } };
             yield return new object[]{ new RegistrationArgs()
@@ -137,7 +137,7 @@ namespace MUDhub.Core.Tests
                 Name = "Tobi",
                 Lastname = "Kartoffel",
                 Email = "max@test.de",
-                Password = null
+                Password = null!
             } };
             yield return new object[]{ new RegistrationArgs()
             {
@@ -167,21 +167,49 @@ namespace MUDhub.Core.Tests
                 Email = "max@test.de",
                 Password = string.Empty
             } };
+            yield return new object[]{ new RegistrationArgs()
+            {
+                Name = " ",
+                Lastname = "Kartoffel",
+                Email = "max@test.de",
+                Password = "Test1234"
+            } };
+            yield return new object[]{ new RegistrationArgs()
+            {
+                Name = "Tobi",
+                Lastname = " ",
+                Email = "max@test.de",
+                Password = "Test1234"
+            } };
+            yield return new object[]{ new RegistrationArgs()
+            {
+                Name = "Tobi",
+                Lastname = "Kartoffel",
+                Email = " ",
+                Password = "Test1234"
+            } };
+            yield return new object[]{ new RegistrationArgs()
+            {
+                Name = "Tobi",
+                Lastname = "Kartoffel",
+                Email = "max@test.de",
+                Password = " "
+            } };
         }
 
         [Theory]
         [MemberData(nameof(CreateRegistrationArgs))]
-        public async Task Test_RegisterUserAsync_ReturnFalseBecauseNullOrEmpty(RegistrationArgs registrationArgs)
+        public async Task RegisterUserAsync_ReturnFalseBecauseNullOrEmpty(RegistrationArgs registrationArgs)
         {
-            var userManager = await AddTestingDataAsync();
-            
+            var userManager = CreateInMemoryDataBaseWithTestingDataAsync();
+
             RegisterResult registerResult = await userManager.RegisterUserAsync(registrationArgs);
             Assert.False(registerResult.Succeeded);
         }
         [Fact]
-        public async Task Test_RegisterUserAsync_ReturnFalseUserExist()
+        public async Task RegisterUserAsync_ReturnFalseUserExist()
         {
-            var userManager = await AddTestingDataAsync();
+            var userManager = CreateInMemoryDataBaseWithTestingDataAsync();
             var regiArgs = new RegistrationArgs()
             {
                 Name = "Tobi",
@@ -192,10 +220,11 @@ namespace MUDhub.Core.Tests
             RegisterResult registerResult = await userManager.RegisterUserAsync(regiArgs);
             Assert.True(registerResult.Succeeded);
         }
+
         [Fact]
-        public async Task Test_RegisterUserAsync_ReturnTrue()
+        public async Task RegisterUserAsync_ReturnTrue()
         {
-            var userManager = await AddTestingDataAsync();
+            var userManager = CreateInMemoryDataBaseWithTestingDataAsync();
             var regiArgs = new RegistrationArgs()
             {
                 Name = "Max",
@@ -207,15 +236,7 @@ namespace MUDhub.Core.Tests
             Assert.False(registerResult.Succeeded);
         }
 
-
-
-
-
-
-
-
-
-        private static async Task<UserManager> AddTestingDataAsync()
+        private static UserManager CreateInMemoryDataBaseWithTestingDataAsync()
         {
             var context = CreateInMemoryDbContext();
             var emailMock = Mock.Of<IEmailService>();
@@ -227,7 +248,7 @@ namespace MUDhub.Core.Tests
                 Lastname = "Mustermann",
                 PasswordHash = UserHelpers.CreatePasswordHash("PW1234")
             });
-            await context.SaveChangesAsync();
+            context.SaveChanges();
             return userManager;
         }
 

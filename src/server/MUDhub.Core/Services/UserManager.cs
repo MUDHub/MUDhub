@@ -39,10 +39,10 @@ namespace MUDhub.Core.Services
         /// <returns></returns>
         public async Task<RegisterResult> RegisterUserAsync(RegistrationArgs model)
         {
-            if (string.IsNullOrEmpty(model.Name) || 
-                string.IsNullOrEmpty(model.Lastname) ||
-                string.IsNullOrEmpty(model.Email) ||
-                string.IsNullOrEmpty(model.Password))
+            if (string.IsNullOrWhiteSpace(model.Name) || 
+                string.IsNullOrWhiteSpace(model.Lastname) ||
+                string.IsNullOrWhiteSpace(model.Email) ||
+                string.IsNullOrWhiteSpace(model.Password))
             {
                 return new RegisterResult(false);
             }
