@@ -20,6 +20,10 @@ const routes: Routes = [
 			},
 		],
 	},
+	{
+		path: 'create-mud',
+		loadChildren: () => import('./create-mud/create-mud.module').then(m => m.CreateMudModule)
+	},
 ];
 
 @NgModule({
