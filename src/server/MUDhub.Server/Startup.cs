@@ -10,26 +10,31 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.OpenApi.Models;
 using MUDhub.Core.Services;
+using MUDhub.Server.Helpers;
+using MUDhub.Server.Options;
 
 namespace MUDhub.Server
 {
     public class Startup
     {
+        private readonly ServerConfiguration _serverOptions;
+        private readonly IConfiguration _configuration;
+
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            _serverOptions = configuration.GetSection("Server")
+                                          .Get<ServerConfiguration>();
         }
 
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<MudDbContext>(options =>
-                   options.UseSqlite("Data Source=myDatabase.db"),
-                   ServiceLifetime.Singleton);
+            services.AddTargetDatabase(_serverOptions.Database);
 
             services.AddControllers();
             services.AddSpaStaticFiles(conf =>
