@@ -13,6 +13,11 @@ namespace MUDhub.Server.Helpers
     {
         public static IServiceCollection AddTargetDatabase(this IServiceCollection services, DatabaseConfiguration conf)
         {
+            if (services is null)
+                throw new ArgumentNullException(nameof(services));
+            if (conf is null)
+                throw new ArgumentNullException(nameof(conf));
+
             //Todo: Later change this to Scoped!
             var lifetime = ServiceLifetime.Singleton;
 
@@ -40,6 +45,18 @@ namespace MUDhub.Server.Helpers
                 default:
                     throw new ArgumentException($"No Supported Database Provider is used.", nameof(conf));
             }
+            return services;
+        }
+
+        public static IServiceCollection AddServerConfiguration(this IServiceCollection services, ServerConfiguration conf)
+        {
+            if (services is null)
+                throw new ArgumentNullException(nameof(services));
+            if (conf is null)
+                throw new ArgumentNullException(nameof(conf));
+            services.ConfigureOptions(conf);
+            services.ConfigureOptions(conf.Database);
+            services.ConfigureOptions(conf.Spa);
             return services;
         }
     }
