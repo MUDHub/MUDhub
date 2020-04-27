@@ -16,6 +16,7 @@ const routes: Routes = [
 		path: 'config',
 		loadChildren: () => import('./configuration/configuration.module').then(m => m.ConfigurationModule)
 	},
+	{ path: 'game', loadChildren: () => import('./game/game.module').then(m => m.GameModule) },
 ];
 
 @NgModule({
