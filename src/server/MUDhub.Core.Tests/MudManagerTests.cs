@@ -145,12 +145,9 @@ namespace MUDhub.Core.Tests
             var (mudManager, context) = CreateMudManager();
             var (_, MudId) = await mudManager.CreateMudAsync("", new MudCreationArgs());
             var result = await mudManager.RequestUserForJoinAsync(userid, MudId);
-            var mudgame = await context.MudGames.FindAsync(MudId);
+            var join = await context.MudJoinRequests.FindAsync(MudId, userid);
             Assert.True(result);
-            Assert.Contains(mudgame.JoinRequests, mjr =>
-                    mjr.MudId == MudId &&
-                    mjr.UserId == userid &&
-                    mjr.State == MudJoinState.Requested);
+            Assert.Equal(MudJoinState.Requested ,join.State);
         }
 
         [Fact]
@@ -179,7 +176,106 @@ namespace MUDhub.Core.Tests
             Assert.Null(join);
         }
 
+        [Fact]
+        public async Task RequestUserToJoinWithInKnowMudShouldFail()
+        {
+            var (mudManager, context) = CreateMudManager();
+            var userId = Guid.NewGuid().ToString();
+            var result = await mudManager.RequestUserForJoinAsync(userId, Guid.NewGuid().ToString());
+            Assert.False(result);
+        }
 
+        [Fact]
+        public async Task ApproveUserToJoin()
+        {
+            var userid = Guid.NewGuid().ToString();
+            var (mudManager, context) = CreateMudManager();
+            var (_, MudId) = await mudManager.CreateMudAsync("", new MudCreationArgs());
+            var result = await mudManager.RequestUserForJoinAsync(userid, MudId);
+            result = await mudManager.ApproveUserToJoinAsync(userid, MudId);
+            var join = await context.MudJoinRequests.FindAsync(MudId,userid);
+            Assert.True(result);
+            Assert.Equal(MudJoinState.Accepted, join.State);
+            
+        }
+
+        [Fact]
+        public async Task ApproveUserToJoinAlreadyApprovedShouldFail()
+        {
+            var userid = Guid.NewGuid().ToString();
+            var (mudManager, context) = CreateMudManager();
+            var (_, MudId) = await mudManager.CreateMudAsync("", new MudCreationArgs());
+            _ = await mudManager.RequestUserForJoinAsync(userid, MudId);
+            _ = await mudManager.ApproveUserToJoinAsync(userid, MudId);
+            var result = await mudManager.ApproveUserToJoinAsync(userid, MudId);
+            var join = await context.MudJoinRequests.FindAsync(MudId, userid);
+            Assert.False(result);
+            Assert.Equal(MudJoinState.Accepted, join.State);
+        }
+
+
+        [Fact]
+        public async Task ApproveUserToJoinSchouldFail()
+        {
+            var userid = Guid.NewGuid().ToString();
+            var (mudManager, context) = CreateMudManager();
+            var (_, MudId) = await mudManager.CreateMudAsync("", new MudCreationArgs());
+            var result = await mudManager.ApproveUserToJoinAsync(userid, MudId);
+            var join = await context.MudJoinRequests.FindAsync(MudId, userid);
+            Assert.False(result);
+            Assert.Null(join);
+         }
+
+        [Fact]
+        public async Task ApproveUserToJoinSchouldFailMudNotFound()
+        {
+            var userid = Guid.NewGuid().ToString();
+            var (mudManager, context) = CreateMudManager();
+            var MudId = Guid.NewGuid().ToString();
+            var result = await mudManager.ApproveUserToJoinAsync(userid, MudId);
+            var join = await context.MudJoinRequests.FindAsync(MudId, userid);
+            Assert.False(result);
+            Assert.Null(join);
+        }
+
+
+        [Fact]
+        public async Task RejectUserToJoinAfterRequest()
+        {
+            var userid = Guid.NewGuid().ToString();
+            var (mudManager, context) = CreateMudManager();
+            var (_, MudId) = await mudManager.CreateMudAsync("", new MudCreationArgs());
+            _ = await mudManager.RequestUserForJoinAsync(userid, MudId);
+            var result = await mudManager.RejectUserToJoinAsync(userid, MudId);
+            var join = await context.MudJoinRequests.FindAsync(MudId, userid);
+            Assert.True(result);
+            Assert.Equal(MudJoinState.Rejected, join.State);
+        }
+
+        [Fact]
+        public async Task RejectUserToJoinWithoutRequest()
+        {
+            var userid = Guid.NewGuid().ToString();
+            var (mudManager, context) = CreateMudManager();
+            var (_, MudId) = await mudManager.CreateMudAsync("", new MudCreationArgs());
+            var result = await mudManager.RejectUserToJoinAsync(userid, MudId);
+            var join = await context.MudJoinRequests.FindAsync(MudId, userid);
+            Assert.True(result);
+            Assert.Equal(MudJoinState.Rejected, join.State);
+        }
+
+        [Fact]
+        public async Task RejectUserToJoinDoubleShouldFail()
+        {
+            var userid = Guid.NewGuid().ToString();
+            var (mudManager, context) = CreateMudManager();
+            var (_, MudId) = await mudManager.CreateMudAsync("", new MudCreationArgs());
+            _ = await mudManager.RejectUserToJoinAsync(userid, MudId);
+            var result = await mudManager.RejectUserToJoinAsync(userid, MudId);
+            var join = await context.MudJoinRequests.FindAsync(MudId, userid);
+            Assert.False(result);
+            Assert.Equal(MudJoinState.Rejected, join.State);
+        }
 
         private static (IMudManager, MudDbContext) CreateMudManager()
         {

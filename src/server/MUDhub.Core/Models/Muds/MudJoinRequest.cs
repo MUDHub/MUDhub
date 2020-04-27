@@ -16,9 +16,7 @@ namespace MUDhub.Core.Models.Muds
 
         public string MudId { get; }
         public MudGame MudGame { get; set; }
-
         public string UserId { get; }
-
         public MudJoinState State { get; set; } = MudJoinState.Requested;
 
 

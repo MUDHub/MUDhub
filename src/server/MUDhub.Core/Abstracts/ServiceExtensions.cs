@@ -10,17 +10,17 @@ namespace MUDhub.Core.Abstracts
     public static class ServiceExtensions
     {
 
-        /// <summary>
+
         public static IServiceCollection AddMudGame(this IServiceCollection services)
         {
             //Todo: Later change this to scoped.
             services.AddUserManagment();
-            services.AddMudGameCore();
+            services.AddMudGameManagment();
             return services;
         }
 
-
-        /// Adds all Services they relate to the mudhub usermanagent, e.g. 
+        /// <summary>
+        /// Adds all Services they relate to the mudhub UserManagement, e.g. 
         /// LoginService, UserManagent
         /// </summary>
         /// <param name="services"> the service collection in which services are added.</param>
@@ -33,8 +33,13 @@ namespace MUDhub.Core.Abstracts
             return services;
         }
 
-
-        public static IServiceCollection AddMudGameCore(this IServiceCollection services)
+        /// <summary>
+        /// Adds all Services they relate to the mudhub MudManagement, e.g. 
+        /// GameService, MudManagement
+        /// </summary>
+        /// <param name="services"> the service collection in which services are added.</param>
+        /// <returns>the given service collection</returns>
+        public static IServiceCollection AddMudGameManagment(this IServiceCollection services)
         {
             //Todo: Later change this to scoped.
             services.TryAddSingleton<IMudManager, MudManager>();
