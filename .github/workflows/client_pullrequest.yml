@@ -22,5 +22,5 @@ jobs:
       run: npm run build --if-present
       working-directory: ${{env.ANGUALR_DIR}}
     - name: Run Tests
-      run: npm run test -- --no-watch --no-progress
+      run: npm run test -- --no-watch
       working-directory: ${{env.ANGUALR_DIR}}
