@@ -6,10 +6,10 @@ import { ConfigurationComponent } from './configuration.component';
 
 
 @NgModule({
-  declarations: [ConfigurationComponent],
-  imports: [
-    CommonModule,
-    ConfigurationRoutingModule
-  ]
+	declarations: [ConfigurationComponent],
+	imports: [
+		CommonModule,
+		ConfigurationRoutingModule
+	]
 })
 export class ConfigurationModule { }
