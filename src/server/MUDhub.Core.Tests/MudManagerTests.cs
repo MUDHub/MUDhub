@@ -179,7 +179,7 @@ namespace MUDhub.Core.Tests
         [Fact]
         public async Task RequestUserToJoinWithUnknowMudShouldFail()
         {
-            var (mudManager, context) = CreateMudManager();
+            var (mudManager, _) = CreateMudManager();
             var userId = Guid.NewGuid().ToString();
             var result = await mudManager.RequestUserForJoinAsync(userId, Guid.NewGuid().ToString());
             Assert.False(result);
