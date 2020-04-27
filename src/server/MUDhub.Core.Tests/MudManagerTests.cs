@@ -133,7 +133,7 @@ namespace MUDhub.Core.Tests
         [Fact]
         public async Task RemoveMudAfterShouldFailNotExist()
         {
-            var (mudManager, context) = CreateMudManager();
+            var (mudManager, _) = CreateMudManager();
             var res2 = await mudManager.RemoveMudAsync(Guid.NewGuid().ToString());
             Assert.False(res2);
         }
@@ -153,7 +153,7 @@ namespace MUDhub.Core.Tests
         [Fact]
         public async Task RequestUserToJoinDoubleShouldFail()
         {
-            var (mudManager, context) = CreateMudManager();
+            var (mudManager, _) = CreateMudManager();
             var (_, MudId) = await mudManager.CreateMudAsync("", new MudCreationArgs());
             var userId = Guid.NewGuid().ToString();
 
@@ -177,7 +177,7 @@ namespace MUDhub.Core.Tests
         }
 
         [Fact]
-        public async Task RequestUserToJoinWithInKnowMudShouldFail()
+        public async Task RequestUserToJoinWithUnknowMudShouldFail()
         {
             var (mudManager, context) = CreateMudManager();
             var userId = Guid.NewGuid().ToString();

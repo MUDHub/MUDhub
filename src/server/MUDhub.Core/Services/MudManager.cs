@@ -95,6 +95,7 @@ namespace MUDhub.Core.Services
                 return false;
             }
             _context.MudGames.Remove(mud);
+            //Todo: Later handle references like characters or items, etc....
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
             _logger?.LogInformation($"Mud '{mud.Name}' with the Id '{mud.Id}' was successfully removed.");

@@ -31,19 +31,4 @@ namespace MUDhub.Core.Abstracts.Models
         public bool? IsPublic { get; set; } = null;
         public bool? AutoRestart { get; set; } = null;
     }
-
-    public class MudUpdateArgs : MudCreationArgs
-    {
-        public MudUpdateArgs()
-        {
-
-        }
-
-        public MudUpdateArgs(MudCreationArgs args) 
-            : base(args)
-        {
-
-        }
-        public string? Name { get; set; } = null;
-    }
 }

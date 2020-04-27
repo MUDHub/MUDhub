@@ -11,7 +11,6 @@ namespace MUDhub.Core.Abstracts
     {
         Task<(bool Success, string MudId)> CreateMudAsync(string name, MudCreationArgs args);
         Task<bool> RemoveMudAsync(string mudId);
-
         Task<bool> UpdateMudAsync(string mudid, MudUpdateArgs args);
 
         Task<bool> RequestUserForJoinAsync(string userId, string mudId);
