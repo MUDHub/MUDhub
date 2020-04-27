@@ -1,0 +1,14 @@
+:host {
+	display: flex;
+	height: 100vh;
+}
+
+.chat {
+	width: 25%;
+	min-width: 300px;
+	max-width: 500px;
+}
+
+.game {
+	flex-grow: 1;
+}
