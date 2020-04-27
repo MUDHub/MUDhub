@@ -22,11 +22,10 @@ namespace MUDhub.Server
     public class Startup
     {
         private readonly ServerConfiguration _serverConfiguration;
-        private readonly IConfiguration _configuration;
 
         public Startup(IConfiguration configuration)
         {
-            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _serverConfiguration = configuration.GetSection("Server")
                                           .Get<ServerConfiguration>();
         }
