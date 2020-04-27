@@ -9,5 +9,9 @@ comment:
   branches:               # branch names that can post comment
     - "develop"
     - "master"
+ 
+ coverage:
+  precision: 2
+  round: down
+  range: "75...100"
 
-  
