@@ -14,7 +14,7 @@ jobs:
     - name: Use Node.js 12.x
       uses: actions/setup-node@v1
       with:
-        node-version: ${{env.ANGUALR_DIR}}
+        node-version: ${{env.NODE_VERSION}}
     - name: Clean Install
       run: npm ci
       working-directory: ${{env.ANGUALR_DIR}}
