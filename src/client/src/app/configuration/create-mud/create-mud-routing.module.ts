@@ -24,7 +24,7 @@ const routes: Routes = [
 				component: GeneralComponent,
 				children: [
 					{
-						path: 'aria-list',
+						path: 'area-list',
 						component: AreaListComponent
 					},
 					{
