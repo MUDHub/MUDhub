@@ -12,18 +12,18 @@ const routes: Routes = [
 		children: [
 			{
 				path: 'created-games',
-				component: CreatedGamesComponent
+				component: CreatedGamesComponent,
 			},
 			{
 				path: 'edit-mud',
-				component: EditMudComponent
-			}
-		]
-	}
+				component: EditMudComponent,
+			},
+		],
+	},
 ];
 
 @NgModule({
 	imports: [RouterModule.forChild(routes)],
-	exports: [RouterModule]
+	exports: [RouterModule],
 })
-export class ConfigurationRoutingModule { }
+export class ConfigurationRoutingModule {}

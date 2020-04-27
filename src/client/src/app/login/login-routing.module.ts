@@ -13,23 +13,22 @@ const routes: Routes = [
 		children: [
 			{
 				path: '',
-				component: LoginComponent
+				component: LoginComponent,
 			},
 			{
 				path: 'register',
-				component: RegisterComponent
+				component: RegisterComponent,
 			},
 			{
 				path: 'reset',
-				component: ResetComponent
+				component: ResetComponent,
 			},
-		]
-	}
+		],
+	},
 ];
-
 
 @NgModule({
 	imports: [RouterModule.forChild(routes)],
-	exports: [RouterModule]
+	exports: [RouterModule],
 })
-export class LoginRoutingModule { }
+export class LoginRoutingModule {}

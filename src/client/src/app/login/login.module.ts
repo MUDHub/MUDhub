@@ -7,7 +7,6 @@ import { RegisterComponent } from './register/register.component';
 import { ResetComponent } from './reset/reset.component';
 import { LoginComponent } from './login/login.component';
 
-
 @NgModule({
 	declarations: [
 		LoginShellComponent,
@@ -15,9 +14,6 @@ import { LoginComponent } from './login/login.component';
 		RegisterComponent,
 		ResetComponent,
 	],
-	imports: [
-		CommonModule,
-		LoginRoutingModule
-	]
+	imports: [CommonModule, LoginRoutingModule],
 })
-export class LoginModule { }
+export class LoginModule {}

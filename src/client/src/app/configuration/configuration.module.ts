@@ -6,13 +6,12 @@ import { ConfigurationComponent } from './configuration.component';
 import { CreatedGamesComponent } from './created-games/created-games.component';
 import { EditMudComponent } from './edit-mud/edit-mud.component';
 
-
 @NgModule({
-
-	declarations: [ConfigurationComponent, CreatedGamesComponent, EditMudComponent],
-	imports: [
-		CommonModule,
-		ConfigurationRoutingModule
-	]
+	declarations: [
+		ConfigurationComponent,
+		CreatedGamesComponent,
+		EditMudComponent,
+	],
+	imports: [CommonModule, ConfigurationRoutingModule],
 })
-export class ConfigurationModule { }
+export class ConfigurationModule {}
