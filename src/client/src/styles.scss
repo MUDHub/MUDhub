@@ -1,1 +1,31 @@
 /* You can add global styles to this file, and also import other style files */
+
+* {
+	margin: 0;
+	box-sizing: border-box;
+}
+
+body {
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+img {
+	width: 100%;
+}
+
+
+.input {
+	width: 100%;
+	border: none;
+	outline: none;
+	padding: 0.75rem;
+}
+
+.form-row {
+	width: 100%;
+	display: flex;
+
+	&:not(:last-child) {
+		margin-bottom: 0.5rem;
+	}
+}

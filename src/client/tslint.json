@@ -54,7 +54,7 @@
       "timeEnd",
       "trace"
     ],
-    "no-empty": true,
+    "no-empty": false,
     "no-inferrable-types": [
       true,
       "ignore-params"
