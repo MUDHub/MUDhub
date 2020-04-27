@@ -3,7 +3,6 @@ name: Client Build Check
 on:
   pull_request:
     branches: [ master, develop ]
-    paths:  '/src/client/**'
 env:
   ANGUALR_DIR: src/client
   NODE_VERSION: 12.x
