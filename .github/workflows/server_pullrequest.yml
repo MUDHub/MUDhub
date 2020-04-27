@@ -3,6 +3,7 @@ name: Server Build Check
 on:
   pull_request:
     branches: [ master, develop ]
+    paths: '/src/server/**'
 env:
   CORE_DIR: src/server/MUDhub.Core
   CORETESTS_DIR: src/server/MUDhub.Core.Tests
