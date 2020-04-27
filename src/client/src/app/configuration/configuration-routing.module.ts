@@ -11,11 +11,11 @@ const routes: Routes = [
 		component: ConfigurationComponent,
 		children: [
 			{
-				path: '/config/created-games',
+				path: 'created-games',
 				component: CreatedGamesComponent
 			},
 			{
-				path: '/config/edit-mud',
+				path: 'edit-mud',
 				component: EditMudComponent
 			}
 		]
