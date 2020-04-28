@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class ChatShellComponent implements OnInit {
 	constructor() {}
 
-	activeChat = 'room';
+	activeChat = 'global';
 
 	ngOnInit(): void {}
 }

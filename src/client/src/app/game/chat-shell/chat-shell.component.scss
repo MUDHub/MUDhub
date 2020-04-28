@@ -1,6 +1,9 @@
 :host {
 	background-color: rgb(48, 59, 66);
 	color: #fff;
+	display: flex;
+	flex-direction: column;
+	max-height: 100%;
 }
 
 .nav {
@@ -8,7 +11,7 @@
 	list-style: none;
 	display: flex;
 	justify-content: center;
-	margin: 1rem 0rem;
+	margin: 0.5rem 0rem 1rem 0rem;
 	text-align: center;
 
 	.nav-item {
@@ -23,6 +26,7 @@
 }
 
 
-.chat {
-	text-align: center;
+.shell {
+	flex-grow: 1;
+	overflow: hidden;
 }

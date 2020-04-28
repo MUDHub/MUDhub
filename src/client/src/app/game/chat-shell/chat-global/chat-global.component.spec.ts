@@ -1,19 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ChatPublicComponent } from './chat-public.component';
+import { ChatGlobalComponent } from './chat-global.component';
 
 describe('ChatPublicComponent', () => {
-	let component: ChatPublicComponent;
-	let fixture: ComponentFixture<ChatPublicComponent>;
+	let component: ChatGlobalComponent;
+	let fixture: ComponentFixture<ChatGlobalComponent>;
 
 	beforeEach(async(() => {
 		TestBed.configureTestingModule({
-			declarations: [ChatPublicComponent],
+			declarations: [ChatGlobalComponent],
 		}).compileComponents();
 	}));
 
 	beforeEach(() => {
-		fixture = TestBed.createComponent(ChatPublicComponent);
+		fixture = TestBed.createComponent(ChatGlobalComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();
 	});

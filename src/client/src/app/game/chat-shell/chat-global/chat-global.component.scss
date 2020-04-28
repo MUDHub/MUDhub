@@ -1,0 +1,46 @@
+:host {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}
+
+
+.messages {
+	flex-grow: 1;
+	padding: 0.5rem;
+	overflow-y: auto;
+}
+
+
+.interaction {
+	$radius: 5px;
+
+	display: flex;
+	margin: 0.5rem 0;
+	padding: 0 4px;
+
+	> * {
+		margin: 0 4px;
+	}
+
+	input {
+		padding: 1rem 0.5rem;
+		flex-grow: 1;
+		border-radius: $radius;
+	}
+
+	button {
+		padding: 0.5rem 1rem;
+		background-color: #222;
+		color: #fff;
+		border: none;
+		outline: none;
+		cursor: pointer;
+		border-radius: $radius;
+		transition: transform 0.1s;
+
+		&:active {
+			transform: scale(1.05);
+		}
+	}
+}

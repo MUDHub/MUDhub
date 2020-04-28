@@ -4,8 +4,8 @@
 	<li class="nav-item" (click)="activeChat = 'private'" [class.active]="activeChat == 'private'">Privat</li>
 </ul>
 
-<div class="chat" [ngSwitch]="activeChat">
-	<mh-chat-public *ngSwitchCase="'global'"></mh-chat-public>
+<div class="shell" [ngSwitch]="activeChat">
+	<mh-chat-global *ngSwitchCase="'global'"></mh-chat-global>
 	<mh-chat-room *ngSwitchCase="'room'"></mh-chat-room>
 	<b *ngSwitchDefault>Not implemented</b>
 </div>
