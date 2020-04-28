@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using MUDhub.Core.Abstracts;
 using MUDhub.Core.Helper;
@@ -90,11 +86,39 @@ namespace MUDhub.Core.Tests
             Assert.False(await userManager.UpdatePasswortAsync("1", "PW1234", "PW1234"));
         }
         [Fact]
+        public async Task UpdatePasswortAsync_ReturnFalseBecauseOldPasswordIsWrong()
+        {
+            var userManager = CreateInMemoryDataBaseWithTestingDataAsync();
+            Assert.False(await userManager.UpdatePasswortAsync("1", "PW4321", "PW1234"));
+        }
+        [Fact]
         public async Task UpdatePasswortAsync_ReturnTrue()
         {
             var userManager = CreateInMemoryDataBaseWithTestingDataAsync();
             Assert.True(await userManager.UpdatePasswortAsync("1", "PW1234", "1234PW"));
         }
+
+        [Fact]
+        public async Task UpdatePasswortFromResetAsync_ReturnFalseBecauseNull()
+        {
+            var userManager = CreateInMemoryDataBaseWithTestingDataAsync();
+            Assert.False(await userManager.UpdatePasswortFromResetAsync("2", "PW1234"));
+        }
+
+        [Fact]
+        public async Task UpdatePasswortFromResetAsync_ReturnFalseBecauseEqual()
+        {
+            var userManager = CreateInMemoryDataBaseWithTestingDataAsync();
+            Assert.False(await userManager.UpdatePasswortFromResetAsync("ResetMax", "PW1234"));
+        }
+        [Fact]
+        public async Task UpdatePasswortFromResetAsync_ReturnTrue()
+        {
+            var userManager = CreateInMemoryDataBaseWithTestingDataAsync();
+            Assert.True(await userManager.UpdatePasswortFromResetAsync("ResetMax", "1234PW"));
+        }
+
+
 
         [Fact]
         public async Task RemoveUserAsync_ReturnFalseBecauseNull()
@@ -246,7 +270,8 @@ namespace MUDhub.Core.Tests
                 Role = Roles.Master,
                 Name = "Max",
                 Lastname = "Mustermann",
-                PasswordHash = UserHelpers.CreatePasswordHash("PW1234")
+                PasswordHash = UserHelpers.CreatePasswordHash("PW1234"),
+                PasswordResetKey = "ResetMax"
             });
             context.SaveChanges();
             return userManager;

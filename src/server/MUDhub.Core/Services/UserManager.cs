@@ -1,14 +1,10 @@
 ﻿using MUDhub.Core.Abstracts;
-using System;
-using System.Globalization;
-using System.Text;
 using MUDhub.Core.Models;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MUDhub.Core.Services.Models;
-using System.Net.Mail;
+using MUDhub.Core.Helper;
 
 namespace MUDhub.Core.Services
 {
@@ -39,7 +35,7 @@ namespace MUDhub.Core.Services
         /// <returns></returns>
         public async Task<RegisterResult> RegisterUserAsync(RegistrationArgs model)
         {
-            if (string.IsNullOrWhiteSpace(model.Name) || 
+            if (string.IsNullOrWhiteSpace(model.Name) ||
                 string.IsNullOrWhiteSpace(model.Lastname) ||
                 string.IsNullOrWhiteSpace(model.Email) ||
                 string.IsNullOrWhiteSpace(model.Password))
@@ -48,14 +44,14 @@ namespace MUDhub.Core.Services
             }
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Name == model.Name && u.Lastname == model.Lastname)
                 .ConfigureAwait(false);
-            if(user == null)
+            if (user == null)
             {
                 var newUser = new User
                 {
                     Name = model.Name,
                     Lastname = model.Lastname,
                     Email = model.Email,
-                    PasswordHash = CreatePasswordHash(model.Password)
+                    PasswordHash = UserHelpers.CreatePasswordHash(model.Password)
                 };
                 await _context.AddAsync(newUser);
                 await _context.SaveChangesAsync()
@@ -66,7 +62,7 @@ namespace MUDhub.Core.Services
             {
                 return new RegisterResult(false, true);
             }
-            
+
         }
 
         /// <summary>
@@ -172,9 +168,28 @@ namespace MUDhub.Core.Services
         /// <param name="passwordresetkey"></param>
         /// <param name="newPassword"></param>
         /// <returns></returns>
-        public Task<bool> UpdatePasswortFromResetAsync(string passwordresetkey, string newPassword)
+        public async Task<bool> UpdatePasswortFromResetAsync(string passwordresetkey, string newPassword)
         {
-            throw new NotImplementedException();
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.PasswordResetKey == passwordresetkey)
+                .ConfigureAwait(false);
+            if (user == null)
+            {
+                _logger?.LogWarning($"The Password of '{user?.Name} {user?.Lastname}' could not be reseted. => User does not exist.");
+                return false;
+            }
+
+            var newPasswordHash = UserHelpers.CreatePasswordHash(newPassword);
+            
+            if (user.PasswordHash == newPasswordHash)
+            {
+                _logger?.LogWarning($"The Password of '{user.Name} {user.Lastname}' could not be reseted. => Old password same as new password.");
+                return false;
+            }
+
+            user.PasswordHash = newPasswordHash;
+            await _context.SaveChangesAsync().ConfigureAwait(false);
+            _logger?.LogInformation($"The Password of '{user.Name} {user.Lastname}' was reseted.");
+            return true;
         }
 
         /// <summary>
@@ -197,34 +212,18 @@ namespace MUDhub.Core.Services
                 _logger?.LogWarning($"The Password of '{user.Name} {user.Lastname}' could not be updated. => Old password same as new password.");
                 return false;
             }
-            user.PasswordHash = CreatePasswordHash(newPassword);
+            if (UserHelpers.CreatePasswordHash(oldPassword) != user.PasswordHash)
+            {
+                _logger?.LogWarning($"The Password of '{user.Name} {user.Lastname}' could not be updated. => Old password is not the actual password.");
+                return false;
+            }
+            
+            user.PasswordHash = UserHelpers.CreatePasswordHash(newPassword);
             await _context.SaveChangesAsync().ConfigureAwait(false);
             _logger?.LogInformation($"The Password of '{user.Name} {user.Lastname}' was updated.");
             return true;
         }
 
-        /// <summary>
-        /// A password hash is generated from the password.
-        /// </summary>
-        /// <param name="password"></param>
-        /// <returns></returns>
-        private string CreatePasswordHash(string password)
-        {
-            byte[] data;
-            using (HashAlgorithm algorithm = SHA256.Create())
-                data = algorithm.ComputeHash(Encoding.UTF8.GetBytes(password));
-
-            string passwordHash = string.Create(data.Length, data, (target, arg) =>
-            {
-                for (var i = 0; i < arg.Length; i += 2)
-                {
-                    var t = arg[i].ToString("X2", CultureInfo.InvariantCulture);
-                    target[i] = Convert.ToChar(t[0]);
-                    target[i + 1] = Convert.ToChar(t[1]);
-                }
-            });
-            return passwordHash;
-        }
 
         /// <summary>
         /// Get the user asynchronously using the UserID.
