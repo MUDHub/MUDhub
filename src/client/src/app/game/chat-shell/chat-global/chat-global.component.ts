@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { IMessage } from '../chat-message/chat-message.component';
 
 @Component({
@@ -6,14 +6,15 @@ import { IMessage } from '../chat-message/chat-message.component';
 	templateUrl: './chat-global.component.html',
 	styleUrls: ['./chat-global.component.scss'],
 })
-export class ChatGlobalComponent implements OnInit {
+export class ChatGlobalComponent {
 	constructor() {}
 
 	messages: IMessage[] = [
 		{
 			sender: 'Mario Lang',
-			content: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed'
-						+ 'diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.',
+			content:
+				'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed' +
+				'diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.',
 		},
 		{
 			sender: 'Paul Finkbeiner',
@@ -21,5 +22,7 @@ export class ChatGlobalComponent implements OnInit {
 		},
 	];
 
-	ngOnInit(): void {}
+	onChatMessage(message: string) {
+		console.log('chat message:', message);
+	}
 }

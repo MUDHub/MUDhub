@@ -2,4 +2,4 @@
 	<mh-chat-message *ngFor="let m of messages" [message]="m"></mh-chat-message>
 </div>
 
-<mh-chat-input></mh-chat-input>
+<mh-chat-input (chatMessage)="onChatMessage($event)"></mh-chat-input>
