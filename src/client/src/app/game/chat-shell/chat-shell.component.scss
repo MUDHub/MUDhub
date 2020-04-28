@@ -1,0 +1,32 @@
+:host {
+	display: flex;
+	flex-direction: column;
+	max-height: 100%;
+}
+
+.nav {
+	padding: 0;
+	list-style: none;
+	display: flex;
+	text-align: center;
+
+	.nav-item {
+		flex: 1;
+		padding: 0.5rem 1.5rem;
+		border-bottom: 2px solid transparent;
+		cursor: pointer;
+
+		&.active {
+			border-bottom-color: #fff;
+		}
+	}
+}
+
+
+.shell {
+	flex-grow: 1;
+	overflow: hidden;
+	padding: 0.5rem;
+
+	font-size: 90%;
+}

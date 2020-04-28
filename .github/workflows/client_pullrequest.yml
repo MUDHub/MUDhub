@@ -1,0 +1,29 @@
+name: Client Build Check
+
+on:
+  pull_request:
+    branches: [ master, develop ]
+env:
+  ANGUALR_DIR: src/client
+  NODE_VERSION: 12.x
+jobs:
+  Build_Angular_withTests:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js 12.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{env.NODE_VERSION}}
+    - name: Clean Install
+      run: npm ci
+      working-directory: ${{env.ANGUALR_DIR}}
+    - name: Build
+      run: npm run build
+      working-directory: ${{env.ANGUALR_DIR}}
+    - name: Test
+      run: npm run test
+      working-directory: ${{env.ANGUALR_DIR}}
+    - name: Build Production
+      run: npm run build:prod
+      working-directory: ${{env.ANGUALR_DIR}}

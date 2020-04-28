@@ -1,0 +1,5 @@
+<div class="messages">
+	<mh-chat-message *ngFor="let m of messages" [message]="m"></mh-chat-message>
+</div>
+
+<mh-chat-input (chatMessage)="onChatMessage($event)"></mh-chat-input>

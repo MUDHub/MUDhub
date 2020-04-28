@@ -1,0 +1,34 @@
+:host {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 100vh;
+}
+
+
+.container {
+	height: 90%;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 90%;
+	max-width: 500px;
+}
+
+.logo {
+	width: 200px;
+}
+
+.outlet {
+	width: 100%;
+	background-color: #eee;
+	padding: 2rem;
+}
+
+footer {
+
+}

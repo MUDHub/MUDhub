@@ -1,0 +1,17 @@
+:host {
+	display: flex;
+	flex-direction: column;
+
+	&:not(:last-child) {
+		margin-bottom: 1rem;
+	}
+}
+
+.message-sender {
+	opacity: 0.6;
+	font-size: 80%;
+}
+
+.message-content {
+	line-height: 115%;
+}
