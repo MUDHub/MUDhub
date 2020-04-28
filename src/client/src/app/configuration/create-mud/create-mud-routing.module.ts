@@ -14,43 +14,39 @@ const routes: Routes = [
 	{
 		path: '',
 		component: CreateMudComponent,
-		children: [
-			{
-				path: 'general',
-				component: GeneralComponent
-			},
-			{
-				path: 'rooms',
-				component: GeneralComponent,
-				children: [
-					{
-						path: 'area-list',
-						component: AreaListComponent
-					},
-					{
-						path: 'room-matrix',
-						component: RoomMatrixComponent
-					}
-				]
-			},
-			{
-				path: 'items',
-				component: ItemsComponent
-			},
-			{
-				path: 'race',
-				component: RaceComponent
-			},
-			{
-				path: 'class',
-				component: ClassComponent
-			},
-			{
-				path: 'finish',
-				component: FinishComponent
-			},
-		]
-	}
+	},
+	{
+		path: 'general',
+		component: GeneralComponent
+	},
+	{
+		path: 'rooms',
+		component: GeneralComponent,
+	},/*
+	{
+		path: 'rooms/area-list',
+		component: AreaListComponent
+	},
+	{
+		path: 'rooms/room-matrix',
+		component: RoomMatrixComponent
+	},*/
+	{
+		path: 'items',
+		component: ItemsComponent
+	},
+	{
+		path: 'race',
+		component: RaceComponent
+	},
+	{
+		path: 'class',
+		component: ClassComponent
+	},
+	{
+		path: 'finish',
+		component: FinishComponent
+	},
 ];
 
 @NgModule({

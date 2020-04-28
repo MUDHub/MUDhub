@@ -9,16 +9,14 @@ const routes: Routes = [
 	{
 		path: '',
 		component: ConfigurationComponent,
-		children: [
-			{
-				path: 'created-games',
-				component: CreatedGamesComponent,
-			},
-			{
-				path: 'edit-mud',
-				component: EditMudComponent,
-			},
-		],
+	},
+	{
+		path: 'created-games',
+		component: CreatedGamesComponent,
+	},
+	{
+		path: 'edit-mud',
+		component: EditMudComponent,
 	},
 	{
 		path: 'create-mud',
