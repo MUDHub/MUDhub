@@ -15,12 +15,12 @@ namespace MUDhub.Core.Services
 {
     internal class LoginService : ILoginService
     {
-        private readonly IMudDbContext _dbContext;
+        private readonly MudDbContext _dbContext;
         private readonly IUserManager _userManager;
         //Todo: Moris => Brauchen wir UserSettings?
         private UserSettings _userSettings;
         private readonly ILogger? _logger;
-        public LoginService(IMudDbContext context, IUserManager userManager, UserSettings options)
+        public LoginService(MudDbContext context, IUserManager userManager, UserSettings options)
         {
             _dbContext = context;
             _userManager = userManager;

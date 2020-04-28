@@ -19,16 +19,6 @@ namespace MUDhub.Core.Services
         public DbSet<User> Users { get; set; } = null!;
         //ToDo: Moris => Werden Enum in die Datenbank gebracht?
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<User>(
-                    b =>
-                    {
-                        b.HasKey(u => u.Id);
-                    });
-
-        }
-
 
         public DbSet<MudGame> MudGames { get; set; } = null!;
         public DbSet<MudJoinRequest> MudJoinRequests { get; set; } = null!;
@@ -51,6 +41,12 @@ namespace MUDhub.Core.Services
                 .HasOne(mjr => mjr.MudGame)
                 .WithMany(mg => mg.JoinRequests)
                 .HasForeignKey(mjr => mjr.MudId);
+
+            modelBuilder.Entity<User>(
+                   b =>
+                   {
+                       b.HasKey(u => u.Id);
+                   });
 
         }
 
