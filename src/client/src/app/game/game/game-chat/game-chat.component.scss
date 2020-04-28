@@ -15,6 +15,8 @@ $scrollbar-thumb-color: lighten($scrollbar-track-color, 10%);
 	padding: 0.5rem;
 	overflow-y: auto;
 
+	background-color: rgb(39, 39, 39);
+
 
 	/* width */
 	&::-webkit-scrollbar { width: $scrollbar-width; }
