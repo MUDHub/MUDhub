@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29920.165
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MUDhub.Server", "MUDhub.Server\MUDhub.Server.csproj", "{5B7518B9-B8CE-45D0-BB47-8D6C918F5145}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MUDhub.Server", "MUDhub.Server\MUDhub.Server.csproj", "{5B7518B9-B8CE-45D0-BB47-8D6C918F5145}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MUDhub.Core", "MUDhub.Core\MUDhub.Core.csproj", "{C4B2E144-24B7-4D45-A30E-0FA351B14BC9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MUDhub.Core", "MUDhub.Core\MUDhub.Core.csproj", "{C4B2E144-24B7-4D45-A30E-0FA351B14BC9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MUDhub.Core.Tests", "MUDhub.Core.Tests\MUDhub.Core.Tests.csproj", "{AC1828B8-0245-45FC-94DF-B46B936825C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MUDhub.Core.Tests", "MUDhub.Core.Tests\MUDhub.Core.Tests.csproj", "{AC1828B8-0245-45FC-94DF-B46B936825C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MUDhub.Server.Tests", "MUDhub.Server.Tests\MUDhub.Server.Tests.csproj", "{4CCEFB41-C73F-4B3D-8229-6C3329DC52FF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{AC1828B8-0245-45FC-94DF-B46B936825C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC1828B8-0245-45FC-94DF-B46B936825C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC1828B8-0245-45FC-94DF-B46B936825C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4CCEFB41-C73F-4B3D-8229-6C3329DC52FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CCEFB41-C73F-4B3D-8229-6C3329DC52FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CCEFB41-C73F-4B3D-8229-6C3329DC52FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CCEFB41-C73F-4B3D-8229-6C3329DC52FF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
