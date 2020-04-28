@@ -1,6 +1,4 @@
 :host {
-	background-color: rgb(48, 59, 66);
-	color: #fff;
 	display: flex;
 	flex-direction: column;
 	max-height: 100%;
@@ -10,11 +8,10 @@
 	padding: 0;
 	list-style: none;
 	display: flex;
-	justify-content: center;
-	margin: 0.5rem 0rem 1rem 0rem;
 	text-align: center;
 
 	.nav-item {
+		flex: 1;
 		padding: 0.5rem 1.5rem;
 		border-bottom: 2px solid transparent;
 		cursor: pointer;
@@ -29,4 +26,7 @@
 .shell {
 	flex-grow: 1;
 	overflow: hidden;
+	padding: 0.5rem;
+
+	font-size: 90%;
 }

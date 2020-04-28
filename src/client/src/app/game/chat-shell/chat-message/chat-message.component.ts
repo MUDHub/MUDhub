@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
-	selector: 'mh-message',
+	selector: 'mh-chat-message',
 	templateUrl: './chat-message.component.html',
 	styleUrls: ['./chat-message.component.scss']
 })
