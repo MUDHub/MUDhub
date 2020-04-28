@@ -10,8 +10,8 @@ namespace MUDhub.Core.Configurations
         public string SubjectReset { get; set; } = "Passwort zuruecksetzten";
         public string MessageReset { get; set; } = "Hier gehts zum Link {0}";
         public string Username { get; set; } = "Master@mudhub.de";
-        public string Password { get; set; } = "";
+        public string Password { get; set; } = "9c34n05tcv4309u5v4!??!?!?!??!";
         public string Servername { get; set; } = "smtp.strato.de";
-        public int Port { get; set; } = 465;
+        public int Port { get; set; } = 587;
     }
 }

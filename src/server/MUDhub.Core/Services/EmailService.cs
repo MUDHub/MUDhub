@@ -31,22 +31,25 @@ namespace MUDhub.Core.Services
 
             using var email = new MailMessage();
             var sender = new MailAddress(_mailConfiguration.Sender);
+            var senderstring = _mailConfiguration.Sender;
             email.From = sender;
+            email.Sender = sender;
 
             email.To.Add(receiver);
 
             email.Subject = _mailConfiguration.SubjectReset;
 
-            email.Body = _mailConfiguration.MessageReset;
             var resetLink = $"http://game.mudhub.de/login/reset?key={resetKey}";
             var message = string.Format(CultureInfo.InvariantCulture, _mailConfiguration.MessageReset, resetLink);
+            email.Body = message;
             using var mailClient = new SmtpClient(_mailConfiguration.Servername, _mailConfiguration.Port);
 
             var credentials = new NetworkCredential(_mailConfiguration.Username, _mailConfiguration.Password);
 
             mailClient.Credentials = credentials;
 
-            await mailClient.SendMailAsync(email ).ConfigureAwait(false);
+            //await mailClient.SendMailAsync(email).ConfigureAwait(false);
+            await mailClient.SendMailAsync(senderstring, receiver, _mailConfiguration.SubjectReset, message).ConfigureAwait(false);
             return true;
         }
     }
