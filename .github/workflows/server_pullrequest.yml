@@ -6,6 +6,7 @@ on:
 env:
   CORE_DIR: src/server/MUDhub.Core
   CORETESTS_DIR: src/server/MUDhub.Core.Tests
+  SERVERTESTS_DIR: src/server/MUDhub.Server.Tests
   SERVER_DIR: src/server/MUDhub.Server
   SOLUTION_DIR: src/server
   DOTNET_SDK_VERSION: 3.1.101 
@@ -51,6 +52,33 @@ jobs:
     - name: Upload CodeCoverage Report
       run: bash <(curl -s https://codecov.io/bash) -f result.xml
       working-directory: ${{env.CORETESTS_DIR}}
+    
+  Build_Server_Library_Tests:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: ${{env.DOTNET_SDK_VERSION}}
+    - name: Install dependencies
+      run: dotnet restore
+      working-directory: ${{env.SERVERTESTS_DIR}}
+    - name: Build Core Library Tests
+      run: dotnet build --no-restore 
+      working-directory: ${{env.SERVERTESTS_DIR}}
+    - name: Run Tests
+      run: dotnet test --no-restore --verbosity normal
+      working-directory: ${{env.SERVERTESTS_DIR}}
+    - name: Install Coverlet
+      run: dotnet tool install --global coverlet.console
+    - name: Generate Codecoverage
+      run: coverlet bin/Debug/netcoreapp3.1/MUDhub.Core.Tests.dll --target "dotnet" --targetargs "test . --no-build -p:CollectCoverage=true" --format opencover --output "result.xml"
+      working-directory: ${{env.SERVERTESTS_DIR}}
+    - name: Upload CodeCoverage Report
+      run: bash <(curl -s https://codecov.io/bash) -f result.xml
+      working-directory: ${{env.SERVERTESTS_DIR}}
+    
     
   Build_Server:
     runs-on: ubuntu-latest
