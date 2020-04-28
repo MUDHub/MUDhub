@@ -13,8 +13,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.OpenApi.Models;
 using MUDhub.Core.Abstracts;
-using MUDhub.Server.Helpers;
-using MUDhub.Server.Options;
+using MUDhub.Core.Configurations;
 
 namespace MUDhub.Server
 {

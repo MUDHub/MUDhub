@@ -18,14 +18,20 @@ namespace MUDhub.Core.Services
         private readonly MudDbContext _dbContext;
         private readonly IUserManager _userManager;
         //Todo: Moris => Brauchen wir UserSettings?
-        private UserSettings _userSettings;
+        private ServerConfiguration _userSettings;
         private readonly ILogger? _logger;
-        public LoginService(MudDbContext context, IUserManager userManager, UserSettings options)
+        public LoginService(MudDbContext context, IUserManager userManager, IOptions<ServerConfiguration> options)
+            :this(context,userManager,options?.Value ?? throw new ArgumentNullException(nameof(options)))
+        {
+        }
+
+        internal LoginService(MudDbContext context, IUserManager userManager, ServerConfiguration options)
         {
             _dbContext = context;
             _userManager = userManager;
-            _userSettings = options ?? throw new ArgumentNullException(nameof(options));
+            _userSettings = options;
         }
+
         public LoginResult LoginAsync()
         {
             throw new NotImplementedException();
@@ -35,7 +41,7 @@ namespace MUDhub.Core.Services
         {
             // authentication successful so generate jwt token
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_userSettings.Secret);
+            var key = Encoding.ASCII.GetBytes(_userSettings.TokenSecret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]

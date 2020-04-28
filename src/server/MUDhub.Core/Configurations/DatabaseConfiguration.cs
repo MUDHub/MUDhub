@@ -1,4 +1,4 @@
-﻿namespace MUDhub.Server.Options
+﻿namespace MUDhub.Core.Configurations
 {
     public class DatabaseConfiguration
     {

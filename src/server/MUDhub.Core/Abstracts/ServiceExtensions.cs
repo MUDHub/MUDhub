@@ -1,5 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using MUDhub.Core.Configurations;
 using MUDhub.Core.Services;
 using System;
 using System.Collections.Generic;
@@ -47,6 +50,57 @@ namespace MUDhub.Core.Abstracts
             services.TryAddSingleton<IGameService, GameService>();
 
 
+            return services;
+        }
+
+
+        public static IServiceCollection AddTargetDatabase(this IServiceCollection services, DatabaseConfiguration conf)
+        {
+            if (services is null)
+                throw new ArgumentNullException(nameof(services));
+            if (conf is null)
+                throw new ArgumentNullException(nameof(conf));
+
+            //Todo: Later change this to Scoped!
+            var lifetime = ServiceLifetime.Singleton;
+
+            switch (conf.Provider)
+            {
+                case DatabaseProvider.Sqlite:
+                {
+                    services.AddDbContext<MudDbContext>(options =>
+                        options.UseSqlite(conf.ConnectionString), lifetime);
+                    break;
+                }
+                case DatabaseProvider.MySql:
+                case DatabaseProvider.MariaDB:
+                {
+                    services.AddDbContext<MudDbContext>(options =>
+                        options.UseMySql(conf.ConnectionString), lifetime);
+                    break;
+                }
+                case DatabaseProvider.MsSql:
+                {
+                    services.AddDbContext<MudDbContext>(options =>
+                       options.UseSqlServer(conf.ConnectionString), lifetime);
+                    break;
+                }
+                default:
+                    throw new ArgumentException($"No Supported Database Provider is used.", nameof(conf));
+            }
+            return services;
+        }
+
+        public static IServiceCollection AddServerConfiguration(this IServiceCollection services, ServerConfiguration conf)
+        {
+            if (services is null)
+                throw new ArgumentNullException(nameof(services));
+            if (conf is null)
+                throw new ArgumentNullException(nameof(conf));
+            services.ConfigureOptions(conf);
+            services.ConfigureOptions(conf.Database);
+            services.ConfigureOptions(conf.Spa);
+            services.ConfigureOptions(conf.Mail);
             return services;
         }
     }
