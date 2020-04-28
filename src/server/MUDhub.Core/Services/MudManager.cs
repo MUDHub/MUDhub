@@ -66,7 +66,7 @@ namespace MUDhub.Core.Services
             if (args.IsPublic.HasValue)
             {
                 mud.IsPublic = args.IsPublic.Value;
-                //Todo: handle the scenario, a MudMaster change the from public the private, how we handle the joined Characters?
+                //Todo: handle the scenario, a MudMaster change the from public to private, how we handle the joined Characters?
                 // 1. Are the related Users automatically approved? (My Favorite)
                 // 2. Or should we, implementing a usecase where the characters are Block until they are approved?
                 // And if it change from private to public, should the approvals be stored further? I think Yes.
