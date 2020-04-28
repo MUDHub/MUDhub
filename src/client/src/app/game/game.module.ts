@@ -7,7 +7,7 @@ import { GameComponent } from './game/game.component';
 import { ChatShellComponent } from './chat-shell/chat-shell.component';
 import { ChatGlobalComponent } from './chat-shell/chat-global/chat-global.component';
 import { ChatRoomComponent } from './chat-shell/chat-room/chat-room.component';
-import { MessageComponent } from './chat-shell/message/message.component';
+import { ChatMessageComponent } from './chat-shell/chat-message/chat-message.component';
 
 @NgModule({
 	declarations: [
@@ -19,7 +19,7 @@ import { MessageComponent } from './chat-shell/message/message.component';
 		ChatShellComponent,
 		ChatGlobalComponent,
 		ChatRoomComponent,
-		MessageComponent,
+		ChatMessageComponent,
 	],
 	imports: [CommonModule, GameRoutingModule],
 })

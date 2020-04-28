@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IMessage } from '../message/message.component';
+import { IMessage } from '../chat-message/chat-message.component';
 
 @Component({
 	selector: 'mh-chat-global',
@@ -12,7 +12,8 @@ export class ChatGlobalComponent implements OnInit {
 	messages: IMessage[] = [
 		{
 			sender: 'Mario Lang',
-			content: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.',
+			content: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed'
+						+ 'diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.',
 		},
 		{
 			sender: 'Paul Finkbeiner',
