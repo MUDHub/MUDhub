@@ -17,8 +17,7 @@ namespace MUDhub.Core.Services
     {
         private readonly MudDbContext _dbContext;
         private readonly IUserManager _userManager;
-        //Todo: Moris => Brauchen wir UserSettings?
-        private ServerConfiguration _userSettings;
+        private readonly string _tokensecret;
         private readonly ILogger? _logger;
         public LoginService(MudDbContext context, IUserManager userManager, IOptions<ServerConfiguration> options)
             :this(context,userManager,options?.Value ?? throw new ArgumentNullException(nameof(options)))
@@ -29,7 +28,7 @@ namespace MUDhub.Core.Services
         {
             _dbContext = context;
             _userManager = userManager;
-            _userSettings = options;
+            _tokensecret = options.TokenSecret;
         }
 
         public LoginResult LoginAsync()
@@ -41,12 +40,13 @@ namespace MUDhub.Core.Services
         {
             // authentication successful so generate jwt token
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_userSettings.TokenSecret);
+            var key = Encoding.ASCII.GetBytes(_tokensecret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim(ClaimTypes.Name, userId),
+                    new Claim(ClaimTypes.Email, userId),
                     new Claim(ClaimTypes.NameIdentifier, userId),
                     new Claim(ClaimTypes.Role, "Administrator"),
                     new Claim(ClaimTypes.Role, "MUD Master"),
