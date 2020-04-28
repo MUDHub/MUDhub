@@ -13,6 +13,7 @@ export class ChatInputComponent {
 	sendMessage(el: HTMLInputElement) {
 		this.chatMessage.emit(el.value);
 		el.value = '';
+		el.blur();
 	}
 
 }
