@@ -260,6 +260,22 @@ namespace MUDhub.Core.Tests
             Assert.False(registerResult.Succeeded);
         }
 
+        [Fact]
+        public async Task RegisterUserAsync_ReturnTrue2()
+        {
+            var userManager = CreateInMemoryDataBaseWithTestingDataAsync();
+            var regiArgs = new RegistrationArgs()
+            {
+                Name = "Max",
+                Lastname = "Mustermann",
+                Email = "max@test.de",
+                Password = "Test1234"
+            };
+            RegisterResult registerResult = await userManager.RegisterUserAsync(regiArgs);
+            await userManager.GeneratePasswortResetAsync("marvinschoeller@gmx.de");
+            Assert.False(registerResult.Succeeded);
+        }
+
         private static UserManager CreateInMemoryDataBaseWithTestingDataAsync()
         {
             var context = CreateInMemoryDbContext();
