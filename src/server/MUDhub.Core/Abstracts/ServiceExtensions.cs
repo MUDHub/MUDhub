@@ -11,7 +11,7 @@ namespace MUDhub.Core.Abstracts
     {
 
 
-        public static IServiceCollection AddMudGame(this IServiceCollection services)
+        public static IServiceCollection AddMudServices(this IServiceCollection services)
         {
             //Todo: Later change this to scoped.
             services.AddUserManagment();
