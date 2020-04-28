@@ -11,9 +11,11 @@ export class ChatInputComponent {
 	chatMessage = new EventEmitter<string>();
 
 	sendMessage(el: HTMLInputElement) {
-		this.chatMessage.emit(el.value);
-		el.value = '';
-		el.blur();
+		const value = el.value;
+		if (value.trim()) {
+			this.chatMessage.emit(el.value);
+			el.value = '';
+		}
 	}
 
 }
