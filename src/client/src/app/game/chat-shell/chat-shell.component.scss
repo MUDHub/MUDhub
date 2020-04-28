@@ -6,6 +6,7 @@
 
 .nav {
 	padding: 0;
+	margin-bottom: 0.5rem;
 	list-style: none;
 	display: flex;
 	text-align: center;
@@ -17,7 +18,7 @@
 		cursor: pointer;
 
 		&.active {
-			border-bottom-color: #fff;
+			border-bottom-color: orange;
 		}
 	}
 }
@@ -28,5 +29,5 @@
 	overflow: hidden;
 	padding: 0.5rem;
 
-	font-size: 90%;
+	font-size: 95%;
 }
