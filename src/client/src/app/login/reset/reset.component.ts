@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
 	selector: 'mh-reset',
@@ -6,7 +8,13 @@ import { Component, OnInit } from '@angular/core';
 	styleUrls: ['./reset.component.scss'],
 })
 export class ResetComponent implements OnInit {
-	constructor() {}
+	constructor(private authService: AuthService) {}
+
+	mail = new FormControl();
+
+	reset(){
+		this.authService.reset(this.mail.value);
+	}
 
 	ngOnInit(): void {}
 }

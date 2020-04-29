@@ -12,14 +12,26 @@ export class AuthService {
 	 * @param mail
 	 * @param password
 	 */
-	public login(mail: string, password: string) {
-		// TODO: implement logic
+	public login(mail: string, password: string):boolean {
+		return true;
 	}
 
 	/**
 	 * Register
+	 * @param firstname
+	 * @param lastname
+	 * @param mail
+	 * @param password
 	 */
-	public register(){
+	public register(firstname: string, lastname: string, mail: string, password: string): boolean{
+		return true;
+	}
 
+	/**
+	 * 
+	 * @param mail 
+	 */
+	public reset(mail:string): boolean {
+		return true;
 	}
 }
