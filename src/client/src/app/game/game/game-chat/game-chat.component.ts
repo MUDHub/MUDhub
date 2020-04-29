@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MessageType } from 'src/app/model/MessageType';
 
 @Component({
   selector: 'mh-game-chat',
@@ -7,9 +8,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GameChatComponent implements OnInit {
 
-  constructor() { }
+	MessageType = MessageType;
 
-  ngOnInit(): void {
-  }
+	chat: { message: string, type: MessageType }[] = [
+		{
+			message: 'Gebe "hilfe" für eine Übersicht aller Befehle ein',
+			type: MessageType.Server
+		}
+	];
 
+	constructor() { }
+
+	ngOnInit(): void {
+
+	}
 }

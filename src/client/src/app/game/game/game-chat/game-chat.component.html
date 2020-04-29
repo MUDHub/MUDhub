@@ -1,1 +1,2 @@
-<p>game-chat works!</p>
+<div class="message" *ngFor="let m of chat" [class.user-input]="m.type === MessageType.Client">
+	{{ m.message }}</div>
