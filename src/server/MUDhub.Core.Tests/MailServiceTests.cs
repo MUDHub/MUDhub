@@ -13,6 +13,7 @@ namespace MUDhub.Core.Tests
         [Fact]
         public async Task CheckEmail()
         {
+            /*
             var emailservice = new EmailService(new MailConfiguration());
             //var isSended = await emailservice.SendAsync("marvinschoeller@gmx.de", "sdfsdf");
             Assert.True(true);
