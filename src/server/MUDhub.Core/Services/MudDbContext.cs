@@ -13,7 +13,6 @@ namespace MUDhub.Core.Services
         public MudDbContext(DbContextOptions options) 
             : base(options)
         {
-            Database.Migrate();
         }
         public DbSet<User> Users { get; set; } = null!;
         //ToDo: Moris => Werden Enum in die Datenbank gebracht?

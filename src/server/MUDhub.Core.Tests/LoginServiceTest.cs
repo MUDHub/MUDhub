@@ -14,72 +14,70 @@ using Xunit;
 
 namespace MUDhub.Core.Tests
 {
-    public class LoginServiceTest
+    public class LoginServiceTest : IDisposable
     {
-        
+        private readonly LoginService _loginService;
+        private readonly UserManager _userManager;
+        private readonly MudDbContext _context;
+        private readonly User _user;
+
+        public LoginServiceTest()
+        {
+            var options = new DbContextOptionsBuilder<MudDbContext>()
+                .UseInMemoryDatabase("Testdatabase_LoginService")
+                .Options;
+            _context = new MudDbContext(options);
+            var emailMock = Mock.Of<IEmailService>();
+            var userManager = new UserManager(_context, emailMock);
+
+            _loginService = new LoginService(_context, userManager, new ServerConfiguration());
+            _user = new User("sdfsdf")
+            {
+                Role = Roles.Master,
+                Name = "Max",
+                Lastname = "Mustermann",
+                Email = "Max@Mustermann.de",
+                PasswordHash = UserHelpers.CreatePasswordHash("PW1234"),
+                PasswordResetKey = "ResetMax"
+            };
+            _context.Users.Add(_user);
+            _context.SaveChanges();
+            _userManager = userManager;
+
+        }
+
+        public void Dispose()
+        {
+            _context.Users.Remove(_user);
+            _context.SaveChanges();
+            _context.Dispose();
+        }
+
         [Fact]
         public async Task LoginUserSuccessfully()
         {
-            var loginService = CreateInMemoryDataBaseWithTestingDataAsync();
             var email = "Max@Mustermann.de";
             var password = "PW1234";
-            var loginResult = await loginService.LoginUserAsync(email, password);
+            var loginResult = await _loginService.LoginUserAsync(email, password);
             Assert.True(loginResult.Succeeded);
         }
 
         [Fact]
         public async Task LoginUserFailedBecauseEmailNotExist()
         {
-            var loginService = CreateInMemoryDataBaseWithTestingDataAsync();
             var email = "Tobi@Wurst.de";
             var password = "PW1234";
-            var loginResult = await loginService.LoginUserAsync(email, password);
+            var loginResult = await _loginService.LoginUserAsync(email, password);
             Assert.False(loginResult.Succeeded);
         }
 
         [Fact]
         public async Task LoginUserFailedBecausePasswordIsFalse()
         {
-            var loginService = CreateInMemoryDataBaseWithTestingDataAsync();
             var email = "Max@Mustermann.de";
             var password = "1234PW";
-            var loginResult = await loginService.LoginUserAsync(email, password);
+            var loginResult = await _loginService.LoginUserAsync(email, password);
             Assert.False(loginResult.Succeeded);
         }
-
-
-
-
-
-        private static LoginService CreateInMemoryDataBaseWithTestingDataAsync()
-        {
-            var context = CreateInMemoryDbContext();
-            var emailMock = Mock.Of<IEmailService>();
-            
-            var userManager = new UserManager(context, emailMock);
-
-            var loginService = new LoginService(context, userManager, new ServerConfiguration());
-
-            context.Users.Add(new User("1")
-            {
-                Role = Roles.Master,
-                Name = "Max",
-                Lastname = "Mustermann",
-                PasswordHash = UserHelpers.CreatePasswordHash("PW1234"),
-                PasswordResetKey = "ResetMax",
-                Email = "Max@Mustermann.de"
-            });
-            context.SaveChanges();
-            return loginService;
-        }
-        private static MudDbContext CreateInMemoryDbContext()
-        {
-            var options = new DbContextOptionsBuilder<MudDbContext>()
-                .UseInMemoryDatabase("Testdatabase")
-                .Options;
-
-            return new MudDbContext(options);
-        }
-
     }
 }
