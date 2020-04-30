@@ -249,7 +249,8 @@ namespace MUDhub.Core.Tests
                 Role = Roles.Master,
                 Name = "Max",
                 Lastname = "Mustermann",
-                PasswordHash = UserHelpers.CreatePasswordHash("PW1234")
+                PasswordHash = UserHelpers.CreatePasswordHash("PW1234"),
+                PasswordResetKey = "ResetMax"
             });
             context.SaveChanges();
             return userManager;
