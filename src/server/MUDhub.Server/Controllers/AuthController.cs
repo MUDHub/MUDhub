@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MUDhub.Core.Abstracts;
 using MUDhub.Core.Abstracts.Models;
-using MUDhub.Server.ApiModels;
+using MUDhub.Server.ApiModels.Auth;
 
 namespace MUDhub.Server.Controllers
 {
