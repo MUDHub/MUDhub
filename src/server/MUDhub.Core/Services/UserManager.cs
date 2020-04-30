@@ -6,6 +6,7 @@ using MUDhub.Core.Helper;
 using MUDhub.Core.Models;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -44,7 +45,7 @@ namespace MUDhub.Core.Services
             {
                 return new RegisterResult(false);
             }
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == model.Email)
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email.ToUpperInvariant() == model.Email.ToUpperInvariant())
                 .ConfigureAwait(false);
             if (user == null)
             {
@@ -55,7 +56,7 @@ namespace MUDhub.Core.Services
                     Email = model.Email,
                     PasswordHash = UserHelpers.CreatePasswordHash(model.Password)
                 };
-                await _context.AddAsync(newUser);
+                await _context.AddAsync(newUser).ConfigureAwait(false);
                 await _context.SaveChangesAsync()
                     .ConfigureAwait(false);
                 return new RegisterResult(true, user: newUser);
