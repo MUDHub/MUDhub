@@ -54,15 +54,18 @@ namespace MUDhub.Server.Controllers
         [HttpPost("register")]
         public async Task RegisterAsync()
         {
+
         }
 
-        [HttpGet("reset")]//Todo: maybe http post, need discussion
+        //Todo: maybe http post, need discussion
+        [HttpGet("reset")]
         public async Task RequestResetPasswordAsync()
         {
 
         }
 
-        [HttpPost("reset")]//Todo: maybe http post, need discussion
+        //Todo: maybe http post, need discussion
+        [HttpPost("reset")]
         public async Task ResetPasswordAsync()
         {
 
