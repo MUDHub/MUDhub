@@ -15,11 +15,7 @@ namespace MUDhub.Core.Tests
         {
             /*
             var emailservice = new EmailService(new MailConfiguration());
-            var isSended = await emailservice.SendAsync("moriskotsch@gmail.com", "sdfsdf");
-
-            
-            Assert.True(isSended);
-            */
+            //var isSended = await emailservice.SendAsync("marvinschoeller@gmx.de", "sdfsdf");
             Assert.True(true);
         }
     }

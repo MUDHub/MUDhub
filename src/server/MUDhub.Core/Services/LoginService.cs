@@ -20,8 +20,7 @@ namespace MUDhub.Core.Services
     {
         private readonly MudDbContext _dbContext;
         private readonly IUserManager _userManager;
-        //Todo: Moris => Brauchen wir UserSettings?
-        private ServerConfiguration _userSettings;
+        private readonly string _tokensecret;
         private readonly ILogger? _logger;
         public LoginService(MudDbContext context, IUserManager userManager, IOptions<ServerConfiguration> options, ILogger<LoginService>? logger = null)
             : this(context, userManager, options?.Value ?? throw new ArgumentNullException(nameof(options)), logger)
