@@ -89,6 +89,7 @@ namespace MUDhub.Core.Abstracts
                 default:
                     throw new ArgumentException($"No Supported Database Provider is used.", nameof(conf));
             }
+            services.AddHostedService<DatabaseInitializer>();
             return services;
         }
 

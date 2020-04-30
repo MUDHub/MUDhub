@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MUDhub.Server.ApiModels
 {
-    public class LoginArgs
+    public class LoginRequest
     {
         [Required]
         public string Email { get; set; } = string.Empty;

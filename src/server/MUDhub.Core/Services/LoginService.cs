@@ -31,7 +31,7 @@ namespace MUDhub.Core.Services
         {
             _dbContext = context;
             _userManager = userManager;
-            _userSettings = options;
+            _tokensecret = options.TokenSecret;
             _logger = logger;
         }
 
@@ -39,7 +39,7 @@ namespace MUDhub.Core.Services
         {
             // authentication successful so generate jwt token
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_userSettings.TokenSecret);
+            var key = Encoding.ASCII.GetBytes(_tokensecret);
             var listClaims = new List<Claim>()
             {
                 new Claim(ClaimTypes.Name, user.Name + " " + user.Lastname),

@@ -145,13 +145,6 @@ namespace MUDhub.Core.Tests
             yield return new object[]{ new RegistrationArgs()
             {
                 Name = "Tobi",
-                Lastname = null!,
-                Email = "max@test.de",
-                Password = "Test1234"
-            } };
-            yield return new object[]{ new RegistrationArgs()
-            {
-                Name = "Tobi",
                 Lastname = "Kartoffel",
                 Email = null!,
                 Password = "Test1234"
@@ -173,13 +166,6 @@ namespace MUDhub.Core.Tests
             yield return new object[]{ new RegistrationArgs()
             {
                 Name = "Tobi",
-                Lastname = string.Empty,
-                Email = "max@test.de",
-                Password = "Test1234"
-            } };
-            yield return new object[]{ new RegistrationArgs()
-            {
-                Name = "Tobi",
                 Lastname = "Kartoffel",
                 Email = string.Empty,
                 Password = "Test1234"
@@ -195,13 +181,6 @@ namespace MUDhub.Core.Tests
             {
                 Name = " ",
                 Lastname = "Kartoffel",
-                Email = "max@test.de",
-                Password = "Test1234"
-            } };
-            yield return new object[]{ new RegistrationArgs()
-            {
-                Name = "Tobi",
-                Lastname = " ",
                 Email = "max@test.de",
                 Password = "Test1234"
             } };
@@ -257,23 +236,7 @@ namespace MUDhub.Core.Tests
                 Password = "Test1234"
             };
             RegisterResult registerResult = await userManager.RegisterUserAsync(regiArgs);
-            Assert.False(registerResult.Succeeded);
-        }
-
-        [Fact]
-        public async Task RegisterUserAsync_ReturnTrue2()
-        {
-            var userManager = CreateInMemoryDataBaseWithTestingDataAsync();
-            var regiArgs = new RegistrationArgs()
-            {
-                Name = "Max",
-                Lastname = "Mustermann",
-                Email = "max@test.de",
-                Password = "Test1234"
-            };
-            RegisterResult registerResult = await userManager.RegisterUserAsync(regiArgs);
-            await userManager.GeneratePasswortResetAsync("marvinschoeller@gmx.de");
-            Assert.False(registerResult.Succeeded);
+            Assert.True(registerResult.Succeeded);
         }
 
         private static UserManager CreateInMemoryDataBaseWithTestingDataAsync()
@@ -286,8 +249,7 @@ namespace MUDhub.Core.Tests
                 Role = Roles.Master,
                 Name = "Max",
                 Lastname = "Mustermann",
-                PasswordHash = UserHelpers.CreatePasswordHash("PW1234"),
-                PasswordResetKey = "ResetMax"
+                PasswordHash = UserHelpers.CreatePasswordHash("PW1234")
             });
             context.SaveChanges();
             return userManager;
