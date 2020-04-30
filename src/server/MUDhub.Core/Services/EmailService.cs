@@ -32,7 +32,7 @@ namespace MUDhub.Core.Services
             _client = new SmtpClient(_mailConfiguration.Servername, _mailConfiguration.Port)
             {
                 EnableSsl = true,
-                Credentials = new NetworkCredential(_mailConfiguration.Username, _mailConfiguration.Password)
+                Credentials = new NetworkCredential(_mailConfiguration.Mail, _mailConfiguration.Password)
             };
         }
 
