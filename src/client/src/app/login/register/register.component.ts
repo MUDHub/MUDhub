@@ -16,7 +16,7 @@ export class RegisterComponent implements OnInit {
 	password = new FormControl();
 
 	register() {
-		this.authService.register(this.firstname.value, this.lastname.value, this.mail.value, this.password.value);
+		console.log(this.firstname.value,this.lastname.value, this.mail.value, this.password.value);		
 	}
 
 	ngOnInit(): void { }

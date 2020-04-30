@@ -13,7 +13,7 @@ export class ResetComponent implements OnInit {
 	mail = new FormControl();
 
 	reset(){
-		this.authService.reset(this.mail.value);
+		console.log(this.mail.value);
 	}
 
 	ngOnInit(): void {}

@@ -8,5 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class GameShellComponent implements OnInit {
 	constructor() {}
 
+	showChat = true;
+
 	ngOnInit(): void {}
 }

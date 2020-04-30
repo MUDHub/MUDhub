@@ -7,25 +7,11 @@ import { HttpClient } from '@angular/common/http';
 export class AuthService {
 	constructor(private http: HttpClient) {}
 
-	/**
-	 * Login
-	 * @param mail
-	 * @param password
-	 */
-	public login(mail: string, password: string):boolean {
-		return true;
+	public login(mail: string, password: string) {
+		// TODO: implement logic
 	}
 
-	/**
-	 * Register
-	 * @param firstname
-	 * @param lastname
-	 * @param mail
-	 * @param password
-	 */
-	public register(firstname: string, lastname: string, mail: string, password: string): boolean{
-		return true;
-	}
+	public register() { }
 
 	/**
 	 * 

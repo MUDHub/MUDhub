@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
 	 * @param password 
 	 */
 	login(){
-		this.authService.login(this.mail.value,this.password.value);
+		console.log(this.mail.value, this.password.value);
 	}
 
 	ngOnInit(): void {}
