@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MUDhub.Core.Abstracts;
 using MUDhub.Core.Abstracts.Models;
-using MUDhub.Server.ApiModels;
+using MUDhub.Core.Helper;
+using MUDhub.Core.Models;
+using MUDhub.Server.ApiModels.Auth;
 
 namespace MUDhub.Server.Controllers
 {
@@ -24,7 +26,7 @@ namespace MUDhub.Server.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<LoginResponse> LoginAsync([FromBody] LoginRequest args)
+        public async Task<ActionResult<LoginResponse>> LoginAsync([FromBody] LoginRequest args)
         {
             if (args is null)
                 throw new ArgumentNullException(nameof(args));
@@ -33,25 +35,31 @@ namespace MUDhub.Server.Controllers
                 .ConfigureAwait(false);
             if (result.Succeeded)
             {
-                return new LoginResponse()
+                return Ok(new LoginResponse()
                 {
-                    Firstname = result.User!.Name,
-                    Lastname = result.User!.Lastname,
-                    Token = result.Token
-                };
+                    Token = result.Token,
+                    User = new UserApiModel
+                    {
+                        Email = result.User!.Email,
+                        Id = result.User.Id,
+                        FirstName = result.User.Name,
+                        LastName = result.User.Lastname,
+                        Roles = UserHelpers.ConvertRoleToList(result.User.Role),                        
+                    }
+                });
             }
             else
             {
-                return new LoginResponse()
+                return BadRequest(new LoginResponse()
                 {
-                    Statuscode = 400,
+                    Statuscode = StatusCodes.Status400BadRequest,
                     Errormessage = "Username or Password is false!"
-                };
+                });
             }
         }
 
         [HttpPost("register")]
-        public async Task<RegisterResponse> RegisterAsync([FromBody] RegisterRequest args)
+        public async Task<ActionResult<RegisterResponse>> RegisterAsync([FromBody] RegisterRequest args)
         {
             if (args is null)
                 throw new ArgumentNullException(nameof(args));
@@ -67,16 +75,16 @@ namespace MUDhub.Server.Controllers
             var registerResult = await _userManager.RegisterUserAsync(regiArgs).ConfigureAwait(false);
             if (registerResult.Succeeded)
             {
-                return new RegisterResponse();
+                return Ok(new RegisterResponse());
             }
             else
             {
-                return new RegisterResponse()
+                return BadRequest(new RegisterResponse()
                 {
                     Succeeded = false,
-                    Statuscode = 400,
+                    Statuscode = StatusCodes.Status400BadRequest,
                     Errormessage = registerResult.UsernameAlreadyExists ? "Username already exist" : "Cannot register the User"
-                };
+                });
             }
         }
 

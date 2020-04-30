@@ -26,14 +26,14 @@ namespace MUDhub.Core.Tests
             var options = new DbContextOptionsBuilder<MudDbContext>()
                 .UseInMemoryDatabase("Testdatabase_LoginService")
                 .Options;
-            _context = new MudDbContext(options);
+            _context = new MudDbContext(options, true);
             var emailMock = Mock.Of<IEmailService>();
             var userManager = new UserManager(_context, emailMock);
 
             _loginService = new LoginService(_context, userManager, new ServerConfiguration());
             _user = new User("sdfsdf")
             {
-                Role = Roles.Master,
+                Role = Role.Master,
                 Name = "Max",
                 Lastname = "Mustermann",
                 Email = "Max@Mustermann.de",

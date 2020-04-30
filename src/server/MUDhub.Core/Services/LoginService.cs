@@ -47,9 +47,9 @@ namespace MUDhub.Core.Services
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
             };
 
-            foreach (var role in Enum.GetValues(typeof(Roles)))
+            foreach (var role in Enum.GetValues(typeof(Role)))
             {
-                if (_userManager.IsUserInRole(user, (Roles)role))
+                if (_userManager.IsUserInRole(user, (Role)role))
                 {
                     listClaims.Add(new Claim(ClaimTypes.Role, role.ToString()));
                 }

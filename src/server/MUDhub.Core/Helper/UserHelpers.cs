@@ -1,16 +1,18 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using MUDhub.Core.Configurations;
+using MUDhub.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
 namespace MUDhub.Core.Helper
 {
-    internal class UserHelpers
+    public class UserHelpers
     {
 
         public static string CreatePasswordHash(string password)
@@ -30,5 +32,11 @@ namespace MUDhub.Core.Helper
             });
             return passwordHash;
         }
+
+        public static IEnumerable<string> ConvertRoleToList(Role role) 
+            => Enum.GetValues(typeof(Role))
+                       .Cast<Role>()
+                       .Where(r => (r & role) != 0)
+                       .Select(r => r.ToString());
     }
 }
