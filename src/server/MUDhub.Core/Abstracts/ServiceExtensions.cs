@@ -7,6 +7,8 @@ using MUDhub.Core.Configurations;
 using MUDhub.Core.Services;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace MUDhub.Core.Abstracts
@@ -70,20 +72,29 @@ namespace MUDhub.Core.Abstracts
                 case DatabaseProvider.Sqlite:
                 {
                     services.AddDbContext<MudDbContext>(options =>
-                        options.UseSqlite(conf.ConnectionString), lifetime);
+                        options.UseSqlite(conf.ConnectionString, b =>
+                        {
+                            b.MigrationsAssembly("MUDhub.Server");
+                        }),lifetime);
                     break;
                 }
                 case DatabaseProvider.MySql:
                 case DatabaseProvider.MariaDB:
                 {
                     services.AddDbContext<MudDbContext>(options =>
-                        options.UseMySql(conf.ConnectionString), lifetime);
+                        options.UseMySql(conf.ConnectionString, b =>
+                        {
+                            b.MigrationsAssembly("MUDhub.Server");
+                        }), lifetime);
                     break;
                 }
                 case DatabaseProvider.MsSql:
                 {
                     services.AddDbContext<MudDbContext>(options =>
-                       options.UseSqlServer(conf.ConnectionString), lifetime);
+                       options.UseSqlServer(conf.ConnectionString, b =>
+                       {
+                           b.MigrationsAssembly("MUDhub.Server");
+                       }), lifetime);
                     break;
                 }
                 default:
