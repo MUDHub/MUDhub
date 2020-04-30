@@ -25,8 +25,7 @@ namespace MUDhub.Server
         public Startup(IConfiguration configuration)
         {
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-            _serverConfiguration = configuration.GetSection("Server")
-                                          .Get<ServerConfiguration>();
+            _serverConfiguration = configuration.GetSection("Server").Get<ServerConfiguration>();
         }
 
 
