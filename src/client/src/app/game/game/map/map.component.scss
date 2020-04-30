@@ -1,0 +1,44 @@
+$cell-size: 1.5rem;
+$connector-size: 4px;
+
+:host {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.room{
+	background-color: grey;
+}
+
+.map-container {
+	flex-grow: 1;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.map {
+	text-align: center;
+	td {
+		width: $cell-size;
+		height: $cell-size;
+	}
+}
+
+
+.connector {
+	display: block;
+	background-color: #fff;
+	margin: 0 auto;
+	width: 100%;
+	height: 100%;
+
+	&.horizontal {
+		height: $connector-size;
+	}
+
+	&.vertical {
+		width: $connector-size;
+	}
+}

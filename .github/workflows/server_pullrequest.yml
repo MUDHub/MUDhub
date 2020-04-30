@@ -70,14 +70,14 @@ jobs:
     - name: Run Tests
       run: dotnet test --no-restore --verbosity normal
       working-directory: ${{env.SERVERTESTS_DIR}}
-    - name: Install Coverlet
-      run: dotnet tool install --global coverlet.console
-    - name: Generate Codecoverage
-      run: coverlet bin/Debug/netcoreapp3.1/MUDhub.Core.Tests.dll --target "dotnet" --targetargs "test . --no-build -p:CollectCoverage=true" --format opencover --output "result.xml"
-      working-directory: ${{env.SERVERTESTS_DIR}}
-    - name: Upload CodeCoverage Report
-      run: bash <(curl -s https://codecov.io/bash) -f result.xml
-      working-directory: ${{env.SERVERTESTS_DIR}}
+#    - name: Install Coverlet
+#      run: dotnet tool install --global coverlet.console
+#    - name: Generate Codecoverage
+#      run: coverlet bin/Debug/netcoreapp3.1/MUDhub.Core.Tests.dll --target "dotnet" --targetargs "test . --no-build -p:CollectCoverage=true" --format opencover --output "result.xml"
+#      working-directory: ${{env.SERVERTESTS_DIR}}
+#    - name: Upload CodeCoverage Report
+#      run: bash <(curl -s https://codecov.io/bash) -f result.xml
+#      working-directory: ${{env.SERVERTESTS_DIR}}
     
     
   Build_Server:

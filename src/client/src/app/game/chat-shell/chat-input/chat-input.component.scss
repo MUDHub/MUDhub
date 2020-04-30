@@ -1,0 +1,35 @@
+$radius: 5px;
+$margin: 0.5rem;
+
+:host {
+	display: flex;
+
+	input {
+		padding: 1rem 0.5rem;
+		margin-right: $margin;
+		flex-grow: 1;
+		border-radius: $radius;
+		background-color: #dedede;
+		opacity: 0.7;
+
+		transition: all 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
+
+		&:focus {
+			opacity: 1;
+		}
+	}
+
+	button {
+		padding: 0.5rem 1rem;
+		background-color: #222;
+		color: #fff;
+		border: none;
+		outline: none;
+		cursor: pointer;
+		border-radius: $radius;
+
+		&:active {
+			transform: scale(1.05);
+		}
+	}
+}

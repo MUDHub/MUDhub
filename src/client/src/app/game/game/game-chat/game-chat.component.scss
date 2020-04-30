@@ -1,0 +1,23 @@
+$infobar-height: 450px;
+$infobar-width: 500px;
+
+$scrollbar-width: 10px;
+$scrollbar-track-color: #555;
+$scrollbar-thumb-color: lighten($scrollbar-track-color, 10%);
+
+
+:host {
+	overflow-y: auto;
+	padding: 1rem;
+	/* width */
+	&::-webkit-scrollbar { width: $scrollbar-width; }
+	/* Track */
+	&::-webkit-scrollbar-track { background: $scrollbar-track-color; }
+	/* Handle */
+	&::-webkit-scrollbar-thumb { background: $scrollbar-thumb-color; }
+	/* Handle on hover */
+	&::-webkit-scrollbar-thumb:hover { }
+}
+
+
+
