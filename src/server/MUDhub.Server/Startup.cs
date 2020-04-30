@@ -20,10 +20,11 @@ namespace MUDhub.Server
     public class Startup
     {
         private readonly ServerConfiguration _serverConfiguration;
+        private readonly IConfiguration _configuration;
 
         public Startup(IConfiguration configuration)
         {
-            configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _serverConfiguration = configuration.GetSection("Server")
                                           .Get<ServerConfiguration>();
         }
@@ -34,7 +35,7 @@ namespace MUDhub.Server
         {
             //Costume Service Extensions, in Server Project
             services.AddTargetDatabase(_serverConfiguration.Database);
-            services.AddServerConfiguration(_serverConfiguration);
+            services.AddServerConfiguration(_configuration);
 
             //Mud game Services
             services.AddMudServices();

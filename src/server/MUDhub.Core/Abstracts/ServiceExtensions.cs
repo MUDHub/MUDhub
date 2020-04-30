@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using MUDhub.Core.Configurations;
@@ -91,16 +92,16 @@ namespace MUDhub.Core.Abstracts
             return services;
         }
 
-        public static IServiceCollection AddServerConfiguration(this IServiceCollection services, ServerConfiguration conf)
+        public static IServiceCollection AddServerConfiguration(this IServiceCollection services, IConfiguration conf)
         {
             if (services is null)
                 throw new ArgumentNullException(nameof(services));
             if (conf is null)
                 throw new ArgumentNullException(nameof(conf));
-            services.ConfigureOptions(conf);
-            services.ConfigureOptions(conf.Database);
-            services.ConfigureOptions(conf.Spa);
-            services.ConfigureOptions(conf.Mail);
+            services.Configure<ServerConfiguration>(conf.GetSection("Server"));
+            services.Configure<DatabaseConfiguration>(conf.GetSection("Server:Database"));
+            services.Configure<SpaConfiguration>(conf.GetSection("Server:Spa"));
+            services.Configure<MailConfiguration>(conf.GetSection("Server:Mail"));
             return services;
         }
     }
