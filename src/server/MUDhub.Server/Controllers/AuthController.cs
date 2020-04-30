@@ -95,9 +95,23 @@ namespace MUDhub.Server.Controllers
         }
 
         [HttpPost("reset")]
-        public async Task ResetPasswordAsync([FromBody] ResetPwRequest args)
+        public async Task<ActionResult<LoginResponse>> ResetPasswordAsync([FromBody] ResetPasswordRequest args)
         {
-
+            var isResetSuccessful = await _userManager.UpdatePasswortFromResetAsync(args.PasswordResetKey, args.NewPasword)
+                .ConfigureAwait(false);
+            if (isResetSuccessful)
+            {
+                return Ok(new ResetPasswordResponse());
+            }
+            else
+            {
+                return BadRequest(new ResetPasswordResponse()
+                {
+                    Succeeded = false,
+                    Statuscode = StatusCodes.Status400BadRequest,
+                    Errormessage = "Password could not be reseted. => Maybe ResetKey is wrong or new Password is equal old Password."
+                });
+            }
         }
     }
 }

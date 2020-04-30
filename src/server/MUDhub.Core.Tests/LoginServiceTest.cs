@@ -17,7 +17,6 @@ namespace MUDhub.Core.Tests
     public class LoginServiceTest : IDisposable
     {
         private readonly LoginService _loginService;
-        private readonly UserManager _userManager;
         private readonly MudDbContext _context;
         private readonly User _user;
 
@@ -27,10 +26,8 @@ namespace MUDhub.Core.Tests
                 .UseInMemoryDatabase("Testdatabase_LoginService")
                 .Options;
             _context = new MudDbContext(options, true);
-            var emailMock = Mock.Of<IEmailService>();
-            var userManager = new UserManager(_context, emailMock);
 
-            _loginService = new LoginService(_context, userManager, new ServerConfiguration());
+            _loginService = new LoginService(_context, new ServerConfiguration());
             _user = new User("sdfsdf")
             {
                 Role = Role.Master,
@@ -42,7 +39,6 @@ namespace MUDhub.Core.Tests
             };
             _context.Users.Add(_user);
             _context.SaveChanges();
-            _userManager = userManager;
 
         }
 

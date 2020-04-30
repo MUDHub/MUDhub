@@ -17,7 +17,6 @@ namespace MUDhub.Core.Abstracts
         Task<bool> UpdatePasswortFromResetAsync(string email, string newPassword);
         Task<bool> UpdatePasswortAsync(string userId, string oldPassword, string newPassword);
         Task<bool> IsUserInRoleAsync(string userId, Role role);
-        bool IsUserInRole(User user, Role role);
 
     }
 }

@@ -15,9 +15,13 @@ namespace MUDhub.Core.Services
         {
             if (!useInUnitTests)
                 Database.Migrate();
+            else
+            {
+                Database.EnsureDeleted();
+                Database.EnsureCreated();
+            }
         }
         public DbSet<User> Users { get; set; } = null!;
-        //ToDo: Moris => Werden Enum in die Datenbank gebracht?
 
 
         public DbSet<MudGame> MudGames { get; set; } = null!;

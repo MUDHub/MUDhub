@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MUDhub.Server.ApiModels.Auth
 {
-    public class ResetPwRequest
+    public class ResetPasswordRequest
     {
         [Required]
         public string PasswordResetKey { get; set; } = string.Empty;

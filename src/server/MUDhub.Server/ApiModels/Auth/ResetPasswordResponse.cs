@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace MUDhub.Server.ApiModels.Auth
 {
-    public class ResetPwResponse : BaseResponse
+    public class ResetPasswordResponse : BaseResponse
     {
     }
 }

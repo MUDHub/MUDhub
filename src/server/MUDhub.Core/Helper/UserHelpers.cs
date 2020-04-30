@@ -33,6 +33,44 @@ namespace MUDhub.Core.Helper
             return passwordHash;
         }
 
+        public static bool IsUserInRole(User user, Role role)
+        {
+            if (user is null)
+            {
+                return false;
+            }
+            return ((user.Role & role) == role);
+        }
+
+        public static string CreateToken(User user, string tokensecret)
+        {
+            // authentication successful so generate jwt token
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(tokensecret);
+            var listClaims = new List<Claim>()
+            {
+                new Claim(ClaimTypes.Name, user.Name + " " + user.Lastname),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
+            };
+
+            foreach (var role in Enum.GetValues(typeof(Role)))
+            {
+                if (UserHelpers.IsUserInRole(user, (Role)role))
+                {
+                    listClaims.Add(new Claim(ClaimTypes.Role, role.ToString()));
+                }
+            }
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(listClaims),
+                Expires = DateTime.UtcNow.AddDays(1),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
+        }
+
         public static IEnumerable<string> ConvertRoleToList(Role role) 
             => Enum.GetValues(typeof(Role))
                        .Cast<Role>()
