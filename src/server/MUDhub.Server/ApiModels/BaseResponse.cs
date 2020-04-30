@@ -9,6 +9,6 @@ namespace MUDhub.Server.ApiModels
     {
         public int Statuscode { get; set; } = 200;
         public string Errormessage { get; set; } = string.Empty;
-        public bool Succeeded { get; set; }
+        public bool Succeeded { get; set; } = true;
     }
 }

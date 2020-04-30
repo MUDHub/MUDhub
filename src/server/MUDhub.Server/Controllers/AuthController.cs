@@ -35,7 +35,6 @@ namespace MUDhub.Server.Controllers
             {
                 return new LoginResponse()
                 {
-                    Succeeded = true,
                     Firstname = result.User!.Name,
                     Lastname = result.User!.Lastname,
                     Token = result.Token
@@ -52,9 +51,33 @@ namespace MUDhub.Server.Controllers
         }
 
         [HttpPost("register")]
-        public async Task RegisterAsync()
+        public async Task<RegisterResponse> RegisterAsync([FromBody] RegisterRequest args)
         {
+            if (args is null)
+                throw new ArgumentNullException(nameof(args));
 
+            var regiArgs = new RegistrationArgs()
+            {
+                Email = args.Email,
+                Lastname = args.Lastname,
+                Name = args.Name,
+                Password = args.Password
+            };
+
+            var registerResult = await _userManager.RegisterUserAsync(regiArgs).ConfigureAwait(false);
+            if (registerResult.Succeeded)
+            {
+                return new RegisterResponse();
+            }
+            else
+            {
+                return new RegisterResponse()
+                {
+                    Succeeded = false,
+                    Statuscode = 400,
+                    Errormessage = registerResult.UsernameAlreadyExists ? "Username already exist" : "Cannot register the User"
+                };
+            }
         }
 
         //Todo: maybe http post, need discussion
