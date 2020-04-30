@@ -7,15 +7,13 @@ namespace MUDhub.Core.Services.Models
     public class RegisterResult
     {
 
-        public RegisterResult(bool succeeded, bool usernameAlreadyExists = false, LoginResult? loginResult = null)
+        public RegisterResult(bool succeeded, bool usernameAlreadyExists = false)
         {
             Succeeded = succeeded;
             UsernameAlreadyExists = usernameAlreadyExists;
-            LoginResult = loginResult;
         }
         public bool Succeeded { get; }
         public bool UsernameAlreadyExists { get; }
-        public LoginResult? LoginResult { get; }
 
     }
 }
