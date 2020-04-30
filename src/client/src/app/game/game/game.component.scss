@@ -1,40 +1,37 @@
-:host {
+@import 'src/variables.scss';
 
+:host {
+	background-color: #333;
 	color: #fff;
 
 	display: flex;
 	flex-direction: column;
-	height: 100%;
-	width: 100%;
 
-	.game-chat{
+	> * {
+		border: 4px solid black;
+	}
+}
+
+.chat {
+	flex-grow: 1;
+}
+
+.game-utils {
+	display: flex;
+	flex-direction: row;
+
+	.info {
 		flex-grow: 1;
-	}
-
-	.game-utils{
-		height: 20%;
 		display: flex;
-		flex-direction: row;
+		flex-direction: column;
 
-		.info{
-			display: flex;
-			flex-direction: column;
+		.character {
 			flex-grow: 1;
-
-			.stats{
-				flex-grow: 1;
-			}
-
-			.chat{
-				height: 2rem;
-			}
-
 		}
-
-		.map{
-			width: 20%;
-		}
-
 	}
 
+	.map {
+		height: 200px;
+		width: 250px;
+	}
 }
