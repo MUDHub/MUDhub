@@ -28,7 +28,7 @@ namespace MUDhub.Core.Tests
             var userManager = new UserManager(_context, emailMock);
             _user = new User("1")
             {
-                Role = Roles.Master,
+                Role = Role.Master,
                 Name = "Max",
                 Lastname = "Mustermann",
                 Email = "max@musterman.de",
@@ -58,40 +58,40 @@ namespace MUDhub.Core.Tests
         [Fact]
         public async Task IsUserInRoleAsync_ReturnTrue()
         {
-            Assert.True(await _userManager.IsUserInRoleAsync(_user.Id, Roles.Master));
+            Assert.True(await _userManager.IsUserInRoleAsync(_user.Id, Role.Master));
             
         }
 
         [Fact]
         public async Task IsUserInRoleAsync_ReturnFalse()
         {
-            Assert.False(await _userManager.IsUserInRoleAsync("2", Roles.Master));
+            Assert.False(await _userManager.IsUserInRoleAsync("2", Role.Master));
         }
 
         [Fact]
         public async Task AddRoleToUserAsync_ReturnFalseBecauseNull()
         {
 
-            Assert.False(await _userManager.AddRoleToUserAsync("2", Roles.Master));
+            Assert.False(await _userManager.AddRoleToUserAsync("2", Role.Master));
         }
         [Fact]
         public async Task AddRoleToUserAsync_ReturnFalseBecauseRole()
         {
 
-            Assert.False(await _userManager.AddRoleToUserAsync("1", Roles.Master));
+            Assert.False(await _userManager.AddRoleToUserAsync("1", Role.Master));
         }
         [Fact]
         public async Task AddRoleToUserAsync_ReturnTrue()
         {
 
-            Assert.True(await _userManager.AddRoleToUserAsync("1", Roles.Admin));
+            Assert.True(await _userManager.AddRoleToUserAsync("1", Role.Admin));
         }
 
         [Fact]
         public async Task RemoveRoleFromUserAsync_ReturnFalseBecauseNull()
         {
 
-            Assert.False(await _userManager.RemoveRoleFromUserAsync("2", Roles.Master));
+            Assert.False(await _userManager.RemoveRoleFromUserAsync("2", Role.Master));
         }
 
 
@@ -99,13 +99,13 @@ namespace MUDhub.Core.Tests
         public async Task RemoveRoleFromUserAsync_ReturnFalseBecauseRole()
         {
 
-            Assert.False(await _userManager.RemoveRoleFromUserAsync("1", Roles.Admin));
+            Assert.False(await _userManager.RemoveRoleFromUserAsync("1", Role.Admin));
         }
         [Fact]
         public async Task RemoveRoleFromUserAsync_ReturnTrue()
         {
 
-            Assert.True(await _userManager.RemoveRoleFromUserAsync("1", Roles.Master));
+            Assert.True(await _userManager.RemoveRoleFromUserAsync("1", Role.Master));
         }
 
         [Fact]

@@ -74,7 +74,6 @@ namespace MUDhub.Server.Controllers
             throw new NotImplementedException();
         }
 
-
         [HttpPost("{mudId}/requestjoin")]
         public MudJoinsResponse RequestJoin([FromRoute]string mudId, [FromQuery]string userId)
         {

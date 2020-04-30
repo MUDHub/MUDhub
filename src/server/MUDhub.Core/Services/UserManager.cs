@@ -92,7 +92,7 @@ namespace MUDhub.Core.Services
         /// <param name="userId"></param>
         /// <param name="role"></param>
         /// <returns></returns>
-        public async Task<bool> AddRoleToUserAsync(string userId, Roles role)
+        public async Task<bool> AddRoleToUserAsync(string userId, Role role)
         {
             var user = await GetUserByIdAsync(userId).ConfigureAwait(false);
             if (user == null)
@@ -118,7 +118,7 @@ namespace MUDhub.Core.Services
         /// <param name="userId"></param>
         /// <param name="role"></param>
         /// <returns></returns>
-        public async Task<bool> RemoveRoleFromUserAsync(string userId, Roles role)
+        public async Task<bool> RemoveRoleFromUserAsync(string userId, Role role)
         {
             var user = await GetUserByIdAsync(userId).ConfigureAwait(false);
             if (user == null)
@@ -144,7 +144,7 @@ namespace MUDhub.Core.Services
         /// <param name="userId"></param>
         /// <param name="role"></param>
         /// <returns></returns>
-        public async Task<bool> IsUserInRoleAsync(string userId, Roles role)
+        public async Task<bool> IsUserInRoleAsync(string userId, Role role)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId).ConfigureAwait(false);
             return IsUserInRole(user, role);
@@ -233,7 +233,7 @@ namespace MUDhub.Core.Services
             return await _context.Users.FirstOrDefaultAsync(u => u.Id == userId).ConfigureAwait(false);
         }
 
-        public bool IsUserInRole(User user, Roles role)
+        public bool IsUserInRole(User user, Role role)
         {
             if (user is null)
             {

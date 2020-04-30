@@ -5,10 +5,10 @@ using System.Text;
 namespace MUDhub.Core.Models
 {
     [Flags]
-    public enum Roles
+    public enum Role
     {
         Player = 0,
         Master = 1,
-        Admin = 2
+        Admin = 2,
     }
 }
