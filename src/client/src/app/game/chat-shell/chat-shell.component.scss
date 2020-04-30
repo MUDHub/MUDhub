@@ -1,23 +1,29 @@
+@import "src/variables.scss";
+
 :host {
 	display: flex;
 	flex-direction: column;
 	max-height: 100%;
+	position: relative;
 }
 
 .nav {
 	padding: 0;
+	margin: 0 auto;
+	margin-bottom: 0.5rem;
 	list-style: none;
 	display: flex;
 	text-align: center;
+	width: calc(100% - 8rem);
 
 	.nav-item {
 		flex: 1;
 		padding: 0.5rem 1.5rem;
-		border-bottom: 2px solid transparent;
+		border-bottom: 3px solid transparent;
 		cursor: pointer;
 
 		&.active {
-			border-bottom-color: #fff;
+			border-bottom-color: $color-primary;
 		}
 	}
 }
@@ -28,5 +34,5 @@
 	overflow: hidden;
 	padding: 0.5rem;
 
-	font-size: 90%;
+	font-size: 95%;
 }
