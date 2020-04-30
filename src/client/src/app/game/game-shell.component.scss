@@ -7,9 +7,22 @@
 	height: 100%;
 	width: 25%;
 	min-width: 300px;
-	max-width: 500px;
+	max-width: 450px;
 }
 
 .game {
 	flex-grow: 1;
+}
+
+
+.toggle-chat {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 99;
+	opacity: 0;
+
+	&:hover {
+		opacity: 1;
+	}
 }

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { IMessage } from '../chat-message/chat-message.component';
+import { IMessage } from 'src/app/model/IMessage';
+import { ChatService } from 'src/app/services/chat.service';
 
 @Component({
 	selector: 'mh-chat-global',
@@ -7,22 +8,14 @@ import { IMessage } from '../chat-message/chat-message.component';
 	styleUrls: ['./chat-global.component.scss'],
 })
 export class ChatGlobalComponent {
-	constructor() {}
+	constructor(private chat: ChatService) {}
 
-	messages: IMessage[] = [
-		{
-			sender: 'Mario Lang',
-			content:
-				'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed' +
-				'diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.',
-		},
-		{
-			sender: 'Paul Finkbeiner',
-			content: 'Lorem ipsum dolor sit amet.',
-		},
-	];
+	messages: IMessage[] = this.chat.globalHistory;
 
 	onChatMessage(message: string) {
-		console.log('chat message:', message);
+		// TODO: add chat service logic
+		this.messages.push({
+			content: message,
+		});
 	}
 }
