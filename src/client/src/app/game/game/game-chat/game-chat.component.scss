@@ -1,5 +1,3 @@
-@import "src/variables.scss";
-
 $infobar-height: 450px;
 $infobar-width: 500px;
 
@@ -7,17 +5,10 @@ $scrollbar-width: 10px;
 $scrollbar-track-color: #555;
 $scrollbar-thumb-color: lighten($scrollbar-track-color, 10%);
 
+
 :host {
-	height: 100%;
-	display: flex;
-	flex-direction: column;
-	font-family: consolas;
-	padding: 0.5rem;
 	overflow-y: auto;
-
-	background-color: rgb(39, 39, 39);
-
-
+	padding: 1rem;
 	/* width */
 	&::-webkit-scrollbar { width: $scrollbar-width; }
 	/* Track */
@@ -26,20 +17,7 @@ $scrollbar-thumb-color: lighten($scrollbar-track-color, 10%);
 	&::-webkit-scrollbar-thumb { background: $scrollbar-thumb-color; }
 	/* Handle on hover */
 	&::-webkit-scrollbar-thumb:hover { }
-
-
-
-	.message {
-		&:not(:last-child) {
-			margin-bottom: 0.75rem;
-		}
-
-		&.user-input {
-			opacity: 0.7;
-
-			&::before {
-				content: "> ";
-			}
-		}
-	}
 }
+
+
+
