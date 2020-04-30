@@ -80,14 +80,14 @@ namespace MUDhub.Server.Controllers
             }
         }
 
-        [HttpGet("reset")]//Todo: maybe http post, need discussion
-        public async Task RequestResetPasswordAsync()
+        [HttpGet("reset")]
+        public async Task RequestResetPasswordAsync([FromQuery] string email)
         {
-
+            await _userManager.GeneratePasswortResetAsync(email).ConfigureAwait(false);
         }
 
-        [HttpPost("reset")]//Todo: maybe http post, need discussion
-        public async Task ResetPasswordAsync()
+        [HttpPost("reset")]
+        public async Task ResetPasswordAsync([FromBody] ResetPwRequest args)
         {
 
         }
