@@ -22,7 +22,7 @@ const routes: Routes = [
 	{
 		path: 'rooms',
 		component: GeneralComponent,
-	},/*
+	}, /*
 	{
 		path: 'rooms/area-list',
 		component: AreaListComponent
