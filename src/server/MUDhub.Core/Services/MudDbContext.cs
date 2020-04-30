@@ -13,7 +13,6 @@ namespace MUDhub.Core.Services
         public MudDbContext(DbContextOptions options) 
             : base(options)
         {
-            Database.EnsureDeleted();
             Database.EnsureCreated();
         }
         public DbSet<User> Users { get; set; } = null!;

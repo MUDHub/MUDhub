@@ -3,8 +3,9 @@ using MUDhub.Core.Models;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using MUDhub.Core.Services.Models;
+using MUDhub.Core.Abstracts.Models;
 using MUDhub.Core.Helper;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MUDhub.Core.Services
 {
@@ -55,7 +56,7 @@ namespace MUDhub.Core.Services
                 await _context.AddAsync(newUser);
                 await _context.SaveChangesAsync()
                     .ConfigureAwait(false);
-                return new RegisterResult(true);
+                return new RegisterResult(true, user: newUser);
             }
             else
             {
@@ -174,7 +175,7 @@ namespace MUDhub.Core.Services
             }
 
             var newPasswordHash = UserHelpers.CreatePasswordHash(newPassword);
-            
+
             if (user.PasswordHash == newPasswordHash)
             {
                 _logger?.LogWarning($"The Password of '{user.Name} {user.Lastname}' could not be reseted. => Old password same as new password.");
@@ -212,7 +213,7 @@ namespace MUDhub.Core.Services
                 _logger?.LogWarning($"The Password of '{user.Name} {user.Lastname}' could not be updated. => Old password is not the actual password.");
                 return false;
             }
-            
+
             user.PasswordHash = UserHelpers.CreatePasswordHash(newPassword);
             await _context.SaveChangesAsync().ConfigureAwait(false);
             _logger?.LogInformation($"The Password of '{user.Name} {user.Lastname}' was updated.");

@@ -3,6 +3,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MUDhub.Core.Abstracts;
+using MUDhub.Core.Abstracts.Models;
 using MUDhub.Core.Configurations;
 using MUDhub.Core.Models;
 using System;
@@ -37,11 +38,11 @@ namespace MUDhub.Core.Services
                     .ConfigureAwait(false);
                 if (user != null)
                 {
-                    _logger?.LogWarning($"DefaultUser {_options.DefaultMudAdminEmail} already exists!s");
+                    _logger?.LogWarning($"DefaultUser {_options.DefaultMudAdminEmail} already exists!");
                     return;
                 }
 
-                var registerResult =  await _userManager.RegisterUserAsync(new Models.RegistrationArgs
+                var registerResult =  await _userManager.RegisterUserAsync(new RegistrationArgs
                 {
                     Email = _options.DefaultMudAdminEmail,
                     Password = _options.DefaultMudAdminPassword,
@@ -54,13 +55,13 @@ namespace MUDhub.Core.Services
                     return;
                 }
 
-                var success =  await _userManager.AddRoleToUserAsync(registerResult!.LoginResult!.User!.Id, Roles.Admin)
+                var success =  await _userManager.AddRoleToUserAsync(registerResult!.User!.Id, Roles.Admin)
                     .ConfigureAwait(false);
                 if (success)
                 {
                     //Todo: add logging message
                 }
-                success = await _userManager.AddRoleToUserAsync(registerResult!.LoginResult!.User!.Id, Roles.Master)
+                success = await _userManager.AddRoleToUserAsync(registerResult!.User!.Id, Roles.Master)
                     .ConfigureAwait(false);
                 if (success)
                 {

@@ -6,7 +6,7 @@ using MUDhub.Core.Abstracts;
 using MUDhub.Core.Helper;
 using MUDhub.Core.Models;
 using MUDhub.Core.Services;
-using MUDhub.Core.Services.Models;
+using MUDhub.Core.Abstracts.Models;
 using Xunit;
 
 namespace MUDhub.Core.Tests

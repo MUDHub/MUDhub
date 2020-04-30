@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Options;
 using MUDhub.Core.Abstracts;
 using MUDhub.Core.Configurations;
-using MUDhub.Core.Services.Models;
+using MUDhub.Core.Abstracts.Models;
 using System;
 using System.Collections.Generic;
 using System.Globalization;

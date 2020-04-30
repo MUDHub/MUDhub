@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MUDhub.Core.Abstracts;
-using MUDhub.Core.Services.Models;
+using MUDhub.Core.Abstracts.Models;
 using MUDhub.Server.ApiModels;
 
 namespace MUDhub.Server.Controllers

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MUDhub.Core.Configurations;
 using MUDhub.Core.Helper;
-using MUDhub.Core.Services.Models;
+using MUDhub.Core.Abstracts.Models;
 
 namespace MUDhub.Core.Services
 {
@@ -80,7 +80,7 @@ namespace MUDhub.Core.Services
                 return new LoginResult(false);
             }
             _logger?.LogInformation($"The User '{user.Name} {user.Lastname}'  was logged in.");
-            return new LoginResult(true, CreateToken(user));
+            return new LoginResult(true, CreateToken(user), user);
         }
     }
 }

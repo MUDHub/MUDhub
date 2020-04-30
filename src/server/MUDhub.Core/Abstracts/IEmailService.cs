@@ -1,4 +1,4 @@
-﻿using MUDhub.Core.Services.Models;
+﻿using MUDhub.Core.Abstracts.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
