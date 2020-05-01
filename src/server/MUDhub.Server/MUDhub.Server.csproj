@@ -7,13 +7,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Helpers\**" />
-    <Compile Remove="Hubs\**" />
     <Content Remove="Helpers\**" />
-    <Content Remove="Hubs\**" />
     <EmbeddedResource Remove="Helpers\**" />
-    <EmbeddedResource Remove="Hubs\**" />
     <None Remove="Helpers\**" />
-    <None Remove="Hubs\**" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />
@@ -36,5 +32,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MUDhub.Core\MUDhub.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Hubs\Models\" />
   </ItemGroup>
 </Project>
