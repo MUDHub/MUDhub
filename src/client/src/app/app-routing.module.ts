@@ -14,14 +14,6 @@ const routes: Routes = [
 			import('./login/login.module').then((m) => m.LoginModule),
 	},
 	{
-		path: 'config',
-		canActivate: [AuthGuard],
-		loadChildren: () =>
-			import('./configuration/configuration.module').then(
-				(m) => m.ConfigurationModule
-			),
-	},
-	{
 		path: 'game',
 		canActivate: [AuthGuard],
 		loadChildren: () =>
