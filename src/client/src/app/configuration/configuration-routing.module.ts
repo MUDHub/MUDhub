@@ -9,18 +9,28 @@ const routes: Routes = [
 	{
 		path: '',
 		component: ConfigurationComponent,
-	},
-	{
-		path: 'created-games',
-		component: CreatedGamesComponent,
-	},
-	{
-		path: 'edit-mud',
-		component: EditMudComponent,
-	},
-	{
-		path: 'create-mud',
-		loadChildren: () => import('./create-mud/create-mud.module').then(m => m.CreateMudModule)
+		children: [
+			{
+				path: '',
+				redirectTo: 'my-muds',
+				pathMatch: 'full',
+			},
+			{
+				path: 'my-muds',
+				component: CreatedGamesComponent,
+			},
+			{
+				path: 'edit',
+				component: EditMudComponent,
+			},
+			{
+				path: 'create',
+				loadChildren: () =>
+					import('./create-mud/create-mud.module').then(
+						(m) => m.CreateMudModule
+					),
+			},
+		],
 	},
 ];
 

@@ -9,48 +9,48 @@ import { ItemsComponent } from './items/items.component';
 import { FinishComponent } from './finish/finish.component';
 import { ClassComponent } from './class/class.component';
 import { RaceComponent } from './race/race.component';
+import { RoomsComponent } from './rooms/rooms.component';
 
 const routes: Routes = [
 	{
 		path: '',
 		component: CreateMudComponent,
-	},
-	{
-		path: 'general',
-		component: GeneralComponent
-	},
-	{
-		path: 'rooms',
-		component: GeneralComponent,
-	}, /*
-	{
-		path: 'rooms/area-list',
-		component: AreaListComponent
-	},
-	{
-		path: 'rooms/room-matrix',
-		component: RoomMatrixComponent
-	},*/
-	{
-		path: 'items',
-		component: ItemsComponent
-	},
-	{
-		path: 'race',
-		component: RaceComponent
-	},
-	{
-		path: 'class',
-		component: ClassComponent
-	},
-	{
-		path: 'finish',
-		component: FinishComponent
+		children: [
+			{
+				path: '',
+				redirectTo: 'general',
+				pathMatch: 'full',
+			},
+			{
+				path: 'general',
+				component: GeneralComponent,
+			},
+			{
+				path: 'rooms',
+				component: RoomsComponent,
+			},
+			{
+				path: 'items',
+				component: ItemsComponent,
+			},
+			{
+				path: 'race',
+				component: RaceComponent,
+			},
+			{
+				path: 'class',
+				component: ClassComponent,
+			},
+			{
+				path: 'finish',
+				component: FinishComponent,
+			},
+		],
 	},
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+	imports: [RouterModule.forChild(routes)],
+	exports: [RouterModule],
 })
-export class CreateMudRoutingModule { }
+export class CreateMudRoutingModule {}
