@@ -1,13 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { AuthService } from '../../services/auth.service';
+import { Component } from "@angular/core";
+import { FormControl } from "@angular/forms";
+import { AuthService } from "../../services/auth.service";
+import { IUser } from "src/app/model/IUser";
 
 @Component({
-	selector: 'mh-register',
-	templateUrl: './register.component.html',
-	styleUrls: ['./register.component.scss'],
+	selector: "mh-register",
+	templateUrl: "./register.component.html",
+	styleUrls: ["./register.component.scss"],
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent {
 	constructor(private authService: AuthService) {}
 
 	firstname = new FormControl();
@@ -16,13 +17,12 @@ export class RegisterComponent implements OnInit {
 	password = new FormControl();
 
 	register() {
-		console.log(
-			this.firstname.value,
-			this.lastname.value,
-			this.mail.value,
-			this.password.value
-		);
+		let user: IUser = {
+			name: this.firstname.value,
+			lastname: this.lastname.value,
+			email: this.mail.value,
+			password: this.password.value,
+		};
+		this.authService.register(user);
 	}
-
-	ngOnInit(): void {}
 }
