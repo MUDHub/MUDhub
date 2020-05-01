@@ -19,7 +19,7 @@ namespace MUDhub.Core.Tests
             var collection = new ServiceCollection();
             collection.AddUserManagment();
             Assert.Contains(collection, s => s.ImplementationType == typeof(UserManager) && s.ServiceType == typeof(IUserManager));
-            Assert.Contains<ServiceDescriptor>(collection, s => s.ImplementationType == typeof(Services.LoginService) && s.ServiceType == typeof(Abstracts.LoginService));
+            Assert.Contains(collection, s => s.ImplementationType == typeof(LoginService) && s.ServiceType == typeof(ILoginService));
             Assert.Contains(collection, s => s.ImplementationType == typeof(EmailService) && s.ServiceType == typeof(IEmailService));
             Assert.Equal(3, collection.Count); //Checking for new Services
         }
