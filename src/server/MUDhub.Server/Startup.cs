@@ -63,7 +63,7 @@ namespace MUDhub.Server
             app.UseAuthentication();
             app.UseRouting();
             app.UseAuthorization();
-            if (!hostSpa && env.IsDevelopment())
+            if (hostSpa && env.IsDevelopment())
             {
                 app.UseCors(builder =>
                 {
