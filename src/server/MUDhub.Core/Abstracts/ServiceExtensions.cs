@@ -75,7 +75,7 @@ namespace MUDhub.Core.Abstracts
                         options.UseSqlite(conf.ConnectionString, b =>
                         {
                             b.MigrationsAssembly("MUDhub.Server");
-                            b.MigrationsAssembly("MUDhub.Core.Tests");
+                            //b.MigrationsAssembly("MUDhub.Core.Tests");
                         }),lifetime);
                     break;
                 }

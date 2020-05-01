@@ -6,9 +6,13 @@
     <UserSecretsId>45c17950-02a7-4da2-8769-e77d564482dd</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Helpers\**" />
     <Compile Remove="Hubs\**" />
+    <Content Remove="Helpers\**" />
     <Content Remove="Hubs\**" />
+    <EmbeddedResource Remove="Helpers\**" />
     <EmbeddedResource Remove="Hubs\**" />
+    <None Remove="Helpers\**" />
     <None Remove="Hubs\**" />
   </ItemGroup>
   <ItemGroup>
@@ -32,8 +36,5 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MUDhub.Core\MUDhub.Core.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Helpers\" />
   </ItemGroup>
 </Project>

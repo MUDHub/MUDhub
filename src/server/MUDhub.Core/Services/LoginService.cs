@@ -19,50 +19,21 @@ namespace MUDhub.Core.Services
     internal class LoginService : ILoginService
     {
         private readonly MudDbContext _dbContext;
-        private readonly IUserManager _userManager;
         private readonly string _tokensecret;
         private readonly ILogger? _logger;
-        public LoginService(MudDbContext context, IUserManager userManager, IOptions<ServerConfiguration> options, ILogger<LoginService>? logger = null)
-            : this(context, userManager, options?.Value ?? throw new ArgumentNullException(nameof(options)), logger)
+        public LoginService(MudDbContext context, IOptions<ServerConfiguration> options, ILogger<LoginService>? logger = null)
+            : this(context, options?.Value ?? throw new ArgumentNullException(nameof(options)), logger)
         {
         }
 
-        internal LoginService(MudDbContext context, IUserManager userManager, ServerConfiguration options, ILogger<LoginService>? logger = null)
+        internal LoginService(MudDbContext context, ServerConfiguration options, ILogger<LoginService>? logger = null)
         {
             _dbContext = context;
-            _userManager = userManager;
             _tokensecret = options.TokenSecret;
             _logger = logger;
         }
 
-        private string CreateToken(User user)
-        {
-            // authentication successful so generate jwt token
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_tokensecret);
-            var listClaims = new List<Claim>()
-            {
-                new Claim(ClaimTypes.Name, user.Name + " " + user.Lastname),
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.NameIdentifier, user.Id),
-            };
-
-            foreach (var role in Enum.GetValues(typeof(Roles)))
-            {
-                if (_userManager.IsUserInRole(user, (Roles)role))
-                {
-                    listClaims.Add(new Claim(ClaimTypes.Role, role.ToString()));
-                }
-            }
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(listClaims),
-                Expires = DateTime.UtcNow.AddDays(1),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
-        }
+        
 
         public async Task<LoginResult> LoginUserAsync(string email, string password)
         {
@@ -80,7 +51,7 @@ namespace MUDhub.Core.Services
                 return new LoginResult(false);
             }
             _logger?.LogInformation($"The User '{user.Name} {user.Lastname}'  was logged in.");
-            return new LoginResult(true, CreateToken(user), user);
+            return new LoginResult(true, UserHelpers.CreateToken(user, _tokensecret), user);
         }
     }
 }

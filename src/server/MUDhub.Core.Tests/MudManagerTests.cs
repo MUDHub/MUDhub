@@ -290,7 +290,7 @@ namespace MUDhub.Core.Tests
                 .UseInMemoryDatabase("Testdatabase_MudManagment", opt => { })
                 .Options;
 
-            return new MudDbContext(options);
+            return new MudDbContext(options,true);
         }
     }
 }

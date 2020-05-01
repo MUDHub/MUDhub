@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MUDhub.Core.Abstracts;
 using MUDhub.Core.Abstracts.Models;
-using MUDhub.Server.ApiModels;
+using MUDhub.Core.Helper;
+using MUDhub.Core.Models;
+using MUDhub.Server.ApiModels.Auth;
 
 namespace MUDhub.Server.Controllers
 {
@@ -24,7 +26,7 @@ namespace MUDhub.Server.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<LoginResponse> LoginAsync([FromBody] LoginRequest args)
+        public async Task<ActionResult<LoginResponse>> LoginAsync([FromBody] LoginRequest args)
         {
             if (args is null)
                 throw new ArgumentNullException(nameof(args));
@@ -33,30 +35,27 @@ namespace MUDhub.Server.Controllers
                 .ConfigureAwait(false);
             if (result.Succeeded)
             {
-                return new LoginResponse()
+                return Ok(new LoginResponse()
                 {
-                    Firstname = result.User!.Name,
-                    Lastname = result.User!.Lastname,
-                    Token = result.Token
-                };
+                    Token = result.Token,
+                    User = new UserApiModel(result.User!)
+                });
             }
-            else
+
+            return BadRequest(new LoginResponse()
             {
-                return new LoginResponse()
-                {
-                    Statuscode = 400,
-                    Errormessage = "Username or Password is false!"
-                };
-            }
+                Statuscode = StatusCodes.Status400BadRequest,
+                Errormessage = "Username or Password is false!"
+            });
         }
 
         [HttpPost("register")]
-        public async Task<RegisterResponse> RegisterAsync([FromBody] RegisterRequest args)
+        public async Task<ActionResult<RegisterResponse>> RegisterAsync([FromBody] RegisterRequest args)
         {
             if (args is null)
                 throw new ArgumentNullException(nameof(args));
 
-            var regiArgs = new RegistrationArgs()
+            var regiArgs = new UserModelArgs()
             {
                 Email = args.Email,
                 Lastname = args.Lastname,
@@ -67,17 +66,15 @@ namespace MUDhub.Server.Controllers
             var registerResult = await _userManager.RegisterUserAsync(regiArgs).ConfigureAwait(false);
             if (registerResult.Succeeded)
             {
-                return new RegisterResponse();
+                return Ok(new RegisterResponse());
             }
-            else
+
+            return BadRequest(new RegisterResponse()
             {
-                return new RegisterResponse()
-                {
-                    Succeeded = false,
-                    Statuscode = 400,
-                    Errormessage = registerResult.UsernameAlreadyExists ? "Username already exist" : "Cannot register the User"
-                };
-            }
+                Succeeded = false,
+                Statuscode = StatusCodes.Status400BadRequest,
+                Errormessage = registerResult.UsernameAlreadyExists ? "Username already exist" : "Cannot register the User"
+            });
         }
 
         [HttpGet("reset")]
@@ -87,9 +84,21 @@ namespace MUDhub.Server.Controllers
         }
 
         [HttpPost("reset")]
-        public async Task ResetPasswordAsync([FromBody] ResetPwRequest args)
+        public async Task<ActionResult<LoginResponse>> ResetPasswordAsync([FromBody] ResetPasswordRequest args)
         {
+            var isResetSuccessful = await _userManager.UpdatePasswortFromResetAsync(args.PasswordResetKey, args.NewPasword)
+                .ConfigureAwait(false);
+            if (isResetSuccessful)
+            {
+                return Ok(new ResetPasswordResponse());
+            }
 
+            return BadRequest(new ResetPasswordResponse()
+            {
+                Succeeded = false,
+                Statuscode = StatusCodes.Status400BadRequest,
+                Errormessage = "Password could not be reseted. => Maybe ResetKey is wrong or new Password is equal old Password."
+            });
         }
     }
 }
