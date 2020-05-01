@@ -9,7 +9,5 @@ namespace MUDhub.Server.ApiModels.Muds
     {
         public string MudId { get; set; } = string.Empty;
 
-
-
     }
 }

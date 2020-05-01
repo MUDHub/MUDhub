@@ -25,7 +25,7 @@ namespace MUDhub.Server.Controllers
 
 
         [HttpGet()]
-        public Task<ActionResult<IEnumerable<MudApiModel>>> GetAllMuds([FromQuery]bool fullData = false)
+        public Task<ActionResult<IEnumerable<MudApiModel>>> GetAllMuds([FromQuery] bool fullData = false)
         {
             if (fullData)
             {
@@ -39,19 +39,19 @@ namespace MUDhub.Server.Controllers
         }
 
         [HttpGet("{mudId}")]
-        public MudGetResponse GetMud([FromRoute]string mudId)
-        {
-            throw new NotImplementedException();
-        } 
-
-        [HttpPost()]
-        public MudCreationResponse CreateMud([FromBody]MudCreationRequest mudCreation)
+        public MudGetResponse GetMud([FromRoute] string mudId)
         {
             throw new NotImplementedException();
         }
 
-        [HttpPatch("{mudId}")]
-        public MudUpdateResponse UpdateMud([FromRoute]string mudId,[FromBody] MudUpdateRequest mudUpdate)
+        [HttpPost()]
+        public MudCreationResponse CreateMud([FromBody] MudEditRequest mudCreation)
+        {
+            throw new NotImplementedException();
+        }
+
+        [HttpPut("{mudId}")]
+        public MudUpdateResponse UpdateMud([FromRoute] string mudId, [FromBody] MudEditRequest mudUpdate)
         {
             throw new NotImplementedException();
         }
@@ -69,13 +69,13 @@ namespace MUDhub.Server.Controllers
         }
 
         [HttpPost("{mudId}/joins/{joinId}")]
-        public MudJoinsResponse ChangeRequest([FromRoute]string mudId, [FromRoute]string joinId)
+        public MudJoinsResponse ChangeRequest([FromRoute] string mudId, [FromRoute] string joinId)
         {
             throw new NotImplementedException();
         }
 
         [HttpPost("{mudId}/requestjoin")]
-        public MudJoinsResponse RequestJoin([FromRoute]string mudId, [FromQuery]string userId)
+        public MudJoinsResponse RequestJoin([FromRoute] string mudId, [FromQuery] string userId)
         {
             throw new NotImplementedException();
         }
