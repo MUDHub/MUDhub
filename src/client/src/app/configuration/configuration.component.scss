@@ -1,0 +1,21 @@
+:host {
+	display: block;
+	background-color: #eee;
+	height: 100vh;
+}
+
+
+mat-toolbar {
+	.title {
+		margin-right: 1rem;
+	}
+}
+
+.container {
+	background-color: #fff;
+	padding: 2rem;
+	margin: 2rem auto 0 auto;
+	min-height: 200px;
+	width: calc(100% - 2rem);
+	max-width: 1200px;
+}
