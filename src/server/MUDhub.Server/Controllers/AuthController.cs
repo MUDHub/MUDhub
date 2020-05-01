@@ -38,14 +38,7 @@ namespace MUDhub.Server.Controllers
                 return Ok(new LoginResponse()
                 {
                     Token = result.Token,
-                    User = new UserApiModel
-                    {
-                        Email = result.User!.Email,
-                        Id = result.User.Id,
-                        FirstName = result.User.Name,
-                        LastName = result.User.Lastname,
-                        Roles = UserHelpers.ConvertRoleToList(result.User.Role),                        
-                    }
+                    User = new UserApiModel(result.User!)
                 });
             }
             else

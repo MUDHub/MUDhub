@@ -25,15 +25,15 @@ namespace MUDhub.Server.Controllers
 
 
         [HttpGet()]
-        public IEnumerable<MudApiModel> GetAllMuds([FromQuery]bool fullData = false)
+        public Task<ActionResult<IEnumerable<MudApiModel>>> GetAllMuds([FromQuery]bool fullData = false)
         {
             if (fullData)
             {
-
+                //Todo: add fulld data, later with references.
             }
             else
             {
-
+                //_context.MudGames
             }
             throw new NotImplementedException();
         }
