@@ -9,7 +9,8 @@ namespace MUDhub.Core.Abstracts
 {
     public interface IUserManager
     {
-        Task<RegisterResult> RegisterUserAsync(RegistrationArgs model);
+        Task<RegisterResult> RegisterUserAsync(UserModelArgs model);
+        Task<bool> UpdateUserAsync(string userId, UserModelArgs model);
         Task<bool> RemoveUserAsync(string userId);
         Task<bool> AddRoleToUserAsync(string userId, Role role);
         Task<bool> RemoveRoleFromUserAsync(string userId, Role role);
@@ -17,6 +18,7 @@ namespace MUDhub.Core.Abstracts
         Task<bool> UpdatePasswortFromResetAsync(string email, string newPassword);
         Task<bool> UpdatePasswortAsync(string userId, string oldPassword, string newPassword);
         Task<bool> IsUserInRoleAsync(string userId, Role role);
+        Task<User> GetUserByIdAsync(string userId);
 
     }
 }

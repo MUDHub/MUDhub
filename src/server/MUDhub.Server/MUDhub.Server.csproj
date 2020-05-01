@@ -6,12 +6,6 @@
     <UserSecretsId>45c17950-02a7-4da2-8769-e77d564482dd</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="Hubs\**" />
-    <Content Remove="Hubs\**" />
-    <EmbeddedResource Remove="Hubs\**" />
-    <None Remove="Hubs\**" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.1.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.4.1" />

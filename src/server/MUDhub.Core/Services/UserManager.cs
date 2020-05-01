@@ -4,10 +4,6 @@ using MUDhub.Core.Abstracts;
 using MUDhub.Core.Abstracts.Models;
 using MUDhub.Core.Helper;
 using MUDhub.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace MUDhub.Core.Services
@@ -37,7 +33,7 @@ namespace MUDhub.Core.Services
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<RegisterResult> RegisterUserAsync(RegistrationArgs model)
+        public async Task<RegisterResult> RegisterUserAsync(UserModelArgs model)
         {
             if (string.IsNullOrWhiteSpace(model.Name) ||
                 string.IsNullOrWhiteSpace(model.Email) ||
@@ -67,6 +63,53 @@ namespace MUDhub.Core.Services
             }
 
         }
+
+
+        public async Task<bool> UpdateUserAsync(string userId, UserModelArgs model)
+        {/*
+            var mud = await GetUserByIdAsync(userId)
+                .ConfigureAwait(false);
+            if (mud is null)
+            {
+                _logger?.LogWarning($"Mudid: '{mudId}' didn't exists. No Update possible.");
+                return false;
+            }
+            if (args.Name != null)
+                mud.Name = args.Name;
+            if (args.Description != null)
+                mud.Description = args.Description;
+            if (args.ImageKey != null)
+                mud.ImageKey = args.ImageKey;
+            if (args.IsPublic.HasValue)
+            {
+                mud.IsPublic = args.IsPublic.Value;
+                //Todo: handle the scenario, a MudMaster change the from public to private, how we handle the joined Characters?
+                // 1. Are the related Users automatically approved? (My Favorite)
+                // 2. Or should we, implementing a usecase where the characters are Block until they are approved?
+                // And if it change from private to public, should the approvals be stored further? I think Yes.
+
+            }
+            if (args.AutoRestart.HasValue)
+                mud.AutoRestart = args.AutoRestart.Value;
+            await _context.SaveChangesAsync()
+                .ConfigureAwait(false);
+            _logger?.LogInformation($"Mud with id: '{mudId}', was successfully updated, with the given arguments: {Environment.NewLine}" +
+                $"- Name: {args.Name ?? "<no modification>"},{Environment.NewLine}" +
+                $"- Description: {args.Description ?? "<no modification>"},{Environment.NewLine}" +
+                $"- ImageKey: {args.ImageKey ?? "<no modification>"},{Environment.NewLine}" +
+                $"- IsPublic: {(args.IsPublic.HasValue ? args.IsPublic.Value.ToString(CultureInfo.InvariantCulture) : "<no modification>")},{Environment.NewLine}" +
+                $"- AutoRestart: {(args.AutoRestart.HasValue ? args.AutoRestart.Value.ToString(CultureInfo.InvariantCulture) : "<no modification>")},{Environment.NewLine}");
+            return true;
+            */
+            return true;
+        }
+
+
+
+
+
+
+
 
         /// <summary>
         /// One user is removed asynchronously.
@@ -229,7 +272,7 @@ namespace MUDhub.Core.Services
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        private async Task<User> GetUserByIdAsync(string userId)
+        public async Task<User> GetUserByIdAsync(string userId)
         {
             return await _context.Users.FirstOrDefaultAsync(u => u.Id == userId).ConfigureAwait(false);
         }
