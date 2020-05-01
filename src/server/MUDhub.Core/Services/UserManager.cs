@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Globalization;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MUDhub.Core.Abstracts;
 using MUDhub.Core.Abstracts.Models;
@@ -33,7 +35,7 @@ namespace MUDhub.Core.Services
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<RegisterResult> RegisterUserAsync(UserModelArgs model)
+        public async Task<RegisterResult> RegisterUserAsync(RegistrationUserArgs model)
         {
             if (string.IsNullOrWhiteSpace(model.Name) ||
                 string.IsNullOrWhiteSpace(model.Email) ||
@@ -67,42 +69,26 @@ namespace MUDhub.Core.Services
         }
 
 
-        public async Task<bool> UpdateUserAsync(string userId, UserModelArgs model)
-        {/*
-            var mud = await GetUserByIdAsync(userId)
+        public async Task<bool> UpdateUserAsync(string userId, UpdateUserArgs model)
+        {
+            var user = await GetUserByIdAsync(userId)
                 .ConfigureAwait(false);
-            if (mud is null)
+            if (user is null)
             {
-                _logger?.LogWarning($"Mudid: '{mudId}' didn't exists. No Update possible.");
+                _logger?.LogWarning($"UserID: '{userId}' didn't exists. No Update possible.");
                 return false;
             }
-            if (args.Name != null)
-                mud.Name = args.Name;
-            if (args.Description != null)
-                mud.Description = args.Description;
-            if (args.ImageKey != null)
-                mud.ImageKey = args.ImageKey;
-            if (args.IsPublic.HasValue)
-            {
-                mud.IsPublic = args.IsPublic.Value;
-                //Todo: handle the scenario, a MudMaster change the from public to private, how we handle the joined Characters?
-                // 1. Are the related Users automatically approved? (My Favorite)
-                // 2. Or should we, implementing a usecase where the characters are Block until they are approved?
-                // And if it change from private to public, should the approvals be stored further? I think Yes.
-
-            }
-            if (args.AutoRestart.HasValue)
-                mud.AutoRestart = args.AutoRestart.Value;
+            if (model.Name != null)
+                user.Name = model.Name;
+            if (model.Lastname != null)
+                user.Lastname = model.Lastname;
+            
+            
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
-            _logger?.LogInformation($"Mud with id: '{mudId}', was successfully updated, with the given arguments: {Environment.NewLine}" +
-                $"- Name: {args.Name ?? "<no modification>"},{Environment.NewLine}" +
-                $"- Description: {args.Description ?? "<no modification>"},{Environment.NewLine}" +
-                $"- ImageKey: {args.ImageKey ?? "<no modification>"},{Environment.NewLine}" +
-                $"- IsPublic: {(args.IsPublic.HasValue ? args.IsPublic.Value.ToString(CultureInfo.InvariantCulture) : "<no modification>")},{Environment.NewLine}" +
-                $"- AutoRestart: {(args.AutoRestart.HasValue ? args.AutoRestart.Value.ToString(CultureInfo.InvariantCulture) : "<no modification>")},{Environment.NewLine}");
-            return true;
-            */
+            _logger?.LogInformation($"User with id: '{userId}', was successfully updated, with the given arguments: {Environment.NewLine}" +
+                $"- Name: {model.Name ?? "<no modification>"},{Environment.NewLine}" +
+                $"- Description: {model.Lastname ?? "<no modification>"},{Environment.NewLine}");
             return true;
         }
 

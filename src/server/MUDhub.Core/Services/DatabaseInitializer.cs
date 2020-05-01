@@ -40,7 +40,7 @@ namespace MUDhub.Core.Services
                     return;
                 }
 
-                var registerResult =  await _userManager.RegisterUserAsync(new UserModelArgs
+                var registerResult =  await _userManager.RegisterUserAsync(new RegistrationUserArgs
                 {
                     Email = _options.DefaultMudAdminEmail,
                     Password = _options.DefaultMudAdminPassword,
