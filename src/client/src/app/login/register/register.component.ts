@@ -8,7 +8,7 @@ import { AuthService } from '../../services/auth.service';
 	styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent implements OnInit {
-	constructor(private authService: AuthService) { }
+	constructor(private authService: AuthService) {}
 
 	firstname = new FormControl();
 	lastname = new FormControl();
@@ -16,8 +16,13 @@ export class RegisterComponent implements OnInit {
 	password = new FormControl();
 
 	register() {
-		console.log(this.firstname.value,this.lastname.value, this.mail.value, this.password.value);		
+		console.log(
+			this.firstname.value,
+			this.lastname.value,
+			this.mail.value,
+			this.password.value
+		);
 	}
 
-	ngOnInit(): void { }
+	ngOnInit(): void {}
 }

@@ -13,11 +13,7 @@ export class AuthService {
 
 	public register() { }
 
-	/**
-	 * 
-	 * @param mail 
-	 */
-	public reset(mail:string): boolean {
+	public reset(mail: string): boolean {
 		return true;
 	}
 }
