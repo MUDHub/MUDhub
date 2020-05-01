@@ -61,10 +61,8 @@ namespace MUDhub.Core.Services
                     .ConfigureAwait(false);
                 return new RegisterResult(true, user: newUser);
             }
-            else
-            {
-                return new RegisterResult(false, true);
-            }
+
+            return new RegisterResult(false, true);
 
         }
 

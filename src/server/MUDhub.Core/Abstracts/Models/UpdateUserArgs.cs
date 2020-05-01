@@ -6,7 +6,7 @@ namespace MUDhub.Core.Abstracts.Models
 {
     public class UpdateUserArgs
     {
-        public string Name { get; set; } = string.Empty;
-        public string Lastname { get; set; } = string.Empty;
+        public string? Name { get; set; } = null;
+        public string? Lastname { get; set; } = null;
     }
 }

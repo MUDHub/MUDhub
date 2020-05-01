@@ -31,7 +31,7 @@ namespace MUDhub.Core.Tests
                 Role = Roles.Master,
                 Name = "Max",
                 Lastname = "Mustermann",
-                Email = "max@musterman.de",
+                Email = "MAX@MUSTERMANN.DE",
                 PasswordHash = UserHelpers.CreatePasswordHash("PW1234"),
                 PasswordResetKey = "ResetMax"
             };
@@ -259,7 +259,7 @@ namespace MUDhub.Core.Tests
             {
                 Name = "Tobi",
                 Lastname = "Kartoffel",
-                Email = "max7@test.de",
+                Email = "max@musterman.de",
                 Password = "Test1234"
             };
             RegisterResult registerResult = await _userManager.RegisterUserAsync(regiArgs);
@@ -279,6 +279,32 @@ namespace MUDhub.Core.Tests
             };
             RegisterResult registerResult = await _userManager.RegisterUserAsync(regiArgs);
             Assert.True(registerResult.Succeeded);
+        }
+
+        [Fact]
+        public async Task UpdateUserAsync_ReturnTrue()
+        {
+
+            var updateArgs = new UpdateUserArgs()
+            {
+                Name = "Max",
+                Lastname = "Mustermann"
+            };
+            var testResult = await _userManager.UpdateUserAsync("1", updateArgs);
+            Assert.True(testResult);
+        }
+
+        [Fact]
+        public async Task UpdateUserAsync_ReturnFalseUserNotFound()
+        {
+
+            var updateArgs = new UpdateUserArgs()
+            {
+                Name = "Max",
+                Lastname = "Mustermann"
+            };
+            var testResult = await _userManager.UpdateUserAsync("2", updateArgs);
+            Assert.False(testResult);
         }
 
 
