@@ -11,7 +11,7 @@ describe('LoginComponent', () => {
 	let authServiceStub: Partial<AuthService>;
 	authServiceStub = {
 		login() {
-
+			
 		}
 	};
 

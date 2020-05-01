@@ -36,16 +36,15 @@ export class AuthService {
 			});
 	}
 
-	public reset(mail: string): boolean {
+	public reset(mail: string) {
 		this.http
 			.get<string>(this.apiPath + "api/auth/reset", { params: { mail } })
 			.toPromise()
 			.then((res) => {
-				return true;
+				console.log(res);
 			})
 			.catch((err) => {
-				return false;
+				console.log(err);
 			});
-		return false;
 	}
 }

@@ -12,7 +12,6 @@ describe('ResetComponent', () => {
 	let authServiceStub: Partial<AuthService>;
 	authServiceStub = {
 		reset() {
-			return true;
 		}
 	};
 
