@@ -41,14 +41,12 @@ namespace MUDhub.Server.Controllers
                     User = new UserApiModel(result.User!)
                 });
             }
-            else
+
+            return BadRequest(new LoginResponse()
             {
-                return BadRequest(new LoginResponse()
-                {
-                    Statuscode = StatusCodes.Status400BadRequest,
-                    Errormessage = "Username or Password is false!"
-                });
-            }
+                Statuscode = StatusCodes.Status400BadRequest,
+                Errormessage = "Username or Password is false!"
+            });
         }
 
         [HttpPost("register")]
@@ -57,7 +55,7 @@ namespace MUDhub.Server.Controllers
             if (args is null)
                 throw new ArgumentNullException(nameof(args));
 
-            var regiArgs = new RegistrationArgs()
+            var regiArgs = new UserModelArgs()
             {
                 Email = args.Email,
                 Lastname = args.Lastname,
@@ -70,15 +68,13 @@ namespace MUDhub.Server.Controllers
             {
                 return Ok(new RegisterResponse());
             }
-            else
+
+            return BadRequest(new RegisterResponse()
             {
-                return BadRequest(new RegisterResponse()
-                {
-                    Succeeded = false,
-                    Statuscode = StatusCodes.Status400BadRequest,
-                    Errormessage = registerResult.UsernameAlreadyExists ? "Username already exist" : "Cannot register the User"
-                });
-            }
+                Succeeded = false,
+                Statuscode = StatusCodes.Status400BadRequest,
+                Errormessage = registerResult.UsernameAlreadyExists ? "Username already exist" : "Cannot register the User"
+            });
         }
 
         [HttpGet("reset")]
@@ -96,15 +92,13 @@ namespace MUDhub.Server.Controllers
             {
                 return Ok(new ResetPasswordResponse());
             }
-            else
+
+            return BadRequest(new ResetPasswordResponse()
             {
-                return BadRequest(new ResetPasswordResponse()
-                {
-                    Succeeded = false,
-                    Statuscode = StatusCodes.Status400BadRequest,
-                    Errormessage = "Password could not be reseted. => Maybe ResetKey is wrong or new Password is equal old Password."
-                });
-            }
+                Succeeded = false,
+                Statuscode = StatusCodes.Status400BadRequest,
+                Errormessage = "Password could not be reseted. => Maybe ResetKey is wrong or new Password is equal old Password."
+            });
         }
     }
 }

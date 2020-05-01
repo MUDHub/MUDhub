@@ -17,15 +17,19 @@ export class MapComponent implements OnInit {
 	map: IRoom[][] = [[]];
 
 
-	private get width() {
+	get width() {
 		return this.map[0]?.length;
 	}
-	private get height() {
+	get height() {
 		return this.map.length;
 	}
 
 
 	ngOnInit(): void {
+		this.updateMap();
+	}
+
+	updateMap() {
 		// TODO: replace with correct implementation
 		this.rooms = this.roomsService.getRoomsForArea('');
 		this.renderMap(this.rooms);
@@ -46,7 +50,5 @@ export class MapComponent implements OnInit {
 
 			this.map[room.position.y][room.position.x] = room;
 		}
-
-		console.log(this.map);
 	}
 }

@@ -177,63 +177,63 @@ namespace MUDhub.Core.Tests
 
         public static IEnumerable<object[]> CreateRegistrationArgs()
         {
-            yield return new object[]{ new RegistrationArgs()
+            yield return new object[]{ new UserModelArgs()
             {
                 Name = null!,
                 Lastname = "Kartoffel",
                 Email = "max1@test.de",
                 Password = "Test1234"
             } };
-            yield return new object[]{ new RegistrationArgs()
+            yield return new object[]{ new UserModelArgs()
             {
                 Name = "Tobi",
                 Lastname = "Kartoffel",
                 Email = null!,
                 Password = "Test1234"
             } };
-            yield return new object[]{ new RegistrationArgs()
+            yield return new object[]{ new UserModelArgs()
             {
                 Name = "Tobi",
                 Lastname = "Kartoffel",
                 Email = "max2@test.de",
                 Password = null!
             } };
-            yield return new object[]{ new RegistrationArgs()
+            yield return new object[]{ new UserModelArgs()
             {
                 Name = string.Empty,
                 Lastname = "Kartoffel",
                 Email = "max3@test.de",
                 Password = "Test1234"
             } };
-            yield return new object[]{ new RegistrationArgs()
+            yield return new object[]{ new UserModelArgs()
             {
                 Name = "Tobi",
                 Lastname = "Kartoffel",
                 Email = string.Empty,
                 Password = "Test1234"
             } };
-            yield return new object[]{ new RegistrationArgs()
+            yield return new object[]{ new UserModelArgs()
             {
                 Name = "Tobi",
                 Lastname = "Kartoffel",
                 Email = "max4@test.de",
                 Password = string.Empty
             } };
-            yield return new object[]{ new RegistrationArgs()
+            yield return new object[]{ new UserModelArgs()
             {
                 Name = " ",
                 Lastname = "Kartoffel",
                 Email = "max5@test.de",
                 Password = "Test1234"
             } };
-            yield return new object[]{ new RegistrationArgs()
+            yield return new object[]{ new UserModelArgs()
             {
                 Name = "Tobi",
                 Lastname = "Kartoffel",
                 Email = " ",
                 Password = "Test1234"
             } };
-            yield return new object[]{ new RegistrationArgs()
+            yield return new object[]{ new UserModelArgs()
             {
                 Name = "Tobi",
                 Lastname = "Kartoffel",
@@ -244,18 +244,18 @@ namespace MUDhub.Core.Tests
 
         [Theory]
         [MemberData(nameof(CreateRegistrationArgs))]
-        public async Task RegisterUserAsync_ReturnFalseBecauseNullOrEmpty(RegistrationArgs registrationArgs)
+        public async Task RegisterUserAsync_ReturnFalseBecauseNullOrEmpty(UserModelArgs userModelArgs)
         {
 
 
-            RegisterResult registerResult = await _userManager.RegisterUserAsync(registrationArgs);
+            RegisterResult registerResult = await _userManager.RegisterUserAsync(userModelArgs);
             Assert.False(registerResult.Succeeded);
         }
         [Fact]
         public async Task RegisterUserAsync_ReturnFalseUserExist()
         {
 
-            var regiArgs = new RegistrationArgs()
+            var regiArgs = new UserModelArgs()
             {
                 Name = "Tobi",
                 Lastname = "Kartoffel",
@@ -270,7 +270,7 @@ namespace MUDhub.Core.Tests
         public async Task RegisterUserAsync_ReturnTrue()
         {
 
-            var regiArgs = new RegistrationArgs()
+            var regiArgs = new UserModelArgs()
             {
                 Name = "Max",
                 Lastname = "Mustermann",
