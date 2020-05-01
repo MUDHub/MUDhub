@@ -53,13 +53,13 @@ namespace MUDhub.Core.Services
                     return;
                 }
 
-                var success =  await _userManager.AddRoleToUserAsync(registerResult!.User!.Id, Role.Admin)
+                var success =  await _userManager.AddRoleToUserAsync(registerResult!.User!.Id, Roles.Admin)
                     .ConfigureAwait(false);
                 if (success)
                 {
                     //Todo: add logging message
                 }
-                success = await _userManager.AddRoleToUserAsync(registerResult!.User!.Id, Role.Master)
+                success = await _userManager.AddRoleToUserAsync(registerResult!.User!.Id, Roles.Master)
                     .ConfigureAwait(false);
                 if (success)
                 {
