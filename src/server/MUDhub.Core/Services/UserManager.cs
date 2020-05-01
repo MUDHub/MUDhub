@@ -14,7 +14,7 @@ namespace MUDhub.Core.Services
 {
     internal class UserManager : IUserManager
     {
-
+        //ToDo: Add userupdate methode, dont forget normalized email
         private readonly MudDbContext _context;
         private readonly ILogger? _logger;
         private readonly IEmailService _emailService;
@@ -45,7 +45,8 @@ namespace MUDhub.Core.Services
             {
                 return new RegisterResult(false);
             }
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email.ToUpperInvariant() == model.Email.ToUpperInvariant())
+            var normalizedEmail = model.Email.ToUpperInvariant();
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.NormalizedEmail == normalizedEmail)
                 .ConfigureAwait(false);
             if (user == null)
             {
@@ -54,6 +55,7 @@ namespace MUDhub.Core.Services
                     Name = model.Name,
                     Lastname = model.Lastname,
                     Email = model.Email,
+                    NormalizedEmail = model.Email.ToUpperInvariant(),
                     PasswordHash = UserHelpers.CreatePasswordHash(model.Password)
                 };
                 await _context.AddAsync(newUser).ConfigureAwait(false);
