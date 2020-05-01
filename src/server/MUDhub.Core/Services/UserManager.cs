@@ -12,7 +12,6 @@ namespace MUDhub.Core.Services
 {
     internal class UserManager : IUserManager
     {
-        //ToDo: Add userupdate methode, dont forget normalized email
         private readonly MudDbContext _context;
         private readonly ILogger? _logger;
         private readonly IEmailService _emailService;

@@ -34,7 +34,7 @@ namespace MUDhub.Core.Abstracts
         public static IServiceCollection AddUserManagment(this IServiceCollection services)
         {
             //Todo: Later change this to scoped.
-            services.TryAddSingleton<ILoginService, LoginService>();
+            services.TryAddSingleton<LoginService, LoginService>();
             services.TryAddSingleton<IUserManager, UserManager>();
             services.TryAddSingleton<IEmailService, EmailService>();
             return services;
