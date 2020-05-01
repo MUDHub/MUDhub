@@ -33,7 +33,7 @@ namespace MUDhub.Core.Helper
             return passwordHash;
         }
 
-        public static bool IsUserInRole(User user, Role role)
+        public static bool IsUserInRole(User user, Roles role)
         {
             if (user is null)
             {
@@ -54,9 +54,9 @@ namespace MUDhub.Core.Helper
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
             };
 
-            foreach (var role in Enum.GetValues(typeof(Role)))
+            foreach (var role in Enum.GetValues(typeof(Roles)))
             {
-                if (UserHelpers.IsUserInRole(user, (Role)role))
+                if (UserHelpers.IsUserInRole(user, (Roles)role))
                 {
                     listClaims.Add(new Claim(ClaimTypes.Role, role.ToString()));
                 }
@@ -71,9 +71,9 @@ namespace MUDhub.Core.Helper
             return tokenHandler.WriteToken(token);
         }
 
-        public static IEnumerable<string> ConvertRoleToList(Role role) 
-            => Enum.GetValues(typeof(Role))
-                       .Cast<Role>()
+        public static IEnumerable<string> ConvertRoleToList(Roles role) 
+            => Enum.GetValues(typeof(Roles))
+                       .Cast<Roles>()
                        .Where(r => (r & role) != 0)
                        .Select(r => r.ToString());
     }

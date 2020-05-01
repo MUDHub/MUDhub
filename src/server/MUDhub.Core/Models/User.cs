@@ -21,7 +21,7 @@ namespace MUDhub.Core.Models
         public string Lastname { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string PasswordHash { get; set; } = string.Empty;
-        public Role Role { get; set; } = Role.Player;
+        public Roles Role { get; set; } = Roles.Player;
 
         public string? PasswordResetKey { get; set; }
 

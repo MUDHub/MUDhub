@@ -30,7 +30,7 @@ namespace MUDhub.Core.Tests
             _loginService = new LoginService(_context, new ServerConfiguration());
             _user = new User("sdfsdf")
             {
-                Role = Role.Master,
+                Role = Roles.Master,
                 Name = "Max",
                 Lastname = "Mustermann",
                 Email = "Max@Mustermann.de",
