@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { IMudCreateArgs } from '../model/MudDTO';
 import { HttpClient } from '@angular/common/http';
+import { environment as env } from 'src/environments/environment';
 
 @Injectable({
 	providedIn: 'root',
@@ -9,7 +10,8 @@ export class MudService {
 	constructor(private http: HttpClient) {}
 
 
-	createMUD(args: IMudCreateArgs) {
-
+	async createMUD(args: IMudCreateArgs) {
+		// TODO: replace url
+		return await this.http.post(env.api.path + 'muds', args).toPromise();
 	}
 }
