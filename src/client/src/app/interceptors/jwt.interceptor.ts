@@ -23,7 +23,6 @@ export class JwtInterceptor implements HttpInterceptor {
 				}
 			});
 
-			console.log(cloned.headers);
 			return next.handle(cloned);
 		} else {
 			return next.handle(request);
