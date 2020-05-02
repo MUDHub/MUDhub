@@ -287,10 +287,10 @@ namespace MUDhub.Core.Tests
         private static MudDbContext CreateInMemoryDbContext()
         {
             var options = new DbContextOptionsBuilder<MudDbContext>()
-                .UseInMemoryDatabase("Testdatabase")
+                .UseInMemoryDatabase("Testdatabase_MudManagment", opt => { })
                 .Options;
 
-            return new MudDbContext(options);
+            return new MudDbContext(options,true);
         }
     }
 }

@@ -10,10 +10,18 @@ namespace MUDhub.Core.Services
 {
     public class MudDbContext : DbContext
     {
-        public MudDbContext(DbContextOptions options) 
+        public MudDbContext(DbContextOptions options, bool useInUnitTests = false)
             : base(options)
         {
+            if (!useInUnitTests)
+                Database.Migrate();
+            else
+            {
+                Database.EnsureDeleted();
+                Database.EnsureCreated();
+            }
         }
+        public DbSet<User> Users { get; set; } = null!;
 
 
         public DbSet<MudGame> MudGames { get; set; } = null!;
@@ -32,11 +40,17 @@ namespace MUDhub.Core.Services
 
             //Configures MudJoinRequests
             modelBuilder.Entity<MudJoinRequest>()
-                .HasKey(mjr => new {mjr.MudId, mjr.UserId });
+                .HasKey(mjr => new { mjr.MudId, mjr.UserId });
             modelBuilder.Entity<MudJoinRequest>()
                 .HasOne(mjr => mjr.MudGame)
                 .WithMany(mg => mg.JoinRequests)
                 .HasForeignKey(mjr => mjr.MudId);
+
+            modelBuilder.Entity<User>(
+                   b =>
+                   {
+                       b.HasKey(u => u.Id);
+                   });
 
         }
 

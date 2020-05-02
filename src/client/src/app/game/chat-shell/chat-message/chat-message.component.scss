@@ -1,17 +1,29 @@
+@import 'src/variables.scss';
+
 :host {
 	display: flex;
 	flex-direction: column;
+	align-items: flex-start;
+	max-width: 80%;
+	word-break: break-word;
+
 
 	&:not(:last-child) {
-		margin-bottom: 1rem;
+		margin-bottom: 0.4rem;
+	}
+
+	&.self {
+		align-self: flex-end;
+		align-items: flex-end;
 	}
 }
 
 .message-sender {
-	opacity: 0.6;
+	color: $color-primary;
+	font-weight: bold;
 	font-size: 80%;
 }
 
 .message-content {
-	line-height: 115%;
+	line-height: 100%;
 }

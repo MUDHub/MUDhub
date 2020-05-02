@@ -1,4 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, HostBinding } from '@angular/core';
+import { IMessage } from 'src/app/model/IMessage';
 
 @Component({
 	selector: 'mh-chat-message',
@@ -10,10 +11,10 @@ export class ChatMessageComponent {
 	@Input()
 	message: IMessage;
 
+	@HostBinding('class.self')
+	get self() { return this.message.sender === undefined; }
+
 }
 
 
-export interface IMessage {
-	sender: string;
-	content: string;
-}
+
