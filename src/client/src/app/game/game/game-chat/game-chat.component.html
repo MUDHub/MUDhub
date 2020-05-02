@@ -1,3 +1,3 @@
-<p>game-chat works!</p>
-
-<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque impedit, unde voluptatem suscipit veritatis ab officiis, vero rem consectetur placeat quasi tempora aut, voluptatibus laudantium recusandae nobis blanditiis cum qui.</p>
+<div class="message" *ngFor="let m of chat" [class.user-input]="m.type === MessageType.Client">
+	{{ m.message }}
+</div>
