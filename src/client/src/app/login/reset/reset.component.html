@@ -1,1 +1,18 @@
-<p>reset works!</p>
+<h1 class="title">Passwort zurücksetzen</h1>
+
+<div class="form-row">
+    <input
+        [formControl]="mail"
+		type="text"
+		class="input"
+		name="mail"
+		id="mail"
+		placeholder="E-Mail"
+	/>
+</div>
+
+<a routerLink="/login">Anmelden</a>
+<div class="form-row">
+    <button (click)="reset()" class="right">Zurücksetzen</button>
+</div>
+

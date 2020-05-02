@@ -1,34 +1,44 @@
+@import '../../variables.scss';
+
 :host {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	width: 100%;
-	height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100vh;
+    background-image: linear-gradient(to bottom right,#ff6f00,#ffab3d);
 }
 
-
 .container {
-	height: 90%;
-
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	width: 90%;
-	max-width: 500px;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    max-width: 500px;
 }
 
 .logo {
-	width: 200px;
+    width: 250px;
+    margin-left: 105px;
 }
 
 .outlet {
-	width: 100%;
-	background-color: #eee;
-	padding: 2rem;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4), 0 6px 20px 0 rgba(0, 0, 0, 0.4);
+    width: 100%;
+    background-color: #eee;
+    padding: 2rem;
+    border-radius: 10px;
 }
 
 footer {
-
+    background-color: rgba(0,0,0,0.4);
+    color: rgb(204, 204, 204);
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    left: 0;
+    bottom:0;
 }
