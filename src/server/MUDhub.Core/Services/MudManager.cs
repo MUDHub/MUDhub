@@ -39,11 +39,12 @@ namespace MUDhub.Core.Services
             _context.MudGames.Add(mud);
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
+            _logger?.LogInformation($"Mudgame with the id: '{mud.Id}' created, from User '{owner.Email}'.");
             var result = await UpdateMudAsync(mud.Id, new MudUpdateArgs(args))
                 .ConfigureAwait(false);
             if (result)
             {
-                _logger?.LogInformation($"Mud with id: '{mud.Id}', was successfully created.");
+                _logger?.LogInformation($"Finished Mud Creation with id: '{mud.Id}'.");
             }
             else
             {
@@ -85,7 +86,7 @@ namespace MUDhub.Core.Services
                 $"- Description: {args.Description ?? "<no modification>"},{Environment.NewLine}" +
                 $"- ImageKey: {args.ImageKey ?? "<no modification>"},{Environment.NewLine}" +
                 $"- IsPublic: {(args.IsPublic.HasValue ? args.IsPublic.Value.ToString(CultureInfo.InvariantCulture) : "<no modification>")},{Environment.NewLine}" +
-                $"- AutoRestart: {(args.AutoRestart.HasValue ? args.AutoRestart.Value.ToString(CultureInfo.InvariantCulture) : "<no modification>")},{Environment.NewLine}");
+                $"- AutoRestart: {(args.AutoRestart.HasValue ? args.AutoRestart.Value.ToString(CultureInfo.InvariantCulture) : "<no modification>")}");
             return true;
         }
 

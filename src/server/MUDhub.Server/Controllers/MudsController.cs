@@ -28,15 +28,25 @@ namespace MUDhub.Server.Controllers
 
 
         [HttpGet()]
-        public ActionResult<IEnumerable<MudApiModel>> GetAllMuds([FromQuery] bool fullData = false)
+        public ActionResult<IEnumerable<MudApiModel>> GetAllMuds([FromQuery] bool fullData = false, [FromQuery] string? userid = null)
         {
+
             if (fullData)
             {
                 //Todo: add fulld data, later with references.
             }
             else
             {
-               return Ok(_context.MudGames.AsEnumerable().Select(mg => MudApiModel.ConvertFromMudGame(mg)));
+                if (userid is null)
+                {
+                    return Ok(_context.MudGames.AsEnumerable().Select(mg => MudApiModel.ConvertFromMudGame(mg)));
+                }
+                else
+                {
+                    return Ok(_context.MudGames.Where(g => g.OwnerId == userid)
+                                                .AsEnumerable()
+                                                .Select(mg => MudApiModel.ConvertFromMudGame(mg)));
+                }
             }
             throw new NotImplementedException();
         }
@@ -92,7 +102,7 @@ namespace MUDhub.Server.Controllers
             if (!result)
                 return BadRequest(new MudDeleteResponse
                 {
-                    Errormessage  = $"Mud with the Id '{mudId}' does not exist!",
+                    Errormessage = $"Mud with the Id '{mudId}' does not exist!",
                     Succeeded = false
                 });
 
