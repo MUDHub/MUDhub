@@ -10,8 +10,8 @@ describe('LoginComponent', () => {
 	/* AUTHSERVICE MOCK */
 	let authServiceStub: Partial<AuthService>;
 	authServiceStub = {
-		login() {
-			
+		async login() {
+
 		}
 	};
 

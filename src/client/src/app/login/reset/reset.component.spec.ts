@@ -11,7 +11,7 @@ describe('ResetComponent', () => {
 	/* AUTHSERVICE MOCK */
 	let authServiceStub: Partial<AuthService>;
 	authServiceStub = {
-		reset() {
+		async reset() {
 		}
 	};
 

@@ -10,7 +10,7 @@ describe('RegisterComponent', () => {
 	/* AUTHSERVICE MOCK */
 	let authServiceStub: Partial<AuthService>;
 	authServiceStub = {
-		register() {
+		async register() {
 
 		}
 	};
