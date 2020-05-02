@@ -7,8 +7,6 @@ using MUDhub.Core.Abstracts.Models;
 using MUDhub.Core.Configurations;
 using MUDhub.Core.Models;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -42,7 +40,7 @@ namespace MUDhub.Core.Services
                     return;
                 }
 
-                var registerResult =  await _userManager.RegisterUserAsync(new RegistrationArgs
+                var registerResult =  await _userManager.RegisterUserAsync(new UserModelArgs
                 {
                     Email = _options.DefaultMudAdminEmail,
                     Password = _options.DefaultMudAdminPassword,

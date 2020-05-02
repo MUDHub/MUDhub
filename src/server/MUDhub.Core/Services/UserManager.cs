@@ -1,17 +1,16 @@
-﻿using MUDhub.Core.Abstracts;
-using MUDhub.Core.Models;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using MUDhub.Core.Abstracts;
 using MUDhub.Core.Abstracts.Models;
 using MUDhub.Core.Helper;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using MUDhub.Core.Models;
+using System.Threading.Tasks;
 
 namespace MUDhub.Core.Services
 {
     internal class UserManager : IUserManager
     {
-
+        //ToDo: Add userupdate methode, dont forget normalized email
         private readonly MudDbContext _context;
         private readonly ILogger? _logger;
         private readonly IEmailService _emailService;
@@ -34,7 +33,7 @@ namespace MUDhub.Core.Services
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<RegisterResult> RegisterUserAsync(RegistrationArgs model)
+        public async Task<RegisterResult> RegisterUserAsync(UserModelArgs model)
         {
             if (string.IsNullOrWhiteSpace(model.Name) ||
                 string.IsNullOrWhiteSpace(model.Email) ||
@@ -42,7 +41,8 @@ namespace MUDhub.Core.Services
             {
                 return new RegisterResult(false);
             }
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == model.Email)
+            var normalizedEmail = model.Email.ToUpperInvariant();
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.NormalizedEmail == normalizedEmail)
                 .ConfigureAwait(false);
             if (user == null)
             {
@@ -51,9 +51,10 @@ namespace MUDhub.Core.Services
                     Name = model.Name,
                     Lastname = model.Lastname,
                     Email = model.Email,
+                    NormalizedEmail = model.Email.ToUpperInvariant(),
                     PasswordHash = UserHelpers.CreatePasswordHash(model.Password)
                 };
-                await _context.AddAsync(newUser);
+                await _context.AddAsync(newUser).ConfigureAwait(false);
                 await _context.SaveChangesAsync()
                     .ConfigureAwait(false);
                 return new RegisterResult(true, user: newUser);
@@ -64,6 +65,53 @@ namespace MUDhub.Core.Services
             }
 
         }
+
+
+        public async Task<bool> UpdateUserAsync(string userId, UserModelArgs model)
+        {/*
+            var mud = await GetUserByIdAsync(userId)
+                .ConfigureAwait(false);
+            if (mud is null)
+            {
+                _logger?.LogWarning($"Mudid: '{mudId}' didn't exists. No Update possible.");
+                return false;
+            }
+            if (args.Name != null)
+                mud.Name = args.Name;
+            if (args.Description != null)
+                mud.Description = args.Description;
+            if (args.ImageKey != null)
+                mud.ImageKey = args.ImageKey;
+            if (args.IsPublic.HasValue)
+            {
+                mud.IsPublic = args.IsPublic.Value;
+                //Todo: handle the scenario, a MudMaster change the from public to private, how we handle the joined Characters?
+                // 1. Are the related Users automatically approved? (My Favorite)
+                // 2. Or should we, implementing a usecase where the characters are Block until they are approved?
+                // And if it change from private to public, should the approvals be stored further? I think Yes.
+
+            }
+            if (args.AutoRestart.HasValue)
+                mud.AutoRestart = args.AutoRestart.Value;
+            await _context.SaveChangesAsync()
+                .ConfigureAwait(false);
+            _logger?.LogInformation($"Mud with id: '{mudId}', was successfully updated, with the given arguments: {Environment.NewLine}" +
+                $"- Name: {args.Name ?? "<no modification>"},{Environment.NewLine}" +
+                $"- Description: {args.Description ?? "<no modification>"},{Environment.NewLine}" +
+                $"- ImageKey: {args.ImageKey ?? "<no modification>"},{Environment.NewLine}" +
+                $"- IsPublic: {(args.IsPublic.HasValue ? args.IsPublic.Value.ToString(CultureInfo.InvariantCulture) : "<no modification>")},{Environment.NewLine}" +
+                $"- AutoRestart: {(args.AutoRestart.HasValue ? args.AutoRestart.Value.ToString(CultureInfo.InvariantCulture) : "<no modification>")},{Environment.NewLine}");
+            return true;
+            */
+            return true;
+        }
+
+
+
+
+
+
+
 
         /// <summary>
         /// One user is removed asynchronously.
@@ -145,7 +193,7 @@ namespace MUDhub.Core.Services
         public async Task<bool> IsUserInRoleAsync(string userId, Roles role)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId).ConfigureAwait(false);
-            return IsUserInRole(user, role);
+            return UserHelpers.IsUserInRole(user, role);
         }
 
         /// <summary>
@@ -226,18 +274,9 @@ namespace MUDhub.Core.Services
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        private async Task<User> GetUserByIdAsync(string userId)
+        public async Task<User> GetUserByIdAsync(string userId)
         {
             return await _context.Users.FirstOrDefaultAsync(u => u.Id == userId).ConfigureAwait(false);
-        }
-
-        public bool IsUserInRole(User user, Roles role)
-        {
-            if (user is null)
-            {
-                return false;
-            }
-            return ((user.Role & role) == role);
         }
     }
 }

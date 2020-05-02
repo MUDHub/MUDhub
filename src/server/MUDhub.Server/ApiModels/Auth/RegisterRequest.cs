@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 using System.ComponentModel.DataAnnotations;
 
-namespace MUDhub.Server.ApiModels
+namespace MUDhub.Server.ApiModels.Auth
 {
     public class RegisterRequest
     {

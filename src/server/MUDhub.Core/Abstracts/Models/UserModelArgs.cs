@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MUDhub.Core.Abstracts.Models
 {
-    public class RegistrationArgs
+    public class UserModelArgs
     {
         public string Name { get; set; } = string.Empty;
         public string Lastname { get; set; } = string.Empty;
