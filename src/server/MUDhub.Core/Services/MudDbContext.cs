@@ -15,10 +15,6 @@ namespace MUDhub.Core.Services
         public MudDbContext(DbContextOptions options, IOptions<DatabaseConfiguration> conf = null ,bool useInUnitTests = false)
             : base(options)
         {
-            if (conf.Value.DeleteDatabase)
-            {
-                Database.EnsureDeleted();
-            }
             if (!useInUnitTests)
             {
                 Database.Migrate();

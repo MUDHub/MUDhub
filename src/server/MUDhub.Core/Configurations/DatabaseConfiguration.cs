@@ -9,6 +9,5 @@
         public bool CreateDefaultUser { get; set; } = false;
 
         public bool CreateDefaultMudData { get; set; } = false;
-        public bool DeleteDatabase { get; set; } = false;
     }
 }
