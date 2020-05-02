@@ -23,9 +23,7 @@
 
 <a routerLink="/login/reset">Passwort vergessen?</a>
 
-<div class="form-row">
-	<button (click)="login()">Anmelden</button>
-</div>
+<button class="login-button" mat-flat-button color="primary" [disabled]="isLoading" (click)="login()">Anmelden</button>
 
 <div class="register">
 	<p> Noch keinen Account? </p>

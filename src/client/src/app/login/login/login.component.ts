@@ -14,8 +14,13 @@ export class LoginComponent {
 	mail = new FormControl();
 	password = new FormControl();
 
+	isLoading = false;
+
 	async login() {
+		this.isLoading = true;
 		const success = await this.authService.login(this.mail.value, this.password.value);
+		this.isLoading = false;
+
 		console.log('success:', success);
 
 		if (success) {
