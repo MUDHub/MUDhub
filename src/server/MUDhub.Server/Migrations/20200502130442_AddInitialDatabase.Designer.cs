@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MUDhub.Server.Migrations
 {
     [DbContext(typeof(MudDbContext))]
-    [Migration("20200502103909_AddMudGameReference")]
-    partial class AddMudGameReference
+    [Migration("20200502130442_AddInitialDatabase")]
+    partial class AddInitialDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
