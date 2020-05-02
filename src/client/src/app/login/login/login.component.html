@@ -2,8 +2,9 @@
 
 <div class="form-row">
 	<input
+		[formControl]="mail"
 		class="input"
-		type="text"
+		type="mail"
 		name="mail"
 		id="mail"
 		placeholder="E-Mail"
@@ -11,6 +12,7 @@
 </div>
 <div class="form-row">
 	<input
+		[formControl]="password"
 		class="input"
 		type="password"
 		name="password"
@@ -18,8 +20,14 @@
 		placeholder="Passwort"
 	/>
 </div>
+
+<a routerLink="/login/reset">Passwort vergessen?</a>
+
 <div class="form-row">
-	<button>Anmelden</button>
+	<button (click)="login()">Anmelden</button>
 </div>
 
-<a routerLink="/login/register">Registrieren</a>
+<div class="register">
+	<p> Noch keinen Account? </p>
+	<a routerLink="/login/register">Registrieren</a>
+</div>

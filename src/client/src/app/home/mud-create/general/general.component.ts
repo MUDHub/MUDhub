@@ -1,32 +1,33 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { MudService } from 'src/app/services/mud.service';
+import { IMudCreateRequest } from 'src/app/model/MudDTO';
 
 @Component({
 	templateUrl: './general.component.html',
 	styleUrls: ['./general.component.scss'],
 })
-export class GeneralComponent implements OnInit {
-	constructor(private fb: FormBuilder) {}
+export class GeneralComponent {
+	constructor(private fb: FormBuilder, private mud: MudService) {}
 
 	createForm = this.fb.group({
 		name: ['', Validators.required],
 		description: ['', Validators.required],
 		public: [true],
+		autoRestart: [false],
 	});
 
-	get name() {
-		return this.createForm.get('name');
-	}
-	get description() {
-		return this.createForm.get('description');
-	}
-	get public() {
-		return this.createForm.get('public');
-	}
+	async onSubmit() {
+		const mud: IMudCreateRequest = {
+			name: this.createForm.get('name').value,
+			description: this.createForm.get('description').value,
+			public: this.createForm.get('public').value,
+			autoRestart: this.createForm.get('autoRestart').value,
+		};
 
-	ngOnInit(): void {}
+		console.log('sending:', mud);
 
-	onSubmit() {
-		console.log(this.createForm.value);
+		const response = await this.mud.createMUD(mud);
+		console.log('response:', response);
 	}
 }

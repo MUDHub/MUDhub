@@ -5,6 +5,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { MudCreateRoutingModule } from './mud-create-routing.module';
 import { MudCreateComponent } from './mud-create.component';
@@ -21,6 +22,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 		MatSliderModule,
 		MatButtonModule,
 		MatCheckboxModule,
+		MatTooltipModule,
 	],
 })
 export class MudCreateModule {}
