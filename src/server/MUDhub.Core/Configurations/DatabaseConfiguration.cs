@@ -8,5 +8,7 @@
         public string DefaultMudAdminPassword { get; set; } = "admin";
         public bool CreateDefaultUser { get; set; } = false;
 
+        public bool CreateDefaultMudData { get; set; } = false;
+
     }
 }

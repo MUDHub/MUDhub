@@ -25,7 +25,7 @@ namespace MUDhub.Server.Controllers
 
 
         [HttpGet()]
-        public Task<ActionResult<IEnumerable<MudApiModel>>> GetAllMuds([FromQuery] bool fullData = false)
+        public ActionResult<IEnumerable<MudApiModel>> GetAllMuds([FromQuery] bool fullData = false)
         {
             if (fullData)
             {
@@ -33,15 +33,21 @@ namespace MUDhub.Server.Controllers
             }
             else
             {
-                //_context.MudGames
+               return Ok(_context.MudGames.AsEnumerable().Select(mg => MudApiModel.ConvertFromMudGame(mg)));
             }
             throw new NotImplementedException();
         }
 
         [HttpGet("{mudId}")]
-        public MudGetResponse GetMud([FromRoute] string mudId)
+        public async Task<ActionResult<MudGetResponse>> GetMud([FromRoute] string mudId)
         {
-            throw new NotImplementedException();
+            var mud = await _context.MudGames.FindAsync(mudId)
+                                                .ConfigureAwait(false);
+            if (mud is null)
+            {
+                return BadRequest();
+            }
+            return Ok(MudApiModel.ConvertFromMudGame(mud));
         }
 
         [HttpPost()]

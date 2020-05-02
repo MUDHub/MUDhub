@@ -30,5 +30,9 @@ namespace MUDhub.Core.Abstracts.Models
         public string? ImageKey { get; set; } = null;
         public bool? IsPublic { get; set; } = null;
         public bool? AutoRestart { get; set; } = null;
+
+        //Todo: Later Refactor, useCase in update change the userid
+        public string OwnerId { get; set; } = string.Empty;
+
     }
 }

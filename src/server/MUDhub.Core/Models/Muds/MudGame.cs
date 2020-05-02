@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 
 namespace MUDhub.Core.Models.Muds
@@ -34,6 +35,9 @@ namespace MUDhub.Core.Models.Muds
 
         //Todo: Add Navigation properties
 
-        public ICollection<MudJoinRequest> JoinRequests { get; set; }
+        public string OwnerId { get; set; } = string.Empty;
+        public User Owner { get; set; }
+
+        public ICollection<MudJoinRequest> JoinRequests { get; set; } = new Collection<MudJoinRequest>();
     }
 }

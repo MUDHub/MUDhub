@@ -28,9 +28,19 @@ namespace MUDhub.Core.Services
 
         public async Task<(bool, string)> CreateMudAsync(string name, MudCreationArgs args)
         {
+            //TOdo: maybe refactor later to UserManager.GetbyId()?
+            var owner =  await _context.Users.FindAsync(args.OwnerId)
+                                                .ConfigureAwait(false);
+
+            if (owner is null)
+            {
+                //Todo: add logging Message
+                return (false, "");
+            }
             var mud = new MudGame
             {
-                Name = name
+                Name = name,
+                OwnerId = args.OwnerId
             };
             _context.MudGames.Add(mud);
             await _context.SaveChangesAsync()

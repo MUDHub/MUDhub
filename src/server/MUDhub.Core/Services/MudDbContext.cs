@@ -14,7 +14,12 @@ namespace MUDhub.Core.Services
             : base(options)
         {
             if (!useInUnitTests)
-                Database.Migrate();
+            {
+                //Todo: Workaround, sqlite don't support some migrations..
+                //Database.Migrate();
+                Database.EnsureDeleted();
+                Database.EnsureCreated();
+            }
             else
             {
                 Database.EnsureDeleted();
