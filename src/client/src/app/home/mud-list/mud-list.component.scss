@@ -1,0 +1,27 @@
+.muds {
+	display: grid;
+	grid-gap: 1.5rem;
+	grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+}
+
+.mud {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: justify;
+
+	background: #fff;
+	padding: 1.5rem;
+	border-radius: 4px;
+	box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2),
+		0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
+
+	> *:not(:last-child) {
+		margin-bottom: 1rem;
+	}
+
+	.mud-title {
+		font-size: 120%;
+		font-weight: bold;
+	}
+}

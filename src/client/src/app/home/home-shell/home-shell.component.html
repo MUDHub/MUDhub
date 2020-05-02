@@ -1,0 +1,20 @@
+<mat-toolbar class="navbar">
+	<div class="title">MUDhub</div>
+	<button mat-button routerLinkActive="mat-accent" routerLink="/muds">Übersicht</button>
+	<button mat-button routerLinkActive="mat-accent" routerLink="/my-games">Meine Charaktere</button>
+	<button mat-button routerLinkActive="mat-accent" routerLink="/my-muds">Meine MUDs</button>
+
+
+	<mat-menu #userMenu="matMenu" xPosition="before">
+		<button mat-menu-item routerLink="/profile">Mein Profil</button>
+		<button mat-menu-item routerLink="/login">Logout</button>
+	</mat-menu>
+	<button class="user-menu" mat-button [matMenuTriggerFor]="userMenu">
+		Hans Wurst
+	</button>
+
+</mat-toolbar>
+
+<div class="container">
+	<router-outlet></router-outlet>
+</div>

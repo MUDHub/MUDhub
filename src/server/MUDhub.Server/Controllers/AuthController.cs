@@ -55,7 +55,7 @@ namespace MUDhub.Server.Controllers
             if (args is null)
                 throw new ArgumentNullException(nameof(args));
 
-            var regiArgs = new UserModelArgs()
+            var regiArgs = new RegistrationUserArgs()
             {
                 Email = args.Email,
                 Lastname = args.Lastname,

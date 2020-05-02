@@ -1,0 +1,14 @@
+<form class="general-form" [formGroup]="createForm" (ngSubmit)="onSubmit()">
+	<mat-form-field>
+		<mat-label>Name</mat-label>
+		<input type="text" matInput formControlName="name">
+		<mat-error>Jedes gute MUD braucht einen Namen</mat-error>
+	</mat-form-field>
+	<mat-form-field>
+		<mat-label>Beschreibung</mat-label>
+		<textarea matInput formControlName="description" rows="5"></textarea>
+		<mat-error>Eine kurze Beschreibung deines MUDs ist erforderlich</mat-error>
+	</mat-form-field>
+	<mat-checkbox checked=true formControlName="public">Öffentlich</mat-checkbox>
+	<button type="submit" mat-flat-button color="primary" [disabled]="createForm.invalid">Erstellen</button>
+</form>
