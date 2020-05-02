@@ -21,13 +21,13 @@ export class GeneralComponent {
 		const mud: IMudCreateRequest = {
 			name: this.createForm.get('name').value,
 			description: this.createForm.get('description').value,
-			public: this.createForm.get('public').value,
+			isPublic: this.createForm.get('public').value,
 			autoRestart: this.createForm.get('autoRestart').value,
 		};
 
 		console.log('sending:', mud);
 
-		const response = await this.mud.createMUD(mud);
+		const response = await this.mud.create(mud);
 		console.log('response:', response);
 	}
 }

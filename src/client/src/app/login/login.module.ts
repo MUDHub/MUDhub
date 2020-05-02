@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+import { MatButtonModule } from '@angular/material/button';
+
 import { LoginRoutingModule } from './login-routing.module';
 import { LoginShellComponent } from './login-shell.component';
 import { RegisterComponent } from './register/register.component';
@@ -13,8 +15,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 		LoginShellComponent,
 		LoginComponent,
 		RegisterComponent,
-		ResetComponent
+		ResetComponent,
 	],
-	imports: [CommonModule, LoginRoutingModule, ReactiveFormsModule],
+	imports: [
+		CommonModule,
+		LoginRoutingModule,
+		ReactiveFormsModule,
+		MatButtonModule,
+	],
 })
 export class LoginModule {}
