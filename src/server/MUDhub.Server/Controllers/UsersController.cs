@@ -61,7 +61,7 @@ namespace MUDhub.Server.Controllers
         }
 
 
-        [HttpPost("{userid}/roles")]
+        [HttpDelete("{userid}/roles")]
         public async Task<ActionResult<AddRoleResponse>> RemoveUserFromRole([FromQuery] string userid, [FromBody] string role)
         {
             var result = UserHelpers.ConvertToRole(role);
