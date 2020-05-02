@@ -1,11 +1,11 @@
-import { Component } from "@angular/core";
-import { FormControl } from "@angular/forms";
-import { AuthService } from "../../services/auth.service";
+import { Component } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
-	selector: "mh-login",
-	templateUrl: "./login.component.html",
-	styleUrls: ["./login.component.scss"],
+	selector: 'mh-login',
+	templateUrl: './login.component.html',
+	styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
 	constructor(private authService: AuthService) {}

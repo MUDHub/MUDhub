@@ -1,12 +1,13 @@
-import { Component } from "@angular/core";
-import { FormControl } from "@angular/forms";
-import { AuthService } from "../../services/auth.service";
-import { IUser } from "src/app/model/IUser";
+import { Component } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
+import { IUser } from 'src/app/model/IUser';
+import { IRegistrationRequest } from 'src/app/model/AuthDTO';
 
 @Component({
-	selector: "mh-register",
-	templateUrl: "./register.component.html",
-	styleUrls: ["./register.component.scss"],
+	selector: 'mh-register',
+	templateUrl: './register.component.html',
+	styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent {
 	constructor(private authService: AuthService) {}
@@ -17,9 +18,9 @@ export class RegisterComponent {
 	password = new FormControl();
 
 	register() {
-		let user: IUser = {
-			name: this.firstname.value,
-			lastname: this.lastname.value,
+		const user: IRegistrationRequest = {
+			firstName: this.firstname.value,
+			lastName: this.lastname.value,
 			email: this.mail.value,
 			password: this.password.value,
 		};
