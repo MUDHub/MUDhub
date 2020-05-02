@@ -12,12 +12,20 @@ namespace MUDhub.Core.Services
 {
     public class MudDbContext : DbContext
     {
-        public MudDbContext(DbContextOptions options, IOptions<DatabaseConfiguration> conf = null ,bool useInUnitTests = false)
+        public MudDbContext(DbContextOptions options, IOptions<DatabaseConfiguration> conf = null, bool useInUnitTests = false)
             : base(options)
         {
+
             if (!useInUnitTests)
             {
-                Database.Migrate();
+                if (Database.IsSqlite())
+                {
+                    Database.EnsureCreated();
+                }
+                else
+                {
+                    Database.Migrate();
+                }
             }
             else
             {
