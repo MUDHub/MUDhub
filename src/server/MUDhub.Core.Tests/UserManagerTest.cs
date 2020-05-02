@@ -23,7 +23,7 @@ namespace MUDhub.Core.Tests
             var options = new DbContextOptionsBuilder<MudDbContext>()
                 .UseInMemoryDatabase("Testdatabase_UserManagment")
                 .Options;
-            _context = new MudDbContext(options, true);
+            _context = new MudDbContext(options, useInUnitTests: true);
             var emailMock = Mock.Of<IEmailService>();
             var userManager = new UserManager(_context, emailMock);
             _user = new User("1")

@@ -1,5 +1,6 @@
 ﻿using MUDhub.Core.Abstracts.Models;
 using MUDhub.Core.Models;
+using MUDhub.Core.Models.Muds;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,7 +10,7 @@ namespace MUDhub.Core.Abstracts
 {
     public interface IMudManager
     {
-        Task<(bool Success, string MudId)> CreateMudAsync(string name, MudCreationArgs args);
+        Task<MudGame?> CreateMudAsync(string name, MudCreationArgs args);
         Task<bool> RemoveMudAsync(string mudId);
         Task<bool> UpdateMudAsync(string mudid, MudUpdateArgs args);
 

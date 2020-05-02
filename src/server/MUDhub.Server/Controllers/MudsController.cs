@@ -5,8 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MUDhub.Core.Abstracts;
+using MUDhub.Core.Abstracts.Models;
 using MUDhub.Core.Services;
 using MUDhub.Server.ApiModels.Muds;
+using MUDhub.Server.Helpers;
+using Newtonsoft.Json.Schema;
 
 namespace MUDhub.Server.Controllers
 {
@@ -51,9 +54,28 @@ namespace MUDhub.Server.Controllers
         }
 
         [HttpPost()]
-        public MudCreationResponse CreateMud([FromBody] MudEditRequest mudCreation)
+        public async Task<ActionResult<MudCreationResponse>> CreateMud([FromBody] MudEditRequest mudCreation)
         {
-            throw new NotImplementedException();
+            if (mudCreation is null)
+                throw new ArgumentNullException(nameof(mudCreation));
+
+            var mud = await _mudManager.CreateMudAsync(mudCreation.Name, mudCreation.CreateArgs(HttpContext.GetUserId()))
+                .ConfigureAwait(false);
+
+            if (mud is null)
+            {
+                //Todo: later add usefull message.
+                return BadRequest(new MudCreationResponse
+                {
+                    Statuscode = StatusCodes.Status400BadRequest,
+                    Succeeded = false,
+                    Errormessage = "Can' create mudgame, maybe user not found" //Todo: refactor message
+                });
+            }
+            return Ok(new MudCreationResponse
+            {
+                Mud = MudApiModel.ConvertFromMudGame(mud)
+            });
         }
 
         [HttpPut("{mudId}")]

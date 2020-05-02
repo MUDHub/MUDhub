@@ -25,7 +25,7 @@ namespace MUDhub.Core.Tests
             var options = new DbContextOptionsBuilder<MudDbContext>()
                 .UseInMemoryDatabase("Testdatabase_LoginService")
                 .Options;
-            _context = new MudDbContext(options, true);
+            _context = new MudDbContext(options,useInUnitTests: true);
 
             _loginService = new LoginService(_context, new ServerConfiguration());
             _user = new User("sdfsdf")

@@ -20,7 +20,7 @@ namespace MUDhub.Core.Services
             _logger = logger;
         }
 
-        public async Task<(bool, string)> CreateMudAsync(string name, MudCreationArgs args)
+        public async Task<MudGame?> CreateMudAsync(string name, MudCreationArgs args)
         {
             //TOdo: maybe refactor later to UserManager.GetbyId()?
             var owner =  await _context.Users.FindAsync(args.OwnerId)
@@ -29,7 +29,7 @@ namespace MUDhub.Core.Services
             if (owner is null)
             {
                 //Todo: add logging Message
-                return (false, "");
+                return null;
             }
             var mud = new MudGame
             {
@@ -49,7 +49,7 @@ namespace MUDhub.Core.Services
             {
                 _logger?.LogWarning($"Mud with id: '{mud.Id}', was successfully created, but not correctly modified. This should never happen!");
             }
-            return (result, mud.Id);
+            return mud;
         }
 
         public async Task<bool> UpdateMudAsync(string mudId, MudUpdateArgs args)

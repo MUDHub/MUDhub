@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using MUDhub.Core.Abstracts;
+using MUDhub.Core.Configurations;
 using MUDhub.Core.Models;
 using MUDhub.Core.Models.Muds;
 using System;
@@ -10,15 +12,16 @@ namespace MUDhub.Core.Services
 {
     public class MudDbContext : DbContext
     {
-        public MudDbContext(DbContextOptions options, bool useInUnitTests = false)
+        public MudDbContext(DbContextOptions options, IOptions<DatabaseConfiguration> conf = null ,bool useInUnitTests = false)
             : base(options)
         {
+            if (conf.Value.DeleteDatabase)
+            {
+                Database.EnsureDeleted();
+            }
             if (!useInUnitTests)
             {
-                //Todo: Workaround, sqlite don't support some migrations..
-                //Database.Migrate();
-                Database.EnsureDeleted();
-                Database.EnsureCreated();
+                Database.Migrate();
             }
             else
             {
