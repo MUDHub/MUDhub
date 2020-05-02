@@ -76,5 +76,11 @@ namespace MUDhub.Core.Helper
                        .Cast<Roles>()
                        .Where(r => (r & role) != 0)
                        .Select(r => r.ToString());
+    
+        public static Roles? ConvertToRole(string role)
+        {
+            var success = Enum.TryParse(typeof(Roles), role, out object result);
+            return success ? (Roles?)result : null;
+        }
     }
 }

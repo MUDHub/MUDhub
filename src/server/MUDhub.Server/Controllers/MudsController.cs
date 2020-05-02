@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -110,9 +111,12 @@ namespace MUDhub.Server.Controllers
         }
 
         [HttpGet("{mudId}/joins")]
-        public MudJoinsResponse GetMudRequests(string mudId)
+        public ActionResult<MudJoinsApiModel> GetMudRequests([FromRoute]string mudId)
         {
-            throw new NotImplementedException();
+            return Ok(_context.MudJoinRequests
+                                .Where(mjr => mjr.MudId == mudId)
+                                .AsEnumerable()
+                                .Select(mjr => MudJoinsApiModel.CreateFromJoin(mjr)));
         }
 
         [HttpPost("{mudId}/joins/{joinId}")]
@@ -122,9 +126,22 @@ namespace MUDhub.Server.Controllers
         }
 
         [HttpPost("{mudId}/requestjoin")]
-        public MudJoinsResponse RequestJoin([FromRoute] string mudId, [FromQuery] string userId)
+        public async Task<ActionResult<MudJoinsResponse>> RequestJoin([FromRoute] string mudId)
         {
-            throw new NotImplementedException();
+            var result = await _mudManager.RequestUserForJoinAsync(HttpContext.GetUserId(), mudId)
+                                           .ConfigureAwait(false);
+            if (result)
+            {
+                return BadRequest(new MudJoinsResponse
+                {
+                    Succeeded = false,
+                    Errormessage = "Something went wrong" //Todo: improve repsonse message
+                });
+            }
+            else
+            {
+                return Ok(new MudJoinsResponse());
+            }
         }
     }
 }

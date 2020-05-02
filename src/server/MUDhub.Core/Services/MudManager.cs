@@ -23,7 +23,7 @@ namespace MUDhub.Core.Services
         public async Task<MudGame?> CreateMudAsync(string name, MudCreationArgs args)
         {
             //Todo: maybe refactor later to UserManager.GetbyId()?
-            var owner =  await _context.Users.FindAsync(args.OwnerId)
+            var owner = await _context.Users.FindAsync(args.OwnerId)
                                                 .ConfigureAwait(false);
 
             if (owner is null)
@@ -111,12 +111,21 @@ namespace MUDhub.Core.Services
         {
             //Todo: Later handle User references, check if exists
 
-            var joinRequest = await _context.MudJoinRequests.FindAsync(mudId, userId);
+            var joinRequest = await _context.MudJoinRequests.FindAsync(mudId, userId)
+                                                                .ConfigureAwait(false);
             if (joinRequest != null)
             {
                 _logger?.LogInformation($"The User with the UserId '{userId}' is already {joinRequest.State} " +
-                                        $"in the MudGame '{joinRequest.MudGame.Name}' with the Id: '{joinRequest.MudId}', no Request.");
+                                         $"in the MudGame '{joinRequest.MudGame.Name}' with the Id: '{joinRequest.MudId}', no Request.");
                 //Todo: Maybe later return some useful information why the request was rejected.
+                switch (joinRequest.State)
+                {
+                    case MudJoinState.Requested:
+                    case MudJoinState.Accepted:
+                    case MudJoinState.Rejected:
+                    default:
+                        break;
+                }
                 return false;
             }
 

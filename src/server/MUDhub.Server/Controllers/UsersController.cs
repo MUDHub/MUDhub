@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
+using MUDhub.Core.Abstracts;
+using MUDhub.Core.Helper;
 using MUDhub.Core.Services;
 using MUDhub.Server.ApiModels.Auth;
+using MUDhub.Server.ApiModels.Users;
 
 namespace MUDhub.Server.Controllers
 {
@@ -14,13 +19,72 @@ namespace MUDhub.Server.Controllers
     public class UsersController : ControllerBase
     {
         private readonly MudDbContext _dbContext;
+        private readonly IUserManager _userManager;
 
-        public UsersController(MudDbContext dbContext)
+        public UsersController(MudDbContext dbContext, IUserManager userManager)
         {
             _dbContext = dbContext;
+            _userManager = userManager;
         }
+
+
         [HttpGet()]
-        public ActionResult<IEnumerable<UserApiModel>> GetAllUsers() 
+        public ActionResult<IEnumerable<UserApiModel>> GetAllUsers()
             => Ok(_dbContext.Users.AsEnumerable().Select(u => UserApiModel.CreateFromUser(u)));
+
+
+
+        [HttpPost("{userid}/roles")]
+        public async Task<ActionResult<AddRoleResponse>> AddUserToRole([FromQuery] string userid, [FromBody] string role)
+        {
+            var result = UserHelpers.ConvertToRole(role);
+            if (result is null)
+            {
+                return BadRequest(new AddRoleResponse
+                {
+                    Succeeded = false,
+                    Errormessage = $"Can't cast role: '{role}'"
+                });
+            }
+            var success = await _userManager.AddRoleToUserAsync(userid, result.Value)
+                                    .ConfigureAwait(false);
+            if (success)
+            {
+                return BadRequest(new AddRoleResponse()
+                {
+                    Succeeded = false,
+                    Errormessage = "Somehting went wrong..." //Todo: improve response message
+                });
+            }
+
+            return Ok();
+        }
+
+
+        [HttpPost("{userid}/roles")]
+        public async Task<ActionResult<AddRoleResponse>> RemoveUserFromRole([FromQuery] string userid, [FromBody] string role)
+        {
+            var result = UserHelpers.ConvertToRole(role);
+            if (result is null)
+            {
+                return BadRequest(new AddRoleResponse
+                {
+                    Succeeded = false,
+                    Errormessage = $"Can't cast role: '{role}'"
+                });
+            }
+            var success = await _userManager.RemoveRoleFromUserAsync(userid, result.Value)
+                                    .ConfigureAwait(false);
+            if (success)
+            {
+                return BadRequest(new AddRoleResponse()
+                {
+                    Succeeded = false,
+                    Errormessage = "Somehting went wrong..." //Todo: improve response message
+                });
+            }
+
+            return Ok();
+        }
     }
 }

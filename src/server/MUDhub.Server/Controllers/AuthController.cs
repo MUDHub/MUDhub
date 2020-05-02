@@ -66,7 +66,10 @@ namespace MUDhub.Server.Controllers
             var registerResult = await _userManager.RegisterUserAsync(regiArgs).ConfigureAwait(false);
             if (registerResult.Succeeded)
             {
-                return Ok(new RegisterResponse());
+                return Ok(new RegisterResponse()
+                {
+                    User = UserApiModel.CreateFromUser(registerResult.User!)
+                });
             }
 
             return BadRequest(new RegisterResponse()
