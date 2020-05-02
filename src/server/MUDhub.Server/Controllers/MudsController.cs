@@ -85,9 +85,18 @@ namespace MUDhub.Server.Controllers
         }
 
         [HttpDelete("{mudId}")]
-        public MudDeleteResponse DeleteMud(string mudId)
+        public async Task<ActionResult<MudDeleteResponse>> DeleteMud(string mudId)
         {
-            throw new NotImplementedException();
+            var result = await _mudManager.RemoveMudAsync(mudId)
+                                .ConfigureAwait(false);
+            if (!result)
+                return BadRequest(new MudDeleteResponse
+                {
+                    Errormessage  = $"Mud with the Id '{mudId}' does not exist!",
+                    Succeeded = false
+                });
+
+            return Ok(new MudDeleteResponse());
         }
 
         [HttpGet("{mudId}/joins")]

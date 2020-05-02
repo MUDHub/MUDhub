@@ -22,7 +22,7 @@ namespace MUDhub.Core.Services
 
         public async Task<MudGame?> CreateMudAsync(string name, MudCreationArgs args)
         {
-            //TOdo: maybe refactor later to UserManager.GetbyId()?
+            //Todo: maybe refactor later to UserManager.GetbyId()?
             var owner =  await _context.Users.FindAsync(args.OwnerId)
                                                 .ConfigureAwait(false);
 

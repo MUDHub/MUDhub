@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace MUDhub.Server.ApiModels.Muds
 {
-    public class MudDeleteResponse
+    public class MudDeleteResponse : BaseResponse
     {
     }
 }

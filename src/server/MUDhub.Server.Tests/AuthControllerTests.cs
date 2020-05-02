@@ -27,7 +27,7 @@ namespace MUDhub.Server.Tests
             var options = new DbContextOptionsBuilder<MudDbContext>()
                 .UseInMemoryDatabase("Testdatabase_AuthController")
                 .Options;
-            _context = new MudDbContext(options, true);
+            _context = new MudDbContext(options, useInUnitTests: true);
             var emailMock = Mock.Of<IEmailService>();
             //UserManager userManager = new UserManager(_context, emailMock);
             _user = new User("1")
