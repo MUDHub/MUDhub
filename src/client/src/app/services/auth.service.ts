@@ -60,9 +60,9 @@ export class AuthService {
 
 	public async register(user: IUser) {
 		const response = await this.http
-			.post<IRegisterResponse>(env.api.path + 'auth/register', {
+			.post<IRegisterResponse>(env.api.path + 'auth/register',
 				user,
-			})
+			)
 			.toPromise();
 
 		console.log(response);
@@ -71,7 +71,7 @@ export class AuthService {
 	public async reset(mail: string) {
 		const response = await this.http
 			.get<IPasswordResetResponse>(env.api.path + 'auth/reset', {
-				params: { mail },
+				params: { email: mail },
 			})
 			.toPromise();
 
