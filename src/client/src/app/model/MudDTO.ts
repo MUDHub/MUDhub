@@ -3,7 +3,7 @@ import { IMud } from './IMud';
 export interface IMudCreateRequest {
 	name: string;
 	description: string;
-	public: boolean;
+	isPublic: boolean;
 	autoRestart: boolean;
 }
 
