@@ -37,6 +37,7 @@ namespace MUDhub.Core.Services
         public async Task<RegisterResult> RegisterUserAsync(RegistrationUserArgs model)
         {
             if (string.IsNullOrWhiteSpace(model.Name) ||
+                model.Lastname is null ||
                 string.IsNullOrWhiteSpace(model.Email) ||
                 string.IsNullOrWhiteSpace(model.Password))
             {
