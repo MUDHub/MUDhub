@@ -11,8 +11,8 @@
     "test:watch": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-	"build:ci": "npm run clean && npm run test && npm run build:prod",
-	"format": "prettier --write src/app"
+    "build:ci": "npm run clean && npm run test && npm run build:prod",
+    "format": "prettier --write src/app"
   },
   "private": true,
   "dependencies": {

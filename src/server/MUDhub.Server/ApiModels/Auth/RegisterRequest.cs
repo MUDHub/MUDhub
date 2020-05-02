@@ -10,7 +10,7 @@ namespace MUDhub.Server.ApiModels.Auth
     public class RegisterRequest
     {
         [Required]
-        public string Name { get; set; } = string.Empty;
+        public string FirstName { get; set; } = string.Empty;
         [Required]
         public string Lastname { get; set; } = string.Empty;
         [Required]

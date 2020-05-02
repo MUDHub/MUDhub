@@ -1,12 +1,12 @@
-﻿using System;
+﻿using MUDhub.Server.ApiModels.Auth;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace MUDhub.Server.ApiModels.Users
 {
-    public class AddRoleResponse : BaseResponse
+    public class ChangeRoleResponse : BaseResponse
     {
-        public string User { get; set; }
     }
 }

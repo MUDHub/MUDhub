@@ -59,7 +59,7 @@ namespace MUDhub.Server.Controllers
             {
                 Email = args.Email,
                 Lastname = args.Lastname,
-                Name = args.Name,
+                Name = args.FirstName,
                 Password = args.Password
             };
 

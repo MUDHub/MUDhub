@@ -35,12 +35,12 @@ namespace MUDhub.Server.Controllers
 
 
         [HttpPost("{userid}/roles")]
-        public async Task<ActionResult<AddRoleResponse>> AddUserToRole([FromQuery] string userid, [FromBody] string role)
+        public async Task<ActionResult<ChangeRoleResponse>> AddUserToRole([FromRoute] string userid, [FromQuery] string role)
         {
             var result = UserHelpers.ConvertToRole(role);
             if (result is null)
             {
-                return BadRequest(new AddRoleResponse
+                return BadRequest(new ChangeRoleResponse
                 {
                     Succeeded = false,
                     Errormessage = $"Can't cast role: '{role}'"
@@ -48,26 +48,26 @@ namespace MUDhub.Server.Controllers
             }
             var success = await _userManager.AddRoleToUserAsync(userid, result.Value)
                                     .ConfigureAwait(false);
-            if (success)
+            if (!success)
             {
-                return BadRequest(new AddRoleResponse()
+                return BadRequest(new ChangeRoleResponse()
                 {
                     Succeeded = false,
                     Errormessage = "Somehting went wrong..." //Todo: improve response message
                 });
             }
 
-            return Ok();
+            return Ok(new ChangeRoleResponse());
         }
 
 
         [HttpDelete("{userid}/roles")]
-        public async Task<ActionResult<AddRoleResponse>> RemoveUserFromRole([FromQuery] string userid, [FromBody] string role)
+        public async Task<ActionResult<ChangeRoleResponse>> RemoveUserFromRole([FromRoute] string userid, [FromQuery] string role)
         {
             var result = UserHelpers.ConvertToRole(role);
             if (result is null)
             {
-                return BadRequest(new AddRoleResponse
+                return BadRequest(new ChangeRoleResponse
                 {
                     Succeeded = false,
                     Errormessage = $"Can't cast role: '{role}'"
@@ -75,9 +75,9 @@ namespace MUDhub.Server.Controllers
             }
             var success = await _userManager.RemoveRoleFromUserAsync(userid, result.Value)
                                     .ConfigureAwait(false);
-            if (success)
+            if (!success)
             {
-                return BadRequest(new AddRoleResponse()
+                return BadRequest(new ChangeRoleResponse()
                 {
                     Succeeded = false,
                     Errormessage = "Somehting went wrong..." //Todo: improve response message
