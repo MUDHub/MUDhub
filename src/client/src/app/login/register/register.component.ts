@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { IRegistrationRequest } from 'src/app/model/AuthDTO';
+import { PasswordErrorStateMatcher} from '../_helper/PasswordErrorStateMatcher';
 
 @Component({
 	selector: 'mh-register',
@@ -15,6 +16,8 @@ export class RegisterComponent {
 		private authService: AuthService,
 		private router: Router
 	) {}
+
+	matcher = new PasswordErrorStateMatcher();
 
 	createForm = this.fb.group(
 		{

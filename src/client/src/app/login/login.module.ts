@@ -10,6 +10,7 @@ import { RegisterComponent } from './register/register.component';
 import { ResetComponent } from './reset/reset.component';
 import { LoginComponent } from './login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ResetFormComponent } from './reset-form/reset-form.component';
 
 @NgModule({
 	declarations: [
@@ -17,6 +18,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 		LoginComponent,
 		RegisterComponent,
 		ResetComponent,
+		ResetFormComponent,
 	],
 	imports: [
 		CommonModule,
