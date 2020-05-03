@@ -13,6 +13,10 @@
 
 		justify-content: space-around;
 
+		.table-field{
+			width: 3rem;
+		}
+
 		button{
 			margin-top: -0.3rem;
 			margin-bottom: 0.7rem;
@@ -27,4 +31,7 @@
 	padding-bottom: 1rem;
 	border-bottom: solid 1px;
 	font-weight: bold;
+	.table-field{
+		width: 3rem;
+	}
 }

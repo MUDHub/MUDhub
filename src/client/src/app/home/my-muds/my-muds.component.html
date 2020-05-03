@@ -6,20 +6,20 @@
 
 <div *ngIf="muds.length > 0" class="table-list">
 	<div class="table-item first">
-		<p className="table-field">MudId</p>
-		<p className="table-field">Name</p>
-		<p className="table-field">IsPublic</p>
-		<p className="table-field">Restart</p>
-		<p className="table-field">Edit</p>
-		<p className="table-field">Delete</p>
+		<p class="table-field">MudId</p>
+		<p class="table-field">Name</p>
+		<p class="table-field">IsPublic</p>
+		<p class="table-field">Restart</p>
+		<p class="table-field">Edit</p>
+		<p class="table-field">Delete</p>
 	</div>
 	<div class="table-item" *ngFor="let mud of muds">
-		<p className="table-field">{{mud.mudId}}</p>
-		<p className="table-field">{{mud.name}}</p>
-		<p className="table-field">{{mud.isPublic}}</p>
-		<p className="table-field">{{mud.autoRestart}}</p>
-		<button (click)="editMud(mud.mudId)">Edit</button>
-		<button (click)="deleteMud(mud.mudId)">Delete</button>
+		<p class="table-field">{{mud.mudId}}</p>
+		<p class="table-field">{{mud.name}}</p>
+		<p class="table-field">{{mud.isPublic}}</p>
+		<p class="table-field">{{mud.autoRestart}}</p>
+		<button mat-button (click)="editMud(mud.mudId)">Edit</button>
+		<button mat-button (click)="deleteMud(mud.mudId)">Delete</button>
 	</div>
 </div>
 
