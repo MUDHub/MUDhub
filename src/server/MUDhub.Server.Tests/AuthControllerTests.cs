@@ -11,56 +11,73 @@ using Microsoft.EntityFrameworkCore;
 using Moq;
 using MUDhub.Core.Helper;
 using MUDhub.Core.Models;
+using System.Collections.Generic;
+using System.Linq;
+using MUDhub.Core.Abstracts.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace MUDhub.Server.Tests
 {
-    public class AuthControllerTests : IDisposable
+    public class AuthControllerTests
     {
 
         private readonly IUserManager _userManager;
         private readonly ILoginService _loginService;
         private readonly MudDbContext _context;
-        private readonly User _user;
 
         public AuthControllerTests()
         {
-            var options = new DbContextOptionsBuilder<MudDbContext>()
-                .UseInMemoryDatabase("Testdatabase_AuthController")
-                .Options;
-            _context = new MudDbContext(options, useInUnitTests: true);
-            var emailMock = Mock.Of<IEmailService>();
-            //UserManager userManager = new UserManager(_context, emailMock);
-            _user = new User("1")
-            {
-                Role = Roles.Master,
-                Name = "Max",
-                Lastname = "Mustermann",
-                Email = "MAX@MUSTERMANN.DE",
-                PasswordHash = UserHelpers.CreatePasswordHash("PW1234"),
-                PasswordResetKey = "ResetMax"
-            };
-            _context.Users.Add(_user);
-            _context.SaveChanges();
-            //_userManager = userManager;
+
+            //_context = MudDbContextMocker.MockDbContext();
+            //var emailMock = Mock.Of<IEmailService>();
+            //_userManager = new UserManager(_context, emailMock);
 
         }
 
-        public void Dispose()
-        {
-            _context.Users.Remove(_user);
-            _context.SaveChanges();
-            _context.Dispose();
-        }
 
         [Fact]
         public async Task LoginAsync_ReturnOk()
         {
-            var request = new LoginRequest()
-            {
-                Password = "admin",
-                Email = "Admin@mudhub.de"
-            };
-            var authController = new AuthController(_loginService, _userManager);
+
+            var loginServiceMock = new Mock<ILoginService>();
+            loginServiceMock
+                .Setup(ls => ls.LoginUserAsync("Test", "test"))
+                .Returns(Task.FromResult(new LoginResult(true, "token", new User())));
+            var ls = loginServiceMock.Object;
+
+            var authController = new AuthController(ls, Mock.Of<IUserManager>());
+            var result = authController.LoginAsync(new LoginRequest() { Email = "Test", Password = "test" }).Result;
+
+            //Assert.True();
+            Assert.IsType<OkObjectResult>(result);
         }
+
+        [Fact]
+        public async Task RegisterAsync_ReturnOk()
+        {
+            var args = new RegisterRequest
+            {
+                Email = "Test",
+                FirstName = "sadfsd ",
+                Lastname = "sd fs",
+                Password = "s df"
+            };
+
+            var ls = Mock.Of<ILoginService>();
+            var umMock = new Mock<IUserManager>();
+            umMock.Setup(um => um.RegisterUserAsync(RegisterRequest.ConvertFromRequest(args)))
+                            .Returns(Task.FromResult(new RegisterResult(true, false, new User())));
+
+
+            var authController = new AuthController(ls, umMock.Object);
+            var result = await authController.RegisterAsync(args);
+
+            Assert.IsType<OkObjectResult>(result);
+        }
+
+
+
+
+
     }
 }

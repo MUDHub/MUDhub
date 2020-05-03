@@ -18,7 +18,7 @@ namespace MUDhub.Core.Services
     public class MudDbContext : DbContext
     {
         public MudDbContext(DbContextOptions options,
-                            IOptions<DatabaseConfiguration> conf,
+                            IOptions<DatabaseConfiguration> conf = null,
                             ILogger<MudDbContext>? logger = null,
                             bool useInUnitTests = false)
             : base(options)
@@ -26,7 +26,7 @@ namespace MUDhub.Core.Services
 
             if (!useInUnitTests)
             {
-                if (conf.Value.DeleteDatabase)
+                if (conf?.Value?.DeleteDatabase ?? false)
                 {
                     logger?.LogWarning("Database will be deleted.");
                     Database.EnsureDeleted();

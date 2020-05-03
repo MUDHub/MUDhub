@@ -26,7 +26,7 @@ namespace MUDhub.Server.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<LoginResponse>> LoginAsync([FromBody] LoginRequest args)
+        public async Task<IActionResult> LoginAsync([FromBody] LoginRequest args)
         {
             if (args is null)
                 throw new ArgumentNullException(nameof(args));
@@ -49,20 +49,14 @@ namespace MUDhub.Server.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<RegisterResponse>> RegisterAsync([FromBody] RegisterRequest args)
+        public async Task<IActionResult> RegisterAsync([FromBody] RegisterRequest args)
         {
             if (args is null)
                 throw new ArgumentNullException(nameof(args));
 
-            var regiArgs = new RegistrationUserArgs()
-            {
-                Email = args.Email,
-                Lastname = args.Lastname,
-                Firstname = args.FirstName,
-                Password = args.Password
-            };
+            
 
-            var registerResult = await _userManager.RegisterUserAsync(regiArgs).ConfigureAwait(false);
+            var registerResult = await _userManager.RegisterUserAsync(RegisterRequest.ConvertFromRequest(args)).ConfigureAwait(false);
             if (registerResult.Succeeded)
             {
                 return Ok(new RegisterResponse()

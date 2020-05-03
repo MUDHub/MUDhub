@@ -27,7 +27,7 @@ namespace MUDhub.Core.Tests
                 .Options;
             _context = new MudDbContext(options,useInUnitTests: true);
 
-            _loginService = new LoginService(_context, new ServerConfiguration());
+            _loginService = new LoginService(_context, new ServerConfiguration() { TokenSecret = "sdsdfsdfn 3b4t 45 tb45k n45 ö- zh56 zn56 jb34 " });
             _user = new User("sdfsdf")
             {
                 Role = Roles.Master,
