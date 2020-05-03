@@ -34,6 +34,7 @@ namespace MUDhub.Core.Tests
                 Name = "Max",
                 Lastname = "Mustermann",
                 Email = "Max@Mustermann.de",
+                NormalizedEmail = "MAX@MUSTERMANN.DE",
                 PasswordHash = UserHelpers.CreatePasswordHash("PW1234"),
                 PasswordResetKey = "ResetMax"
             };
