@@ -63,8 +63,8 @@ namespace MUDhub.Core.Services
             }
 
             return new RegisterResult(false, true);
-
         }
+
 
 
         public async Task<User?> UpdateUserAsync(string userId, UpdateUserArgs model)
