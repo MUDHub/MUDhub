@@ -44,7 +44,9 @@ namespace MUDhub.Core.Helper
 
         public static string CreateToken(User user, string tokensecret)
         {
-            // authentication successful so generate jwt token
+            if (user is null)
+                throw new ArgumentNullException(nameof(user));
+
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(tokensecret);
             var listClaims = new List<Claim>()
@@ -56,7 +58,7 @@ namespace MUDhub.Core.Helper
 
             foreach (var role in Enum.GetValues(typeof(Roles)))
             {
-                if (UserHelpers.IsUserInRole(user, (Roles)role))
+                if (IsUserInRole(user, (Roles)role))
                 {
                     listClaims.Add(new Claim(ClaimTypes.Role, role.ToString()));
                 }
@@ -79,7 +81,7 @@ namespace MUDhub.Core.Helper
     
         public static Roles? ConvertToRole(string role)
         {
-            var success = Enum.TryParse(typeof(Roles), role, out object result);
+            var success = Enum.TryParse<Roles>(role, out var result);
             return success ? (Roles?)result : null;
         }
     }

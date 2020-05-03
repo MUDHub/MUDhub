@@ -80,8 +80,8 @@ namespace MUDhub.Core.Services
                 user.Name = model.Name;
             if (model.Lastname != null)
                 user.Lastname = model.Lastname;
-            
-            
+
+
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
             _logger?.LogInformation($"User with id: '{userId}', was successfully updated, with the given arguments: {Environment.NewLine}" +
@@ -107,12 +107,17 @@ namespace MUDhub.Core.Services
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId)
                 .ConfigureAwait(false);
 
-            if (user == null) return false;
+            if (user == null)
+            {
+                _logger?.LogWarning($"Could not remove user: '{userId}'. => User does not exist");
+                return false;
+            }
+
             _context.Users.Remove(user);
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
 
-            _logger?.LogInformation($"User: '{user.Name} {user.Lastname}' is removed.");
+            _logger?.LogInformation($"User: '{user.Email}' is removed.");
             return true;
         }
 
@@ -127,18 +132,18 @@ namespace MUDhub.Core.Services
             var user = await GetUserByIdAsync(userId).ConfigureAwait(false);
             if (user == null)
             {
-                _logger?.LogWarning($"The role: '{role}' could not be added to user: '{user?.Name} {user?.Lastname}'. => User does not exist");
+                _logger?.LogWarning($"The role: '{role}' could not be added to user: '{userId}'. => User does not exist");
                 return false;
             }
             if ((user.Role & role) == role)
             {
-                _logger?.LogWarning($"The role: '{role}' could not be added to user: '{user.Name} {user.Lastname}'. => User already has the role");
+                _logger?.LogWarning($"The role: '{role}' could not be added to user: '{user.Email}'. => User already has the role");
                 return false;
             }
             user.Role |= role;
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
-            _logger?.LogInformation($"The role: '{role}' was added to user: '{user.Name} {user.Lastname}'.");
+            _logger?.LogInformation($"The role: '{role}' was added to user: '{user.Email}'.");
             return true;
         }
 
@@ -153,18 +158,18 @@ namespace MUDhub.Core.Services
             var user = await GetUserByIdAsync(userId).ConfigureAwait(false);
             if (user == null)
             {
-                _logger?.LogWarning($"The role: '{role}' could not be removed from user: '{user?.Name} {user?.Lastname}'. => User does not exist");
+                _logger?.LogWarning($"The role: '{role}' could not be removed from user: '{userId}'. => User does not exist");
                 return false;
             }
             if ((user.Role & role) != role)
             {
-                _logger?.LogWarning($"The role: '{role}' could not be removed from user: '{user.Name} {user.Lastname}'. => User has not the role");
+                _logger?.LogWarning($"The role: '{role}' could not be removed from user: '{user.Email}'. => User has not the role");
                 return false;
             }
             user.Role &= ~role;
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
-            _logger?.LogInformation($"The role: '{role}' was removed from user: '{user.Name} {user.Lastname}'.");
+            _logger?.LogInformation($"The role: '{role}' was removed from user: '{user.Email}'.");
             return true;
         }
 
@@ -202,7 +207,7 @@ namespace MUDhub.Core.Services
                 .ConfigureAwait(false);
             if (user == null)
             {
-                _logger?.LogWarning($"The Password of '{user?.Name} {user?.Lastname}' could not be reseted. => User does not exist.");
+                _logger?.LogWarning($"The Password from resetkey '{passwordresetkey}' could not be reseted. => Related User does not exist, key does not exists.");
                 return false;
             }
 
@@ -210,13 +215,13 @@ namespace MUDhub.Core.Services
 
             if (user.PasswordHash == newPasswordHash)
             {
-                _logger?.LogWarning($"The Password of '{user.Name} {user.Lastname}' could not be reseted. => Old password same as new password.");
+                _logger?.LogWarning($"The Password of '{user.Email}' could not be reseted. => Old password same as new password.");
                 return false;
             }
 
             user.PasswordHash = newPasswordHash;
             await _context.SaveChangesAsync().ConfigureAwait(false);
-            _logger?.LogInformation($"The Password of '{user.Name} {user.Lastname}' was reseted.");
+            _logger?.LogInformation($"The Password of '{user.Email}' was reseted.");
             return true;
         }
 
@@ -232,23 +237,23 @@ namespace MUDhub.Core.Services
             var user = await GetUserByIdAsync(userId).ConfigureAwait(false);
             if (user == null)
             {
-                _logger?.LogWarning($"The Password of '{user?.Name} {user?.Lastname}' could not be updated. => User does not exist.");
+                _logger?.LogWarning($"The Password of '{userId}' could not be updated. => User does not exist.");
                 return false;
             }
             if (oldPassword == newPassword)
             {
-                _logger?.LogWarning($"The Password of '{user.Name} {user.Lastname}' could not be updated. => Old password same as new password.");
+                _logger?.LogWarning($"The Password of '{user.Email}' could not be updated. => Old password same as new password.");
                 return false;
             }
             if (UserHelpers.CreatePasswordHash(oldPassword) != user.PasswordHash)
             {
-                _logger?.LogWarning($"The Password of '{user.Name} {user.Lastname}' could not be updated. => Old password is not the actual password.");
+                _logger?.LogWarning($"The Password of '{user.Email}' could not be updated. => Old password is not the actual password.");
                 return false;
             }
 
             user.PasswordHash = UserHelpers.CreatePasswordHash(newPassword);
             await _context.SaveChangesAsync().ConfigureAwait(false);
-            _logger?.LogInformation($"The Password of '{user.Name} {user.Lastname}' was updated.");
+            _logger?.LogInformation($"The Password of '{user.Email}' was updated.");
             return true;
         }
 
