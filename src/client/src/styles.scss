@@ -91,6 +91,7 @@ img {
 	$spacing: 0.5rem;
 	width: 100%;
 	display: flex;
+	justify-content: center;
 
 	> * {
 		margin-left: $spacing;
