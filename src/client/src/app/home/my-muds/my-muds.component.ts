@@ -14,7 +14,7 @@ export class MyMudsComponent implements OnInit {
 	muds: IMud[] = [];
 
 	async ngOnInit() {
-		this.muds = await this.mudService.getById(this.authService.user.id);
+		//this.muds = await this.mudService.getById(this.authService.user.id);
 
 	}
 
