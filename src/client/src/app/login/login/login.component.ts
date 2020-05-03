@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validator, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 	templateUrl: './login.component.html',
 	styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
 	constructor(
 		private fb: FormBuilder,
 		private authService: AuthService,
@@ -24,7 +24,15 @@ export class LoginComponent {
 
 	isLoading = false;
 
+
+	ngOnInit() {
+		this.form.valueChanges.subscribe(() => {
+			this.error = undefined;
+		});
+	}
+
 	async login() {
+		this.error = undefined;
 		this.isLoading = true;
 		try {
 			await this.authService.login(
