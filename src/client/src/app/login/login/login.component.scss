@@ -1,19 +1,19 @@
-@import "src/variables.scss";
+@import 'src/variables.scss';
 
 :host {
-    display: flex;
-    flex-direction: column;
+	display: flex;
+	flex-direction: column;
 	align-items: center;
-	margin: 2rem;
 }
 
 .general-form {
 	width: 100%;
+	text-align: center;
 }
 
 .title {
-    margin-bottom: 1rem;
-    font-size: 30px;
+	margin-bottom: 1rem;
+	font-size: 30px;
 }
 
 a {
@@ -30,10 +30,9 @@ a:hover {
 	margin-top: 1rem;
 	text-align: center;
 
-	a{
+	a {
 		text-decoration: underline;
 	}
-
 }
 
 .login-button {

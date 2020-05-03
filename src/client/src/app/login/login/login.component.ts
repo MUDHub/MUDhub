@@ -9,10 +9,16 @@ import { Router } from '@angular/router';
 	styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
-	constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) { }
+	constructor(
+		private fb: FormBuilder,
+		private authService: AuthService,
+		private router: Router
+	) {}
+
+	error;
 
 	form = this.fb.group({
-		email: ['', Validators.required],
+		email: ['', [Validators.required, Validators.email]],
 		password: ['', Validators.required],
 	});
 
@@ -20,13 +26,17 @@ export class LoginComponent {
 
 	async login() {
 		this.isLoading = true;
-		const success = await this.authService.login(this.form.get('email').value, this.form.get('password').value);
-		this.isLoading = false;
-
-		console.log('success:', success);
-
-		if (success) {
+		try {
+			await this.authService.login(
+				this.form.get('email').value,
+				this.form.get('password').value
+			);
 			this.router.navigate(['']);
+		} catch (err) {
+			console.error('Error while logging in', err);
+			this.error = err;
+		} finally {
+			this.isLoading = false;
 		}
 	}
 }
