@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using MUDhub.Core.Abstracts;
 using MUDhub.Core.Abstracts.Models;
 using MUDhub.Core.Helper;
@@ -18,16 +19,19 @@ namespace MUDhub.Server.Controllers
     {
         private readonly ILoginService _loginService;
         private readonly IUserManager _userManager;
+        private readonly ILogger<AuthController> logger;
 
-        public AuthController(ILoginService loginService, IUserManager userManager)
+        public AuthController(ILoginService loginService, IUserManager userManager, ILogger<AuthController> logger = null)
         {
             _loginService = loginService;
             _userManager = userManager;
+            this.logger = logger;
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> LoginAsync([FromBody] LoginRequest args)
         {
+            logger?.LogCritical($"start login!");
             if (args is null)
                 throw new ArgumentNullException(nameof(args));
 
@@ -44,7 +48,7 @@ namespace MUDhub.Server.Controllers
 
             return BadRequest(new LoginResponse()
             {
-                Errormessage = "Username or Password is false!"
+                Errormessage = "Username or Password is wrong!"
             });
         }
 

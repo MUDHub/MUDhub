@@ -84,5 +84,10 @@ namespace MUDhub.Core.Helper
             var success = Enum.TryParse<Roles>(role, out var result);
             return success ? (Roles?)result : null;
         }
+
+        public static string ToNormelizedEmail(string mail)
+        {
+            return mail.ToUpperInvariant();
+        }
     }
 }

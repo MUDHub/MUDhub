@@ -20,11 +20,11 @@ namespace MUDhub.Core.Services
         public MudDbContext(DbContextOptions options,
                             IOptions<DatabaseConfiguration> conf = null,
                             ILogger<MudDbContext>? logger = null,
-                            bool useInUnitTests = false)
+                            bool useNotInUnitests = true)
             : base(options)
         {
 
-            if (!useInUnitTests)
+            if (useNotInUnitests)
             {
                 if (conf?.Value?.DeleteDatabase ?? false)
                 {

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormBuilder, Validator, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 
@@ -9,22 +9,34 @@ import { Router } from '@angular/router';
 	styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
-	constructor(private authService: AuthService, private router: Router) {}
+	constructor(
+		private fb: FormBuilder,
+		private authService: AuthService,
+		private router: Router
+	) {}
 
-	mail = new FormControl();
-	password = new FormControl();
+	error;
+
+	form = this.fb.group({
+		email: ['', [Validators.required, Validators.email]],
+		password: ['', Validators.required],
+	});
 
 	isLoading = false;
 
 	async login() {
 		this.isLoading = true;
-		const success = await this.authService.login(this.mail.value, this.password.value);
-		this.isLoading = false;
-
-		console.log('success:', success);
-
-		if (success) {
+		try {
+			await this.authService.login(
+				this.form.get('email').value,
+				this.form.get('password').value
+			);
 			this.router.navigate(['']);
+		} catch (err) {
+			console.error('Error while logging in', err);
+			this.error = err;
+		} finally {
+			this.isLoading = false;
 		}
 	}
 }

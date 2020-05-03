@@ -29,7 +29,8 @@
 				formControlName="email"
 				placeholder="E-mail"
 			/>
-			<mat-error>Bitte gebe eine E-mail Adresse ein</mat-error>
+			<mat-error *ngIf="createForm.controls.email.hasError('required')">Bitte gebe eine Email-Adresse ein</mat-error>
+			<mat-error *ngIf="createForm.controls.email.hasError('email')">Keine gültige Email-Adresse</mat-error>
 		</mat-form-field>
 	</div>
 	<div class="form-row">
@@ -50,10 +51,11 @@
 				matInput
 				formControlName="passwordRepeat"
 				placeholder="Passwort wiederholen"
+				[errorStateMatcher] = "matcher"
 			/>
+			<mat-error *ngIf="createForm.hasError('notSame')">Die eingegebenen Passwörter stimmen nicht überein</mat-error>
 		</mat-form-field>
 	</div>
-	<mat-error class="password-error" *ngIf="createForm.errors?.notSame && createForm.controls.passwordRepeat.dirty">Die eingegeben Passwörter stimmen nicht überein</mat-error>
 	<div class="form-row">
 		<button
 			mat-flat-button
@@ -68,6 +70,5 @@
 </form>
 
 <div class="login">
-	Schon registriert?<br />
 	<a routerLink="/login">Anmelden</a>
 </div>

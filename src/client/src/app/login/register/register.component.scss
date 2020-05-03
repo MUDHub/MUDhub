@@ -1,32 +1,31 @@
-@import "src/variables.scss";
+@import 'src/variables.scss';
 
 :host {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
 }
 
+form {
+	width: 100%;
+}
 
 .register-button {
 	margin-top: 0.5rem;
 	margin-bottom: 2rem;
 }
 
-.login{
+.login {
 	text-align: center;
 
-	a{
+	a {
 		text-decoration: underline;
-        font-size: 14px;
-        color: black;
+		font-size: 14px;
+		color: black;
 	}
 
 	a:hover {
-		color: #F9981D;
+		color: $color-primary;
 	}
-}
-
-.password-error {
-	font-size: 75%;
-	margin-top: -1.3rem;
 }

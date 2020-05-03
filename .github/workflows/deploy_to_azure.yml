@@ -6,6 +6,7 @@ on:
 env:
   SERVER_DIR: src/server/MUDhub.Server
   SOLUTION_DIR: src/server
+  WORKDIR_CLIENT: src/client 
   DOTNET_SDK_VERSION: 3.1.101 
   WORKDIR_DEST: dest
 jobs:
@@ -23,18 +24,18 @@ jobs:
     - name: Build Server
       run: dotnet build ${{env.SERVER_DIR}}/*.csproj --configuration Release --no-restore -o ${{env.WORKDIR_DEST}}
 
-#    - name: Setup Node.js 12
-#      uses: actions/setup-node@v1
-#      with:
-#        node-version: 12.x
-#    - name: Install Angular
-#      run: npm ci
-#      working-directory: ${{env.WORKDIR_CLIENT}}      
-#    - name: Build Angular Client
-#      run: npm run build -- --prod
-#      working-directory: ${{env.WORKDIR_CLIENT}}    
-#    - name: Copy dist Files
-#      run: cp -r ${{env.WORKDIR_CLIENT}}/dist ${{env.WORKDIR_DEST}}
+    - name: Setup Node.js 12
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
+    - name: Install Angular
+      run: npm ci
+      working-directory: ${{env.WORKDIR_CLIENT}}      
+    - name: Build Angular Client
+      run: npm run build -- --prod
+      working-directory: ${{env.WORKDIR_CLIENT}}    
+    - name: Copy dist Files
+      run: cp -r ${{env.WORKDIR_CLIENT}}/dist ${{env.WORKDIR_DEST}}
     
     - name: Publish to Azure Web services
       uses: azure/webapps-deploy@v1

@@ -11,31 +11,33 @@
 }
 
 .container {
-    height: 90%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 90%;
-    max-width: 500px;
+    max-width: 550px;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4), 0 6px 20px 0 rgba(0, 0, 0, 0.4);
+	background-color: #eee;
+	border-radius: 0.5rem;
+	padding: 3rem;
+
+
+	.outlet {
+		width: 100%;
+	}
 }
 
 .logo {
-    width: 250px;
-    margin-left: 105px;
+	width: 200px;
+	display: block;
+	margin: 0 auto;
 }
 
-.outlet {
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4), 0 6px 20px 0 rgba(0, 0, 0, 0.4);
-    width: 100%;
-    background-color: #eee;
-    padding: 2rem;
-    border-radius: 10px;
-}
 
 footer {
-    background-color: rgba(0,0,0,0.4);
-    color: rgb(204, 204, 204);
+	color: #fff;
+	padding: 0.5rem;
     width: 100%;
     text-align: center;
     position: absolute;

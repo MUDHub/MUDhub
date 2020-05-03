@@ -40,7 +40,7 @@ export class AuthService {
 		return this._token !== undefined;
 	}
 
-	public async login(email: string, password: string): Promise<boolean> {
+	public async login(email: string, password: string) {
 		try {
 			const response = await this.http
 				.post<ILoginResponse>(`${env.api.url}/auth/login`, {
@@ -51,22 +51,16 @@ export class AuthService {
 
 			this.setToken(response.token);
 			this.setUser(response.user);
-
-			return true;
 		} catch (err) {
-			console.error(err);
-			return false;
+			throw err;
 		}
 	}
 
-	public async register(user: IRegistrationRequest) {
+	public async register(user: IRegistrationRequest): Promise<IUser> {
 		const response = await this.http
-			.post<IRegisterResponse>(`${env.api.url}/auth/register`, {
-				user,
-			})
+			.post<IRegisterResponse>(`${env.api.url}/auth/register`, user)
 			.toPromise();
-
-		console.log(response);
+		return response.user;
 	}
 
 	public async reset(mail: string) {
