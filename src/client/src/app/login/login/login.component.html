@@ -29,10 +29,10 @@
 
 	<button
 		class="login-button"
+		type="submit"
 		mat-flat-button
 		[color]="error ? 'warn' : 'primary'"
 		[disabled]="isLoading || form.invalid"
-		(click)="login()"
 	>
 		Anmelden
 	</button>
