@@ -49,7 +49,7 @@ namespace MUDhub.Core.Services
                                     $"- Password: {new string('*', model.Password.Length)}");
                 return new RegisterResult(false);
             }
-            var normalizedEmail = ToNormelizedEmail(model.Email);
+            var normalizedEmail = UserHelpers.ToNormelizedEmail(model.Email);
             var user = await _context.Users.FirstOrDefaultAsync(u => u.NormalizedEmail == normalizedEmail)
                 .ConfigureAwait(false);
             if (user == null)
@@ -59,7 +59,7 @@ namespace MUDhub.Core.Services
                     Name = model.Firstname,
                     Lastname = model.Lastname,
                     Email = model.Email,
-                    NormalizedEmail = ToNormelizedEmail(model.Email),
+                    NormalizedEmail = UserHelpers.ToNormelizedEmail(model.Email),
                     PasswordHash = UserHelpers.CreatePasswordHash(model.Password)
                 };
                 await _context.AddAsync(newUser).ConfigureAwait(false);
@@ -191,7 +191,7 @@ namespace MUDhub.Core.Services
         /// <returns></returns>
         public async Task<bool> GeneratePasswortResetAsync(string email)
         {
-            var normelized = ToNormelizedEmail(email);
+            var normelized = UserHelpers.ToNormelizedEmail(email);
             var user = await _context.Users.FirstOrDefaultAsync(u => u.NormalizedEmail == normelized)
                                                 .ConfigureAwait(false);
 
@@ -277,9 +277,6 @@ namespace MUDhub.Core.Services
             return await _context.Users.FirstOrDefaultAsync(u => u.Id == userId).ConfigureAwait(false);
         }
 
-        private static string ToNormelizedEmail(string mail)
-        {
-            return mail.ToUpperInvariant();
-        }
+       
     }
 }

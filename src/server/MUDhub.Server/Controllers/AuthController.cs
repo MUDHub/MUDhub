@@ -44,7 +44,7 @@ namespace MUDhub.Server.Controllers
 
             return BadRequest(new LoginResponse()
             {
-                Errormessage = "Username or Password is false!"
+                Errormessage = "Username or Password is wrong!"
             });
         }
 
