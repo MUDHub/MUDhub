@@ -37,3 +37,15 @@
 		width: 3rem;
 	}
 }
+
+.fab {
+	position: fixed;
+	bottom: 3rem;
+	right: 3rem;
+
+	opacity: 0.85;
+
+	&:hover {
+		opacity: 1;
+	}
+}
