@@ -6,34 +6,17 @@
     align-items: center;
 }
 
-.title {
-    margin-bottom: 1rem;
-    font-size: 30px;
-}
 
-button {
-    margin-top: 10%;
-    background-color: $color-primary;
-    width: 100%;
-    height: 35px;
-    border-radius: 4px;
-    border: 1px solid rgba(0,0,0,0.2);
-    font-size: 15px;
-    color: white;
+.register-button {
+	margin-top: 0.5rem;
+	margin-bottom: 2rem;
 }
-
-button:hover {
-    background-color: darken($color-primary, 10%);
-}
-
 
 .login{
-	padding-top: 50px;
+	text-align: center;
 
 	a{
 		text-decoration: underline;
-        padding-top: 5px;
-        padding-left: 20px;
         font-size: 14px;
         color: black;
 	}
@@ -43,3 +26,7 @@ button:hover {
 	}
 }
 
+.password-error {
+	font-size: 75%;
+	margin-top: -1.3rem;
+}

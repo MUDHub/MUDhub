@@ -13,8 +13,8 @@ export class ResetComponent {
 
 	mail = new FormControl();
 
-	reset() {
-		this.authService.reset(this.mail.value);
-		this.router.navigate(['../login']);
+	async reset() {
+		await this.authService.reset(this.mail.value);
+		this.router.navigate(['/login']);
 	}
 }

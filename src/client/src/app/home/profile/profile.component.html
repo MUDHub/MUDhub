@@ -1,4 +1,4 @@
-<form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+<form class="user-form" [formGroup]="userForm" (ngSubmit)="onSubmit()">
 	<div class="form-row">
 		<mat-form-field appearance="fill">
 			<mat-label>Vorname</mat-label>
@@ -16,5 +16,10 @@
 		</mat-form-field>
 	</div>
 
-	<button mat-button [disabled]="userForm.invalid">Update</button>
+	<div class="form-row">
+		<button mat-flat-button color="primary" [disabled]="userForm.invalid || isLoading" class="update">
+			<span *ngIf="!isLoading">Update</span>
+			<mat-progress-spinner *ngIf="isLoading" diameter="25" mode="indeterminate"></mat-progress-spinner>
+		</button>
+	</div>
 </form>

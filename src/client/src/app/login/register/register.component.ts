@@ -10,18 +10,24 @@ import { IRegistrationRequest } from 'src/app/model/AuthDTO';
 	styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent {
-	constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) { }
+	constructor(
+		private fb: FormBuilder,
+		private authService: AuthService,
+		private router: Router
+	) {}
 
-	createForm = this.fb.group({
-		firstname: ['', Validators.required],
-		lastname: ['', Validators.required],
-		email: ['', Validators.required],
-		password: ['', Validators.required],
-		passwordRepeat: [''],
-	}, { validator: this.checkPasswords });
+	createForm = this.fb.group(
+		{
+			firstname: ['', Validators.required],
+			lastname: ['', Validators.required],
+			email: ['', Validators.required],
+			password: ['', Validators.required],
+			passwordRepeat: [''],
+		},
+		{ validator: this.checkPasswords }
+	);
 
 	register() {
-
 		const user: IRegistrationRequest = {
 			firstName: this.createForm.get('firstname').value,
 			lastName: this.createForm.get('lastname').value,
