@@ -20,7 +20,7 @@ export class LoginComponent {
 
 	async login() {
 		this.isLoading = true;
-		const success = await this.authService.login(this.form.get('mail').value, this.form.get('password').value);
+		const success = await this.authService.login(this.form.get('email').value, this.form.get('password').value);
 		this.isLoading = false;
 
 		console.log('success:', success);
