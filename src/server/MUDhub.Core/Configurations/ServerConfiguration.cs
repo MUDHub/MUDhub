@@ -13,7 +13,7 @@ namespace MUDhub.Core.Configurations
 
         public MailConfiguration Mail { get; set; } = new MailConfiguration();
 
-        public string TokenSecret { get; set; } = "Secret, that should never be used.";
+        public string TokenSecret { get; set; } = string.Empty;
 
         public bool MudAutoRestart { get; set; } = true;
     }

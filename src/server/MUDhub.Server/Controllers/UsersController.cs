@@ -35,7 +35,24 @@ namespace MUDhub.Server.Controllers
 
 
 
-        [HttpPost("{userid}")]
+        [HttpDelete("{userid}")]
+        public async Task<ActionResult<UserDeleteResponse>> DeleteUser([FromRoute]string userid)
+        {
+            var success = await _userManager.RemoveUserAsync(userid).ConfigureAwait(false);
+            if (!success)
+            {
+                return BadRequest(new UserDeleteResponse()
+                {
+                    Succeeded = false,
+                    Errormessage = "The user could not be removed."
+                });
+            }
+
+            return Ok();
+        }
+
+
+        [HttpPut("{userid}")]
         public async Task<ActionResult<UserUpdateResponse>>  UpdateUser([FromRoute]string userid, UserUpdateRequest request)
         {
             var result = await _userManager.UpdateUserAsync(userid, UserUpdateRequest.ConvertToUserArgs(request))

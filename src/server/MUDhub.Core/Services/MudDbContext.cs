@@ -7,6 +7,7 @@ using MUDhub.Core.Abstracts;
 using MUDhub.Core.Configurations;
 using MUDhub.Core.Models;
 using MUDhub.Core.Models.Muds;
+using SQLitePCL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,7 @@ namespace MUDhub.Core.Services
     public class MudDbContext : DbContext
     {
         public MudDbContext(DbContextOptions options,
+                            IOptions<DatabaseConfiguration> conf,
                             ILogger<MudDbContext>? logger = null,
                             bool useInUnitTests = false)
             : base(options)
@@ -24,21 +26,24 @@ namespace MUDhub.Core.Services
 
             if (!useInUnitTests)
             {
+                if (conf.Value.DeleteDatabase)
+                {
+                    logger?.LogWarning("Database will be deleted.");
+                    Database.EnsureDeleted();
+                }
                 if (Database.IsSqlite())
                 {
-                    var result = Database.GetPendingMigrations().ToList();
-                    if (Database.GetPendingMigrations().FirstOrDefault() != null)
-                    {
-                        logger?.LogWarning("The Server has a new Data schema Version, sqlite don't support some Migrations operations. " +
-                                            "The old database will be delete and a new will be created.");
-                        Database.EnsureDeleted();
-                        Database.EnsureCreated();
-                    }
+
+                    logger?.LogWarning("The Server may has a new Data schema Version, sqlite don't support some Migration operations. " +
+                                        "The old database must be deleted and a will be automatically created. " +
+                                        $"Delete database manually or set '{nameof(DatabaseConfiguration.DeleteDatabase)}' option to 'true'.");
+                    Database.EnsureCreated();
                 }
                 else
                 {
                     Database.Migrate();
                 }
+               
             }
             else
             {

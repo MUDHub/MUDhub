@@ -31,7 +31,7 @@ namespace MUDhub.Server
         public Startup(IConfiguration configuration)
         {
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-            _serverConfiguration = configuration.GetSection("Server").Get<ServerConfiguration>();
+            _serverConfiguration = configuration.GetSection("Server").Get<ServerConfiguration>() ?? new ServerConfiguration();
             CheckConfiguration();
         }
 
@@ -39,22 +39,18 @@ namespace MUDhub.Server
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            Console.WriteLine("1");
             //Costume Service Extensions, in Server Project
             services.AddTargetDatabase(_serverConfiguration.Database);
             services.AddServerConfiguration(_configuration);
 
-            Console.WriteLine("2");
             //Mud game Services
             services.AddMudServices();
 
-            Console.WriteLine("3");
             //Add AspnetCore Common Services
             services.AddControllers();
             services.AddSpaStaticFiles(conf => conf.RootPath = _serverConfiguration.Spa.RelativePath);
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "MUDhub API", Version = "v1" }));
 
-            Console.WriteLine("4");
             AddJwtAuthentication(services);
         }
 
@@ -156,24 +152,31 @@ namespace MUDhub.Server
 
         private void CheckConfiguration()
         {
-            if (_serverConfiguration is null)
-            {
-                LogMessageAndTerminate("Server");
-            }
-            else if (_serverConfiguration.Database is null)
-            {
-                LogMessageAndTerminate("Server:Database");
-            }
-        }
+            var terminate = false;
+            Console.WriteLine("Check Configuration:");
+            terminate = StartupLogger.LogMessage("Server", _serverConfiguration) || terminate;
+            terminate = StartupLogger.LogMessage("Server:TokenSecret", _serverConfiguration?.TokenSecret) || terminate;
+            terminate = StartupLogger.LogMessage("Server:Database", _serverConfiguration?.Database) || terminate;
+            terminate = StartupLogger.LogMessage("Server:Database:ConnectionString", _serverConfiguration?.Database?.ConnectionString) || terminate;
+            terminate = StartupLogger.LogMessage("Server:Database:DefaultMudAdminEmail", _serverConfiguration?.Database?.DefaultMudAdminEmail) || terminate;
+            terminate = StartupLogger.LogMessage("Server:Database:DefaultMudAdminPassword", _serverConfiguration?.Database?.DefaultMudAdminPassword) || terminate;
+            terminate = StartupLogger.LogMessage("Server:Mail", _serverConfiguration?.Mail) || terminate;
+            terminate = StartupLogger.LogMessage("Server:Mail:Sender", _serverConfiguration?.Mail?.Sender) || terminate;
+            terminate = StartupLogger.LogMessage("Server:Mail:Mail", _serverConfiguration?.Mail?.Mail) || terminate;
+            terminate = StartupLogger.LogMessage("Server:Mail:Password", _serverConfiguration?.Mail?.Password) || terminate;
+            terminate = StartupLogger.LogMessage("Server:Mail:Servername", _serverConfiguration?.Mail?.Servername) || terminate;
 
-        private void LogMessageAndTerminate(string configPath)
-        {
-            Console.ForegroundColor =ConsoleColor.DarkRed;
-            Console.Write("Error in Configuration:");
-            Console.ResetColor();
-            Console.Write($"'{configPath}' has no valid value!");
-            Console.WriteLine();
-            throw new InvalidProgramException("Can't startup the Server no valid configuration found.");
+            if (terminate)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.WriteLine("Please check your 'appsettings.json' and consider, the Configuration is valid.");
+                Console.ResetColor();
+                throw new InvalidProgramException("Can't startup the Server no valid configuration found.");
+            }
+            else
+            {
+                Console.WriteLine("Configuration seems valid.");
+            }
         }
     }
 }
