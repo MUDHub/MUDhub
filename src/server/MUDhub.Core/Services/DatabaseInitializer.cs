@@ -80,7 +80,7 @@ namespace MUDhub.Core.Services
                 Email = _options.DefaultMudAdminEmail,
                 Password = _options.DefaultMudAdminPassword,
                 Lastname = "",
-                Name = "DefaultUser"
+                Firstname = "DefaultUser"
             }).ConfigureAwait(false);
 
             if (!registerResult.Succeeded)

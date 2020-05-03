@@ -179,63 +179,63 @@ namespace MUDhub.Core.Tests
         {
             yield return new object[]{ new RegistrationUserArgs()
             {
-                Name = null!,
+                Firstname = null!,
                 Lastname = "Kartoffel",
                 Email = "max1@test.de",
                 Password = "Test1234"
             } };
             yield return new object[]{ new RegistrationUserArgs()
             {
-                Name = "Tobi",
+                Firstname = "Tobi",
                 Lastname = "Kartoffel",
                 Email = null!,
                 Password = "Test1234"
             } };
             yield return new object[]{ new RegistrationUserArgs()
             {
-                Name = "Tobi",
+                Firstname = "Tobi",
                 Lastname = "Kartoffel",
                 Email = "max2@test.de",
                 Password = null!
             } };
             yield return new object[]{ new RegistrationUserArgs()
             {
-                Name = string.Empty,
+                Firstname = string.Empty,
                 Lastname = "Kartoffel",
                 Email = "max3@test.de",
                 Password = "Test1234"
             } };
             yield return new object[]{ new RegistrationUserArgs()
             {
-                Name = "Tobi",
+                Firstname = "Tobi",
                 Lastname = "Kartoffel",
                 Email = string.Empty,
                 Password = "Test1234"
             } };
             yield return new object[]{ new RegistrationUserArgs()
             {
-                Name = "Tobi",
+                Firstname = "Tobi",
                 Lastname = "Kartoffel",
                 Email = "max4@test.de",
                 Password = string.Empty
             } };
             yield return new object[]{ new RegistrationUserArgs()
             {
-                Name = " ",
+                Firstname = " ",
                 Lastname = "Kartoffel",
                 Email = "max5@test.de",
                 Password = "Test1234"
             } };
             yield return new object[]{ new RegistrationUserArgs()
             {
-                Name = "Tobi",
+                Firstname = "Tobi",
                 Lastname = "Kartoffel",
                 Email = " ",
                 Password = "Test1234"
             } };
             yield return new object[]{ new RegistrationUserArgs()
             {
-                Name = "Tobi",
+                Firstname = "Tobi",
                 Lastname = "Kartoffel",
                 Email = "max6@test.de",
                 Password = " "
@@ -257,7 +257,7 @@ namespace MUDhub.Core.Tests
 
             var regiArgs = new RegistrationUserArgs()
             {
-                Name = "Tobi",
+                Firstname = "Tobi",
                 Lastname = "Kartoffel",
                 Email = "max@musterman.de",
                 Password = "Test1234"
@@ -272,7 +272,7 @@ namespace MUDhub.Core.Tests
 
             var regiArgs = new RegistrationUserArgs()
             {
-                Name = "Max",
+                Firstname = "Max",
                 Lastname = "Mustermann",
                 Email = "max8@test.de",
                 Password = "Test1234"
@@ -287,11 +287,11 @@ namespace MUDhub.Core.Tests
 
             var updateArgs = new UpdateUserArgs()
             {
-                Name = "Max",
+                Firstname = "Max",
                 Lastname = "Mustermann"
             };
             var testResult = await _userManager.UpdateUserAsync("1", updateArgs);
-            Assert.True(testResult);
+            Assert.NotNull(testResult);
         }
 
         [Fact]
@@ -300,11 +300,11 @@ namespace MUDhub.Core.Tests
 
             var updateArgs = new UpdateUserArgs()
             {
-                Name = "Max",
+                Firstname = "Max",
                 Lastname = "Mustermann"
             };
             var testResult = await _userManager.UpdateUserAsync("2", updateArgs);
-            Assert.False(testResult);
+            Assert.Null(testResult);
         }
 
 

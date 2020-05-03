@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MUDhub.Core.Abstracts;
@@ -8,13 +9,14 @@ using MUDhub.Core.Models;
 using MUDhub.Core.Models.Muds;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace MUDhub.Core.Services
 {
     public class MudDbContext : DbContext
     {
-        public MudDbContext(DbContextOptions options, 
+        public MudDbContext(DbContextOptions options,
                             ILogger<MudDbContext>? logger = null,
                             bool useInUnitTests = false)
             : base(options)
@@ -22,15 +24,20 @@ namespace MUDhub.Core.Services
 
             if (!useInUnitTests)
             {
-                try
+                if (Database.IsSqlite())
+                {
+                    var result = Database.GetPendingMigrations().ToList();
+                    if (Database.GetPendingMigrations().FirstOrDefault() != null)
+                    {
+                        logger?.LogWarning("The Server has a new Data schema Version, sqlite don't support some Migrations operations. " +
+                                            "The old database will be delete and a new will be created.");
+                        Database.EnsureDeleted();
+                        Database.EnsureCreated();
+                    }
+                }
+                else
                 {
                     Database.Migrate();
-                }
-                catch (SqliteException e)
-                {
-                    logger?.LogWarning(e, "The Server has a new Data schema Version, some providers(e.g. sqlite) don't support some Migrations operations the old database will be delete and a new will be created.");
-                    Database.EnsureDeleted();
-                    Database.EnsureCreated();
                 }
             }
             else

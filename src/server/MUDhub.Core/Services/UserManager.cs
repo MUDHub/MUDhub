@@ -36,7 +36,7 @@ namespace MUDhub.Core.Services
         /// <returns></returns>
         public async Task<RegisterResult> RegisterUserAsync(RegistrationUserArgs model)
         {
-            if (string.IsNullOrWhiteSpace(model.Name) ||
+            if (string.IsNullOrWhiteSpace(model.Firstname) ||
                 model.Lastname is null ||
                 string.IsNullOrWhiteSpace(model.Email) ||
                 string.IsNullOrWhiteSpace(model.Password))
@@ -50,7 +50,7 @@ namespace MUDhub.Core.Services
             {
                 var newUser = new User
                 {
-                    Name = model.Name,
+                    Name = model.Firstname,
                     Lastname = model.Lastname,
                     Email = model.Email,
                     NormalizedEmail = model.Email.ToUpperInvariant(),
@@ -67,17 +67,17 @@ namespace MUDhub.Core.Services
         }
 
 
-        public async Task<bool> UpdateUserAsync(string userId, UpdateUserArgs model)
+        public async Task<User?> UpdateUserAsync(string userId, UpdateUserArgs model)
         {
             var user = await GetUserByIdAsync(userId)
                 .ConfigureAwait(false);
             if (user is null)
             {
                 _logger?.LogWarning($"UserID: '{userId}' didn't exists. No Update possible.");
-                return false;
+                return null;
             }
-            if (model.Name != null)
-                user.Name = model.Name;
+            if (model.Firstname != null)
+                user.Name = model.Firstname;
             if (model.Lastname != null)
                 user.Lastname = model.Lastname;
 
@@ -85,9 +85,9 @@ namespace MUDhub.Core.Services
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
             _logger?.LogInformation($"User with id: '{userId}', was successfully updated, with the given arguments: {Environment.NewLine}" +
-                $"- Name: {model.Name ?? "<no modification>"},{Environment.NewLine}" +
+                $"- Name: {model.Firstname ?? "<no modification>"},{Environment.NewLine}" +
                 $"- Description: {model.Lastname ?? "<no modification>"},{Environment.NewLine}");
-            return true;
+            return user;
         }
 
 
