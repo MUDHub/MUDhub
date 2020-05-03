@@ -9,6 +9,6 @@ namespace MUDhub.Server.Hubs.Models
     public class SignalRBaseResult
     {
         public bool Success { get; set; }
-        public Message ErrorMessage { get; set; } = new Message();
+        public string ErrorMessage { get; set; } = string.Empty;
     }
 }

@@ -28,7 +28,7 @@
     <ProjectReference Include="..\MUDhub.Core\MUDhub.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Hubs\Models\" />
     <Folder Include="Migrations\" />
+   
   </ItemGroup>
 </Project>

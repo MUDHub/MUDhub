@@ -53,7 +53,7 @@ namespace MUDhub.Server.Controllers
                 return BadRequest(new ChangeRoleResponse()
                 {
                     Succeeded = false,
-                    Errormessage = "Somehting went wrong..." //Todo: improve response message
+                    Errormessage = "Something went wrong..." //Todo: improve response message
                 });
             }
 

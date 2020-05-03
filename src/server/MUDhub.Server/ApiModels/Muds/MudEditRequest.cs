@@ -18,14 +18,26 @@ namespace MUDhub.Server.ApiModels.Muds
         public bool IsPublic { get; set; } = true;
         public bool AutoRestart { get; set; } = false;
 
-        public MudCreationArgs CreateArgs(string ownerId)
+        public static MudCreationArgs ConvertCreationArgs(MudEditRequest mudEdit, string ownerId)
         {
             return new MudCreationArgs
             {
-                AutoRestart = this.AutoRestart,
-                Description = Description,
-                ImageKey = Imagekey,
-                IsPublic = IsPublic,
+                AutoRestart = mudEdit.AutoRestart,
+                Description = mudEdit.Description,
+                ImageKey = mudEdit.Imagekey,
+                IsPublic = mudEdit.IsPublic,
+                OwnerId = ownerId
+            };
+        }
+
+        public static MudUpdateArgs ConvertUpdatesArgs(MudEditRequest mudEdit, string ownerId)
+        {
+            return new MudUpdateArgs
+            {
+                AutoRestart = mudEdit.AutoRestart,
+                Description = mudEdit.Description,
+                ImageKey = mudEdit.Imagekey,
+                IsPublic = mudEdit.IsPublic,
                 OwnerId = ownerId
             };
         }

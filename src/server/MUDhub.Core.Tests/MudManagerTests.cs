@@ -136,7 +136,7 @@ namespace MUDhub.Core.Tests
             var mud = await _mudManager.CreateMudAsync("", new MudCreationArgs() { OwnerId = _user.User!.Id });
             var res2 = await _mudManager.UpdateMudAsync(mud.Id, new MudUpdateArgs { Name = newmudName, OwnerId = _user.User!.Id });
             var mudgame = await _context.MudGames.FindAsync(mud.Id);
-            Assert.True(res2);
+            Assert.NotNull(res2);
             Assert.Equal(newmudName, mudgame.Name);
         }
         [Fact]
@@ -145,7 +145,7 @@ namespace MUDhub.Core.Tests
             var newmudName = "MyMud9";
 
             var res2 = await _mudManager.UpdateMudAsync(Guid.NewGuid().ToString(), new MudUpdateArgs { Name = newmudName, OwnerId = _user.User!.Id });
-            Assert.False(res2);
+            Assert.Null(res2);
         }
 
         [Fact]

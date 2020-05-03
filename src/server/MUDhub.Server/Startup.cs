@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,24 +32,29 @@ namespace MUDhub.Server
         {
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _serverConfiguration = configuration.GetSection("Server").Get<ServerConfiguration>();
+            CheckConfiguration();
         }
 
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            Console.WriteLine("1");
             //Costume Service Extensions, in Server Project
             services.AddTargetDatabase(_serverConfiguration.Database);
             services.AddServerConfiguration(_configuration);
 
+            Console.WriteLine("2");
             //Mud game Services
             services.AddMudServices();
 
+            Console.WriteLine("3");
             //Add AspnetCore Common Services
             services.AddControllers();
             services.AddSpaStaticFiles(conf => conf.RootPath = _serverConfiguration.Spa.RelativePath);
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "MUDhub API", Version = "v1" }));
 
+            Console.WriteLine("4");
             AddJwtAuthentication(services);
         }
 
@@ -58,6 +66,8 @@ namespace MUDhub.Server
                 app.UseDeveloperExceptionPage();
             else
                 app.UseSpaStaticFiles();
+
+            app.UseFileServer(true);
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>
@@ -93,6 +103,7 @@ namespace MUDhub.Server
 
             }
         }
+
         private void AddJwtAuthentication(IServiceCollection services)
         {
             services.AddAuthentication(x =>
@@ -143,5 +154,28 @@ namespace MUDhub.Server
             });
         }
 
+        private void CheckConfiguration()
+        {
+            if (_serverConfiguration is null)
+            {
+                LogMessage("Server");
+                TerminateMessage();
+                return;
+            }
+        }
+
+        private static void TerminateMessage()
+        {
+            throw new InvalidProgramException("Can't startup the Server no valid configuration found.");
+        }
+
+        private void LogMessage(string configPath)
+        {
+            Console.ForegroundColor =ConsoleColor.DarkRed;
+            Console.Write("Error in Configuration:");
+            Console.ResetColor();
+            Console.Write($"'{configPath}' has no valid value!");
+            Console.WriteLine();
+        }
     }
 }

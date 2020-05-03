@@ -9,6 +9,11 @@ namespace MUDhub.Core.Services
 {
     public class MudGameInitializer : IHostedService
     {
+
+        public MudGameInitializer()
+        {
+
+        }
         public Task StartAsync(CancellationToken cancellationToken)
         {
             throw new NotImplementedException();

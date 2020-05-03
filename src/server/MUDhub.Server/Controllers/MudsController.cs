@@ -10,7 +10,6 @@ using MUDhub.Core.Abstracts.Models;
 using MUDhub.Core.Services;
 using MUDhub.Server.ApiModels.Muds;
 using MUDhub.Server.Helpers;
-using Newtonsoft.Json.Schema;
 
 namespace MUDhub.Server.Controllers
 {
@@ -70,7 +69,7 @@ namespace MUDhub.Server.Controllers
             if (mudCreation is null)
                 throw new ArgumentNullException(nameof(mudCreation));
 
-            var mud = await _mudManager.CreateMudAsync(mudCreation.Name, mudCreation.CreateArgs(HttpContext.GetUserId()))
+            var mud = await _mudManager.CreateMudAsync(mudCreation.Name, MudEditRequest.ConvertCreationArgs(mudCreation, HttpContext.GetUserId()))
                 .ConfigureAwait(false);
 
             if (mud is null)
@@ -78,7 +77,6 @@ namespace MUDhub.Server.Controllers
                 //Todo: later add usefull message.
                 return BadRequest(new MudCreationResponse
                 {
-                    Statuscode = StatusCodes.Status400BadRequest,
                     Succeeded = false,
                     Errormessage = "Can' create mudgame, maybe user not found" //Todo: refactor message
                 });
@@ -90,9 +88,19 @@ namespace MUDhub.Server.Controllers
         }
 
         [HttpPut("{mudId}")]
-        public MudUpdateResponse UpdateMud([FromRoute] string mudId, [FromBody] MudEditRequest mudUpdate)
+        public async Task<ActionResult<MudUpdateResponse>> UpdateMud([FromRoute] string mudId, [FromBody] MudEditRequest mudUpdate)
         {
-            throw new NotImplementedException();
+            var result = await _mudManager.UpdateMudAsync(mudId, MudEditRequest.ConvertUpdatesArgs(mudUpdate, HttpContext.GetUserId()))
+                .ConfigureAwait(false);
+
+            if (result is null)
+            {
+                return BadRequest(new MudUpdateResponse());
+            }
+            else
+            {
+                return Ok(new MudUpdateResponse());
+            }
         }
 
         [HttpDelete("{mudId}")]
@@ -110,8 +118,8 @@ namespace MUDhub.Server.Controllers
             return Ok(new MudDeleteResponse());
         }
 
-        [HttpGet("{mudId}/joins")]
-        public ActionResult<MudJoinsApiModel> GetMudRequests([FromRoute]string mudId)
+        [HttpGet("{mudId}/request")]
+        public ActionResult<MudJoinsApiModel> GetMudRequests([FromRoute] string mudId)
         {
             return Ok(_context.MudJoinRequests
                                 .Where(mjr => mjr.MudId == mudId)
@@ -119,7 +127,7 @@ namespace MUDhub.Server.Controllers
                                 .Select(mjr => MudJoinsApiModel.CreateFromJoin(mjr)));
         }
 
-        [HttpPost("{mudId}/joins/{joinId}")]
+        [HttpPost("{mudId}/request/{joinId}")]
         public MudJoinsResponse ChangeRequest([FromRoute] string mudId, [FromRoute] string joinId)
         {
             throw new NotImplementedException();
@@ -130,7 +138,7 @@ namespace MUDhub.Server.Controllers
         {
             var result = await _mudManager.RequestUserForJoinAsync(HttpContext.GetUserId(), mudId)
                                            .ConfigureAwait(false);
-            if (result)
+            if (!result)
             {
                 return BadRequest(new MudJoinsResponse
                 {

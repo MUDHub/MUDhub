@@ -12,7 +12,7 @@ namespace MUDhub.Core.Abstracts
     {
         Task<MudGame?> CreateMudAsync(string name, MudCreationArgs args);
         Task<bool> RemoveMudAsync(string mudId);
-        Task<bool> UpdateMudAsync(string mudid, MudUpdateArgs args);
+        Task<MudGame?> UpdateMudAsync(string mudid, MudUpdateArgs args);
 
         Task<bool> RequestUserForJoinAsync(string userId, string mudId);
         Task<bool> ApproveUserToJoinAsync(string userId, string mudId);

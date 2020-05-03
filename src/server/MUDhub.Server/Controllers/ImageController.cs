@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MUDhub.Server.ApiModels.Images;
 
 namespace MUDhub.Server.Controllers
 {
@@ -11,5 +12,24 @@ namespace MUDhub.Server.Controllers
     [ApiController]
     public class ImageController : ControllerBase
     {
+
+        public ImageController()
+        {
+
+        }
+
+
+        [HttpPost]
+        public ImageUploadResponse ImageUpload(IFormFile image)
+        {
+
+
+            return new ImageUploadResponse
+            {
+                ImageUrl = ""
+            };
+        }
+
+
     }
 }

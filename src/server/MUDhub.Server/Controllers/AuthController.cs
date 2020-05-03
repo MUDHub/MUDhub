@@ -44,7 +44,6 @@ namespace MUDhub.Server.Controllers
 
             return BadRequest(new LoginResponse()
             {
-                Statuscode = StatusCodes.Status400BadRequest,
                 Errormessage = "Username or Password is false!"
             });
         }
@@ -75,7 +74,6 @@ namespace MUDhub.Server.Controllers
             return BadRequest(new RegisterResponse()
             {
                 Succeeded = false,
-                Statuscode = StatusCodes.Status400BadRequest,
                 Errormessage = registerResult.UsernameAlreadyExists ? "Username already exist" : "Cannot register the User"
             });
         }
@@ -99,7 +97,6 @@ namespace MUDhub.Server.Controllers
             return BadRequest(new ResetPasswordResponse()
             {
                 Succeeded = false,
-                Statuscode = StatusCodes.Status400BadRequest,
                 Errormessage = "Password could not be reseted. => Maybe ResetKey is wrong or new Password is equal old Password."
             });
         }

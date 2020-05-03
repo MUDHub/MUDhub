@@ -18,6 +18,15 @@
       },
       "applicationUrl": "http://localhost:5000"
     },
+    "MUDhub.Server (Production)": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Production"
+      },
+      "applicationUrl": "http://localhost:5000"
+    },
     "MUDhub.Server (ForClient)": {
       "commandName": "Project",
       "launchBrowser": false,

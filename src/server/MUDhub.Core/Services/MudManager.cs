@@ -40,9 +40,9 @@ namespace MUDhub.Core.Services
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
             _logger?.LogInformation($"Mudgame with the id: '{mud.Id}' created, from User '{owner.Email}'.");
-            var result = await UpdateMudAsync(mud.Id, new MudUpdateArgs(args))
+            mud = await UpdateMudAsync(mud.Id, new MudUpdateArgs(args))
                 .ConfigureAwait(false);
-            if (result)
+            if (!(mud is null))
             {
                 _logger?.LogInformation($"Finished Mud Creation with id: '{mud.Id}'.");
             }
@@ -53,14 +53,14 @@ namespace MUDhub.Core.Services
             return mud;
         }
 
-        public async Task<bool> UpdateMudAsync(string mudId, MudUpdateArgs args)
+        public async Task<MudGame?> UpdateMudAsync(string mudId, MudUpdateArgs args)
         {
             var mud = await GetMudGameByIdAsync(mudId)
                 .ConfigureAwait(false);
             if (mud is null)
             {
                 _logger?.LogWarning($"Mudid: '{mudId}' didn't exists. No Update possible.");
-                return false;
+                return null;
             }
             if (args.Name != null)
                 mud.Name = args.Name;
@@ -87,7 +87,7 @@ namespace MUDhub.Core.Services
                 $"- ImageKey: {args.ImageKey ?? "<no modification>"},{Environment.NewLine}" +
                 $"- IsPublic: {(args.IsPublic.HasValue ? args.IsPublic.Value.ToString(CultureInfo.InvariantCulture) : "<no modification>")},{Environment.NewLine}" +
                 $"- AutoRestart: {(args.AutoRestart.HasValue ? args.AutoRestart.Value.ToString(CultureInfo.InvariantCulture) : "<no modification>")}");
-            return true;
+            return mud;
         }
 
         public async Task<bool> RemoveMudAsync(string mudId)
