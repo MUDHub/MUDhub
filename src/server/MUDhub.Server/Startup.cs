@@ -39,22 +39,18 @@ namespace MUDhub.Server
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            Console.WriteLine("1");
             //Costume Service Extensions, in Server Project
             services.AddTargetDatabase(_serverConfiguration.Database);
             services.AddServerConfiguration(_configuration);
 
-            Console.WriteLine("2");
             //Mud game Services
             services.AddMudServices();
 
-            Console.WriteLine("3");
             //Add AspnetCore Common Services
             services.AddControllers();
             services.AddSpaStaticFiles(conf => conf.RootPath = _serverConfiguration.Spa.RelativePath);
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "MUDhub API", Version = "v1" }));
 
-            Console.WriteLine("4");
             AddJwtAuthentication(services);
         }
 
