@@ -158,24 +158,22 @@ namespace MUDhub.Server
         {
             if (_serverConfiguration is null)
             {
-                LogMessage("Server");
-                TerminateMessage();
-                return;
+                LogMessageAndTerminate("Server");
+            }
+            else if (_serverConfiguration.Database is null)
+            {
+                LogMessageAndTerminate("Server:Database");
             }
         }
 
-        private static void TerminateMessage()
-        {
-            throw new InvalidProgramException("Can't startup the Server no valid configuration found.");
-        }
-
-        private void LogMessage(string configPath)
+        private void LogMessageAndTerminate(string configPath)
         {
             Console.ForegroundColor =ConsoleColor.DarkRed;
             Console.Write("Error in Configuration:");
             Console.ResetColor();
             Console.Write($"'{configPath}' has no valid value!");
             Console.WriteLine();
+            throw new InvalidProgramException("Can't startup the Server no valid configuration found.");
         }
     }
 }

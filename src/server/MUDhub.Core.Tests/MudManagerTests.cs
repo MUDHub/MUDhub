@@ -35,7 +35,7 @@ namespace MUDhub.Core.Tests
                 Password = "1234",
                 Email = "mail@mail.de",
                 Lastname = "last",
-                Name = "first"
+                Firstname = "first"
             }).Result;
 
         }

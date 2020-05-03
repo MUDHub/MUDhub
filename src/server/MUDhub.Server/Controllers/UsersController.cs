@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.EntityFrameworkCore.Update.Internal;
 using MUDhub.Core.Abstracts;
 using MUDhub.Core.Helper;
 using MUDhub.Core.Services;
@@ -32,6 +33,27 @@ namespace MUDhub.Server.Controllers
         public ActionResult<IEnumerable<UserApiModel>> GetAllUsers()
             => Ok(_dbContext.Users.AsEnumerable().Select(u => UserApiModel.CreateFromUser(u)));
 
+
+
+        [HttpPost("{userid}")]
+        public async Task<ActionResult<UserUpdateResponse>>  UpdateUser([FromRoute]string userid, UserUpdateRequest request)
+        {
+            var result = await _userManager.UpdateUserAsync(userid, UserUpdateRequest.ConvertToUserArgs(request))
+                .ConfigureAwait(false);
+
+            if (result is null)
+            {
+                return BadRequest(new UserUpdateResponse());
+            }
+            else
+            {
+                return Ok(new UserUpdateResponse()
+                {
+                    User = UserApiModel.CreateFromUser(result)
+                });
+
+            }
+        }
 
 
         [HttpPost("{userid}/roles")]
