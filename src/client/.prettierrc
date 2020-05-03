@@ -1,0 +1,9 @@
+{
+  "tabWidth": 4,
+  "useTabs": true,
+  "singleQuote": true,
+  "arrowParens": "avoid",
+  "htmlWhitespaceSensitivity": "css",
+  "quoteProps": "as-needed",
+  "trailingComma": "es5"
+}

@@ -5,6 +5,7 @@ import { MudListComponent } from './mud-list/mud-list.component';
 import { MyGamesComponent } from './my-games/my-games.component';
 import { MyMudsComponent } from './my-muds/my-muds.component';
 import { ProfileComponent } from './profile/profile.component';
+import { UsersComponent } from './admin/users/users.component';
 
 const routes: Routes = [
 	{
@@ -39,6 +40,15 @@ const routes: Routes = [
 						(m) => m.MudCreateModule
 					),
 			},
+			{
+				path: 'admin',
+				children: [
+					{
+						path: 'users',
+						component: UsersComponent
+					}
+				]
+			}
 		],
 	},
 ];
