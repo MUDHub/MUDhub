@@ -2,16 +2,17 @@ import { Component } from '@angular/core';
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { MudService } from 'src/app/services/mud.service';
 import { IMudCreateRequest } from 'src/app/model/MudDTO';
+import { Router } from '@angular/router';
 
 @Component({
 	templateUrl: './general.component.html',
 	styleUrls: ['./general.component.scss'],
 })
 export class GeneralComponent {
-	constructor(private fb: FormBuilder, private mud: MudService) {}
+	constructor(private fb: FormBuilder, private mud: MudService, private router: Router) {}
 
 	createForm = this.fb.group({
-		name: ['', Validators.required],
+		name: ['', [Validators.required, Validators.minLength(4)]],
 		description: ['', Validators.required],
 		public: { value: true, disabled: true },
 		autoRestart: { value: false, disabled: true },
@@ -25,9 +26,12 @@ export class GeneralComponent {
 			autoRestart: this.createForm.get('autoRestart').value,
 		};
 
-		console.log('sending:', mud);
+		try {
+			await this.mud.create(mud);
+			this.router.navigate(['/my-muds']);
+		} catch (err) {
+			// TODO: Error handling
+		}
 
-		const response = await this.mud.create(mud);
-		console.log('response:', response);
 	}
 }

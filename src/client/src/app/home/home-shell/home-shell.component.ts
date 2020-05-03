@@ -11,7 +11,7 @@ export class HomeShellComponent implements OnInit {
 	constructor(private auth: AuthService, private router: Router) { }
 
 	get name() {
-		return this.auth.user.firstName + ' ' + this.auth.user.lastName;
+		return this.auth.user?.firstName + ' ' + this.auth.user?.lastName;
 	}
 
 	user = this.auth.user;

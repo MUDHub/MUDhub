@@ -4,12 +4,13 @@
 	<div class="form-row">
 		<mat-form-field>
 			<input
-				type="text"
+				type="email"
 				matInput
 				formControlName="email"
 				placeholder="E-Mail"
 			/>
-			<mat-error>Bitte gebe einen Nutzernamen ein</mat-error>
+			<mat-error *ngIf="form.controls.email.hasError('required')">Bitte gebe eine Email-Adresse ein ein</mat-error>
+			<mat-error *ngIf="form.controls.email.hasError('email')">Keine gültige Email-Adresse</mat-error>
 		</mat-form-field>
 	</div>
 	<div class="form-row">
@@ -23,19 +24,21 @@
 			<mat-error>Bitte gebe ein Passwort ein</mat-error>
 		</mat-form-field>
 	</div>
+
+	<a routerLink="/login/reset">Passwort vergessen?</a>
+
+	<button
+		class="login-button"
+		mat-flat-button
+		[color]="error ? 'warn' : 'primary'"
+		[disabled]="isLoading || form.invalid"
+		(click)="login()"
+	>
+		Anmelden
+	</button>
+	<mat-error *ngIf="error">Anmeldung fehlgeschlagen</mat-error>
 </form>
 
-<a routerLink="/login/reset">Passwort vergessen?</a>
-
-<button
-	class="login-button"
-	mat-flat-button
-	color="primary"
-	[disabled]="isLoading || form.invalid"
-	(click)="login()"
->
-	Anmelden
-</button>
 
 <div class="register">
 	Noch keinen Account?<br />

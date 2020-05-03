@@ -14,8 +14,11 @@ export class MyMudsComponent implements OnInit {
 	muds: IMud[] = [];
 
 	async ngOnInit() {
-		//this.muds = await this.mudService.getById(this.authService.user.id);
+		await this.loadMuds();
+	}
 
+	async loadMuds() {
+		this.muds = await this.mudService.getForUserId(this.authService.user.id);
 	}
 
 	editMud(mudId: string) {
@@ -23,8 +26,13 @@ export class MyMudsComponent implements OnInit {
 		console.log("Edit Mud" + mudId);
 	}
 
-	deleteMud(mudId: string) {
-		this.mudService.deleteMud(mudId);
+	async deleteMud(mudId: string) {
+		try {
+			await this.mudService.deleteMud(mudId);
+			await this.loadMuds();
+		} catch (err) {
+			// TODO: Error handling
+		}
 	}
 
 }

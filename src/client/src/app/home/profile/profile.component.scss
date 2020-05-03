@@ -1,12 +1,12 @@
-.update {
-	max-width: 200px;
-}
-
 .user-form {
 	max-width: 500px;
 	margin: 0 auto;
+	text-align: center;
 }
 
-mat-progress-spinner {
-	margin: 0.5rem auto;
+.update {
+	max-width: 200px;
+	mat-progress-spinner {
+		margin: 0.5rem auto;
+	}
 }
