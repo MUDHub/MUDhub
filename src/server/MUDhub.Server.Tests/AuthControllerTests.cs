@@ -58,7 +58,7 @@ namespace MUDhub.Server.Tests
             var args = new RegisterRequest
             {
                 Email = "Test",
-                FirstName = "sadfsd ",
+                Firstname = "sadfsd ",
                 Lastname = "sd fs",
                 Password = "s df"
             };

@@ -11,7 +11,7 @@ namespace MUDhub.Server.ApiModels.Auth
     public class RegisterRequest
     {
         [Required]
-        public string FirstName { get; set; } = string.Empty;
+        public string Firstname { get; set; } = string.Empty;
 
         public string Lastname { get; set; } = string.Empty;
         [Required]
@@ -27,7 +27,7 @@ namespace MUDhub.Server.ApiModels.Auth
             {
                 Email = request.Email,
                 Lastname = request.Lastname,
-                Firstname = request.FirstName,
+                Firstname = request.Firstname,
                 Password = request.Password
             };
         }
