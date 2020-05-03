@@ -6,11 +6,14 @@ import {
 	UrlTree,
 } from '@angular/router';
 import { Observable } from 'rxjs';
+import { AuthService } from '../services/auth.service';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class MasterGuard implements CanActivate {
+	constructor(private auth: AuthService) {}
+
 	canActivate(
 		next: ActivatedRouteSnapshot,
 		state: RouterStateSnapshot
@@ -19,6 +22,6 @@ export class MasterGuard implements CanActivate {
 		| Promise<boolean | UrlTree>
 		| boolean
 		| UrlTree {
-		return true;
+		return this.auth.user?.roles.includes('Master') ?? false;
 	}
 }
