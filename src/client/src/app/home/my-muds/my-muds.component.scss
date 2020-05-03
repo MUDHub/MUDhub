@@ -1,0 +1,30 @@
+.table-list{
+	display: flex;
+	flex-direction: column;
+
+	background-color: rgb(223, 221, 221);
+
+	.table-item{
+		display: flex;
+		flex-direction: row;
+		margin: 1rem;
+		padding-top: 1rem;
+		background-color: whitesmoke;
+
+		justify-content: space-around;
+
+		button{
+			margin-top: -0.3rem;
+			margin-bottom: 0.7rem;
+		}
+
+	}
+
+}
+
+.first{
+	background-color: rgb(223, 221, 221) !important;
+	padding-bottom: 1rem;
+	border-bottom: solid 1px;
+	font-weight: bold;
+}

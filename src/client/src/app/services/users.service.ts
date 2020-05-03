@@ -18,6 +18,13 @@ export class UsersService {
 		return this.http.get<IUser>(`${env.api.url}/users/${id}`).toPromise();
 	}
 
+	async update(id: string, user: {
+		firstname: string,
+		lastname: string
+	}) {
+		return this.http.put<IUser>(`${env.api.url}/users/${id}`, user).toPromise();
+	}
+
 	async addRoleToUser(id: string, role: UserRole) {
 		return this.http.post<IUser>(`${env.api.url}/users/${id}/roles?role=${UserRole[role]}`, {}).toPromise();
 	}
