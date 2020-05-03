@@ -36,16 +36,15 @@ namespace MUDhub.Server.ApiModels.Auth
         }
         private static void CreateFromUser(User user, UserApiModel model)
         {
-            if (user is null)
-                throw new ArgumentNullException(nameof(user));
+
             if (model is null)
                 throw new ArgumentNullException(nameof(model));
 
-            model.Id = user.Id;
-            model.Email = user.Email;
-            model.FirstName = user.Name;
-            model.LastName = user.Lastname;
-            model.Roles = UserHelpers.ConvertRoleToList(user.Role);
+            model.Id = user?.Id;
+            model.Email = user?.Email;
+            model.FirstName = user?.Name;
+            model.LastName = user?.Lastname;
+            model.Roles = UserHelpers.ConvertRoleToList(user?.Role ?? Core.Models.Roles.Player);
 
         }
     }

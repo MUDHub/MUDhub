@@ -8,6 +8,7 @@ using MUDhub.Core.Helper;
 using MUDhub.Core.Models;
 using System.Threading.Tasks;
 using System.Linq;
+using SQLitePCL;
 
 namespace MUDhub.Core.Services
 {
@@ -50,7 +51,8 @@ namespace MUDhub.Core.Services
                 return new RegisterResult(false);
             }
             var normalizedEmail = UserHelpers.ToNormelizedEmail(model.Email);
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.NormalizedEmail == normalizedEmail)
+            var user = await _context.Users.AsNoTracking()
+                                            .FirstOrDefaultAsync(u => u.NormalizedEmail == normalizedEmail)
                 .ConfigureAwait(false);
             if (user == null)
             {

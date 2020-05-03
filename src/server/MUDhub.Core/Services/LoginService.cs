@@ -38,7 +38,7 @@ namespace MUDhub.Core.Services
         public async Task<LoginResult> LoginUserAsync(string email, string password)
         {
             var norm = UserHelpers.ToNormelizedEmail(email);
-            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.NormalizedEmail == norm).ConfigureAwait(false);
+            var user = await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.NormalizedEmail == norm).ConfigureAwait(false);
             var passwordHash = UserHelpers.CreatePasswordHash(password);
             if (user == null)
             {
