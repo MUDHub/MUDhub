@@ -24,7 +24,6 @@ export class MudService {
 	}
 
 	async deleteMud(mudId: string){
-		//Todo return type missing
 		return await this.http.delete(`${env.api.url}/muds`, {params: {mudId}}).toPromise();
 	}
 }
