@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
 
 import { LoginRoutingModule } from './login-routing.module';
 import { LoginShellComponent } from './login-shell.component';
@@ -22,6 +23,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 		LoginRoutingModule,
 		ReactiveFormsModule,
 		MatButtonModule,
+		MatInputModule,
 	],
 })
 export class LoginModule {}

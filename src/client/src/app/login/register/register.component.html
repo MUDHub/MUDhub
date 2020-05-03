@@ -1,46 +1,70 @@
 <h1 class="title">Registrieren</h1>
 
-<div class="form-row">
-	<input
-		[formControl]="firstname"
-		type="text"
-		class="input"
-		name="firstname"
-		id="firstname"
-		placeholder="Vorname"
-	/>
-	<input
-		[formControl]="lastname"
-		type="text"
-		class="input"
-		name="lastname"
-		id="lastname"
-		placeholder="Nachname"
-	/>
-</div>
-<div class="form-row">
-	<input
-		[formControl]="mail"
-		class="input"
-		type="text"
-		name="mail"
-		id="mail"
-		placeholder="E-Mail"
-	/>
-</div>
-<div class="form-row">
-	<input
-		[formControl]="password"
-		class="input"
-		type="password"
-		name="password"
-		id="password"
-		placeholder="Passwort"
-	/>
-</div>
-<div class="form-row">
-	<button (click)="register()">Registrieren</button>
-</div>
+<form class="general-form" [formGroup]="createForm" (ngSubmit)="register()">
+	<div class="form-row">
+		<mat-form-field>
+			<input
+				type="text"
+				matInput
+				formControlName="firstname"
+				placeholder="Vorname"
+			/>
+			<mat-error>Bitte gebe deinen Vornamen ein</mat-error>
+		</mat-form-field>
+		<mat-form-field>
+			<input
+				type="text"
+				matInput
+				formControlName="lastname"
+				placeholder="Nachname"
+			/>
+			<mat-error>Bitte gebe deinen nachnamen ein</mat-error>
+		</mat-form-field>
+	</div>
+	<div class="form-row">
+		<mat-form-field>
+			<input
+				type="text"
+				matInput
+				formControlName="email"
+				placeholder="E-mail"
+			/>
+			<mat-error>Bitte gebe deine E-mail Adresse ein</mat-error>
+		</mat-form-field>
+	</div>
+	<div class="form-row">
+		<mat-form-field>
+			<input
+				type="password"
+				matInput
+				formControlName="password"
+				placeholder="Passwort"
+			/>
+			<mat-error>Bitte gebe ein Passwort ein</mat-error>
+		</mat-form-field>
+	</div>
+	<div class="form-row">
+		<mat-form-field>
+			<input
+				type="password"
+				matInput
+				formControlName="passwordRepeat"
+				placeholder="Passwort wiederholen"
+			/>
+		</mat-form-field>
+	</div>
+	<mat-error *ngIf="createForm.get('passwordRepeat').invalid">Die eingegeben Passwörter stimmen nicht überein</mat-error>
+	<div class="form-row">
+		<button
+			type="submit"
+			mat-flat-button
+			color="primary"
+			[disabled]="createForm.invalid"
+		>
+			Registrieren
+		</button>
+	</div>
+</form>
 
 <div class="login">
 	<p>Schon registriert?</p>
