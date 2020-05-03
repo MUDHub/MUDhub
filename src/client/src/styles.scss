@@ -88,8 +88,22 @@ img {
 }
 
 .form-row {
+	$spacing: 0.5rem;
 	width: 100%;
 	display: flex;
+
+	> * {
+		margin-left: $spacing;
+		margin-right: $spacing;
+		width: 100%;
+
+		&:first-child {
+			margin-left: 0;
+		}
+		&:last-child {
+			margin-right: 0;
+		}
+	}
 
 	&:not(:last-child) {
 		margin-bottom: 0.5rem;
