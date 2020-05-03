@@ -7,6 +7,7 @@ using MUDhub.Core.Abstracts.Models;
 using MUDhub.Core.Helper;
 using MUDhub.Core.Models;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace MUDhub.Core.Services
 {
@@ -41,9 +42,14 @@ namespace MUDhub.Core.Services
                 string.IsNullOrWhiteSpace(model.Email) ||
                 string.IsNullOrWhiteSpace(model.Password))
             {
+                _logger?.LogWarning($"No valid registration arguments: {Environment.NewLine}" +
+                                    $"- Firstname: {model.Firstname}" +
+                                    $"- Lastname: {model.Firstname}" +
+                                    $"- Emailname: {model.Firstname}" +
+                                    $"- Password: {new string('*', model.Password.Length)}");
                 return new RegisterResult(false);
             }
-            var normalizedEmail = model.Email.ToUpperInvariant();
+            var normalizedEmail = ToNormelizedEmail(model.Email);
             var user = await _context.Users.FirstOrDefaultAsync(u => u.NormalizedEmail == normalizedEmail)
                 .ConfigureAwait(false);
             if (user == null)
@@ -53,15 +59,16 @@ namespace MUDhub.Core.Services
                     Name = model.Firstname,
                     Lastname = model.Lastname,
                     Email = model.Email,
-                    NormalizedEmail = model.Email.ToUpperInvariant(),
+                    NormalizedEmail = ToNormelizedEmail(model.Email),
                     PasswordHash = UserHelpers.CreatePasswordHash(model.Password)
                 };
                 await _context.AddAsync(newUser).ConfigureAwait(false);
                 await _context.SaveChangesAsync()
                     .ConfigureAwait(false);
+                _logger?.LogInformation($"Successfully created a new User: {newUser.Email} with the id: {newUser.Id}.");
                 return new RegisterResult(true, user: newUser);
             }
-
+            _logger?.LogWarning($"The email {model.Email} is already taken can't create the User!");
             return new RegisterResult(false, true);
         }
 
@@ -90,13 +97,6 @@ namespace MUDhub.Core.Services
             return user;
         }
 
-
-
-
-
-
-
-
         /// <summary>
         /// One user is removed asynchronously.
         /// </summary>
@@ -116,7 +116,6 @@ namespace MUDhub.Core.Services
             _context.Users.Remove(user);
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
-
             _logger?.LogInformation($"User: '{user.Email}' is removed.");
             return true;
         }
@@ -192,7 +191,15 @@ namespace MUDhub.Core.Services
         /// <returns></returns>
         public async Task<bool> GeneratePasswortResetAsync(string email)
         {
-            return await _emailService.SendAsync(email, string.Empty).ConfigureAwait(false);
+            var normelized = ToNormelizedEmail(email);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.NormalizedEmail == normelized)
+                                                .ConfigureAwait(false);
+
+            user.PasswordResetKey = Guid.NewGuid().ToString();
+            await _context.SaveChangesAsync()
+                .ConfigureAwait(false);
+            return await _emailService.SendAsync(email,user.PasswordResetKey)
+                .ConfigureAwait(false);
         }
 
         /// <summary>
@@ -207,7 +214,7 @@ namespace MUDhub.Core.Services
                 .ConfigureAwait(false);
             if (user == null)
             {
-                _logger?.LogWarning($"The Password from resetkey '{passwordresetkey}' could not be reseted. => Related User does not exist, key does not exists.");
+                _logger?.LogWarning($"The Password from resetkey '{passwordresetkey}' could not be reseted. => Related User not found, key does not exists.");
                 return false;
             }
 
@@ -220,7 +227,9 @@ namespace MUDhub.Core.Services
             }
 
             user.PasswordHash = newPasswordHash;
-            await _context.SaveChangesAsync().ConfigureAwait(false);
+            user.PasswordResetKey = string.Empty;
+            await _context.SaveChangesAsync()
+                            .ConfigureAwait(false);
             _logger?.LogInformation($"The Password of '{user.Email}' was reseted.");
             return true;
         }
@@ -266,6 +275,11 @@ namespace MUDhub.Core.Services
         public async Task<User> GetUserByIdAsync(string userId)
         {
             return await _context.Users.FirstOrDefaultAsync(u => u.Id == userId).ConfigureAwait(false);
+        }
+
+        private static string ToNormelizedEmail(string mail)
+        {
+            return mail.ToUpperInvariant();
         }
     }
 }

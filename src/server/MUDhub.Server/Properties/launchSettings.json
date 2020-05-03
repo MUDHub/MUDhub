@@ -27,7 +27,7 @@
       },
       "applicationUrl": "http://localhost:5000"
     },
-    "MUDhub.Server (ForClient)": {
+    "MUDhub.Server (Swagger)": {
       "commandName": "Project",
       "launchBrowser": false,
       "launchUrl": "swagger",

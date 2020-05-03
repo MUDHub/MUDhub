@@ -52,7 +52,7 @@ namespace MUDhub.Server.Controllers
         }
 
 
-        [HttpPost("{userid}")]
+        [HttpPut("{userid}")]
         public async Task<ActionResult<UserUpdateResponse>>  UpdateUser([FromRoute]string userid, UserUpdateRequest request)
         {
             var result = await _userManager.UpdateUserAsync(userid, UserUpdateRequest.ConvertToUserArgs(request))
