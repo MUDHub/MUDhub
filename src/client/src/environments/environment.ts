@@ -7,7 +7,7 @@ import { IEnviromnent } from './IEnvironment';
 export const environment: IEnviromnent = {
 	production: false,
 	api: {
-		path: 'http://localhost:5000/api/'
+		path: 'http://localhost:5000/api'
 	}
 };
 
