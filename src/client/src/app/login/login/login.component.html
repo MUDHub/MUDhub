@@ -9,8 +9,12 @@
 				formControlName="email"
 				placeholder="E-Mail"
 			/>
-			<mat-error *ngIf="form.controls.email.hasError('required')">Bitte gebe eine Email-Adresse ein ein</mat-error>
-			<mat-error *ngIf="form.controls.email.hasError('email')">Keine gültige Email-Adresse</mat-error>
+			<mat-error *ngIf="form.controls.email.hasError('required')"
+				>Bitte gebe eine Email-Adresse ein ein</mat-error
+			>
+			<mat-error *ngIf="form.controls.email.hasError('email')"
+				>Keine gültige Email-Adresse</mat-error
+			>
 		</mat-form-field>
 	</div>
 	<div class="form-row">
@@ -36,9 +40,12 @@
 	>
 		Anmelden
 	</button>
-	<mat-error *ngIf="error">Anmeldung fehlgeschlagen</mat-error>
+	<mat-error *ngIf="error" [ngSwitch]="error?.status">
+		<ng-container *ngSwitchCase="400">Ungültige Zugangsdaten</ng-container>
+		<ng-container *ngSwitchCase="500">Serverfehler</ng-container>
+		<ng-container *ngSwitchDefault>Fehler beim Anmelden</ng-container>
+	</mat-error>
 </form>
-
 
 <div class="register">
 	Noch keinen Account?<br />
