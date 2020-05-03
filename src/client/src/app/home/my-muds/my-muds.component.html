@@ -1,0 +1,27 @@
+<h3>My Muds</h3>
+
+<div *ngIf="muds.length < 1">
+	No Muds created
+</div>
+
+<div *ngIf="muds.length > 0" class="table-list">
+	<div class="table-item first">
+		<p class="table-field">MudId</p>
+		<p class="table-field">Name</p>
+		<p class="table-field">IsPublic</p>
+		<p class="table-field">Restart</p>
+		<p class="table-field">Edit</p>
+		<p class="table-field">Delete</p>
+	</div>
+	<div class="table-item" *ngFor="let mud of muds">
+		<p class="table-field">{{mud.mudId}}</p>
+		<p class="table-field">{{mud.name}}</p>
+		<p class="table-field">{{mud.isPublic}}</p>
+		<p class="table-field">{{mud.autoRestart}}</p>
+		<button mat-button (click)="editMud(mud.mudId)">Edit</button>
+		<button mat-button (click)="deleteMud(mud.mudId)">Delete</button>
+	</div>
+</div>
+
+
+<button mat-fab routerLink="/mud-create" class="fab">+</button>

@@ -38,6 +38,7 @@ namespace MUDhub.Server.ApiModels.Auth
         {
             if (user is null)
                 throw new ArgumentNullException(nameof(user));
+
             if (model is null)
                 throw new ArgumentNullException(nameof(model));
 

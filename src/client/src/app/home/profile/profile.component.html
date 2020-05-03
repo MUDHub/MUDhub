@@ -1,0 +1,26 @@
+<form class="user-form" [formGroup]="userForm" (ngSubmit)="onSubmit()">
+	<div class="form-row">
+		<mat-form-field appearance="fill">
+			<mat-label>Vorname</mat-label>
+			<input matInput type="text" formControlName="firstname">
+		</mat-form-field>
+		<mat-form-field appearance="fill">
+			<mat-label>Nachname</mat-label>
+			<input matInput type="text" formControlName="lastname">
+		</mat-form-field>
+	</div>
+	<div class="form-row">
+		<mat-form-field appearance="fill">
+			<mat-label>Email</mat-label>
+			<input matInput type="email" formControlName="email">
+		</mat-form-field>
+	</div>
+
+	<div class="form-row">
+		<button mat-flat-button color="primary" [disabled]="userForm.invalid || isLoading" class="update">
+			<span *ngIf="!isLoading">Update</span>
+			<mat-progress-spinner *ngIf="isLoading" diameter="25" mode="indeterminate"></mat-progress-spinner>
+		</button>
+	</div>
+	<small>Damit die Änderungen sichtbar werden muss eine Neuanmeldung stattfinden</small>
+</form>

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using MUDhub.Core.Abstracts;
 using MUDhub.Core.Abstracts.Models;
 using MUDhub.Core.Helper;
@@ -18,16 +19,19 @@ namespace MUDhub.Server.Controllers
     {
         private readonly ILoginService _loginService;
         private readonly IUserManager _userManager;
+        private readonly ILogger<AuthController> logger;
 
-        public AuthController(ILoginService loginService, IUserManager userManager)
+        public AuthController(ILoginService loginService, IUserManager userManager, ILogger<AuthController> logger = null)
         {
             _loginService = loginService;
             _userManager = userManager;
+            this.logger = logger;
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<LoginResponse>> LoginAsync([FromBody] LoginRequest args)
+        public async Task<IActionResult> LoginAsync([FromBody] LoginRequest args)
         {
+            logger?.LogCritical($"start login!");
             if (args is null)
                 throw new ArgumentNullException(nameof(args));
 
@@ -44,35 +48,30 @@ namespace MUDhub.Server.Controllers
 
             return BadRequest(new LoginResponse()
             {
-                Statuscode = StatusCodes.Status400BadRequest,
-                Errormessage = "Username or Password is false!"
+                Errormessage = "Username or Password is wrong!"
             });
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<RegisterResponse>> RegisterAsync([FromBody] RegisterRequest args)
+        public async Task<IActionResult> RegisterAsync([FromBody] RegisterRequest args)
         {
             if (args is null)
                 throw new ArgumentNullException(nameof(args));
 
-            var regiArgs = new UserModelArgs()
-            {
-                Email = args.Email,
-                Lastname = args.Lastname,
-                Name = args.Name,
-                Password = args.Password
-            };
+            
 
-            var registerResult = await _userManager.RegisterUserAsync(regiArgs).ConfigureAwait(false);
+            var registerResult = await _userManager.RegisterUserAsync(RegisterRequest.ConvertFromRequest(args)).ConfigureAwait(false);
             if (registerResult.Succeeded)
             {
-                return Ok(new RegisterResponse());
+                return Ok(new RegisterResponse()
+                {
+                    User = UserApiModel.CreateFromUser(registerResult.User!)
+                });
             }
 
             return BadRequest(new RegisterResponse()
             {
                 Succeeded = false,
-                Statuscode = StatusCodes.Status400BadRequest,
                 Errormessage = registerResult.UsernameAlreadyExists ? "Username already exist" : "Cannot register the User"
             });
         }
@@ -84,7 +83,7 @@ namespace MUDhub.Server.Controllers
         }
 
         [HttpPost("reset")]
-        public async Task<ActionResult<LoginResponse>> ResetPasswordAsync([FromBody] ResetPasswordRequest args)
+        public async Task<IActionResult> ResetPasswordAsync([FromBody] ResetPasswordRequest args)
         {
             var isResetSuccessful = await _userManager.UpdatePasswortFromResetAsync(args.PasswordResetKey, args.NewPasword)
                 .ConfigureAwait(false);
@@ -96,7 +95,6 @@ namespace MUDhub.Server.Controllers
             return BadRequest(new ResetPasswordResponse()
             {
                 Succeeded = false,
-                Statuscode = StatusCodes.Status400BadRequest,
                 Errormessage = "Password could not be reseted. => Maybe ResetKey is wrong or new Password is equal old Password."
             });
         }

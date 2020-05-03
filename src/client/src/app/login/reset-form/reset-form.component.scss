@@ -1,0 +1,18 @@
+@import 'src/variables.scss';
+
+:host {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-left: 5rem;
+	margin-right: 5rem;
+}
+
+.reset-button {
+	margin-top: 0.5rem;
+	margin-bottom: 2rem;
+}
+
+.general-form {
+	width: 100%;
+}

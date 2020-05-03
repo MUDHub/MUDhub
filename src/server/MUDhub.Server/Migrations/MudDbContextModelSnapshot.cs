@@ -37,10 +37,16 @@ namespace MUDhub.Server.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("OwnerId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("State")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OwnerId");
 
                     b.ToTable("MudGames");
                 });
@@ -57,6 +63,8 @@ namespace MUDhub.Server.Migrations
                         .HasColumnType("INTEGER");
 
                     b.HasKey("MudId", "UserId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("MudJoinRequests");
                 });
@@ -97,11 +105,26 @@ namespace MUDhub.Server.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("MUDhub.Core.Models.Muds.MudGame", b =>
+                {
+                    b.HasOne("MUDhub.Core.Models.User", "Owner")
+                        .WithMany()
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("MUDhub.Core.Models.Muds.MudJoinRequest", b =>
                 {
                     b.HasOne("MUDhub.Core.Models.Muds.MudGame", "MudGame")
                         .WithMany("JoinRequests")
                         .HasForeignKey("MudId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MUDhub.Core.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

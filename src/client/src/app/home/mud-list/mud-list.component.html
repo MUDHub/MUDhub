@@ -1,0 +1,12 @@
+<h1>MUD - Übersicht</h1>
+
+<div class="muds">
+	<div class="mud" *ngFor="let mud of muds">
+		<div class="mud-title">{{ mud.name }}</div>
+		<div class="mud-description">{{ mud.description }}</div>
+		<div class="mud-actions">
+			<button mat-stroked-button color="primary" *ngIf="mud.isPublic">Spielen</button>
+			<button mat-stroked-button color="primary" *ngIf="!mud.isPublic">Anfragen</button>
+		</div>
+	</div>
+</div>

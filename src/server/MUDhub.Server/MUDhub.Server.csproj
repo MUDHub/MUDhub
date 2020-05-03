@@ -6,16 +6,6 @@
     <UserSecretsId>45c17950-02a7-4da2-8769-e77d564482dd</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="Helpers\**" />
-    <Compile Remove="Hubs\**" />
-    <Content Remove="Helpers\**" />
-    <Content Remove="Hubs\**" />
-    <EmbeddedResource Remove="Helpers\**" />
-    <EmbeddedResource Remove="Hubs\**" />
-    <None Remove="Helpers\**" />
-    <None Remove="Hubs\**" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="3.1.3" />
@@ -36,5 +26,9 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MUDhub.Core\MUDhub.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+   
   </ItemGroup>
 </Project>

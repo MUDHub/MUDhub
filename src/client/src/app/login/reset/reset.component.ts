@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'mh-reset',
@@ -8,11 +9,12 @@ import { AuthService } from '../../services/auth.service';
 	styleUrls: ['./reset.component.scss'],
 })
 export class ResetComponent {
-	constructor(private authService: AuthService) {}
+	constructor(private authService: AuthService, private router: Router) {}
 
 	mail = new FormControl();
 
-	reset() {
-		this.authService.reset(this.mail.value);
+	async reset() {
+		await this.authService.reset(this.mail.value);
+		this.router.navigate(['/login']);
 	}
 }

@@ -1,16 +1,19 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Globalization;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MUDhub.Core.Abstracts;
 using MUDhub.Core.Abstracts.Models;
 using MUDhub.Core.Helper;
 using MUDhub.Core.Models;
 using System.Threading.Tasks;
+using System.Linq;
+using SQLitePCL;
 
 namespace MUDhub.Core.Services
 {
     internal class UserManager : IUserManager
     {
-        //ToDo: Add userupdate methode, dont forget normalized email
         private readonly MudDbContext _context;
         private readonly ILogger? _logger;
         private readonly IEmailService _emailService;
@@ -33,85 +36,68 @@ namespace MUDhub.Core.Services
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<RegisterResult> RegisterUserAsync(UserModelArgs model)
+        public async Task<RegisterResult> RegisterUserAsync(RegistrationUserArgs model)
         {
-            if (string.IsNullOrWhiteSpace(model.Name) ||
+            if (string.IsNullOrWhiteSpace(model.Firstname) ||
+                model.Lastname is null ||
                 string.IsNullOrWhiteSpace(model.Email) ||
                 string.IsNullOrWhiteSpace(model.Password))
             {
+                _logger?.LogWarning($"No valid registration arguments: {Environment.NewLine}" +
+                                    $"- Firstname: {model.Firstname}" +
+                                    $"- Lastname: {model.Firstname}" +
+                                    $"- Emailname: {model.Firstname}" +
+                                    $"- Password: {new string('*', model.Password.Length)}");
                 return new RegisterResult(false);
             }
-            var normalizedEmail = model.Email.ToUpperInvariant();
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.NormalizedEmail == normalizedEmail)
+            var normalizedEmail = UserHelpers.ToNormelizedEmail(model.Email);
+            var user = await _context.Users.AsNoTracking()
+                                            .FirstOrDefaultAsync(u => u.NormalizedEmail == normalizedEmail)
                 .ConfigureAwait(false);
             if (user == null)
             {
                 var newUser = new User
                 {
-                    Name = model.Name,
+                    Name = model.Firstname,
                     Lastname = model.Lastname,
                     Email = model.Email,
-                    NormalizedEmail = model.Email.ToUpperInvariant(),
+                    NormalizedEmail = UserHelpers.ToNormelizedEmail(model.Email),
                     PasswordHash = UserHelpers.CreatePasswordHash(model.Password)
                 };
                 await _context.AddAsync(newUser).ConfigureAwait(false);
                 await _context.SaveChangesAsync()
                     .ConfigureAwait(false);
+                _logger?.LogInformation($"Successfully created a new User: {newUser.Email} with the id: {newUser.Id}.");
                 return new RegisterResult(true, user: newUser);
             }
-            else
-            {
-                return new RegisterResult(false, true);
-            }
-
+            _logger?.LogWarning($"The email {model.Email} is already taken can't create the User!");
+            return new RegisterResult(false, true);
         }
 
 
-        public async Task<bool> UpdateUserAsync(string userId, UserModelArgs model)
-        {/*
-            var mud = await GetUserByIdAsync(userId)
-                .ConfigureAwait(false);
-            if (mud is null)
-            {
-                _logger?.LogWarning($"Mudid: '{mudId}' didn't exists. No Update possible.");
-                return false;
-            }
-            if (args.Name != null)
-                mud.Name = args.Name;
-            if (args.Description != null)
-                mud.Description = args.Description;
-            if (args.ImageKey != null)
-                mud.ImageKey = args.ImageKey;
-            if (args.IsPublic.HasValue)
-            {
-                mud.IsPublic = args.IsPublic.Value;
-                //Todo: handle the scenario, a MudMaster change the from public to private, how we handle the joined Characters?
-                // 1. Are the related Users automatically approved? (My Favorite)
-                // 2. Or should we, implementing a usecase where the characters are Block until they are approved?
-                // And if it change from private to public, should the approvals be stored further? I think Yes.
 
+        public async Task<User?> UpdateUserAsync(string userId, UpdateUserArgs model)
+        {
+            var user = await GetUserByIdAsync(userId)
+                .ConfigureAwait(false);
+            if (user is null)
+            {
+                _logger?.LogWarning($"UserID: '{userId}' didn't exists. No Update possible.");
+                return null;
             }
-            if (args.AutoRestart.HasValue)
-                mud.AutoRestart = args.AutoRestart.Value;
+            if (model.Firstname != null)
+                user.Name = model.Firstname;
+            if (model.Lastname != null)
+                user.Lastname = model.Lastname;
+
+
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
-            _logger?.LogInformation($"Mud with id: '{mudId}', was successfully updated, with the given arguments: {Environment.NewLine}" +
-                $"- Name: {args.Name ?? "<no modification>"},{Environment.NewLine}" +
-                $"- Description: {args.Description ?? "<no modification>"},{Environment.NewLine}" +
-                $"- ImageKey: {args.ImageKey ?? "<no modification>"},{Environment.NewLine}" +
-                $"- IsPublic: {(args.IsPublic.HasValue ? args.IsPublic.Value.ToString(CultureInfo.InvariantCulture) : "<no modification>")},{Environment.NewLine}" +
-                $"- AutoRestart: {(args.AutoRestart.HasValue ? args.AutoRestart.Value.ToString(CultureInfo.InvariantCulture) : "<no modification>")},{Environment.NewLine}");
-            return true;
-            */
-            return true;
+            _logger?.LogInformation($"User with id: '{userId}', was successfully updated, with the given arguments: {Environment.NewLine}" +
+                $"- Name: {model.Firstname ?? "<no modification>"},{Environment.NewLine}" +
+                $"- Description: {model.Lastname ?? "<no modification>"},{Environment.NewLine}");
+            return user;
         }
-
-
-
-
-
-
-
 
         /// <summary>
         /// One user is removed asynchronously.
@@ -123,12 +109,16 @@ namespace MUDhub.Core.Services
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId)
                 .ConfigureAwait(false);
 
-            if (user == null) return false;
+            if (user == null)
+            {
+                _logger?.LogWarning($"Could not remove user: '{userId}'. => User does not exist");
+                return false;
+            }
+
             _context.Users.Remove(user);
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
-
-            _logger?.LogInformation($"User: '{user.Name} {user.Lastname}' is removed.");
+            _logger?.LogInformation($"User: '{user.Email}' is removed.");
             return true;
         }
 
@@ -143,18 +133,18 @@ namespace MUDhub.Core.Services
             var user = await GetUserByIdAsync(userId).ConfigureAwait(false);
             if (user == null)
             {
-                _logger?.LogWarning($"The role: '{role}' could not be added to user: '{user?.Name} {user?.Lastname}'. => User does not exist");
+                _logger?.LogWarning($"The role: '{role}' could not be added to user: '{userId}'. => User does not exist");
                 return false;
             }
             if ((user.Role & role) == role)
             {
-                _logger?.LogWarning($"The role: '{role}' could not be added to user: '{user.Name} {user.Lastname}'. => User already has the role");
+                _logger?.LogWarning($"The role: '{role}' could not be added to user: '{user.Email}'. => User already has the role");
                 return false;
             }
             user.Role |= role;
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
-            _logger?.LogInformation($"The role: '{role}' was added to user: '{user.Name} {user.Lastname}'.");
+            _logger?.LogInformation($"The role: '{role}' was added to user: '{user.Email}'.");
             return true;
         }
 
@@ -169,18 +159,18 @@ namespace MUDhub.Core.Services
             var user = await GetUserByIdAsync(userId).ConfigureAwait(false);
             if (user == null)
             {
-                _logger?.LogWarning($"The role: '{role}' could not be removed from user: '{user?.Name} {user?.Lastname}'. => User does not exist");
+                _logger?.LogWarning($"The role: '{role}' could not be removed from user: '{userId}'. => User does not exist");
                 return false;
             }
             if ((user.Role & role) != role)
             {
-                _logger?.LogWarning($"The role: '{role}' could not be removed from user: '{user.Name} {user.Lastname}'. => User has not the role");
+                _logger?.LogWarning($"The role: '{role}' could not be removed from user: '{user.Email}'. => User has not the role");
                 return false;
             }
             user.Role &= ~role;
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
-            _logger?.LogInformation($"The role: '{role}' was removed from user: '{user.Name} {user.Lastname}'.");
+            _logger?.LogInformation($"The role: '{role}' was removed from user: '{user.Email}'.");
             return true;
         }
 
@@ -203,7 +193,15 @@ namespace MUDhub.Core.Services
         /// <returns></returns>
         public async Task<bool> GeneratePasswortResetAsync(string email)
         {
-            return await _emailService.SendAsync(email, string.Empty).ConfigureAwait(false);
+            var normelized = UserHelpers.ToNormelizedEmail(email);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.NormalizedEmail == normelized)
+                                                .ConfigureAwait(false);
+
+            user.PasswordResetKey = Guid.NewGuid().ToString();
+            await _context.SaveChangesAsync()
+                .ConfigureAwait(false);
+            return await _emailService.SendAsync(email,user.PasswordResetKey)
+                .ConfigureAwait(false);
         }
 
         /// <summary>
@@ -218,7 +216,7 @@ namespace MUDhub.Core.Services
                 .ConfigureAwait(false);
             if (user == null)
             {
-                _logger?.LogWarning($"The Password of '{user?.Name} {user?.Lastname}' could not be reseted. => User does not exist.");
+                _logger?.LogWarning($"The Password from resetkey '{passwordresetkey}' could not be reseted. => Related User not found, key does not exists.");
                 return false;
             }
 
@@ -226,13 +224,15 @@ namespace MUDhub.Core.Services
 
             if (user.PasswordHash == newPasswordHash)
             {
-                _logger?.LogWarning($"The Password of '{user.Name} {user.Lastname}' could not be reseted. => Old password same as new password.");
+                _logger?.LogWarning($"The Password of '{user.Email}' could not be reseted. => Old password same as new password.");
                 return false;
             }
 
             user.PasswordHash = newPasswordHash;
-            await _context.SaveChangesAsync().ConfigureAwait(false);
-            _logger?.LogInformation($"The Password of '{user.Name} {user.Lastname}' was reseted.");
+            user.PasswordResetKey = string.Empty;
+            await _context.SaveChangesAsync()
+                            .ConfigureAwait(false);
+            _logger?.LogInformation($"The Password of '{user.Email}' was reseted.");
             return true;
         }
 
@@ -248,23 +248,23 @@ namespace MUDhub.Core.Services
             var user = await GetUserByIdAsync(userId).ConfigureAwait(false);
             if (user == null)
             {
-                _logger?.LogWarning($"The Password of '{user?.Name} {user?.Lastname}' could not be updated. => User does not exist.");
+                _logger?.LogWarning($"The Password of '{userId}' could not be updated. => User does not exist.");
                 return false;
             }
             if (oldPassword == newPassword)
             {
-                _logger?.LogWarning($"The Password of '{user.Name} {user.Lastname}' could not be updated. => Old password same as new password.");
+                _logger?.LogWarning($"The Password of '{user.Email}' could not be updated. => Old password same as new password.");
                 return false;
             }
             if (UserHelpers.CreatePasswordHash(oldPassword) != user.PasswordHash)
             {
-                _logger?.LogWarning($"The Password of '{user.Name} {user.Lastname}' could not be updated. => Old password is not the actual password.");
+                _logger?.LogWarning($"The Password of '{user.Email}' could not be updated. => Old password is not the actual password.");
                 return false;
             }
 
             user.PasswordHash = UserHelpers.CreatePasswordHash(newPassword);
             await _context.SaveChangesAsync().ConfigureAwait(false);
-            _logger?.LogInformation($"The Password of '{user.Name} {user.Lastname}' was updated.");
+            _logger?.LogInformation($"The Password of '{user.Email}' was updated.");
             return true;
         }
 
@@ -278,5 +278,7 @@ namespace MUDhub.Core.Services
         {
             return await _context.Users.FirstOrDefaultAsync(u => u.Id == userId).ConfigureAwait(false);
         }
+
+       
     }
 }

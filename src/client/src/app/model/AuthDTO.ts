@@ -5,13 +5,17 @@ export interface ILoginResponse {
 	user: IUser;
 }
 
-export interface IRegisterResponse { }
+export interface IRegisterResponse {
+	user: IUser;
+	errormessage: string;
+	succeeded: boolean;
+}
 
 export interface IPasswordResetResponse { }
 
 export interface IRegistrationRequest {
-	firstName: string;
-	lastName: string;
+	firstname: string;
+	lastname: string;
 	email: string;
 	password: string;
 }

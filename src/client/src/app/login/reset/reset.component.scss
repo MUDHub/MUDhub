@@ -11,31 +11,12 @@
     font-size: 30px;
 }
 
-input{
-    height: 20px;
-    border: none;
-    border-bottom: 1px solid rgba(0,0,0,0.2);
-    background-color: #eee;
-    margin-top: 20px;
-}
-
 .below {
     flex-direction: column;
 }
 
-button {
-    margin-top: 10%;
-    background-color: $color-primary;
-    width: 100%;
-    height: 35px;
-    border-radius: 4px;
-    border: 1px solid rgba(0,0,0,0.2);
-    font-size: 15px;
-    color: white;
-}
-
-button:hover {
-    background-color: darken($color-primary, 10%);
+.reset-button {
+	margin-top: 1.5rem;
 }
 
 a{
@@ -46,4 +27,9 @@ a{
 
 a:hover {
     color: $color-primary;
+}
+
+.hint {
+	text-align: center;
+	opacity: 0.6;
 }

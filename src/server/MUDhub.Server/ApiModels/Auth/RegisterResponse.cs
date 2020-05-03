@@ -7,5 +7,7 @@ namespace MUDhub.Server.ApiModels.Auth
 {
     public class RegisterResponse : BaseResponse
     {
+        public UserApiModel User { get; set; }
+
     }
 }

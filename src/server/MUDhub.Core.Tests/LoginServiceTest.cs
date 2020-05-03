@@ -25,15 +25,16 @@ namespace MUDhub.Core.Tests
             var options = new DbContextOptionsBuilder<MudDbContext>()
                 .UseInMemoryDatabase("Testdatabase_LoginService")
                 .Options;
-            _context = new MudDbContext(options, true);
+            _context = new MudDbContext(options,useNotInUnitests: false);
 
-            _loginService = new LoginService(_context, new ServerConfiguration());
+            _loginService = new LoginService(_context, new ServerConfiguration() { TokenSecret = "sdsdfsdfn 3b4t 45 tb45k n45 ö- zh56 zn56 jb34 " });
             _user = new User("sdfsdf")
             {
                 Role = Roles.Master,
                 Name = "Max",
                 Lastname = "Mustermann",
                 Email = "Max@Mustermann.de",
+                NormalizedEmail = "MAX@MUSTERMANN.DE",
                 PasswordHash = UserHelpers.CreatePasswordHash("PW1234"),
                 PasswordResetKey = "ResetMax"
             };

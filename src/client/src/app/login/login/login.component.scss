@@ -1,40 +1,22 @@
-@import "src/variables.scss";
+@import 'src/variables.scss';
 
 :host {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.general-form {
+	width: 100%;
+	text-align: center;
 }
 
 .title {
-    margin-bottom: 1rem;
-    font-size: 30px;
+	margin-bottom: 1rem;
+	font-size: 30px;
 }
 
-button {
-    margin-top: 10%;
-    background-color: $color-primary;
-    width: 100%;
-    height: 35px;
-    border-radius: 4px;
-    border: 1px solid rgba(0,0,0,0.2);
-    font-size: 15px;
-    color: white;
-}
-
-button:hover {
-    background-color: darken($color-primary, 10%);
-}
-
-input {
-    height: 20px;
-    border: none;
-    border-bottom: 1px solid rgba(0,0,0,0.2);
-    background-color: #eee;
-    margin-top: 20px;
-  }
-
-a{
+a {
 	margin-top: 20px;
 	font-size: 14px;
 	color: black;
@@ -44,14 +26,16 @@ a:hover {
 	color: $color-primary;
 }
 
-.register{
-	padding-top: 50px;
+.register {
+	margin-top: 1rem;
+	text-align: center;
 
-	a{
-		padding-left: 37px;
+	a {
 		text-decoration: underline;
 	}
-
 }
 
-
+.login-button {
+	margin: 1rem auto;
+	width: 100%;
+}

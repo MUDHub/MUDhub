@@ -57,7 +57,7 @@ namespace MUDhub.Core.Abstracts
         }
 
 
-        public static IServiceCollection AddTargetDatabase(this IServiceCollection services, DatabaseConfiguration conf)
+        public static IServiceCollection AddTargetDatabase(this IServiceCollection services,IConfiguration configuration, DatabaseConfiguration conf)
         {
             if (services is null)
                 throw new ArgumentNullException(nameof(services));
@@ -75,18 +75,22 @@ namespace MUDhub.Core.Abstracts
                         options.UseSqlite(conf.ConnectionString, b =>
                         {
                             b.MigrationsAssembly("MUDhub.Server");
-                            //b.MigrationsAssembly("MUDhub.Core.Tests");
                         }),lifetime);
                     break;
                 }
                 case DatabaseProvider.MySql:
                 case DatabaseProvider.MariaDB:
                 {
+                    var mysqlConString = configuration.GetValue<string>("MYSQLCONNSTR_localdb");
+                    if (!(mysqlConString is null))
+                    {
+                        conf.ConnectionString = mysqlConString;
+                        Console.WriteLine($"MysqlConnectionstring:'{mysqlConString}'");
+                    }
                     services.AddDbContext<MudDbContext>(options =>
                         options.UseMySql(conf.ConnectionString, b =>
                         {
                             b.MigrationsAssembly("MUDhub.Server");
-                            b.MigrationsAssembly("MUDhub.Core.Tests");
                         }), lifetime);
                     break;
                 }
@@ -96,7 +100,6 @@ namespace MUDhub.Core.Abstracts
                        options.UseSqlServer(conf.ConnectionString, b =>
                        {
                            b.MigrationsAssembly("MUDhub.Server");
-                           b.MigrationsAssembly("MUDhub.Core.Tests");
                        }), lifetime);
                     break;
                 }

@@ -1,18 +1,22 @@
 <h1 class="title">Passwort zurücksetzen</h1>
 
 <div class="form-row">
-    <input
-        [formControl]="mail"
-		type="text"
-		class="input"
-		name="mail"
-		id="mail"
-		placeholder="E-Mail"
-	/>
+	<mat-form-field>
+		<input
+			[formControl]="mail"
+			matInput
+			type="text"
+			class="input"
+			name="mail"
+			id="mail"
+			placeholder="E-Mail"
+		/>
+	</mat-form-field>
 </div>
 
-<a routerLink="/login">Anmelden</a>
 <div class="form-row">
-    <button (click)="reset()" class="right">Zurücksetzen</button>
+	<button (click)="reset()" class="reset-button" mat-flat-button color="primary">Zurücksetzen</button>
 </div>
+<small class="hint">Es wird eine Email mit einem Rücksetzungslink an die angegebene Addresse geschickt</small>
+<a routerLink="/login">Anmelden</a>
 

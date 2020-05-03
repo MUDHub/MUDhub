@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 
 namespace MUDhub.Core.Models.Muds
@@ -17,6 +18,7 @@ namespace MUDhub.Core.Models.Muds
         public string MudId { get; }
         public MudGame MudGame { get; set; }
         public string UserId { get; }
+        public User User { get; set; }
         public MudJoinState State { get; set; } = MudJoinState.Requested;
 
 

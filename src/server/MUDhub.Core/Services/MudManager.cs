@@ -1,16 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using MUDhub.Core.Abstracts;
 using MUDhub.Core.Abstracts.Models;
-using MUDhub.Core.Models;
 using MUDhub.Core.Models.Muds;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace MUDhub.Core.Services
@@ -26,36 +20,47 @@ namespace MUDhub.Core.Services
             _logger = logger;
         }
 
-        public async Task<(bool, string)> CreateMudAsync(string name, MudCreationArgs args)
+        public async Task<MudGame?> CreateMudAsync(string name, MudCreationArgs args)
         {
+            //Todo: maybe refactor later to UserManager.GetbyId()?
+            var owner = await _context.Users.FindAsync(args.OwnerId)
+                                                .ConfigureAwait(false);
+
+            if (owner is null)
+            {
+                //Todo: add logging Message
+                return null;
+            }
             var mud = new MudGame
             {
-                Name = name
+                Name = name,
+                OwnerId = args.OwnerId
             };
             _context.MudGames.Add(mud);
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
-            var result = await UpdateMudAsync(mud.Id, new MudUpdateArgs(args))
+            _logger?.LogInformation($"Mudgame with the id: '{mud.Id}' created, from User '{owner.Email}'.");
+            mud = await UpdateMudAsync(mud.Id, new MudUpdateArgs(args))
                 .ConfigureAwait(false);
-            if (result)
+            if (!(mud is null))
             {
-                _logger?.LogInformation($"Mud with id: '{mud.Id}', was successfully created.");
+                _logger?.LogInformation($"Finished Mud Creation with id: '{mud.Id}'.");
             }
             else
             {
                 _logger?.LogWarning($"Mud with id: '{mud.Id}', was successfully created, but not correctly modified. This should never happen!");
             }
-            return (result, mud.Id);
+            return mud;
         }
 
-        public async Task<bool> UpdateMudAsync(string mudId, MudUpdateArgs args)
+        public async Task<MudGame?> UpdateMudAsync(string mudId, MudUpdateArgs args)
         {
             var mud = await GetMudGameByIdAsync(mudId)
                 .ConfigureAwait(false);
             if (mud is null)
             {
                 _logger?.LogWarning($"Mudid: '{mudId}' didn't exists. No Update possible.");
-                return false;
+                return null;
             }
             if (args.Name != null)
                 mud.Name = args.Name;
@@ -81,8 +86,8 @@ namespace MUDhub.Core.Services
                 $"- Description: {args.Description ?? "<no modification>"},{Environment.NewLine}" +
                 $"- ImageKey: {args.ImageKey ?? "<no modification>"},{Environment.NewLine}" +
                 $"- IsPublic: {(args.IsPublic.HasValue ? args.IsPublic.Value.ToString(CultureInfo.InvariantCulture) : "<no modification>")},{Environment.NewLine}" +
-                $"- AutoRestart: {(args.AutoRestart.HasValue ? args.AutoRestart.Value.ToString(CultureInfo.InvariantCulture) : "<no modification>")},{Environment.NewLine}");
-            return true;
+                $"- AutoRestart: {(args.AutoRestart.HasValue ? args.AutoRestart.Value.ToString(CultureInfo.InvariantCulture) : "<no modification>")}");
+            return mud;
         }
 
         public async Task<bool> RemoveMudAsync(string mudId)
@@ -106,12 +111,21 @@ namespace MUDhub.Core.Services
         {
             //Todo: Later handle User references, check if exists
 
-            var joinRequest = await _context.MudJoinRequests.FindAsync(mudId, userId);
+            var joinRequest = await _context.MudJoinRequests.FindAsync(mudId, userId)
+                                                                .ConfigureAwait(false);
             if (joinRequest != null)
             {
                 _logger?.LogInformation($"The User with the UserId '{userId}' is already {joinRequest.State} " +
-                                        $"in the MudGame '{joinRequest.MudGame.Name}' with the Id: '{joinRequest.MudId}', no Request.");
+                                         $"in the MudGame '{joinRequest.MudGame.Name}' with the Id: '{joinRequest.MudId}', no Request.");
                 //Todo: Maybe later return some useful information why the request was rejected.
+                switch (joinRequest.State)
+                {
+                    case MudJoinState.Requested:
+                    case MudJoinState.Accepted:
+                    case MudJoinState.Rejected:
+                    default:
+                        break;
+                }
                 return false;
             }
 
