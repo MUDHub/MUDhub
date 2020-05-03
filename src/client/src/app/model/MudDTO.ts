@@ -10,3 +10,7 @@ export interface IMudCreateRequest {
 export interface IMudCreateResponse {
 	mud: IMud;
 }
+
+export interface IMudDeleteResponse {
+
+}

@@ -70,8 +70,8 @@ namespace MUDhub.Core.Services
             }
             _logger?.LogWarning($"The email {model.Email} is already taken can't create the User!");
             return new RegisterResult(false, true);
-
         }
+
 
 
         public async Task<User?> UpdateUserAsync(string userId, UpdateUserArgs model)

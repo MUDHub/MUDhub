@@ -4,6 +4,7 @@ import { MudService } from './mud.service';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 
+
 describe('MudService', () => {
 	let service: MudService;
 
@@ -29,4 +30,35 @@ describe('MudService', () => {
 	it('should be created', () => {
 		expect(service).toBeTruthy();
 	});
+
+	it('#deleteMud should return value from a promise',
+		(done: DoneFn) => {
+			service.deleteMud("test").then(value => {
+				expect(value).toBeDefined();
+				done();
+			});
+		});
+
+	it('#getAll should return an empty array from the api',
+		(done: DoneFn) => {
+			service.getAll().then(value => {
+				expect(value).toBe([]);
+				done();
+			});
+		});
+
+
+	it('#create should return a value from the api',
+		(done: DoneFn) => {
+			service.create({
+				name: "test",
+				description: "test",
+				isPublic: true,
+				autoRestart: true
+			}).then(value => {
+				expect(value).toBeDefined();
+				done();
+			});
+		});
+
 });
