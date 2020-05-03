@@ -5,6 +5,7 @@ import {
 	ILoginResponse,
 	IRegisterResponse,
 	IPasswordResetResponse,
+	IRegistrationRequest,
 } from 'src/app/model/AuthDTO';
 
 import { environment as env } from 'src/environments/environment';
@@ -42,7 +43,7 @@ export class AuthService {
 	public async login(email: string, password: string): Promise<boolean> {
 		try {
 			const response = await this.http
-				.post<ILoginResponse>(env.api.path + 'auth/login', {
+				.post<ILoginResponse>(`${env.api.url}/auth/login`, {
 					email,
 					password,
 				})
@@ -58,9 +59,9 @@ export class AuthService {
 		}
 	}
 
-	public async register(user: IUser) {
+	public async register(user: IRegistrationRequest) {
 		const response = await this.http
-			.post<IRegisterResponse>(env.api.path + 'auth/register', {
+			.post<IRegisterResponse>(`${env.api.url}/auth/register`, {
 				user,
 			})
 			.toPromise();
@@ -70,7 +71,7 @@ export class AuthService {
 
 	public async reset(mail: string) {
 		const response = await this.http
-			.get<IPasswordResetResponse>(env.api.path + 'auth/reset', {
+			.get<IPasswordResetResponse>(`${env.api.url}/auth/reset`, {
 				params: { mail },
 			})
 			.toPromise();

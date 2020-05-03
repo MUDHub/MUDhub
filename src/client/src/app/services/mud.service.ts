@@ -8,14 +8,18 @@ import { IMud } from '../model/IMud';
 	providedIn: 'root',
 })
 export class MudService {
-	constructor(private http: HttpClient) {}
+	constructor(private http: HttpClient) { }
 
 	async getAll() {
-		return await this.http.get<IMud[]>(env.api.path + 'muds').toPromise();
+		return await this.http.get<IMud[]>(`${env.api.url}/muds`).toPromise();
+	}
+
+	async getById(userid: string) {
+		return await this.http.get<IMud[]>(`${env.api.url}/muds`, { params: { userid } }).toPromise();
 	}
 
 	async create(args: IMudCreateRequest) {
-		const response = await this.http.post<IMudCreateResponse>(env.api.path + 'muds', args).toPromise();
+		const response = await this.http.post<IMudCreateResponse>(`${env.api.url}/muds`, args).toPromise();
 		return response.mud;
 	}
 }

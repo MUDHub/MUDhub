@@ -3,11 +3,16 @@
 // The list of file replacements can be found in `angular.json`.
 
 import { IEnviromnent } from './IEnvironment';
+import { LogLevel } from '@microsoft/signalr';
 
 export const environment: IEnviromnent = {
 	production: false,
 	api: {
-		path: 'http://localhost:5000/api/'
+		url: 'http://localhost:5000/api'
+	},
+	signalr: {
+		url: 'http://localhost:5000/hubs/game',
+		logLevel: LogLevel.Debug
 	}
 };
 

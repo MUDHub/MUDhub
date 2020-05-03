@@ -9,7 +9,7 @@
 		<textarea matInput formControlName="description" rows="5"></textarea>
 		<mat-error>Eine kurze Beschreibung deines MUDs ist erforderlich</mat-error>
 	</mat-form-field>
-	<mat-checkbox checked=true formControlName="public" matTooltip="Soll das MUD allen Spielern automatisch zur verfügung stehen?" matTooltipPosition="right">Öffentlich</mat-checkbox>
-	<mat-checkbox checked=true formControlName="autoRestart" matTooltip="Soll das MUD nach einem Neustart des Server automatisch mit starten?" matTooltipPosition="right">Auto-Start</mat-checkbox>
+	<mat-checkbox formControlName="public" matTooltip="Soll das MUD allen Spielern automatisch zur verfügung stehen?" matTooltipPosition="right" disabled>Öffentlich</mat-checkbox>
+	<mat-checkbox formControlName="autoRestart" matTooltip="Soll das MUD nach einem Neustart des Server automatisch mit starten?" matTooltipPosition="right">Auto-Start</mat-checkbox>
 	<button type="submit" mat-flat-button color="primary" [disabled]="createForm.invalid">Erstellen</button>
 </form>

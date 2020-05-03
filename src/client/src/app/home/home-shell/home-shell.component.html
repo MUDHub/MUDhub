@@ -2,15 +2,16 @@
 	<div class="title">MUDhub</div>
 	<button mat-button routerLinkActive="mat-accent" routerLink="/muds">Übersicht</button>
 	<button mat-button routerLinkActive="mat-accent" routerLink="/my-games">Meine Charaktere</button>
-	<button mat-button routerLinkActive="mat-accent" routerLink="/my-muds">Meine MUDs</button>
+	<button mat-button routerLinkActive="mat-accent" routerLink="/my-muds" *ngIf="user.roles.includes('Master')">Meine MUDs</button>
+	<button mat-button routerLinkActive="mat-accent" routerLink="/admin/users" *ngIf="user.roles.includes('Master')">User-Management</button>
 
 
 	<mat-menu #userMenu="matMenu" xPosition="before">
 		<button mat-menu-item routerLink="/profile">Mein Profil</button>
-		<button mat-menu-item routerLink="/login">Logout</button>
+		<button mat-menu-item (click)="logout()">Logout</button>
 	</mat-menu>
 	<button class="user-menu" mat-button [matMenuTriggerFor]="userMenu">
-		Hans Wurst
+		{{name}}
 	</button>
 
 </mat-toolbar>

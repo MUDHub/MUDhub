@@ -8,11 +8,14 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatCardModule } from '@angular/material/card';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 import { MudListComponent } from './mud-list/mud-list.component';
 import { MyGamesComponent } from './my-games/my-games.component';
 import { MyMudsComponent } from './my-muds/my-muds.component';
 import { ProfileComponent } from './profile/profile.component';
+import { UsersComponent } from './admin/users/users.component';
 
 @NgModule({
 	declarations: [
@@ -21,6 +24,7 @@ import { ProfileComponent } from './profile/profile.component';
 		MyGamesComponent,
 		MyMudsComponent,
 		ProfileComponent,
+		UsersComponent,
 	],
 	imports: [
 		CommonModule,
@@ -29,6 +33,8 @@ import { ProfileComponent } from './profile/profile.component';
 		MatButtonModule,
 		MatMenuModule,
 		MatCardModule,
+		MatTableModule,
+		MatPaginatorModule,
 	],
 })
 export class HomeModule {}

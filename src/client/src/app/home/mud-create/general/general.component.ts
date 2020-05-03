@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { MudService } from 'src/app/services/mud.service';
 import { IMudCreateRequest } from 'src/app/model/MudDTO';
 
@@ -13,8 +13,8 @@ export class GeneralComponent {
 	createForm = this.fb.group({
 		name: ['', Validators.required],
 		description: ['', Validators.required],
-		public: [true],
-		autoRestart: [false],
+		public: { value: true, disabled: true },
+		autoRestart: { value: false, disabled: true },
 	});
 
 	async onSubmit() {
