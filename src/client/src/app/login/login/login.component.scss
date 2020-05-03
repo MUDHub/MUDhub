@@ -3,7 +3,12 @@
 :host {
     display: flex;
     flex-direction: column;
-    align-items: center;
+	align-items: center;
+	margin: 2rem;
+}
+
+.general-form {
+	width: 100%;
 }
 
 .title {
@@ -11,16 +16,7 @@
     font-size: 30px;
 }
 
-
-input {
-    height: 20px;
-    border: none;
-    border-bottom: 1px solid rgba(0,0,0,0.2);
-    background-color: #eee;
-    margin-top: 20px;
-  }
-
-a{
+a {
 	margin-top: 20px;
 	font-size: 14px;
 	color: black;
@@ -30,7 +26,7 @@ a:hover {
 	color: $color-primary;
 }
 
-.register{
+.register {
 	margin-top: 1rem;
 	text-align: center;
 

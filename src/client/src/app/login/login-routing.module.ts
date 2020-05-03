@@ -5,6 +5,7 @@ import { LoginShellComponent } from './login-shell.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ResetComponent } from './reset/reset.component';
+import { ResetFormComponent } from './reset-form/reset-form.component';
 
 const routes: Routes = [
 	{
@@ -23,6 +24,10 @@ const routes: Routes = [
 				path: 'reset',
 				component: ResetComponent,
 			},
+			{
+				path: 'reset-form',
+				component: ResetFormComponent,
+			}
 		],
 	},
 ];

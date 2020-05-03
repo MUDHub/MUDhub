@@ -1,31 +1,43 @@
 <h1 class="title">Login</h1>
 
-<div class="form-row">
-	<input
-		[formControl]="mail"
-		class="input"
-		type="mail"
-		name="mail"
-		id="mail"
-		placeholder="E-Mail"
-	/>
-</div>
-<div class="form-row">
-	<input
-		[formControl]="password"
-		class="input"
-		type="password"
-		name="password"
-		id="password"
-		placeholder="Passwort"
-	/>
-</div>
+<form class="general-form" [formGroup]="form" (ngSubmit)="login()">
+	<div class="form-row">
+		<mat-form-field>
+			<input
+				type="text"
+				matInput
+				formControlName="email"
+				placeholder="E-Mail"
+			/>
+			<mat-error>Bitte gebe einen Nutzernamen ein</mat-error>
+		</mat-form-field>
+	</div>
+	<div class="form-row">
+		<mat-form-field>
+			<input
+				matInput
+				formControlName="password"
+				type="password"
+				placeholder="Passwort"
+			/>
+			<mat-error>Bitte gebe ein Passwort ein</mat-error>
+		</mat-form-field>
+	</div>
+</form>
 
 <a routerLink="/login/reset">Passwort vergessen?</a>
 
-<button class="login-button" mat-flat-button color="primary" [disabled]="isLoading" (click)="login()">Anmelden</button>
+<button
+	class="login-button"
+	mat-flat-button
+	color="primary"
+	[disabled]="isLoading || form.invalid"
+	(click)="login()"
+>
+	Anmelden
+</button>
 
 <div class="register">
-	Noch keinen Account?<br>
+	Noch keinen Account?<br />
 	<a routerLink="/login/register">Registrieren</a>
 </div>
