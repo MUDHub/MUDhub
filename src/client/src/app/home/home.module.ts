@@ -10,12 +10,15 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 import { MudListComponent } from './mud-list/mud-list.component';
 import { MyGamesComponent } from './my-games/my-games.component';
 import { MyMudsComponent } from './my-muds/my-muds.component';
 import { ProfileComponent } from './profile/profile.component';
 import { UsersComponent } from './admin/users/users.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
 	declarations: [
@@ -29,12 +32,15 @@ import { UsersComponent } from './admin/users/users.component';
 	imports: [
 		CommonModule,
 		HomeRoutingModule,
+		ReactiveFormsModule,
 		MatToolbarModule,
 		MatButtonModule,
 		MatMenuModule,
 		MatCardModule,
 		MatTableModule,
 		MatPaginatorModule,
+		MatFormFieldModule,
+		MatInputModule,
 	],
 })
 export class HomeModule {}
