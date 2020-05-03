@@ -4,7 +4,7 @@ import { GameShellComponent } from './game-shell.component';
 
 const routes: Routes = [
 	{
-		path: '',
+		path: ':char-id',
 		component: GameShellComponent,
 	}
 ];

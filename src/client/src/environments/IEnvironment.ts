@@ -1,6 +1,12 @@
+import { LogLevel } from '@microsoft/signalr';
+
 export interface IEnviromnent {
 	production: boolean;
 	api: {
-		path: string;
+		url: string;
+	};
+	signalr: {
+		url: string;
+		logLevel: LogLevel;
 	};
 }
