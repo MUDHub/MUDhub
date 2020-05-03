@@ -40,7 +40,7 @@ namespace MUDhub.Server
         public void ConfigureServices(IServiceCollection services)
         {
             //Costume Service Extensions, in Server Project
-            services.AddTargetDatabase(_serverConfiguration.Database);
+            services.AddTargetDatabase(_configuration, _serverConfiguration.Database);
             services.AddServerConfiguration(_configuration);
 
             //Mud game Services
@@ -157,7 +157,7 @@ namespace MUDhub.Server
             terminate = StartupLogger.LogMessage("Server", _serverConfiguration) || terminate;
             terminate = StartupLogger.LogMessage("Server:TokenSecret", _serverConfiguration?.TokenSecret) || terminate;
             terminate = StartupLogger.LogMessage("Server:Database", _serverConfiguration?.Database) || terminate;
-            terminate = StartupLogger.LogMessage("Server:Database:ConnectionString", _serverConfiguration?.Database?.ConnectionString) || terminate;
+            //terminate = StartupLogger.LogMessage("Server:Database:ConnectionString", _serverConfiguration?.Database?.ConnectionString) || terminate;
             terminate = StartupLogger.LogMessage("Server:Database:DefaultMudAdminEmail", _serverConfiguration?.Database?.DefaultMudAdminEmail) || terminate;
             terminate = StartupLogger.LogMessage("Server:Database:DefaultMudAdminPassword", _serverConfiguration?.Database?.DefaultMudAdminPassword) || terminate;
             terminate = StartupLogger.LogMessage("Server:Mail", _serverConfiguration?.Mail) || terminate;
