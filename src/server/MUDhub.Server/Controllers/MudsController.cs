@@ -40,7 +40,9 @@ namespace MUDhub.Server.Controllers
             {
                 if (userid is null)
                 {
-                    return Ok(_context.MudGames.AsEnumerable().Select(mg => MudApiModel.ConvertFromMudGame(mg)));
+                    return Ok(_context.MudGames.Include(mg => mg.Owner)
+                                               .AsEnumerable()
+                                               .Select(mg => MudApiModel.ConvertFromMudGame(mg)));
                 }
                 else
                 {
