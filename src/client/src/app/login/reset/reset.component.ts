@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 
@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 export class ResetComponent {
 	constructor(private authService: AuthService, private router: Router) {}
 
-	mail = new FormControl();
+	mail = new FormControl('', [ Validators.required, Validators.email ]);
 
 	async reset() {
 		await this.authService.reset(this.mail.value);

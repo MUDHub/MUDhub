@@ -5,9 +5,11 @@
 		<mat-form-field>
 			<input
 				type="email"
+				name="email"
 				matInput
 				formControlName="email"
 				placeholder="E-Mail"
+				autocomplete="email"
 			/>
 			<mat-error *ngIf="form.controls.email.hasError('required')"
 				>Bitte gebe eine Email-Adresse ein ein</mat-error
@@ -20,10 +22,12 @@
 	<div class="form-row">
 		<mat-form-field>
 			<input
+				type="password"
+				name="password"
 				matInput
 				formControlName="password"
-				type="password"
 				placeholder="Passwort"
+				autocomplete="current-password"
 			/>
 			<mat-error>Bitte gebe ein Passwort ein</mat-error>
 		</mat-form-field>
