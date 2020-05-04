@@ -1,5 +1,7 @@
 <h1>Passwort zurücksetzen</h1>
 
+<mat-error *ngIf="resetKey === undefined">Kein Reset-Key in URL gefunden</mat-error>
+
 <form class="general-form" [formGroup]="form" (ngSubmit)="onSubmit()">
 	<div class="form-row">
 		<mat-form-field>
@@ -10,7 +12,6 @@
 				formControlName="password"
 				placeholder="Neues Passwort"
 				autocomplete="new-password"
-				[disabled]="!resetKey"
 			/>
 			<mat-error>Bitte gebe ein neues Passwort ein!</mat-error>
 		</mat-form-field>
@@ -25,7 +26,6 @@
 				placeholder="Passwort wiederholen"
 				autocomplete="new-password"
 				[errorStateMatcher]="matcher"
-				[disabled]="!resetKey"
 			/>
 			<mat-error *ngIf="form.hasError('notSame')"
 				>Die eingegebenen Passwörter stimmen nicht überein!</mat-error

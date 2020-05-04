@@ -24,7 +24,9 @@ export class ResetFormComponent implements OnInit {
 	);
 
 	ngOnInit() {
-		this.resetKey = this.route.snapshot.queryParams.key;
+		this.resetKey =
+			this.route.snapshot.queryParams.key ||
+			this.route.snapshot.queryParams.resetkey;
 		console.log(this.resetKey);
 	}
 
