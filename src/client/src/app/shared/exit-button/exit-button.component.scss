@@ -1,0 +1,28 @@
+:host {
+	width: 30px;
+	height: 30px;
+	display: block;
+	position: relative;
+	border-radius: 50%;
+	background-color: rgba(0, 0, 0, 0.15);
+	cursor: pointer;
+}
+
+span {
+	display: block;
+	width: 50%;
+	height: 2px;
+	background-color: #fff;
+
+	position: absolute;
+	top: 50%;
+	left: 50%;
+
+	&:first-child {
+		transform: translate(-50%, -50%) rotate(45deg);
+	}
+
+	&:last-child {
+		transform: translate(-50%, -50%) rotate(-45deg);
+	}
+}
