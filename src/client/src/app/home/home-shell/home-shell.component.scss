@@ -1,3 +1,5 @@
+@import '../../../variables.scss';
+
 :host {
 	height: 100%;
 	background-color: #eee;
@@ -6,8 +8,9 @@
 }
 
 .navbar {
-	.title {
-		margin-right: 2rem;
+	img {
+		width: 100px !important;
+		height: 60px !important;
 	}
 
 	.user-menu {
