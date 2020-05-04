@@ -21,15 +21,15 @@ namespace MUDhub.Core.Models.Characters
 
         public string Id { get; }
 
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
-        public MudGame Game { get; set; }
+        public MudGame Game { get; set; } = new MudGame();
 
-        public User Owner { get; set; }
+        public User Owner { get; set; } = new User();
 
-        public CharacterRace Race { get; set; }
+        public CharacterRace Race { get; set; } = new CharacterRace();
 
-        public CharacterClass Class { get; set; }
+        public CharacterClass Class { get; set; } = new CharacterClass();
 
         //"LiveUpdates"
 
