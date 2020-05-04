@@ -6,6 +6,7 @@ using Microsoft.Extensions.Options;
 using MUDhub.Core.Abstracts;
 using MUDhub.Core.Configurations;
 using MUDhub.Core.Models;
+using MUDhub.Core.Models.Characters;
 using MUDhub.Core.Models.Muds;
 using SQLitePCL;
 using System;
@@ -56,6 +57,11 @@ namespace MUDhub.Core.Services
 
         public DbSet<MudGame> MudGames { get; set; } = null!;
         public DbSet<MudJoinRequest> MudJoinRequests { get; set; } = null!;
+        
+        public DbSet<Character> Characters { get; set; } = null!;
+        public DbSet<CharacterClass> Classes { get; set; } = null!;
+        public DbSet<CharacterRace> Races { get; set; } = null!;
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -67,6 +73,21 @@ namespace MUDhub.Core.Services
             //Configures MudGame
             modelBuilder.Entity<MudGame>()
                 .HasKey(mg => mg.Id);
+            modelBuilder.Entity<Character>()
+                .HasKey(c => c.Id);
+            modelBuilder.Entity<Character>()
+                .HasOne(c => c.Race)
+                .WithMany(r => r.Characters);
+            modelBuilder.Entity<Character>()
+                .HasOne(c => c.Class)
+                .WithMany(cl => cl.Characters);
+
+            modelBuilder.Entity<CharacterClass>()
+                .HasKey(cl => cl.Id);
+            modelBuilder.Entity<CharacterRace>()
+                .HasKey(r => r.Id);
+            modelBuilder.Entity<CharacterBoost>()
+                .HasKey(b => b.Id);
 
             //Configures MudJoinRequests
             modelBuilder.Entity<MudJoinRequest>()
@@ -76,11 +97,8 @@ namespace MUDhub.Core.Services
                 .WithMany(mg => mg.JoinRequests)
                 .HasForeignKey(mjr => mjr.MudId);
 
-            modelBuilder.Entity<User>(
-                   b =>
-                   {
-                       b.HasKey(u => u.Id);
-                   });
+            modelBuilder.Entity<User>()
+                .HasKey(u => u.Id);
 
         }
 

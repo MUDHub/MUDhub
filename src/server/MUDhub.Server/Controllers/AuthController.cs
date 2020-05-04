@@ -42,7 +42,7 @@ namespace MUDhub.Server.Controllers
                 return Ok(new LoginResponse()
                 {
                     Token = result.Token,
-                    User = new UserApiModel(result.User!)
+                    User = UserApiModel.CreateFromUser(result.User!)
                 });
             }
 
