@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MUDhub.Core.Models.Rooms;
 
 namespace MUDhub.Core.Services
 {
@@ -62,6 +63,9 @@ namespace MUDhub.Core.Services
         public DbSet<Character> Characters { get; set; } = null!;
         public DbSet<CharacterClass> Classes { get; set; } = null!;
         public DbSet<CharacterRace> Races { get; set; } = null!;
+        public DbSet<Area> Areas { get; set; } = null!;
+        public DbSet<Room> Rooms { get; set; } = null!;
+        public DbSet<RoomConnection> RoomConnections { get; set; } = null!;
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -101,6 +105,12 @@ namespace MUDhub.Core.Services
             modelBuilder.Entity<User>()
                 .HasKey(u => u.Id);
 
+            modelBuilder.Entity<Room>()
+                .HasKey(r => r.Id);
+            modelBuilder.Entity<Area>()
+                .HasKey(a => a.Id);
+            modelBuilder.Entity<RoomConnection>()
+                .HasKey(rc => rc.Id);
         }
 
 

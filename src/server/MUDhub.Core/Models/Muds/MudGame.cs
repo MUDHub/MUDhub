@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
+using MUDhub.Core.Models.Rooms;
 
 namespace MUDhub.Core.Models.Muds
 {
@@ -38,6 +39,9 @@ namespace MUDhub.Core.Models.Muds
 
         public string OwnerId { get; set; } = string.Empty;
         public User Owner { get; set; }
+
+        public string DefaultRoomId { get; set; }
+        public Room DefaultRoom { get; set; }
 
         public ICollection<MudJoinRequest> JoinRequests { get; set; } = new Collection<MudJoinRequest>();
 

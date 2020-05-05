@@ -8,5 +8,6 @@ namespace MUDhub.Core.Abstracts.Models.Rooms
     public class RoomResult : BaseResult
     {
         public Room? Room { get; set; }
+        public bool IsDefaultRoom { get; set; } = false;
     }
 }

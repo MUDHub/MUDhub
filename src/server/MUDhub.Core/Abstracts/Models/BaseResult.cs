@@ -6,7 +6,7 @@ namespace MUDhub.Core.Abstracts.Models
 {
     public class BaseResult
     {
-        public bool Success { get; set; }
+        public bool Success { get; set; } = true;
         public string Errormessage { get; set; } = string.Empty;
     }
 }

@@ -22,5 +22,6 @@ namespace MUDhub.Core.Models
         public string Name { get; set; } = string.Empty;
         public ICollection<Room> Rooms { get; set; } = new Collection<Room>();
         public MudGame Game { get; set; } = new MudGame();
+        public string GameId { get; set; } = string.Empty;
     }
 }
