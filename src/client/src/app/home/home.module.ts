@@ -12,6 +12,8 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { MudListComponent } from './mud-list/mud-list.component';
@@ -39,13 +41,15 @@ import { SharedModule } from '../shared/shared.module';
 		MatToolbarModule,
 		MatButtonModule,
 		MatMenuModule,
-		MatCardModule,
+		MatCardModule, 
 		MatTableModule,
 		MatPaginatorModule,
 		MatFormFieldModule,
 		MatInputModule,
 		MatProgressSpinnerModule,
 		SharedModule,
+		MatCheckboxModule,
+		MatIconModule,
 	],
 })
 export class HomeModule {}
