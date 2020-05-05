@@ -116,3 +116,44 @@ img {
 .mat-spinner circle {
 	stroke: #fff;
 }
+
+
+.table {
+	width: 100%;
+	border-collapse: collapse;
+	text-align: left;
+
+	td, th {
+		padding: 0.5rem 1rem;
+	}
+
+	thead tr {
+		border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+	}
+
+	tbody {
+		tr:not(:last-child) {
+			border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+		}
+	}
+}
+
+
+.row {
+	display: flex;
+	flex-direction: row;
+
+	.col {
+		flex: 1 0;
+		margin-left: 0.5rem;
+		margin-right: 0.5rem;
+
+		&:first-child {
+			margin-left: 0;
+		}
+
+		&:last-child {
+			margin-right: 0;
+		}
+	}
+}
