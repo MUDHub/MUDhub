@@ -18,10 +18,8 @@ namespace MUDhub.Core.Models.Characters
         }
 
         public string Id { get; }
-
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
-
         public ICollection<Character> Characters { get; set; } = new Collection<Character>();
     }
 }
