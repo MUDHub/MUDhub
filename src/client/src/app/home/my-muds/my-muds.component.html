@@ -1,27 +1,30 @@
-<h3>My Muds</h3>
+<h1>My Muds</h1>
 
 <div *ngIf="muds.length < 1">
 	No Muds created
 </div>
 
-<div *ngIf="muds.length > 0" class="table-list">
-	<div class="table-item first">
-		<p class="table-field">MudId</p>
-		<p class="table-field">Name</p>
-		<p class="table-field">IsPublic</p>
-		<p class="table-field">Restart</p>
-		<p class="table-field">Edit</p>
-		<p class="table-field">Delete</p>
-	</div>
-	<div class="table-item" *ngFor="let mud of muds">
-		<p class="table-field">{{mud.mudId}}</p>
-		<p class="table-field">{{mud.name}}</p>
-		<p class="table-field">{{mud.isPublic}}</p>
-		<p class="table-field">{{mud.autoRestart}}</p>
-		<button mat-button (click)="editMud(mud.mudId)">Edit</button>
-		<button mat-button (click)="deleteMud(mud.mudId)">Delete</button>
-	</div>
-</div>
+
+<table class="table-list" *ngIf="muds.length > 0">
+	<tr class="table-item first">
+		<th>MudId</th>
+		<th>Name</th>
+		<th>Öffentlich</th>
+		<th>Neustart</th>
+		<th>Bearbeiten</th>
+		<th>Löschen</th>
+	</tr>
+	<tr class="table-item" *ngFor="let mud of muds">
+		<td>{{mud.mudId}}</td>
+		<td>{{mud.name}}</td>
+		<td *ngIf="mud.isPublic == 'true'"><mat-icon>check</mat-icon></td>
+		<td *ngIf="mud.isPublic == 'false'"><mat-icon>clear</mat-icon></td>
+		<td *ngIf="mud.autoRestart == true"><mat-icon>check</mat-icon></td>
+		<td *ngIf="mud.autoRestart == false"><mat-icon>clear</mat-icon></td>
+		<td><button mat-button (click)="editMud(mud.mudId)">Bearbeiten</button></td>
+		<td><button mat-button (click)="deleteMud(mud.mudId)">Löschen</button></td>
+	</tr>
+</table>
 
 
 <button mat-fab routerLink="create" class="fab">+</button>
