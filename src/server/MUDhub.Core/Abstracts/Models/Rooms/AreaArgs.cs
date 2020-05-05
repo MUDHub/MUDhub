@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MUDhub.Core.Abstracts.Models
+namespace MUDhub.Core.Abstracts.Models.Rooms
 {
-    public class CharacterRaceArgs
+    public class AreaArgs
     {
+        public string Description { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
-        public string Desctiption { get; set; } = string.Empty;
     }
 }
