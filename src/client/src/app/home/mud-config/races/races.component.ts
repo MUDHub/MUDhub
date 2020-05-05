@@ -26,6 +26,8 @@ export class RacesComponent implements OnInit {
 	races: Array<{name: string; description: string; imagekey: string }> = [];
 
 	ngOnInit(): void {
+		/* Daten fetchen und in Array laden */
+
 		this.mudId = this.route.snapshot.params.mudid;
 	}
 

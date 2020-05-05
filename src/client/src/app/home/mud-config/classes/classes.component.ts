@@ -28,6 +28,8 @@ export class ClassesComponent implements OnInit {
 	classes: Array<{name: string; description: string; imagekey: string }> = [];
 
 	ngOnInit(): void {
+		/* Daten fetchen und in Array laden */
+
 		this.mudId = this.route.snapshot.params.mudid;
 	}
 
