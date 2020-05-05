@@ -11,6 +11,7 @@ import { AdminGuard } from '../guards/admin.guard';
 import { MudJoinComponent } from './mud-list/mud-join/mud-join.component';
 import { MudCreateComponent } from './mud-create/mud-create.component';
 import { RacesComponent } from './mud-config/races/races.component';
+import { RequestsComponent } from './my-muds/joins/requests.component';
 
 const routes: Routes = [
 	{
@@ -52,6 +53,10 @@ const routes: Routes = [
 					{
 						path: 'races',
 						component: RacesComponent
+					},
+					{
+						path: 'requests',
+						component: RequestsComponent
 					}
 				]
 			},

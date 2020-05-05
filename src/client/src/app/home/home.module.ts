@@ -26,6 +26,7 @@ import { MudJoinComponent } from './mud-list/mud-join/mud-join.component';
 import { SharedModule } from '../shared/shared.module';
 import { MudCreateComponent } from './mud-create/mud-create.component';
 import { RacesComponent } from './mud-config/races/races.component';
+import { RequestsComponent } from './my-muds/joins/requests.component';
 @NgModule({
 	declarations: [
 		HomeShellComponent,
@@ -37,6 +38,7 @@ import { RacesComponent } from './mud-config/races/races.component';
 		MudJoinComponent,
 		MudCreateComponent,
 		RacesComponent,
+		RequestsComponent,
 	],
 	imports: [
 		CommonModule,

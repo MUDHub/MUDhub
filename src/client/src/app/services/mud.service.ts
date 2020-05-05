@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { IMudCreateRequest, IMudCreateResponse } from '../model/MudDTO';
+import { IMudCreateRequest, IMudCreateResponse, IRequestResponse } from '../model/MudDTO';
 import { HttpClient } from '@angular/common/http';
 import { environment as env } from 'src/environments/environment';
 import { IMud } from '../model/IMud';
@@ -36,6 +36,24 @@ export class MudService {
 	async deleteMud(mudId: string) {
 		return await this.http
 			.delete(`${env.api.url}/muds/${mudId}`)
+			.toPromise();
+	}
+
+	async getJoinRequests(mudId: string) {
+		return await this.http
+			.get<IRequestResponse[]>(`${env.api.url}/muds/${mudId}/request`)
+			.toPromise();
+	}
+
+	async requestAccess(mudId: string) {
+		return await this.http
+			.post(`${env.api.url}/muds/${mudId}/requestjoin`, null)
+			.toPromise();
+	}
+
+	async confirmRequest(mudId: string, requestId: string) {
+		return await this.http
+			.post(`${env.api.url}/muds/${mudId}/request/${requestId}`, null)
 			.toPromise();
 	}
 }

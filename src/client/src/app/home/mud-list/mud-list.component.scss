@@ -10,11 +10,28 @@
 	align-items: center;
 	text-align: justify;
 
+	border: 1px solid transparent;
+
 	background: #fff;
 	padding: 1.5rem;
 	border-radius: 4px;
 	box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2),
 		0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
+	position: relative;
+
+	&.is-own {
+		.owner-icon {
+			display: block;
+		}
+	}
+
+	.owner-icon {
+		position: absolute;
+		top: 0.5rem;
+		right: 0.5rem;
+		display: none;
+		opacity: 0.2;
+	}
 
 	> *:not(:last-child) {
 		margin-bottom: 1rem;
@@ -42,8 +59,8 @@
 		border-top: 1px solid #e0e0e0;
 		box-shadow: 0px 3px 20px -5px rgba(0, 0, 0, 0.2);
 
-		border-top-left-radius: 2rem;
-		border-top-right-radius: 2rem;
+		border-top-left-radius: 1rem;
+		border-top-right-radius: 1rem;
 		padding: 1rem;
 	}
 }

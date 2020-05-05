@@ -18,8 +18,8 @@ export class MudCreateComponent {
 	createForm = this.fb.group({
 		name: ['', [Validators.required, Validators.minLength(4)]],
 		description: ['', Validators.required],
-		public: { value: true, disabled: true },
-		autoRestart: { value: false, disabled: true },
+		public:  true,
+		autoRestart: false,
 	});
 
 	async onSubmit() {
