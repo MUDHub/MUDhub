@@ -13,32 +13,7 @@ export class MyMudsComponent implements OnInit {
 		private authService: AuthService
 	) {}
 
-	muds: IMud[] = [
-		{
-			mudId: 'test',
-			name: 'testname',
-			description: 'desc',
-			isPublic: 'false',
-			autoRestart: true,
-			owner: this.authService.user,
-		},
-		{
-			mudId: 'test',
-			name: 'testname',
-			description: 'desc',
-			isPublic: 'true',
-			autoRestart: false,
-			owner: this.authService.user,
-		},
-		{
-			mudId: 'test',
-			name: 'testname',
-			description: 'desc',
-			isPublic: 'true',
-			autoRestart: true,
-			owner: this.authService.user,
-		},
-	];
+	muds: IMud[] = [];
 
 	async ngOnInit() {
 		await this.loadMuds();
