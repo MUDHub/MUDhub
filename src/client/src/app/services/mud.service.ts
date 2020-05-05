@@ -14,6 +14,12 @@ export class MudService {
 		return await this.http.get<IMud[]>(`${env.api.url}/muds`).toPromise();
 	}
 
+	async getById(id: string) {
+		return await this.http
+			.get<IMud>(`${env.api.url}/muds/${id}`)
+			.toPromise();
+	}
+
 	async getForUserId(userid: string) {
 		return await this.http
 			.get<IMud[]>(`${env.api.url}/muds`, { params: { userid } })

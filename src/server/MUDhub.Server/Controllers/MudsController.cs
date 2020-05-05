@@ -5,6 +5,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MUDhub.Core.Abstracts;
 using MUDhub.Core.Abstracts.Models;
 using MUDhub.Core.Services;
@@ -39,11 +40,14 @@ namespace MUDhub.Server.Controllers
             {
                 if (userid is null)
                 {
-                    return Ok(_context.MudGames.AsEnumerable().Select(mg => MudApiModel.ConvertFromMudGame(mg)));
+                    return Ok(_context.MudGames.Include(mg => mg.Owner)
+                                               .AsEnumerable()
+                                               .Select(mg => MudApiModel.ConvertFromMudGame(mg)));
                 }
                 else
                 {
                     return Ok(_context.MudGames.Where(g => g.OwnerId == userid)
+                                                .Include(mg => mg.Owner)
                                                 .AsEnumerable()
                                                 .Select(mg => MudApiModel.ConvertFromMudGame(mg)));
                 }

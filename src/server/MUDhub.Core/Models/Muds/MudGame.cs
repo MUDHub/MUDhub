@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MUDhub.Core.Models.Characters;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
@@ -39,5 +40,7 @@ namespace MUDhub.Core.Models.Muds
         public User Owner { get; set; }
 
         public ICollection<MudJoinRequest> JoinRequests { get; set; } = new Collection<MudJoinRequest>();
+
+        public ICollection<Character> Characters { get; set; } = new Collection<Character>();
     }
 }
