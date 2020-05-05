@@ -1,13 +1,11 @@
 <mh-exit-button class="exit-button" routerLink="/muds"></mh-exit-button>
-<div class="header">
-	{{ mud?.name }}...
-</div>
+<div class="header">{{ mud?.name }}...</div>
 <div class="grid">
 	<div class="panel" *ngIf="previousChars.length > 0">
-		<div class="panel-header">...mit einem bestehendem Charakter beitreten</div>
-		<div class="panel-content">
-
+		<div class="panel-header">
+			...mit einem bestehendem Charakter beitreten
 		</div>
+		<div class="panel-content"></div>
 	</div>
 	<div class="panel">
 		<div class="panel-header">...mit einem neuen Charakter erkunden</div>
@@ -15,9 +13,24 @@
 			<div class="form">
 				<mat-form-field>
 					<mat-label>Charakter-Name</mat-label>
-					<input type="text" matInput>
+					<input type="text" matInput [formControl]="characterName" />
+					<mat-error *ngIf="characterName.hasError('required')"
+						>Der Charakter muss einen Namen haben</mat-error
+					>
+					<mat-error *ngIf="characterName.hasError('minlength')"
+						>Der Name muss länger als
+						{{ characterName.errors.minlength.requiredLength }}
+						sein</mat-error
+					>
 				</mat-form-field>
-				<button mat-stroked-button color="primary" (click)="join()">Beitreten</button>
+				<button
+					mat-stroked-button
+					color="primary"
+					(click)="join()"
+					[disabled]="characterName.invalid"
+				>
+					Beitreten
+				</button>
 			</div>
 		</div>
 	</div>

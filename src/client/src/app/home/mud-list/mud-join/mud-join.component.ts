@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostBinding } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MudService } from 'src/app/services/mud.service';
 import { IMud } from 'src/app/model/IMud';
@@ -9,6 +9,7 @@ import {
 	transition,
 	animate,
 } from '@angular/animations';
+import { FormControl, Validators } from '@angular/forms';
 
 @Component({
 	templateUrl: './mud-join.component.html',
@@ -22,7 +23,7 @@ import {
 					bottom: '-100%',
 				}),
 				animate(
-					'.8s cubic-bezier(0,.5,.5,1)',
+					'.8s cubic-bezier(0,1,1,1)',
 					style({
 						bottom: 0,
 					})
@@ -30,7 +31,7 @@ import {
 			]),
 			transition(':leave', [
 				animate(
-					'.5s ease-in-out',
+					'.5s ease-in',
 					style({
 						bottom: '-100%',
 					})
@@ -38,7 +39,6 @@ import {
 			]),
 		]),
 	],
-	host: { '[@slideInOutAnimation]': '' },
 })
 export class MudJoinComponent implements OnInit {
 	constructor(
@@ -46,11 +46,22 @@ export class MudJoinComponent implements OnInit {
 		private mudService: MudService
 	) {}
 
+	@HostBinding('@slideInOutAnimation') get slideInOut() {
+		return '';
+	}
+
 	mud: IMud;
 	previousChars = [{}];
 
+	characterName = new FormControl('', [
+		Validators.required,
+		Validators.minLength(3),
+	]);
+
 	async ngOnInit() {
-		this.route.queryParams.subscribe(async (query) => await this.loadMudInfo(query.mudid));
+		this.route.queryParams.subscribe(
+			async query => await this.loadMudInfo(query.mudid)
+		);
 	}
 
 	async loadMudInfo(id: string) {
@@ -60,6 +71,11 @@ export class MudJoinComponent implements OnInit {
 	}
 
 	async join() {
-		console.log('joining mud: ', this.mud);
+		console.log(
+			'joining mud: ',
+			this.mud,
+			'with character-name:',
+			this.characterName.value
+		);
 	}
 }
