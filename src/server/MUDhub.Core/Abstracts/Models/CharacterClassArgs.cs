@@ -8,6 +8,5 @@ namespace MUDhub.Core.Abstracts.Models
     {
         public string Name { get; set; } = string.Empty;
         public string Desctiption { get; set; } = string.Empty;
-
     }
 }

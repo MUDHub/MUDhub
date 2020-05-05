@@ -6,7 +6,6 @@ namespace MUDhub.Core.Abstracts.Models
 {
     public class CharacterArgs
     {
-
         public string Name { get; set; } = string.Empty;
         public string RaceId { get; set; } = string.Empty;
         public string ClassId { get; set; } = string.Empty;

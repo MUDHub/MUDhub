@@ -16,6 +16,5 @@ namespace MUDhub.Core.Abstracts
         Task<CharacterRaceResult> RemoveRaceAsync(string userid, string raceid);
         Task<CharacterClassResult> CreateClassAsync(string userid, string mudid, CharacterClassArgs args);
         Task<CharacterClassResult> RemoveClassAsync(string userid, string classid);
-
     }
 }
