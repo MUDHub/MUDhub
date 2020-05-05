@@ -23,7 +23,7 @@ export class MudListComponent implements OnInit {
 		for (const mud of muds) {
 			if (!mud.isPublic) {
 				const mudRequests = await this.mudService.getJoinRequests(mud.mudId);
-				const request = mudRequests.find(m => m.userid === this.user.id);
+				const request = mudRequests.find(m => m.userId === this.user.id);
 				this.list.push({ mud, requestState: request.state });
 			} else {
 				this.list.push({ mud });

@@ -52,6 +52,7 @@ export class MudService {
 
 		return requests.map<IMudRequest>(r => {
 			return {
+				userId: r.userid,
 				email: r.userEmail,
 				mudId: r.mudGameId,
 				state: r.state,
