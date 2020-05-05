@@ -64,13 +64,13 @@ namespace MUDhub.Server
             else
                 app.UseSpaStaticFiles();
 
-            app.UseFileServer(new FileServerOptions
-            {
-                FileProvider = new PhysicalFileProvider(
-                                    Path.Combine(Directory.GetCurrentDirectory(), _serverConfiguration.ImageResourcePath)),
-                RequestPath = "/resources/images",
-                EnableDirectoryBrowsing = true
-            });
+            //app.UseFileServer(new FileServerOptions
+            //{
+            //    FileProvider = new PhysicalFileProvider(
+            //                        Path.Combine(Directory.GetCurrentDirectory(), _serverConfiguration.ImageResourcePath)),
+            //    RequestPath = "/resources/images",
+            //    EnableDirectoryBrowsing = true
+            //});
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>

@@ -15,19 +15,17 @@
 	right: 1rem;
 }
 
-
 .header {
 	font-weight: bold;
 	font-size: 150%;
 	padding: 1rem;
 }
 
-
 .grid {
 	height: 100%;
 	display: flex;
 
-	@media screen and (max-width: 600px){
+	@media screen and (max-width: 600px) {
 		flex-direction: column-reverse;
 	}
 
@@ -35,14 +33,14 @@
 		flex: 1;
 
 		border: 1px solid rgba(0, 0, 0, 0.1);
-		border-radius: 2rem;
+		background-color: rgba(0, 0, 0, 0.02);
+		border-radius: 1rem;
 
 		margin: 1rem;
 		padding: 1rem;
 
 		display: flex;
 		flex-direction: column;
-
 
 		.panel-header {
 			font-size: 110%;
@@ -60,12 +58,16 @@
 	}
 }
 
-
 .form {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 	width: 100%;
-	max-width: 200px;
+	max-width: 300px;
+
+	mat-form-field {
+		width: 100%;
+		margin-bottom: 1rem;
+	}
 }
