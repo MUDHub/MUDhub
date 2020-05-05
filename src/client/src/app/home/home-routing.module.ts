@@ -9,6 +9,8 @@ import { UsersComponent } from './admin/users/users.component';
 import { MasterGuard } from '../guards/master.guard';
 import { AdminGuard } from '../guards/admin.guard';
 import { MudJoinComponent } from './mud-list/mud-join/mud-join.component';
+import { MudCreateComponent } from './mud-create/mud-create.component';
+import { RacesComponent } from './mud-config/races/races.component';
 
 const routes: Routes = [
 	{
@@ -42,10 +44,16 @@ const routes: Routes = [
 			{
 				path: 'my-muds/create',
 				canActivate: [MasterGuard],
-				loadChildren: () =>
-					import('./mud-create/mud-create.module').then(
-						m => m.MudCreateModule
-					),
+				component: MudCreateComponent
+			},
+			{
+				path: 'my-muds/:mudid',
+				children: [
+					{
+						path: 'races',
+						component: RacesComponent
+					}
+				]
 			},
 			{
 				path: 'profile',
@@ -69,4 +77,4 @@ const routes: Routes = [
 	imports: [RouterModule.forChild(routes)],
 	exports: [RouterModule],
 })
-export class HomeRoutingModule {}
+export class HomeRoutingModule { }
