@@ -55,7 +55,17 @@ h1 {
     z-index: 100;
 	/*Styling*/
 	background-color: white;
-	padding: 3rem;
+	padding: 2rem 3rem 3rem 3rem;
     border-radius: 5px;
-    box-shadow: rgba(0, 0, 0, 0.5) 10rem 10rem 100rem 100rem;
+	box-shadow: rgba(0, 0, 0, 0.5) 10rem 10rem 100rem 100rem;
+	
+	button {
+		margin-top: 1rem;
+	}
+}
+
+.exit-button{
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
 }

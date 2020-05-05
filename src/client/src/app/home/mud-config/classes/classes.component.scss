@@ -1,8 +1,71 @@
-.button-menu{
+@import '../../../../variables.scss';
+
+h1 {
+	text-align: center;
+}
+
+.table-list {
+	border-radius: 5px;
+	width: 100%;
+
+	.table-item {
+		height: 4rem;
+		box-shadow: rgba(0, 0, 0, 0.14) 0px 3px 5px 1px;
+
+		background-color: white;
+
+		button {
+			background-color: $color-primary;
+		}
+
+		td {
+			text-align: center;
+			vertical-align: middle;
+		}
+	}
+}
+
+.button-class {
+	width: 100%;
+	display: flex;
+	justify-content: flex-end;
+
+	button {
+		width: 15%;
+		margin-bottom: 1rem;
+	}
+}
+
+.button-menu {
+	margin-top: 1rem;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+
+	button {
+		margin-right: 1rem;
+	}
+}
+
+.add-class {
+	/*Position*/
+	position: absolute;
+    bottom: 40%;
+    left: 43%;
+    z-index: 100;
+	/*Styling*/
+	background-color: white;
+	padding: 2rem 3rem 3rem 3rem;
+    border-radius: 5px;
+	box-shadow: rgba(0, 0, 0, 0.5) 10rem 10rem 100rem 100rem;
+	
+	button {
+		margin-top: 1rem;
+	}
+}
+
+.exit-button{
+    width: 100%;
     display: flex;
-    flex-direction: row;
-    justify-content: center;
-    button{
-        margin-right: 1rem;
-    }
+    justify-content: flex-end;
 }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MudService } from 'src/app/services/mud.service';
 import { IMud } from 'src/app/model/IMud';
 import { AuthService } from 'src/app/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
 	templateUrl: './my-muds.component.html',
@@ -10,7 +11,8 @@ import { AuthService } from 'src/app/services/auth.service';
 export class MyMudsComponent implements OnInit {
 	constructor(
 		private mudService: MudService,
-		private authService: AuthService
+		private authService: AuthService,
+		private router: Router,
 	) {}
 
 	muds: IMud[] = [];
@@ -26,7 +28,7 @@ export class MyMudsComponent implements OnInit {
 	}
 
 	editMud(mudId: string) {
-		//Todo redirect to edit page
+		this.router.navigate(['/my-muds/' + mudId + '/races']);
 		console.log('Edit Mud' + mudId);
 	}
 

@@ -6,3 +6,18 @@
         margin-right: 1rem;
     }
 }
+
+.add-race {
+    display:none;
+	/*Position*/
+	position: absolute;
+    bottom: 40%;
+    left: 43%;
+    z-index: 100;
+	/*Styling*/
+	background-color: white;
+	padding: 3rem;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.5) 10rem 10rem 100rem 100rem;
+}
+

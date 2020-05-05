@@ -16,7 +16,7 @@ export class RoomsComponent implements OnInit {
 	}
 
 	onAbort() {
-		this.router.navigate(['/my-muds/create']);
+		this.router.navigate(['/my-muds']);
 	}
 
 	onLast() {

@@ -19,22 +19,23 @@ export class RacesComponent implements OnInit {
 		imagekey: [''],
 	});
 
-	dialog: true;
+	dialog =  false;
 	mudId: string;
 
 	//Todo Interface muss implementiert werden
-	races: Array<{ name: string; description: string; imagekey: string }> = [];
+	races: Array<{name: string; description: string; imagekey: string }> = [];
 
 	ngOnInit(): void {
 		this.mudId = this.route.snapshot.params.mudid;
 	}
 
-	onAbort() {
-		this.router.navigate(['/my-muds/create']);
+	changeDialog() {
+		this.form.reset();
+		this.dialog = !this.dialog;
 	}
 
-	onLast() {
-		this.router.navigate(['/my-muds/create']);
+	onAbort() {
+		this.router.navigate(['/my-muds']);
 	}
 
 	addRace() {
@@ -43,6 +44,12 @@ export class RacesComponent implements OnInit {
 			description: this.form.get('description').value,
 			imagekey: this.form.get('imagekey').value,
 		});
+
+		this.changeDialog();
+	}
+
+	deleteRow(index: number){
+		this.races.splice(index, 1);
 	}
 
 	async onSubmit() {
