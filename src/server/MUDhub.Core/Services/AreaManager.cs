@@ -20,6 +20,13 @@ namespace MUDhub.Core.Services
             _logger = logger;
         }
 
+        /// <summary>
+        /// A new area is created in the MudGame.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="mudId"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
         public async Task<AreaResult> CreateAreaAsync(string userId, string mudId, AreaArgs args)
         {
             var user = await GetUserById(userId).ConfigureAwait(false);
@@ -70,6 +77,15 @@ namespace MUDhub.Core.Services
             };
         }
 
+
+        /// <summary>
+        /// A new connection is created between two rooms.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="room1Id"></param>
+        /// <param name="room2Id"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
         public async Task<ConnectionResult> CreateConnectionAsync(string userId, string room1Id, string room2Id, RoomConnectionsArgs args)
         {
             var user = await GetUserById(userId).ConfigureAwait(false);
@@ -158,6 +174,13 @@ namespace MUDhub.Core.Services
             };
         }
 
+        /// <summary>
+        /// A new room is created in the MudGame.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="areaId"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
         public async Task<RoomResult> CreateRoomAsync(string userId, string areaId, RoomArgs args)
         {
             var user = await GetUserById(userId).ConfigureAwait(false);
@@ -223,6 +246,13 @@ namespace MUDhub.Core.Services
             };
         }
 
+
+        /// <summary>
+        /// An area is being removed from the MudGame.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="areaId"></param>
+        /// <returns></returns>
         public async Task<AreaResult> RemoveAreaAsync(string userId, string areaId)
         {
             var user = await GetUserById(userId).ConfigureAwait(false);
@@ -284,6 +314,13 @@ namespace MUDhub.Core.Services
             };
         }
 
+
+        /// <summary>
+        /// A connection is removed from the MudGame.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="connectionId"></param>
+        /// <returns></returns>
         public async Task<ConnectionResult> RemoveConnectionAsync(string userId, string connectionId)
         {
             var user = await GetUserById(userId).ConfigureAwait(false);
@@ -329,6 +366,12 @@ namespace MUDhub.Core.Services
             };
         }
 
+        /// <summary>
+        /// A room is removed from the MudGame.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="roomId"></param>
+        /// <returns></returns>
         public async Task<RoomResult> RemoveRoomAsync(string userId, string roomId)
         {
             var user = await GetUserById(userId).ConfigureAwait(false);
@@ -380,7 +423,6 @@ namespace MUDhub.Core.Services
             foreach (RoomConnection roomConnection in room.Connections)
             {
                 await RemoveConnectionAsync(userId, roomConnection.Id).ConfigureAwait(false);
-                //Info: Es sollte keine Möglichkeit geben, dass die Ausführung fehlschlägt.
             }
 
             _context.Rooms.Remove(room);
@@ -393,6 +435,13 @@ namespace MUDhub.Core.Services
             };
         }
 
+        /// <summary>
+        /// An area is updated.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="areaId"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
         public async Task<AreaResult> UpdateAreaAsync(string userId, string areaId, UpdateAreaArgs args)
         {
             var user = await GetUserById(userId).ConfigureAwait(false);
@@ -447,6 +496,14 @@ namespace MUDhub.Core.Services
             };
         }
 
+
+        /// <summary>
+        /// An connection is updated.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="connectionId"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
         public async Task<ConnectionResult> UpdateConnectionAsync(string userId, string connectionId, UpdateRoomConnectionsArgs args)
         {
             var user = await GetUserById(userId).ConfigureAwait(false);
@@ -495,6 +552,13 @@ namespace MUDhub.Core.Services
             };
         }
 
+        /// <summary>
+        /// An room is updated.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="roomId"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
         public async Task<RoomResult> UpdateRoomAsync(string userId, string roomId, UpdateRoomArgs args)
         {
             var user = await GetUserById(userId).ConfigureAwait(false);
@@ -555,14 +619,24 @@ namespace MUDhub.Core.Services
         }
 
 
-
-
+        /// <summary>
+        /// Is the user really the owner of the MudGame?
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="gameId"></param>
+        /// <returns></returns>
         private bool IsUserOwner(User user, string gameId)
         {
             var mudGameOwner = user.MudGames.FirstOrDefault(mg => mg.Id == gameId);
             return !(mudGameOwner is null);
         }
 
+
+        /// <summary>
+        /// The UserId is used to determine the user.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         private async Task<User> GetUserById(string userId)
         {
             return await _context.Users.FindAsync(userId)
