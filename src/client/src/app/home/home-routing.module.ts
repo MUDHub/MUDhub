@@ -40,16 +40,16 @@ const routes: Routes = [
 				component: MyMudsComponent,
 			},
 			{
-				path: 'profile',
-				component: ProfileComponent,
-			},
-			{
-				path: 'mud-create',
+				path: 'my-muds/create',
 				canActivate: [MasterGuard],
 				loadChildren: () =>
 					import('./mud-create/mud-create.module').then(
 						m => m.MudCreateModule
 					),
+			},
+			{
+				path: 'profile',
+				component: ProfileComponent,
 			},
 			{
 				path: 'admin',
