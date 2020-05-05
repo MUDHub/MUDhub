@@ -1,5 +1,5 @@
 <mat-toolbar class="navbar">
-	<img src="/assets/img/mudhub_logo.svg"/>
+	<img src="/assets/img/mudhub_logo.svg" />
 	<button mat-button routerLinkActive="mat-accent" routerLink="/muds">
 		Übersicht
 	</button>
@@ -14,14 +14,17 @@
 	>
 		Meine MUDs
 	</button>
-	<button
-		mat-button
-		routerLinkActive="mat-accent"
-		routerLink="/admin/users"
-		*ngIf="user.roles.includes('Admin')"
-	>
-		User-Management
+	<button mat-button [matMenuTriggerFor]="adminMenu">
+		Admin
 	</button>
+	<mat-menu #adminMenu="matMenu">
+		<button mat-menu-item routerLink="/admin/users">
+			User-Management
+		</button>
+		<button mat-menu-item routerLink="/admin/muds">
+			MUD-Management
+		</button>
+	</mat-menu>
 
 	<mat-menu #userMenu="matMenu" xPosition="before">
 		<button mat-menu-item routerLink="/profile">Mein Profil</button>

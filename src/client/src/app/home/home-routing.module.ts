@@ -12,6 +12,7 @@ import { MudJoinComponent } from './mud-list/mud-join/mud-join.component';
 import { MudCreateComponent } from './mud-create/mud-create.component';
 import { RacesComponent } from './mud-config/races/races.component';
 import { RequestsComponent } from './my-muds/requests/requests.component';
+import { MudsComponent } from './admin/muds/muds.component';
 
 const routes: Routes = [
 	{
@@ -71,6 +72,10 @@ const routes: Routes = [
 					{
 						path: 'users',
 						component: UsersComponent,
+					},
+					{
+						path: 'muds',
+						component: MudsComponent,
 					},
 				],
 			},

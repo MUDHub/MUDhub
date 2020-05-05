@@ -1,3 +1,5 @@
+@import "src/variables.scss";
+
 .table {
 	margin-bottom: 1rem;
 }
@@ -17,10 +19,10 @@ section {
 	padding-right: 0.2rem;
 
 	.accept {
-		color: rgb(35, 156, 35);
+		color: $color-success;
 	}
 
 	.block {
-		color: rgb(218, 22, 22);
+		color: $color-danger;
 	}
 }
