@@ -64,10 +64,11 @@ namespace MUDhub.Server
             else
                 app.UseSpaStaticFiles();
 
+            var imagepath = Path.Combine(Directory.GetCurrentDirectory(), _serverConfiguration.ImageResourcePath);
+            Directory.CreateDirectory(imagepath);
             app.UseFileServer(new FileServerOptions
             {
-                FileProvider = new PhysicalFileProvider(
-                                    Path.Combine(Directory.GetCurrentDirectory(), _serverConfiguration.ImageResourcePath)),
+                FileProvider = new PhysicalFileProvider(imagepath),
                 RequestPath = "/resources/images",
                 EnableDirectoryBrowsing = true
             });
