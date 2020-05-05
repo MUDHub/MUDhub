@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace MUDhub.Core.Services
 {
@@ -44,7 +45,7 @@ namespace MUDhub.Core.Services
                 {
                     Database.Migrate();
                 }
-               
+
             }
             else
             {
@@ -57,7 +58,7 @@ namespace MUDhub.Core.Services
 
         public DbSet<MudGame> MudGames { get; set; } = null!;
         public DbSet<MudJoinRequest> MudJoinRequests { get; set; } = null!;
-        
+
         public DbSet<Character> Characters { get; set; } = null!;
         public DbSet<CharacterClass> Classes { get; set; } = null!;
         public DbSet<CharacterRace> Races { get; set; } = null!;
@@ -102,5 +103,16 @@ namespace MUDhub.Core.Services
 
         }
 
+
+        public async Task<User?> GetUserByIdAsnyc(string userId)
+        {
+            return await Users.FindAsync(userId)
+                .ConfigureAwait(false);
+        }
+        public async Task<MudGame?> GetMudByIdAsnyc(string mudId)
+        {
+            return await MudGames.FindAsync(mudId)
+                .ConfigureAwait(false);
+        }
     }
 }
