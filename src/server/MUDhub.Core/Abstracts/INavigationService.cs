@@ -10,7 +10,6 @@ namespace MUDhub.Core.Abstracts
     public interface INavigationService
     {
         Task<RoomResult> TryEnterRoomAsync(string characterId, string roomId);
-        Task<RoomResult> TryEnterRoomAsync(string characterId, ConnectionDirection direction);
         Task<bool> JoinWorldAsync(string mudId, string characterId);
         Task<bool> LeaveWorldAsync(string characterId);
     }

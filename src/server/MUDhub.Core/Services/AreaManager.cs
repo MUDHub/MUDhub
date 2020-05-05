@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -25,8 +23,7 @@ namespace MUDhub.Core.Services
         public async Task<AreaResult> CreateAreaAsync(string userId, string mudId, AreaArgs args)
         {
             //Todo: Logger fehlt noch
-            var user = await _context.Users.FindAsync(userId)
-                .ConfigureAwait(false);
+            var user = await GetUserById(userId).ConfigureAwait(false);
             if (user is null)
             {
                 return new AreaResult()
@@ -46,8 +43,7 @@ namespace MUDhub.Core.Services
                 };
             }
 
-            var mudGameOwner = user.MudGames.FirstOrDefault(mg => mg.Id == mud.Id);
-            if (mudGameOwner is null)
+            if (await IsUserOwner(user, mud.Id).ConfigureAwait(false))
             {
                 return new AreaResult()
                 {
@@ -71,16 +67,91 @@ namespace MUDhub.Core.Services
             };
         }
 
-        public Task<ConnectionResult> CreateConnectionAsync(string userId, Room room1, Room room2, LockArgs args)
+        public async Task<ConnectionResult> CreateConnectionAsync(string userId, string room1Id, string room2Id, RoomConnectionsArgs args)
         {
-            throw new NotImplementedException();
+            var user = await GetUserById(userId).ConfigureAwait(false);
+            if (user is null)
+            {
+                return new ConnectionResult()
+                {
+                    Success = false,
+                    Errormessage = "User is not found!"
+                };
+            }
+            
+            if (room1Id == room2Id)
+            {
+                return new ConnectionResult()
+                {
+                    Success = false,
+                    Errormessage = "Die beiden Räume sind identisch"
+                };
+            }
+
+            var room1 = await _context.Rooms.FindAsync(room1Id)
+                .ConfigureAwait(false);
+            if (room1 is null)
+            {
+                return new ConnectionResult()
+                {
+                    Success = false,
+                    Errormessage = "Room1 is not found!"
+                };
+            }
+
+            var room2 = await _context.Rooms.FindAsync(room2Id)
+                .ConfigureAwait(false);
+            if (room2 is null)
+            {
+                return new ConnectionResult()
+                {
+                    Success = false,
+                    Errormessage = "Room2 is not found!"
+                };
+            }
+
+            if (room1.GameId != room2.GameId)
+            {
+                return new ConnectionResult()
+                {
+                    Success = false,
+                    Errormessage = "Räume sind nicht im gleichen MUD"
+                };
+            }
+
+            if (await IsUserOwner(user, room1.GameId).ConfigureAwait(false))
+            {
+                return new ConnectionResult()
+                {
+                    Success = false,
+                    Errormessage = "User ist nicht berechtigt"
+                };
+            }
+
+            var connection = new RoomConnection()
+            {
+                Room1 = room1,
+                Room2 = room2,
+                Description = args.Description,
+                LockType = args.LockArgs.LockType,
+                LockDescription = args.LockArgs.LockDescription,
+                LockAssociatedId = args.LockArgs.LockAssociatedId
+            };
+
+            _context.RoomConnections.Add(connection);
+            await _context.SaveChangesAsync()
+                .ConfigureAwait(false);
+
+            return new ConnectionResult()
+            {
+                RoomConnection = connection
+            };
         }
 
         public async Task<RoomResult> CreateRoomAsync(string userId, string areaId, RoomArgs args)
         {
             //Todo: Logger fehlt noch und genauere Fehlermeldung
-            var user = await _context.Users.FindAsync(userId)
-                .ConfigureAwait(false);
+            var user = await GetUserById(userId).ConfigureAwait(false);
             if (user is null)
             {
                 return new RoomResult()
@@ -100,8 +171,7 @@ namespace MUDhub.Core.Services
                 };
             }
 
-            var mudGameOwner = user.MudGames.FirstOrDefault(mg => mg.Id == area.GameId);
-            if (mudGameOwner is null)
+            if (await IsUserOwner(user, area.GameId).ConfigureAwait(false))
             {
                 return new RoomResult()
                 {
@@ -141,8 +211,7 @@ namespace MUDhub.Core.Services
 
         public async Task<AreaResult> RemoveAreaAsync(string userId, string areaId)
         {
-            var user = await _context.Users.FindAsync(userId)
-                .ConfigureAwait(false);
+            var user = await GetUserById(userId).ConfigureAwait(false);
             if (user is null)
             {
                 return new AreaResult()
@@ -163,8 +232,7 @@ namespace MUDhub.Core.Services
                 };
             }
 
-            var mudGameOwner = user.MudGames.FirstOrDefault(mg => mg.Id == area.GameId);
-            if (mudGameOwner is null)
+            if (await IsUserOwner(user, area.GameId).ConfigureAwait(false))
             {
                 return new AreaResult()
                 {
@@ -174,7 +242,6 @@ namespace MUDhub.Core.Services
             }
 
             var isDefault = area.Rooms.Any(r => r.Id == area.Game.DefaultRoomId);
-
             if (isDefault)
             {
                 return new AreaResult()
@@ -202,8 +269,7 @@ namespace MUDhub.Core.Services
 
         public async Task<ConnectionResult> RemoveConnectionAsync(string userId, string connectionId)
         {
-            var user = await _context.Users.FindAsync(userId)
-                .ConfigureAwait(false);
+            var user = await GetUserById(userId).ConfigureAwait(false);
             if (user is null)
             {
                 return new ConnectionResult()
@@ -213,18 +279,40 @@ namespace MUDhub.Core.Services
                 };
             }
 
+            var connection = await _context.RoomConnections.FindAsync(connectionId)
+                .ConfigureAwait(false);
+            if (connection is null)
+            {
+                return new ConnectionResult()
+                {
+                    Success = false,
+                    Errormessage = "RoomConnection is not found!"
+                };
+            }
 
+            if (await IsUserOwner(user, connection.Room1.GameId).ConfigureAwait(false))
+            {
+                return new ConnectionResult()
+                {
+                    Success = false,
+                    Errormessage = "User ist nicht berechtigt"
+                };
+            }
 
+            _context.RoomConnections.Remove(connection);
+            await _context.SaveChangesAsync()
+                .ConfigureAwait(false);
 
+            return new ConnectionResult()
+            {
+                RoomConnection = connection
+            };
 
-
-            throw new NotImplementedException();
         }
 
         public async Task<RoomResult> RemoveRoomAsync(string userId, string roomId)
         {
-            var user = await _context.Users.FindAsync(userId)
-                .ConfigureAwait(false);
+            var user = await GetUserById(userId).ConfigureAwait(false);
             if (user is null)
             {
                 return new RoomResult()
@@ -245,8 +333,7 @@ namespace MUDhub.Core.Services
                 };
             }
 
-            var mudGameOwner = user.MudGames.FirstOrDefault(mg => mg.Id == room.Area.GameId);
-            if (mudGameOwner is null)
+            if (await IsUserOwner(user, room.Area.GameId).ConfigureAwait(false))
             {
                 return new RoomResult()
                 {
@@ -283,14 +370,168 @@ namespace MUDhub.Core.Services
             };
         }
 
-        public async Task<AreaResult> UpdateAreaAsync(string userId, string areaId)
+        public async Task<AreaResult> UpdateAreaAsync(string userId, string areaId, UpdateAreaArgs args)
         {
-            throw new NotImplementedException();
+            var user = await GetUserById(userId).ConfigureAwait(false);
+            if (user is null)
+            {
+                return new AreaResult()
+                {
+                    Success = false,
+                    Errormessage = "User is not found!"
+                };
+            }
+
+            var area = await _context.Areas.FindAsync(areaId)
+                .ConfigureAwait(false);
+            if (area is null)
+            {
+                return new AreaResult()
+                {
+                    Success = false,
+                    Errormessage = "Area is not found!"
+                };
+            }
+
+            if (await IsUserOwner(user, area.GameId).ConfigureAwait(false))
+            {
+                return new AreaResult()
+                {
+                    Success = false,
+                    Errormessage = "User ist nicht berechtigt"
+                };
+            }
+
+            if (args.Name != null)
+            {
+                area.Name = args.Name;
+            }
+
+            if (args.Description != null)
+            {
+                area.Description = args.Description;
+            }
+
+            await _context.SaveChangesAsync()
+                .ConfigureAwait(false);
+            return new AreaResult()
+            {
+                Area = area
+            };
         }
 
-        public async Task<RoomResult> UpdateRoomAsync(string userId, string roomId)
+        public async Task<ConnectionResult> UpdateConnectionAsync(string userId, string connectionId, UpdateRoomConnectionsArgs args)
         {
-            throw new NotImplementedException();
+            var user = await GetUserById(userId).ConfigureAwait(false);
+            if (user is null)
+            {
+                return new ConnectionResult()
+                {
+                    Success = false,
+                    Errormessage = "User is not found!"
+                };
+            }
+            var connection = await _context.RoomConnections.FindAsync(connectionId)
+                .ConfigureAwait(false);
+            if (connection is null)
+            {
+                return new ConnectionResult()
+                {
+                    Success = false,
+                    Errormessage = "RoomConnection is not found!"
+                };
+            }
+
+            if (await IsUserOwner(user, connection.Room1.GameId).ConfigureAwait(false))
+            {
+                return new ConnectionResult()
+                {
+                    Success = false,
+                    Errormessage = "User ist nicht berechtigt"
+                };
+            }
+
+            if (args.Description != null)
+            {
+                connection.Description = args.Description;
+            }
+
+            await _context.SaveChangesAsync()
+                .ConfigureAwait(false);
+            return new ConnectionResult()
+            {
+                RoomConnection = connection
+            };
+        }
+
+        public async Task<RoomResult> UpdateRoomAsync(string userId, string roomId, UpdateRoomArgs args)
+        {
+            var user = await GetUserById(userId).ConfigureAwait(false);
+            if (user is null)
+            {
+                return new RoomResult()
+                {
+                    Success = false,
+                    Errormessage = "User is not found!"
+                };
+            }
+
+            var room = await _context.Rooms.FindAsync(roomId)
+                .ConfigureAwait(false);
+            if (room is null)
+            {
+                return new RoomResult()
+                {
+                    Success = false,
+                    Errormessage = "User is not found!"
+                };
+            }
+
+            if (await IsUserOwner(user, room.GameId).ConfigureAwait(false))
+            {
+                return new RoomResult()
+                {
+                    Success = false,
+                    Errormessage = "User ist nicht berechtigt"
+                };
+            }
+
+            if (args.Name != null)
+            {
+                room.Name = args.Name;
+            }
+
+            if (args.Description != null)
+            {
+                room.Description = args.Description;
+            }
+
+            if (args.ImageKey != null)
+            {
+                room.ImageKey = args.ImageKey;
+            }
+
+            await _context.SaveChangesAsync()
+                .ConfigureAwait(false);
+            return new RoomResult()
+            {
+                Room = room
+            };
+        }
+
+
+
+
+        private async Task<bool> IsUserOwner(User user, string gameId)
+        {
+            var mudGameOwner = user.MudGames.FirstOrDefault(mg => mg.Id == gameId);
+            return !(mudGameOwner is null);
+        }
+
+        private async Task<User> GetUserById(string userId)
+        {
+            return await _context.Users.FindAsync(userId)
+                .ConfigureAwait(false);
         }
     }
 }

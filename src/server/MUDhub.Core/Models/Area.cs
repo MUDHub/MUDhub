@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using MUDhub.Core.Models.Muds;
 using MUDhub.Core.Models.Rooms;
@@ -9,11 +10,11 @@ namespace MUDhub.Core.Models
     {
         public Area()
         {
-            
+            Id = Guid.NewGuid().ToString();
         }
-        public Area(string areaId)
+        public Area(string id)
         {
-            Id = areaId;
+            Id = id;
         }
 
         public string Id { get; }
