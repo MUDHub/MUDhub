@@ -7,7 +7,7 @@
 <table class="table-list" *ngIf="muds.length > 0">
 	<tr class="table-item first">
 		<th>Name</th>
-		<th>Öffentlich</th>
+		<th>Sichtbarkeit</th>
 		<th>Neustart</th>
 		<th>Bearbeiten</th>
 		<th>Löschen</th>
@@ -16,10 +16,10 @@
 		<td>{{ mud.name }}</td>
 		<td>
 			<div *ngIf="mud.isPublic">
-				<mat-icon>check</mat-icon>
+				<mat-icon>lock_open</mat-icon>
 			</div>
 			<div *ngIf="!mud.isPublic">
-				<mat-icon>clear</mat-icon>
+				<mat-icon>lock_outline</mat-icon>
 			</div>
 		</td>
 		<td>
