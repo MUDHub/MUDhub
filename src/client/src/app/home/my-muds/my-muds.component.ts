@@ -5,11 +5,13 @@ import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
 	templateUrl: './my-muds.component.html',
-	styleUrls: ['./my-muds.component.scss']
+	styleUrls: ['./my-muds.component.scss'],
 })
 export class MyMudsComponent implements OnInit {
-
-	constructor(private mudService: MudService, private authService: AuthService) { }
+	constructor(
+		private mudService: MudService,
+		private authService: AuthService
+	) {}
 
 	muds: IMud[] = [];
 
@@ -18,12 +20,14 @@ export class MyMudsComponent implements OnInit {
 	}
 
 	async loadMuds() {
-		this.muds = await this.mudService.getForUserId(this.authService.user.id);
+		this.muds = await this.mudService.getForUserId(
+			this.authService.user.id
+		);
 	}
 
 	editMud(mudId: string) {
 		//Todo redirect to edit page
-		console.log("Edit Mud" + mudId);
+		console.log('Edit Mud' + mudId);
 	}
 
 	async deleteMud(mudId: string) {
@@ -34,5 +38,4 @@ export class MyMudsComponent implements OnInit {
 			// TODO: Error handling
 		}
 	}
-
 }
