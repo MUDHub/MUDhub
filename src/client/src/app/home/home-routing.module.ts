@@ -13,6 +13,10 @@ import { MudCreateComponent } from './mud-create/mud-create.component';
 import { RacesComponent } from './mud-config/races/races.component';
 import { RequestsComponent } from './my-muds/requests/requests.component';
 import { MudsComponent } from './admin/muds/muds.component';
+import { ClassesComponent } from './mud-config/classes/classes.component';
+import { ItemsComponent } from './mud-config/items/items.component';
+import { RoomsComponent } from './mud-config/rooms/rooms.component';
+import { FinishComponent } from './mud-config/finish/finish.component';
 
 const routes: Routes = [
 	{
@@ -54,6 +58,22 @@ const routes: Routes = [
 					{
 						path: 'races',
 						component: RacesComponent
+					},
+					{
+						path: 'classes',
+						component: ClassesComponent
+					},
+					{
+						path: 'items',
+						component: ItemsComponent
+					},
+					{
+						path: 'rooms',
+						component: RoomsComponent
+					},
+					{
+						path: 'finish',
+						component: FinishComponent
 					},
 					{
 						path: 'requests',
