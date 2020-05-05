@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+
 import { GameShellComponent } from './game-shell.component';
 import { GameRoutingModule } from './game-routing.module';
 import { GameComponent } from './game/game.component';
@@ -29,8 +31,8 @@ import { CharInfoComponent } from './game/char-info/char-info.component';
 		MapComponent,
 		GameInputComponent,
 		GameChatComponent,
-		CharInfoComponent
+		CharInfoComponent,
 	],
-	imports: [CommonModule, GameRoutingModule],
+	imports: [CommonModule, GameRoutingModule, MatSnackBarModule],
 })
 export class GameModule {}

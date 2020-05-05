@@ -15,6 +15,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { MudListComponent } from './mud-list/mud-list.component';
 import { MyGamesComponent } from './my-games/my-games.component';
@@ -39,7 +40,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 		MatToolbarModule,
 		MatButtonModule,
 		MatMenuModule,
-		MatCardModule, 
+		MatCardModule,
 		MatTableModule,
 		MatPaginatorModule,
 		MatFormFieldModule,
@@ -47,6 +48,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 		MatProgressSpinnerModule,
 		MatCheckboxModule,
 		MatIconModule,
+		MatSnackBarModule,
 	],
 })
 export class HomeModule {}
