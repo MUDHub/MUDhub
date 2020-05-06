@@ -1,12 +1,6 @@
 ﻿using MUDhub.Core.Abstracts;
-using MUDhub.Core.Models;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Microsoft.Extensions.Options;
-using System.IdentityModel.Tokens.Jwt;
-using Microsoft.IdentityModel.Tokens;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -33,8 +27,12 @@ namespace MUDhub.Core.Services
             _logger = logger;
         }
 
-        
-
+        /// <summary>
+        /// The user can login with email and password.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
         public async Task<LoginResult> LoginUserAsync(string email, string password)
         {
             var norm = UserHelpers.ToNormelizedEmail(email);

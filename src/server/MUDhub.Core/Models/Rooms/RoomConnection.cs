@@ -24,5 +24,6 @@ namespace MUDhub.Core.Models.Rooms
 
         public string LockDescription { get; set; } = string.Empty;
         public string LockAssociatedId { get; set; } = string.Empty;
+        public string GameId { get; set; } = string.Empty;
     }
 }

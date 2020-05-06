@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MUDhub.Core.Abstracts;
-using MUDhub.Core.Abstracts.Models;
-using MUDhub.Core.Helper;
-using MUDhub.Core.Models;
 using MUDhub.Server.ApiModels.Auth;
 
 namespace MUDhub.Server.Controllers

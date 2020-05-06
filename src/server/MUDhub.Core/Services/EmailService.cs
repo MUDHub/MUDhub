@@ -2,14 +2,10 @@
 using Microsoft.Extensions.Options;
 using MUDhub.Core.Abstracts;
 using MUDhub.Core.Configurations;
-using MUDhub.Core.Abstracts.Models;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
 using System.Net.Mail;
-using System.Runtime.Serialization;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace MUDhub.Core.Services
@@ -36,6 +32,12 @@ namespace MUDhub.Core.Services
             };
         }
 
+        /// <summary>
+        /// An email with a reset key is sent.
+        /// </summary>
+        /// <param name="receiver"></param>
+        /// <param name="resetKey"></param>
+        /// <returns></returns>
         public async Task<bool> SendAsync(string receiver, string resetKey)
         {
             using MailMessage email = CreateResetMailMessage(receiver, resetKey);
