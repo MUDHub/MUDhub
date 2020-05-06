@@ -11,5 +11,6 @@ namespace MUDhub.Core.Abstracts.Models.Rooms
         public string ImageKey { get; set; } = string.Empty;
         public int X { get; set; }
         public int Y { get; set; }
+        public bool IsDefaultRoom { get; set; } = false;
     }
 }

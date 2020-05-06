@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -51,7 +52,7 @@ namespace MUDhub.Core.Services
                 };
             }
 
-            if (IsUserOwner(user, mud.Id))
+            if (!IsUserOwner(user, mud.Id))
             {
                 _logger?.LogWarning($"The user: {user.Lastname} is not the owner of the MudGame: {mud.Name}");
                 return new AreaResult()
@@ -132,7 +133,6 @@ namespace MUDhub.Core.Services
                     Errormessage = $"No Room found with the RoomId: {room2Id}"
                 };
             }
-
             if (room1.GameId != room2.GameId)
             {
                 _logger?.LogWarning($"The rooms {room1.Name} and {room2.Name} are not in the same MudGame.");
@@ -143,7 +143,7 @@ namespace MUDhub.Core.Services
                 };
             }
 
-            if (IsUserOwner(user, room1.GameId))
+            if (!IsUserOwner(user, room1.GameId))
             {
                 _logger?.LogWarning($"The user: {user.Lastname} is not the owner of the MudGame: {room1.GameId}");
                 return new ConnectionResult()
@@ -205,7 +205,7 @@ namespace MUDhub.Core.Services
                 };
             }
 
-            if (IsUserOwner(user, area.GameId))
+            if (!IsUserOwner(user, area.GameId))
             {
                 _logger?.LogWarning($"The user: {user.Lastname} is not the owner of the MudGame: {area.Game.Name}");
                 return new RoomResult()
@@ -227,6 +227,14 @@ namespace MUDhub.Core.Services
                 };
             }
 
+            if (args.IsDefaultRoom)
+            {
+                foreach (var otherRoom in area.Rooms)
+                {
+                    otherRoom.IsDefaultRoom = false;
+                }
+            }
+
             var room = new Room()
             {
                 Name = args.Name,
@@ -234,7 +242,8 @@ namespace MUDhub.Core.Services
                 Area = area,
                 ImageKey = args.ImageKey,
                 X = args.X,
-                Y = args.Y
+                Y = args.Y,
+                IsDefaultRoom = args.IsDefaultRoom
             };
             _context.Rooms.Add(room);
             await _context.SaveChangesAsync()
@@ -278,7 +287,7 @@ namespace MUDhub.Core.Services
                 };
             }
 
-            if (IsUserOwner(user, area.GameId))
+            if (!IsUserOwner(user, area.GameId))
             {
                 _logger?.LogWarning($"The user: {user.Lastname} is not the owner of the MudGame: {area.Game.Name}");
                 return new AreaResult()
@@ -288,7 +297,7 @@ namespace MUDhub.Core.Services
                 };
             }
 
-            var isDefault = area.Rooms.Any(r => r.Id == area.Game.DefaultRoomId);
+            var isDefault = area.Rooms.Any(r => r.IsDefaultRoom);
             if (isDefault)
             {
                 _logger?.LogWarning($"Area: {area.Name} could not be deleted because it has a default room");
@@ -299,7 +308,9 @@ namespace MUDhub.Core.Services
                     Area = area
                 };
             }
-            foreach (Room room in area.Rooms)
+
+            List<Room> roomList = area.Rooms.ToList();
+            foreach (Room room in roomList)
             {
                 await RemoveRoomAsync(userId, room.Id).ConfigureAwait(false);
             }
@@ -313,7 +324,6 @@ namespace MUDhub.Core.Services
                 Area = area
             };
         }
-
 
         /// <summary>
         /// A connection is removed from the MudGame.
@@ -346,7 +356,7 @@ namespace MUDhub.Core.Services
                 };
             }
 
-            if (IsUserOwner(user, connection.Room1.GameId))
+            if (!IsUserOwner(user, connection.Room1.GameId))
             {
                 _logger?.LogWarning($"The user: {user.Lastname} is not the owner of the MudGame: {connection.Room1.GameId}");
                 return new ConnectionResult()
@@ -397,7 +407,7 @@ namespace MUDhub.Core.Services
                 };
             }
 
-            if (IsUserOwner(user, room.Area.GameId))
+            if (!IsUserOwner(user, room.Area.GameId))
             {
                 _logger?.LogWarning($"The user: {user.Lastname} is not the owner of the MudGame: {room.GameId}");
                 return new RoomResult()
@@ -407,8 +417,7 @@ namespace MUDhub.Core.Services
                 };
             }
 
-            var isDefault = room.Area.Game.DefaultRoomId == room.Id;
-            if (isDefault)
+            if (room.IsDefaultRoom)
             {
                 _logger?.LogWarning($"Room: {room.Name} could not be deleted because it is a default room");
                 return new RoomResult()
@@ -420,7 +429,8 @@ namespace MUDhub.Core.Services
                 };
             }
 
-            foreach (RoomConnection roomConnection in room.Connections)
+            List<RoomConnection> roomConnectionsList = room.Connections.ToList();
+            foreach (RoomConnection roomConnection in roomConnectionsList)
             {
                 await RemoveConnectionAsync(userId, roomConnection.Id).ConfigureAwait(false);
             }
@@ -467,7 +477,7 @@ namespace MUDhub.Core.Services
                 };
             }
 
-            if (IsUserOwner(user, area.GameId))
+            if (!IsUserOwner(user, area.GameId))
             {
                 _logger?.LogWarning($"The user: {user.Lastname} is not the owner of the MudGame: {area.Game.Name}");
                 return new AreaResult()
@@ -495,7 +505,6 @@ namespace MUDhub.Core.Services
                 Area = area
             };
         }
-
 
         /// <summary>
         /// An connection is updated.
@@ -528,7 +537,7 @@ namespace MUDhub.Core.Services
                 };
             }
 
-            if (IsUserOwner(user, connection.Room1.GameId))
+            if (!IsUserOwner(user, connection.Room1.GameId))
             {
                 _logger?.LogWarning($"The user: {user.Lastname} is not the owner of the MudGame: {connection.Room1.GameId}");
                 return new ConnectionResult()
@@ -584,7 +593,7 @@ namespace MUDhub.Core.Services
                 };
             }
 
-            if (IsUserOwner(user, room.GameId))
+            if (!IsUserOwner(user, room.GameId))
             {
                 _logger?.LogWarning($"The user: {user.Lastname} is not the owner of the MudGame: {room.GameId}");
                 return new RoomResult()
@@ -593,6 +602,15 @@ namespace MUDhub.Core.Services
                     Errormessage = $"The user: {user.Lastname} is not the owner of the MudGame: {room.GameId}"
                 };
             }
+            if (args.IsDefaultRoom)
+            {
+                foreach (var otherRoom in room.Area.Rooms)
+                {
+                    otherRoom.IsDefaultRoom = false;
+                }
+            }
+
+            room.IsDefaultRoom = args.IsDefaultRoom;
 
             if (args.Name != null)
             {
