@@ -15,6 +15,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { MudListComponent } from './mud-list/mud-list.component';
 import { MyGamesComponent } from './my-games/my-games.component';
@@ -48,7 +49,7 @@ import { FinishComponent } from './mud-config/finish/finish.component';
 		ClassesComponent,
 		RoomsComponent,
 		ItemsComponent,
-		FinishComponent
+		FinishComponent,
 	],
 	imports: [
 		CommonModule,
@@ -66,6 +67,7 @@ import { FinishComponent } from './mud-config/finish/finish.component';
 		MatCheckboxModule,
 		MatIconModule,
 		SharedModule,
+		MatSnackBarModule,
 	],
 })
-export class HomeModule { }
+export class HomeModule {}
