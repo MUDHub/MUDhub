@@ -1,5 +1,8 @@
-﻿using System;
+﻿using MUDhub.Core.Models.Characters;
+using MUDhub.Core.Models.Muds;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
@@ -27,6 +30,8 @@ namespace MUDhub.Core.Models
         public string? PasswordResetKey { get; set; }
 
         //Todo: add Navigation properties
-        //public ICollection<Characters> Characters { get; set; }
+        public ICollection<Character> Characters { get; set; } = new Collection<Character>();
+        public ICollection<MudJoinRequest> Joins { get; set; } = new Collection<MudJoinRequest>();
+        public ICollection<MudGame> MudGames { get; set; } = new Collection<MudGame>();
     }
 }

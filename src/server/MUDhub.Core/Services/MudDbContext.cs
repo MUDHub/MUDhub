@@ -1,17 +1,13 @@
-﻿using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using MUDhub.Core.Abstracts;
 using MUDhub.Core.Configurations;
 using MUDhub.Core.Models;
+using MUDhub.Core.Models.Characters;
 using MUDhub.Core.Models.Muds;
-using SQLitePCL;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Threading.Tasks;
+using MUDhub.Core.Models.Rooms;
 
 namespace MUDhub.Core.Services
 {
@@ -43,7 +39,7 @@ namespace MUDhub.Core.Services
                 {
                     Database.Migrate();
                 }
-               
+
             }
             else
             {
@@ -57,6 +53,15 @@ namespace MUDhub.Core.Services
         public DbSet<MudGame> MudGames { get; set; } = null!;
         public DbSet<MudJoinRequest> MudJoinRequests { get; set; } = null!;
 
+        public DbSet<Character> Characters { get; set; } = null!;
+        public DbSet<CharacterClass> Classes { get; set; } = null!;
+        public DbSet<CharacterRace> Races { get; set; } = null!;
+        public DbSet<Area> Areas { get; set; } = null!;
+        public DbSet<Room> Rooms { get; set; } = null!;
+        public DbSet<RoomConnection> RoomConnections { get; set; } = null!;
+        public DbSet<RoomInteraction> RoomInteractions { get; set; } = null!;
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             if (modelBuilder is null)
@@ -67,6 +72,39 @@ namespace MUDhub.Core.Services
             //Configures MudGame
             modelBuilder.Entity<MudGame>()
                 .HasKey(mg => mg.Id);
+            modelBuilder.Entity<MudGame>()
+                .HasMany(mg => mg.Characters)
+                .WithOne(c => c.Game)
+                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<MudGame>()
+                .HasMany(g => g.Areas)
+                .WithOne(a => a.Game)
+                .HasForeignKey(a => a.GameId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            //Configures Character
+            modelBuilder.Entity<Character>()
+                .HasKey(c => c.Id);
+            modelBuilder.Entity<Character>()
+                .HasOne(c => c.Race)
+                .WithMany(r => r.Characters)
+                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Character>()
+                .HasOne(c => c.Class)
+                .WithMany(cl => cl.Characters)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            //Configures CharacterClass
+            modelBuilder.Entity<CharacterClass>()
+                .HasKey(cl => cl.Id);
+
+            //Configures CharacterRace
+            modelBuilder.Entity<CharacterRace>()
+                .HasKey(r => r.Id);
+
+            //Configures CharacterBoost
+            modelBuilder.Entity<CharacterBoost>()
+                .HasKey(b => b.Id);
 
             //Configures MudJoinRequests
             modelBuilder.Entity<MudJoinRequest>()
@@ -74,15 +112,64 @@ namespace MUDhub.Core.Services
             modelBuilder.Entity<MudJoinRequest>()
                 .HasOne(mjr => mjr.MudGame)
                 .WithMany(mg => mg.JoinRequests)
-                .HasForeignKey(mjr => mjr.MudId);
+                .HasForeignKey(mjr => mjr.MudId)
+                .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<User>(
-                   b =>
-                   {
-                       b.HasKey(u => u.Id);
-                   });
+            //Configures User
+            modelBuilder.Entity<User>()
+                .HasKey(u => u.Id);
 
+            //Configures Room
+            modelBuilder.Entity<Room>()
+                .HasKey(r => r.Id);
+            modelBuilder.Entity<Room>()
+                .HasOne(r => r.Area)
+                .WithMany(a => a.Rooms)
+                .HasForeignKey(r => r.AreaId)
+                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Room>()
+                .HasOne(r => r.Game)
+                .WithMany()
+                .HasForeignKey(r => r.GameId);
+            modelBuilder.Entity<Room>()
+                .HasMany(r => r.Interactions)
+                .WithOne(i => i.Room);
+
+
+            ////Configures RoomInteraction
+            modelBuilder.Entity<RoomInteraction>()
+                .HasKey(ri => ri.Id);
+
+            //Configures Area
+            modelBuilder.Entity<Area>()
+                .HasKey(a => a.Id);
+
+
+            ////Configures RoomConnection
+            modelBuilder.Entity<RoomConnection>()
+                .HasKey(rc => rc.Id);
+
+            modelBuilder.Entity<RoomConnection>()
+                .HasOne(rc => rc.Room1)
+                .WithMany(r => r.Connections)
+                .HasForeignKey(rc => rc.Room1Id);
+
+            modelBuilder.Entity<RoomConnection>()
+                .HasOne(rc => rc.Room2)
+                .WithMany()
+                .HasForeignKey(rc => rc.Room2Id);
         }
 
+
+        public async Task<User?> GetUserByIdAsnyc(string userId)
+        {
+            return await Users.FindAsync(userId)
+                .ConfigureAwait(false);
+        }
+        public async Task<MudGame?> GetMudByIdAsnyc(string mudId)
+        {
+            return await MudGames.FindAsync(mudId)
+                .ConfigureAwait(false);
+        }
     }
 }

@@ -1,10 +1,6 @@
-﻿using MUDhub.Core.Models;
-using MUDhub.Core.Models.Muds;
+﻿using MUDhub.Core.Models.Muds;
 using MUDhub.Server.ApiModels.Auth;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MUDhub.Server.ApiModels.Muds
 {
@@ -20,6 +16,10 @@ namespace MUDhub.Server.ApiModels.Muds
 
         public static MudApiModel ConvertFromMudGame(MudGame game)
         {
+            if (game is null)
+            {
+                throw new ArgumentNullException(nameof(game));
+            }
             return new MudApiModel
             {
                 Description = game.Description,

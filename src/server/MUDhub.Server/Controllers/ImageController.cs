@@ -1,9 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using MUDhub.Core.Configurations;
 using MUDhub.Server.ApiModels.Images;
 
 namespace MUDhub.Server.Controllers
@@ -12,22 +14,45 @@ namespace MUDhub.Server.Controllers
     [ApiController]
     public class ImageController : ControllerBase
     {
+        private readonly ServerConfiguration _options;
+        private readonly ILogger<ImageController>? _logger;
 
-        public ImageController()
+        public ImageController(IOptions<ServerConfiguration> options, ILogger<ImageController>? logger = null)
         {
-
+            _options = options.Value ;
+            _logger = logger;
         }
 
 
         [HttpPost]
-        public ImageUploadResponse ImageUpload(IFormFile image)
+        public async Task<IActionResult> ImageUploadAsync(IFormFile image)
         {
+            if (image is null)
+                throw new ArgumentNullException(nameof(image));
 
-
-            return new ImageUploadResponse
+            var imagekey = Guid.NewGuid().ToString();
+            var filetype = image.FileName.Substring(image.FileName.IndexOf('.', StringComparison.InvariantCultureIgnoreCase));
+            imagekey += filetype;
+            var imagepath = Path.Combine(_options.ImageResourcePath, imagekey);
+            try
             {
-                ImageUrl = ""
-            };
+                using var imagestream = System.IO.File.Create(imagepath);
+                await image.CopyToAsync(imagestream)
+                    .ConfigureAwait(false);
+
+            }
+            catch (Exception e)
+            {
+                _logger?.LogWarning(e, "Can't save the image on the pyhsical drive.");
+                return BadRequest(new ImageUploadResponse
+                {
+                    Errormessage = "Can't save the image on the server."
+                });
+            }
+            return Ok(new ImageUploadResponse
+            {
+                ImageUrl = imagekey,
+            });
         }
 
 

@@ -23,7 +23,8 @@ import { MyMudsComponent } from './my-muds/my-muds.component';
 import { ProfileComponent } from './profile/profile.component';
 import { UsersComponent } from './admin/users/users.component';
 import { ReactiveFormsModule } from '@angular/forms';
-
+import { MudJoinComponent } from './mud-list/mud-join/mud-join.component';
+import { SharedModule } from '../shared/shared.module';
 @NgModule({
 	declarations: [
 		HomeShellComponent,
@@ -32,6 +33,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 		MyMudsComponent,
 		ProfileComponent,
 		UsersComponent,
+		MudJoinComponent,
 	],
 	imports: [
 		CommonModule,
@@ -46,6 +48,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 		MatFormFieldModule,
 		MatInputModule,
 		MatProgressSpinnerModule,
+		SharedModule,
 		MatCheckboxModule,
 		MatIconModule,
 		MatSnackBarModule,

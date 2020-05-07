@@ -8,6 +8,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { UsersComponent } from './admin/users/users.component';
 import { MasterGuard } from '../guards/master.guard';
 import { AdminGuard } from '../guards/admin.guard';
+import { MudJoinComponent } from './mud-list/mud-join/mud-join.component';
 
 const routes: Routes = [
 	{
@@ -22,6 +23,12 @@ const routes: Routes = [
 			{
 				path: 'muds',
 				component: MudListComponent,
+				children: [
+					{
+						path: 'join',
+						component: MudJoinComponent
+					}
+				]
 			},
 			{
 				path: 'my-games',
@@ -33,16 +40,16 @@ const routes: Routes = [
 				component: MyMudsComponent,
 			},
 			{
-				path: 'profile',
-				component: ProfileComponent,
-			},
-			{
-				path: 'mud-create',
+				path: 'my-muds/create',
 				canActivate: [MasterGuard],
 				loadChildren: () =>
 					import('./mud-create/mud-create.module').then(
 						m => m.MudCreateModule
 					),
+			},
+			{
+				path: 'profile',
+				component: ProfileComponent,
 			},
 			{
 				path: 'admin',

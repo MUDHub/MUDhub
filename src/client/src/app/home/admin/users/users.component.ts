@@ -21,13 +21,26 @@ export class UsersComponent implements OnInit {
 
 	async ngOnInit() {
 		this.dataSource.paginator = this.paginator;
+		await this.loadUsers();
+	}
+
+	async loadUsers() {
 		const users = await this.userService.getAll();
 		this.dataSource.data = users;
 	}
 
 	async addRole(id: string, role: UserRole) {
-		console.log({ id, role });
-		const response = await this.userService.addRoleToUser(id, role);
-		console.log(response);
+		try {
+			await this.userService.addRoleToUser(id, role);
+			await this.loadUsers();
+		} catch (err) {
+			console.error('Error while adding role to user', err);
+		}
+	}
+
+
+	async delete(user: IUser) {
+		console.log('deleting user', user);
+		// TODO: delete user
 	}
 }

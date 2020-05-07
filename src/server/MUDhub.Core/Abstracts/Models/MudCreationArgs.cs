@@ -10,15 +10,12 @@ namespace MUDhub.Core.Abstracts.Models
     {
         public MudCreationArgs()
         {
-
         }
 
         public MudCreationArgs(MudCreationArgs args)
         {
             if (args is null)
-            {
                 throw new ArgumentNullException(nameof(args));
-            }
 
             Description = args.Description;
             ImageKey = args.ImageKey;
