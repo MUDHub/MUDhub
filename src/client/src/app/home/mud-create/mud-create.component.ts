@@ -3,6 +3,7 @@ import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { MudService } from 'src/app/services/mud.service';
 import { IMudCreateRequest } from 'src/app/model/MudDTO';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
 	templateUrl: './mud-create.component.html',
@@ -12,13 +13,16 @@ export class MudCreateComponent {
 	constructor(
 		private fb: FormBuilder,
 		private mud: MudService,
-		private router: Router
+		private router: Router,
+		private snackbar: MatSnackBar
 	) {}
+
+	isLoading = false;
 
 	createForm = this.fb.group({
 		name: ['', [Validators.required, Validators.minLength(4)]],
 		description: ['', Validators.required],
-		public:  true,
+		public: true,
 		autoRestart: false,
 	});
 
@@ -30,11 +34,17 @@ export class MudCreateComponent {
 			autoRestart: this.createForm.get('autoRestart').value,
 		};
 
+		this.isLoading = true;
+
 		try {
 			const res = await this.mud.create(mud);
-			this.router.navigate(['/my-muds/'+res.mudId+'/races']);
+			this.router.navigate(['/my-muds', res.mudId, 'races']);
 		} catch (err) {
-			// TODO: Error handling
+			this.snackbar.open('Fehler beim Erstellen des MUDS', 'OK', {
+				duration: 10000,
+			});
+		} finally {
+			this.isLoading = false;
 		}
 	}
 }

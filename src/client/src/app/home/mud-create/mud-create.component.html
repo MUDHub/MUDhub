@@ -39,7 +39,7 @@
 		type="submit"
 		mat-flat-button
 		color="primary"
-		[disabled]="createForm.invalid"
+		[disabled]="createForm.invalid || isLoading"
 	>
 		Erstellen
 	</button>
