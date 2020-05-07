@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MUDhub.Core.Configurations;
@@ -14,7 +14,7 @@ namespace MUDhub.Core.Services
     public class MudDbContext : DbContext
     {
         public MudDbContext(DbContextOptions options,
-                            IOptions<DatabaseConfiguration> conf = null,
+                            IOptions<DatabaseConfiguration>? conf = null,
                             ILogger<MudDbContext>? logger = null,
                             bool useNotInUnitests = true)
             : base(options)
@@ -52,10 +52,11 @@ namespace MUDhub.Core.Services
 
         public DbSet<MudGame> MudGames { get; set; } = null!;
         public DbSet<MudJoinRequest> MudJoinRequests { get; set; } = null!;
-
+        
         public DbSet<Character> Characters { get; set; } = null!;
         public DbSet<CharacterClass> Classes { get; set; } = null!;
         public DbSet<CharacterRace> Races { get; set; } = null!;
+
         public DbSet<Area> Areas { get; set; } = null!;
         public DbSet<Room> Rooms { get; set; } = null!;
         public DbSet<RoomConnection> RoomConnections { get; set; } = null!;
@@ -134,7 +135,6 @@ namespace MUDhub.Core.Services
             modelBuilder.Entity<Room>()
                 .HasMany(r => r.Interactions)
                 .WithOne(i => i.Room);
-
 
             ////Configures RoomInteraction
             modelBuilder.Entity<RoomInteraction>()

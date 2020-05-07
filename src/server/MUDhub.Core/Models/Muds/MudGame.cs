@@ -1,4 +1,4 @@
-﻿using MUDhub.Core.Models.Characters;
+using MUDhub.Core.Models.Characters;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -42,6 +42,7 @@ namespace MUDhub.Core.Models.Muds
         public ICollection<MudJoinRequest> JoinRequests { get; set; } = new Collection<MudJoinRequest>();
 
         public ICollection<Character> Characters { get; set; } = new Collection<Character>();
+
         public ICollection<Area> Areas { get; set; } = new Collection<Area>();
     }
 }

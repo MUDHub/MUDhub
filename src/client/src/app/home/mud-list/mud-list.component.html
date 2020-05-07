@@ -1,21 +1,25 @@
 <h1>MUD - Übersicht</h1>
 
 <div class="muds">
-	<div class="mud" *ngFor="let mud of muds">
-		<div class="mud-title">{{ mud.name }}</div>
-		<div class="mud-description">{{ mud.description }}</div>
+	<div class="mud" [class.is-own]="m.mud.owner.id === user.id" *ngFor="let m of list">
+		<mat-icon class="owner-icon">assignment_ind</mat-icon>
+		<div class="mud-title">{{ m.mud.name }}</div>
+		<div class="mud-description">{{ m.mud.description }}</div>
 		<div class="mud-actions">
 			<button
 				mat-stroked-button
 				color="primary"
-				*ngIf="mud.isPublic"
+				*ngIf="m.mud.isPublic || m.requestState === RequestState.Accepted"
 				[routerLink]="'join'"
-				[queryParams]="{ mudid: mud.mudId }"
+				[queryParams]="{ mudid: m.mud.mudId }"
 			>
 				Spielen
 			</button>
-			<button mat-stroked-button color="primary" *ngIf="!mud.isPublic">
+			<button mat-stroked-button color="primary" *ngIf="!m.mud.isPublic" [disabled]="m.requestState === RequestState.Requested" (click)="requestAccess(m.mud)">
 				Anfragen
+			</button>
+			<button mat-stroked-button color="primary" *ngIf="m.requestState === RequestState.Rejected" disabled>
+				Abgelehnt
 			</button>
 		</div>
 	</div>

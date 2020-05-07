@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using MUDhub.Core.Models.Muds;
@@ -22,7 +22,7 @@ namespace MUDhub.Core.Models
         public string Description { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public ICollection<Room> Rooms { get; set; } = new Collection<Room>();
+        public string GameId { get; set; }
         public MudGame Game { get; set; } = new MudGame();
-        public string GameId { get; set; } = string.Empty;
     }
 }

@@ -1,4 +1,4 @@
-﻿using MUDhub.Core.Models.Muds;
+using MUDhub.Core.Models.Muds;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

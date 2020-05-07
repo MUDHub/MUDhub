@@ -32,4 +32,8 @@ export class UsersService {
 	async removeRoleFromUser(id: string, role: UserRole) {
 		return this.http.delete<IUser>(`${env.api.url}/users/${id}/roles?role=${UserRole[role]}`).toPromise();
 	}
+
+	async delete(id: string) {
+		return this.http.delete(`${env.api.url}/users/${id}`).toPromise();
+	}
 }

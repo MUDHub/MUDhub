@@ -40,7 +40,11 @@ export class UsersComponent implements OnInit {
 
 
 	async delete(user: IUser) {
-		console.log('deleting user', user);
-		// TODO: delete user
+		try {
+			await this.userService.delete(user.id);
+			await this.loadUsers();
+		} catch (err) {
+			console.error(`Error while deleting user(${user.id})`, err);
+		}
 	}
 }

@@ -1,4 +1,4 @@
-﻿using MUDhub.Core.Models.Muds;
+using MUDhub.Core.Models.Muds;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -31,6 +31,5 @@ namespace MUDhub.Core.Models.Rooms
         public string GameId { get; set; } = string.Empty;
         public MudGame Game { get; set; } = null!;
         public bool IsDefaultRoom { get; set; } = false;
-
     }
 }

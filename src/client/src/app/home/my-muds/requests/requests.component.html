@@ -1,0 +1,75 @@
+<h1>Spieler</h1>
+
+<section>
+	<h2>Anfragen</h2>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Email</th>
+				<th></th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let req of requests">
+				<td>{{ req.email }}</td>
+				<td class="action">
+					<button mat-button class="accept">
+						<mat-icon>done</mat-icon>
+					</button>
+				</td>
+				<td class="action">
+					<button mat-button class="block">
+						<mat-icon>block</mat-icon>
+					</button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</section>
+
+<div class="row">
+	<section class="col">
+		<h2>Zugelassen</h2>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Email</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let req of accepted">
+					<td>{{ req.email }}</td>
+					<td class="action">
+						<button mat-button class="block">
+							<mat-icon>block</mat-icon>
+						</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
+
+	<section class="col">
+		<h2>Blockiert</h2>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Email</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let req of rejected">
+					<td>{{ req.email }}</td>
+					<td class="action">
+						<button mat-button class="accept">
+							<mat-icon>done</mat-icon>
+						</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
+</div>

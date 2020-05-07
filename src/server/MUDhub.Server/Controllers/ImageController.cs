@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -39,7 +39,6 @@ namespace MUDhub.Server.Controllers
                 using var imagestream = System.IO.File.Create(imagepath);
                 await image.CopyToAsync(imagestream)
                     .ConfigureAwait(false);
-
             }
             catch (Exception e)
             {

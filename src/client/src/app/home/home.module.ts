@@ -25,6 +25,15 @@ import { UsersComponent } from './admin/users/users.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MudJoinComponent } from './mud-list/mud-join/mud-join.component';
 import { SharedModule } from '../shared/shared.module';
+import { MudCreateComponent } from './mud-create/mud-create.component';
+import { RacesComponent } from './mud-config/races/races.component';
+import { RequestsComponent } from './my-muds/requests/requests.component';
+import { MudsComponent } from './admin/muds/muds.component';
+import { ClassesComponent } from './mud-config/classes/classes.component';
+import { RoomsComponent } from './mud-config/rooms/rooms.component';
+import { ItemsComponent } from './mud-config/items/items.component';
+import { FinishComponent } from './mud-config/finish/finish.component';
+
 @NgModule({
 	declarations: [
 		HomeShellComponent,
@@ -34,6 +43,14 @@ import { SharedModule } from '../shared/shared.module';
 		ProfileComponent,
 		UsersComponent,
 		MudJoinComponent,
+		MudCreateComponent,
+		RacesComponent,
+		RequestsComponent,
+		MudsComponent,
+		ClassesComponent,
+		RoomsComponent,
+		ItemsComponent,
+		FinishComponent,
 	],
 	imports: [
 		CommonModule,
@@ -51,6 +68,7 @@ import { SharedModule } from '../shared/shared.module';
 		SharedModule,
 		MatCheckboxModule,
 		MatIconModule,
+		SharedModule,
 		MatSnackBarModule,
 	],
 })

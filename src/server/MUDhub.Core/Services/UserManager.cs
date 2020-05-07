@@ -41,15 +41,14 @@ namespace MUDhub.Core.Services
                 string.IsNullOrWhiteSpace(model.Password))
             {
                 _logger?.LogWarning($"No valid registration arguments: {Environment.NewLine}" +
-                                    $"- Firstname: {model.Firstname}" +
-                                    $"- Lastname: {model.Firstname}" +
-                                    $"- Emailname: {model.Firstname}" +
+                                    $"- Firstname: {model.Firstname} {Environment.NewLine}" +
+                                    $"- Lastname: {model.Firstname} {Environment.NewLine}" +
+                                    $"- Emailname: {model.Firstname} {Environment.NewLine}" +
                                     $"- Password: {new string('*', model.Password.Length)}");
                 return new RegisterResult(false);
             }
             var normalizedEmail = UserHelpers.ToNormelizedEmail(model.Email);
-            var user = await _context.Users.AsNoTracking()
-                                            .FirstOrDefaultAsync(u => u.NormalizedEmail == normalizedEmail)
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.NormalizedEmail == normalizedEmail)
                 .ConfigureAwait(false);
             if (user == null)
             {
