@@ -1,72 +1,82 @@
 <h1>Rassen</h1>
 
 <div class="button-class">
-	<button mat-flat-button color="primary" (click)="changeDialog()">Hinzufügen</button>
+	<button mat-flat-button color="primary" (click)="changeDialog()">
+		Hinzufügen
+	</button>
 </div>
 
-<div *ngIf="dialog" class="add-race">
+<div class="disable-background" *ngIf="dialog">
+	<div  class="add-race">
+		<div class="exit-button">
+			<mh-exit-button (click)="changeDialog()"></mh-exit-button>
+		</div>
 
-    <div class="exit-button">
-        <mh-exit-button (click)="changeDialog()"></mh-exit-button>
-    </div>
+		<br />
 
-    <br/>
+		<form class="general-form" [formGroup]="form" (ngSubmit)="addRace()">
+			<div class="form-row">
+				<mat-form-field>
+					<input
+						matInput
+						name="name"
+						type="text"
+						formControlName="name"
+						placeholder="Name"
+					/>
+					<mat-error>Bitte gebe einen Rassennamen ein</mat-error>
+				</mat-form-field>
+			</div>
+			<div class="form-row">
+				<mat-form-field appearance="fill">
+					<mat-label>Beschreibung</mat-label>
+					<textarea
+						matInput
+						formControlName="description"
+						placeholder="Beschreibung"
+						rows="5"
+					></textarea>
+					<mat-error
+						>Eine kurze Beschreibung der Rasse ist
+						erforderlich</mat-error
+					>
+				</mat-form-field>
+			</div>
+			<div class="form-row">
 
-	<form class="general-form" [formGroup]="form" (ngSubmit)="addRace()">
-		<div class="form-row">
-			<mat-form-field>
-				<input matInput name="name" type="text" formControlName="name" placeholder="Name" />
-				<mat-error
-					>Bitte gebe einen Rassennamen ein</mat-error
+				<input type="file" name="imagekey" id="imagekey"/>
+
+			</div>
+			<div class="form-row">
+				<button
+					mat-flat-button
+					type="submit"
+					color="primary"
+					[disabled]="form.invalid"
 				>
-			</mat-form-field>
-		</div>
-		<div class="form-row">
-			<mat-form-field>
-				<input
-					matInput
-					name="description"
-					type="text"
-                    placeholder="Beschreibung"
-                    formControlName="description"
-				/>
-				<mat-error
-					
-					>Bitte gebe eine Beschreibung ein</mat-error
-				>
-			</mat-form-field>
-		</div>
-		<div class="form-row">
-			<mat-form-field>
-				<input
-					matInput
-					name="imagekey"
-					type="text"
-                    placeholder="Bildschlüssel"
-                    formControlName="imagekey"
-				/>
-			</mat-form-field>
-        </div>
-		<div class="form-row">
-			<button mat-flat-button type="submit" color="primary" [disabled]="form.invalid">
-				Rasse hinzufügen
-			</button>
-		</div>
-	</form>
+					Rasse hinzufügen
+				</button>
+			</div>
+		</form>
+	</div>
 </div>
 
 <table class="table-list">
 	<tr class="table-item first">
 		<th>Name</th>
 		<th>Beschreibung</th>
-        <th>Bild</th>
-        <th>Löschen</th>
+		<th>Bild</th>
+		<th>Löschen</th>
 	</tr>
-	<tr class="table-item" *ngFor="let race of races; index as index;">
+	<tr class="table-item" *ngFor="let race of races; index as index">
 		<td>{{ race.name }}</td>
 		<td>{{ race.description }}</td>
-        <td>{{ race.imagekey }}</td>
-        <td><button mat-flat-button color="primary" (click)="deleteRow(index)">Löschen</button></td>
+		<td>{{ race.imagekey }}</td>
+		<td>
+			<button mat-flat-button color="primary" (click)="deleteRow(index)">
+				Löschen
+			</button>
+		</td>
 	</tr>
 </table>
 
