@@ -23,8 +23,8 @@ namespace MUDhub.Server.ApiModels.Muds.Areas
                 Description = area.Description,
                 Name = area.Name,
                 AreaId = area.Id,
-                MudId = area.GameId,
-                Mud = MudApiModel.ConvertFromMudGame(area.Game)
+                //MudId = area.GameId,
+                //Mud = MudApiModel.ConvertFromMudGame(area.Game)
             };
         }
     }

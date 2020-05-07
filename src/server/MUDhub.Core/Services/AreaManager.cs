@@ -99,7 +99,7 @@ namespace MUDhub.Core.Services
                     Errormessage = $"No user with the UserId: {userId} was found."
                 };
             }
-            
+
             if (room1Id == room2Id)
             {
                 _logger?.LogWarning($"Rooms {room1Id} and {room2Id} are identical. A connection is not possible.");
@@ -167,7 +167,7 @@ namespace MUDhub.Core.Services
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
 
-            _logger?.LogInformation($"A connection: {connection.Id} was created between room: {room1.Name} and room: {room2.Name}");
+            //_logger?.LogInformation($"A connection: {connection.Id} was created between room: {room1.Name} and room: {room2.Name}");
             return new ConnectionResult()
             {
                 RoomConnection = connection
@@ -369,7 +369,7 @@ namespace MUDhub.Core.Services
             _context.RoomConnections.Remove(connection);
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
-            _logger?.LogInformation($"The room connection: {connection.Id} has been removed from the MudGame: {connection.Room1.GameId}");
+            //_logger?.LogInformation($"The room connection: {connection.Id} has been removed from the MudGame: {connection.Room1.GameId}");
             return new ConnectionResult()
             {
                 RoomConnection = connection
@@ -430,10 +430,10 @@ namespace MUDhub.Core.Services
             }
 
             List<RoomConnection> roomConnectionsList = room.Connections.ToList();
-            foreach (RoomConnection roomConnection in roomConnectionsList)
-            {
-                await RemoveConnectionAsync(userId, roomConnection.Id).ConfigureAwait(false);
-            }
+            //foreach (RoomConnection roomConnection in roomConnectionsList)
+            //{
+            //    await RemoveConnectionAsync(userId, roomConnection.Id).ConfigureAwait(false);
+            //}
 
             _context.Rooms.Remove(room);
             await _context.SaveChangesAsync()
@@ -554,7 +554,8 @@ namespace MUDhub.Core.Services
 
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
-            _logger?.LogInformation($"The room connection: {connection.Id} was updated");
+            //Todo: update connectionid
+            //_logger?.LogInformation($"The room connection: {connection.room} was updated");
             return new ConnectionResult()
             {
                 RoomConnection = connection

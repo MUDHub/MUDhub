@@ -11,7 +11,6 @@ namespace MUDhub.Core.Models.Muds
     {
         public MudGame()
         {
-            JoinRequests = new List<MudJoinRequest>();
         }
 
         public MudGame(string id)
@@ -39,9 +38,6 @@ namespace MUDhub.Core.Models.Muds
 
         public string OwnerId { get; set; } = string.Empty;
         public User Owner { get; set; }
-
-        public string? DefaultRoomId { get; set; } = string.Empty;
-        public Room? DefaultRoom { get; set; }
 
         public ICollection<MudJoinRequest> JoinRequests { get; set; } = new Collection<MudJoinRequest>();
 

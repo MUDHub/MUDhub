@@ -73,20 +73,26 @@ namespace MUDhub.Core.Services
             modelBuilder.Entity<MudGame>()
                 .HasKey(mg => mg.Id);
             modelBuilder.Entity<MudGame>()
-                .HasOne(mg => mg.DefaultRoom);
-            modelBuilder.Entity<MudGame>()
                 .HasMany(mg => mg.Characters)
-                .WithOne(c => c.Game);
+                .WithOne(c => c.Game)
+                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<MudGame>()
+                .HasMany(g => g.Areas)
+                .WithOne(a => a.Game)
+                .HasForeignKey(a => a.GameId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             //Configures Character
             modelBuilder.Entity<Character>()
                 .HasKey(c => c.Id);
             modelBuilder.Entity<Character>()
                 .HasOne(c => c.Race)
-                .WithMany(r => r.Characters);
+                .WithMany(r => r.Characters)
+                .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Character>()
                 .HasOne(c => c.Class)
-                .WithMany(cl => cl.Characters);
+                .WithMany(cl => cl.Characters)
+                .OnDelete(DeleteBehavior.Cascade);
 
             //Configures CharacterClass
             modelBuilder.Entity<CharacterClass>()
@@ -106,7 +112,8 @@ namespace MUDhub.Core.Services
             modelBuilder.Entity<MudJoinRequest>()
                 .HasOne(mjr => mjr.MudGame)
                 .WithMany(mg => mg.JoinRequests)
-                .HasForeignKey(mjr => mjr.MudId);
+                .HasForeignKey(mjr => mjr.MudId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             //Configures User
             modelBuilder.Entity<User>()
@@ -117,32 +124,40 @@ namespace MUDhub.Core.Services
                 .HasKey(r => r.Id);
             modelBuilder.Entity<Room>()
                 .HasOne(r => r.Area)
-                .WithMany(a => a.Rooms);
+                .WithMany(a => a.Rooms)
+                .HasForeignKey(r => r.AreaId)
+                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Room>()
+                .HasOne(r => r.Game)
+                .WithMany()
+                .HasForeignKey(r => r.GameId);
             modelBuilder.Entity<Room>()
                 .HasMany(r => r.Interactions)
-                .WithOne(ri => ri.Room);
-            modelBuilder.Entity<Room>()
-                .HasMany(r => r.Connections);
+                .WithOne(i => i.Room);
 
-            //Configures RoomInteraction
+
+            ////Configures RoomInteraction
             modelBuilder.Entity<RoomInteraction>()
                 .HasKey(ri => ri.Id);
 
             //Configures Area
             modelBuilder.Entity<Area>()
                 .HasKey(a => a.Id);
-            modelBuilder.Entity<Area>()
-                .HasOne(a => a.Game)
-                .WithMany(g => g.Areas)
-                .HasForeignKey(g => g.GameId);
 
-            //Configures RoomConnection
+
+            ////Configures RoomConnection
             modelBuilder.Entity<RoomConnection>()
                 .HasKey(rc => rc.Id);
+
             modelBuilder.Entity<RoomConnection>()
-                .HasOne(rc => rc.Room1);
+                .HasOne(rc => rc.Room1)
+                .WithMany(r => r.Connections)
+                .HasForeignKey(rc => rc.Room1Id);
+
             modelBuilder.Entity<RoomConnection>()
-                .HasOne(rc => rc.Room2);
+                .HasOne(rc => rc.Room2)
+                .WithMany()
+                .HasForeignKey(rc => rc.Room2Id);
         }
 
 
