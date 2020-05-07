@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MUDhub.Core.Services;
 using MUDhub.Server.ApiModels.Muds.Areas;
 using MUDhub.Server.ApiModels.Muds.RoomConnections;
 using MUDhub.Server.ApiModels.Muds.Rooms;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MUDhub.Server.Controllers
 {
@@ -22,8 +20,6 @@ namespace MUDhub.Server.Controllers
             _context = context;
         }
 
-        //TODO: Folgende Schnittstellen sind von Moris gemacht und müssen überprüft werden.
-
         [HttpGet("areas")]
         public ActionResult<IEnumerable<AreaApiModel>> GetAllAreas([FromRoute] string mudId)
         {
@@ -35,14 +31,17 @@ namespace MUDhub.Server.Controllers
         [HttpGet("areas/{areaId}")]
         public async Task<ActionResult<AreaApiModel>> GetArea([FromRoute] string mudId, [FromRoute] string areaId)
         {
-            //TODO: Kann hier der Parameter "mudId" entfernt werden?
             var area = await _context.Areas.FindAsync(areaId)
                 .ConfigureAwait(false);
             if (area is null)
             {
                 return BadRequest();
             }
-            return Ok(AreaApiModel.ConvertFromArea(area));
+            if (area.GameId == mudId)
+            {
+                return Ok(AreaApiModel.ConvertFromArea(area));
+            }
+            return BadRequest();
         }
 
         [HttpGet("areas/{areaId}/rooms")]
@@ -56,14 +55,17 @@ namespace MUDhub.Server.Controllers
         [HttpGet("areas/{areaId}/rooms/{roomId}")]
         public async Task<ActionResult<RoomApiModel>> GetRoom([FromRoute] string mudId, [FromRoute] string areaId, [FromRoute] string roomId)
         {
-            //TODO: Kann hier der Parameter "mudId" und "areaId" entfernt werden?
             var room = await _context.Rooms.FindAsync(roomId)
                 .ConfigureAwait(false);
             if (room is null)
             {
                 return BadRequest();
             }
-            return Ok(RoomApiModel.ConvertFromRoom(room));
+            if (room.GameId == mudId && room.AreaId == areaId)
+            {
+                return Ok(RoomApiModel.ConvertFromRoom(room));
+            }
+            return BadRequest();
         }
 
         [HttpGet("areas/connections")]
@@ -85,14 +87,17 @@ namespace MUDhub.Server.Controllers
         [HttpGet("areas/connections/{connectionId}")]
         public async Task<ActionResult<RoomConnectionApiModel>> GetConnection([FromRoute] string mudId, [FromRoute] string connectionId)
         {
-            //TODO: Kann hier der Parameter "mudId" entfernt werden?
             var connection = await _context.RoomConnections.FindAsync(connectionId)
                 .ConfigureAwait(false);
             if (connection is null)
             {
                 return BadRequest();
             }
-            return Ok(RoomConnectionApiModel.ConvertFromRoomConnection(connection));
+            if (connection.GameId == mudId)
+            {
+                return Ok(RoomConnectionApiModel.ConvertFromRoomConnection(connection));
+            }
+            return BadRequest();
         }
     }
 }

@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MUDhub.Core.Abstracts;
 using MUDhub.Core.Models.Muds;
 using MUDhub.Core.Services;
 using MUDhub.Server.ApiModels.Muds;
-using MUDhub.Server.ApiModels.Muds.Areas;
-using MUDhub.Server.ApiModels.Muds.RoomConnections;
-using MUDhub.Server.ApiModels.Muds.Rooms;
 using MUDhub.Server.Helpers;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MUDhub.Server.Controllers
 {
@@ -139,30 +136,30 @@ namespace MUDhub.Server.Controllers
             switch ((MudJoinState)state)
             {
                 case MudJoinState.Accepted:
-                {
-                    var result = await _mudManager.ApproveUserToJoinAsync(userid, mudId)
-                                        .ConfigureAwait(false);
-                    if (result)
                     {
-                        return Ok();
+                        var result = await _mudManager.ApproveUserToJoinAsync(userid, mudId)
+                                            .ConfigureAwait(false);
+                        if (result)
+                        {
+                            return Ok();
+                        }
+                        return BadRequest();
                     }
-                    return BadRequest();
-                }
                 case MudJoinState.Rejected:
-                {
-                    var result = await _mudManager.RejectUserToJoinAsync(userid, mudId)
-                                        .ConfigureAwait(false);
-                    if (result)
                     {
-                        return Ok();
+                        var result = await _mudManager.RejectUserToJoinAsync(userid, mudId)
+                                            .ConfigureAwait(false);
+                        if (result)
+                        {
+                            return Ok();
+                        }
+                        return BadRequest();
                     }
-                    return BadRequest();
-                }
                 default:
-                {
-                    //todo: throw exception
-                    return BadRequest();
-                }
+                    {
+                        //todo: throw exception
+                        return BadRequest();
+                    }
             }
         }
 
