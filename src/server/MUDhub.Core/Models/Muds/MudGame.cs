@@ -1,9 +1,8 @@
 using MUDhub.Core.Models.Characters;
+using MUDhub.Core.Models.Users;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
-using MUDhub.Core.Models.Rooms;
 
 namespace MUDhub.Core.Models.Muds
 {

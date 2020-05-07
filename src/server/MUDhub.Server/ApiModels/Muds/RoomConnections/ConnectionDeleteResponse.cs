@@ -1,4 +1,4 @@
-﻿namespace MUDhub.Server.ApiModels.Areas
+﻿namespace MUDhub.Server.ApiModels.Muds.RoomConnections
 {
     public class ConnectionDeleteResponse : BaseResponse
     {

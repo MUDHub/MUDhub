@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
+﻿using MUDhub.Core.Abstracts.Models;
 using System.ComponentModel.DataAnnotations;
-using MUDhub.Core.Abstracts.Models;
 
 namespace MUDhub.Server.ApiModels.Auth
 {
@@ -19,7 +14,7 @@ namespace MUDhub.Server.ApiModels.Auth
         [Required]
         public string Password { get; set; } = string.Empty;
 
-       
+
 
         public static RegistrationUserArgs ConvertFromRequest(RegisterRequest request)
         {

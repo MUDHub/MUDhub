@@ -1,12 +1,16 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MUDhub.Core.Abstracts;
+using MUDhub.Core.Abstracts.Models.Areas;
+using MUDhub.Core.Abstracts.Models.Connections;
 using MUDhub.Core.Abstracts.Models.Rooms;
 using MUDhub.Core.Models;
+using MUDhub.Core.Models.Connections;
 using MUDhub.Core.Models.Rooms;
+using MUDhub.Core.Models.Users;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MUDhub.Core.Services
 {
@@ -160,7 +164,8 @@ namespace MUDhub.Core.Services
                 Description = args.Description,
                 LockType = args.LockArgs.LockType,
                 LockDescription = args.LockArgs.LockDescription,
-                LockAssociatedId = args.LockArgs.LockAssociatedId
+                LockAssociatedId = args.LockArgs.LockAssociatedId,
+                GameId = room1.GameId
             };
 
             _context.RoomConnections.Add(connection);
@@ -243,7 +248,8 @@ namespace MUDhub.Core.Services
                 ImageKey = args.ImageKey,
                 X = args.X,
                 Y = args.Y,
-                IsDefaultRoom = args.IsDefaultRoom
+                IsDefaultRoom = args.IsDefaultRoom,
+                Game = area.Game
             };
             _context.Rooms.Add(room);
             await _context.SaveChangesAsync()

@@ -1,4 +1,4 @@
-﻿namespace MUDhub.Core.Models.Rooms
+﻿namespace MUDhub.Core.Models.Connections
 {
     public enum LockType
     {

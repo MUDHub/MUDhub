@@ -3,10 +3,8 @@ using MUDhub.Core.Models.Muds;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
 
-namespace MUDhub.Core.Models
+namespace MUDhub.Core.Models.Users
 {
     public class User
     {

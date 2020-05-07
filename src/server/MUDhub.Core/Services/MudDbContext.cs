@@ -4,10 +4,12 @@ using Microsoft.Extensions.Options;
 using MUDhub.Core.Configurations;
 using MUDhub.Core.Models;
 using MUDhub.Core.Models.Characters;
+using MUDhub.Core.Models.Connections;
 using MUDhub.Core.Models.Muds;
+using MUDhub.Core.Models.Rooms;
+using MUDhub.Core.Models.Users;
 using System;
 using System.Threading.Tasks;
-using MUDhub.Core.Models.Rooms;
 
 namespace MUDhub.Core.Services
 {
@@ -52,7 +54,7 @@ namespace MUDhub.Core.Services
 
         public DbSet<MudGame> MudGames { get; set; } = null!;
         public DbSet<MudJoinRequest> MudJoinRequests { get; set; } = null!;
-        
+
         public DbSet<Character> Characters { get; set; } = null!;
         public DbSet<CharacterClass> Classes { get; set; } = null!;
         public DbSet<CharacterRace> Races { get; set; } = null!;

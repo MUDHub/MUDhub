@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using MUDhub.Core.Models.Rooms;
+﻿using MUDhub.Core.Abstracts.Models.Rooms;
 
-namespace MUDhub.Core.Abstracts.Models.Rooms
+namespace MUDhub.Core.Abstracts.Models.Connections
 {
     public class RoomConnectionsArgs
     {

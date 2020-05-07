@@ -1,14 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MUDhub.Core.Abstracts;
+using MUDhub.Core.Models.Connections;
 using MUDhub.Core.Services;
 using MUDhub.Server.ApiModels.Areas;
 using MUDhub.Server.ApiModels.Muds.Areas;
 using MUDhub.Server.ApiModels.Muds.RoomConnections;
 using MUDhub.Server.ApiModels.Muds.Rooms;
+using MUDhub.Server.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MUDhub.Core.Abstracts;
-using MUDhub.Server.Helpers;
 
 namespace MUDhub.Server.Controllers
 {
@@ -66,6 +68,29 @@ namespace MUDhub.Server.Controllers
             });
         }
 
+        [HttpPost("areas")]
+        public async Task<IActionResult> CreateArea([FromRoute] string mudId, [FromBody] CreateAreaRequest args)
+        {
+            if (args is null)
+                throw new ArgumentNullException(nameof(args));
+
+            var createResult = await _areaManager.CreateAreaAsync(HttpContext.GetUserId(), mudId,
+                CreateAreaRequest.ConvertFromRequest(args)).ConfigureAwait(false);
+
+            if (createResult.Success)
+            {
+                return Ok(new CreateAreaResponse()
+                {
+                    Area = AreaApiModel.ConvertFromArea(createResult.Area!)
+                });
+            }
+            return BadRequest(new CreateAreaResponse()
+            {
+                Succeeded = false,
+                Errormessage = "Cannot create the area."
+            });
+        }
+
         [HttpGet("areas/{areaId}/rooms")]
         public ActionResult<IEnumerable<RoomApiModel>> GetAllRooms([FromRoute] string mudId, [FromRoute] string areaId)
         {
@@ -108,20 +133,46 @@ namespace MUDhub.Server.Controllers
             });
         }
 
-        [HttpGet("areas/connections")]
-        public ActionResult<IEnumerable<RoomConnectionApiModel>> GetAllConnections([FromRoute] string mudId)
+        [HttpPost("areas/{areaId}/rooms")]
+        public async Task<IActionResult> CreateRoom([FromRoute] string areaId, [FromBody] CreateRoomRequest args)
         {
-            return Ok(_context.RoomConnections.Where(r => r.GameId == mudId)
-                .AsEnumerable()
-                .Select(r => RoomConnectionApiModel.ConvertFromRoomConnection(r)));
+            if (args is null)
+                throw new ArgumentNullException(nameof(args));
+
+            var createResult = await _areaManager.CreateRoomAsync(HttpContext.GetUserId(), areaId,
+                CreateRoomRequest.ConvertFromRequest(args)).ConfigureAwait(false);
+
+            if (createResult.Success)
+            {
+                return Ok(new CreateRoomResponse()
+                {
+                    Room = RoomApiModel.ConvertFromRoom(createResult.Room!)
+                });
+            }
+            return BadRequest(new CreateAreaResponse()
+            {
+                Succeeded = false,
+                Errormessage = "Cannot create the room."
+            });
         }
+
+
         [HttpGet("areas/{areaId}/connections")]
-        public ActionResult<IEnumerable<RoomConnectionApiModel>> GetAllConnectionsInsideArea([FromRoute] string mudId, [FromRoute] string areaId)
+        public async Task<IActionResult> GetAllConnections([FromRoute] string mudId, [FromRoute] string areaId, [FromQuery] string? roomId = null)
         {
-            return Ok(_context.RoomConnections.Where(r => r.GameId == mudId
-                                                          && (r.Room1.Area.Id == areaId || r.Room2.Area.Id == areaId))
-                .AsEnumerable()
-                .Select(r => RoomConnectionApiModel.ConvertFromRoomConnection(r)));
+            if (roomId is null)
+            {
+                return Ok(_context.RoomConnections.Where(r => r.GameId == mudId
+                                                              && (r.Room1.Area.Id == areaId || r.Room2.Area.Id == areaId))
+                    .AsEnumerable()
+                    .Select(r => RoomConnectionApiModel.ConvertFromRoomConnection(r)));
+            }
+            var result = await _context.Rooms.FindAsync(roomId).ConfigureAwait(false);
+            if (result is null)
+            {
+                return BadRequest();
+            }
+            return Ok(result.Connections.Select(c => RoomConnectionApiModel.ConvertFromRoomConnection(c)));
         }
 
         [HttpGet("areas/connections/{connectionId}")]
@@ -155,6 +206,40 @@ namespace MUDhub.Server.Controllers
             {
                 Succeeded = false,
                 Errormessage = $"Connection with the Id: {connectionId} does not exist!"
+            });
+        }
+
+        [HttpPost("areas/{areaId}/connections")]
+        public async Task<IActionResult> CreateConnection([FromRoute] string areaId, [FromBody] CreateConnectionRequest args)
+        {
+            if (args is null)
+                throw new ArgumentNullException(nameof(args));
+
+            if (args.LockType != LockType.NoLock
+               && string.IsNullOrWhiteSpace(args.LockDescription)
+               && string.IsNullOrWhiteSpace(args.LockAssociatedId))
+            {
+                return BadRequest(new CreateConnectionResponse()
+                {
+                    Succeeded = false,
+                    Errormessage = "LockType is not full implemented."
+                });
+            }
+
+            var createResult = await _areaManager.CreateConnectionAsync(HttpContext.GetUserId(), args.RoomId1, args.RoomId2,
+                CreateConnectionRequest.ConvertFromRequest(args)).ConfigureAwait(false);
+
+            if (createResult.Success)
+            {
+                return Ok(new CreateConnectionResponse()
+                {
+                    Connection = RoomConnectionApiModel.ConvertFromRoomConnection(createResult.RoomConnection!)
+                });
+            }
+            return BadRequest(new CreateConnectionResponse()
+            {
+                Succeeded = false,
+                Errormessage = "Cannot create the connection."
             });
         }
     }

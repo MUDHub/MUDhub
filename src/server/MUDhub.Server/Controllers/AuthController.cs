@@ -51,8 +51,6 @@ namespace MUDhub.Server.Controllers
             if (args is null)
                 throw new ArgumentNullException(nameof(args));
 
-            
-
             var registerResult = await _userManager.RegisterUserAsync(RegisterRequest.ConvertFromRequest(args)).ConfigureAwait(false);
             if (registerResult.Succeeded)
             {

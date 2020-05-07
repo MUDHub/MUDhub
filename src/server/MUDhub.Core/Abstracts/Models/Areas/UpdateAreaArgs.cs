@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MUDhub.Core.Abstracts.Models.Rooms
+﻿namespace MUDhub.Core.Abstracts.Models.Areas
 {
     public class UpdateAreaArgs
     {

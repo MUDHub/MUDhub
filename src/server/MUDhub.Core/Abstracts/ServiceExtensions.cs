@@ -1,15 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using MUDhub.Core.Configurations;
 using MUDhub.Core.Services;
 using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace MUDhub.Core.Abstracts
 {
@@ -22,6 +17,7 @@ namespace MUDhub.Core.Abstracts
             //Todo: Later change this to scoped.
             services.AddUserManagment();
             services.AddMudGameManagment();
+            services.AddAreaManagment();
             return services;
         }
 
@@ -37,6 +33,20 @@ namespace MUDhub.Core.Abstracts
             services.TryAddSingleton<ILoginService, LoginService>();
             services.TryAddSingleton<IUserManager, UserManager>();
             services.TryAddSingleton<IEmailService, EmailService>();
+            return services;
+        }
+
+
+        /// <summary>
+        /// Adds all Services they relate to the mudhub AreaManagement, e.g. 
+        /// </summary>
+        /// <param name="services"></param>
+        /// <returns></returns>
+        public static IServiceCollection AddAreaManagment(this IServiceCollection services)
+        {
+            //Todo: Later change this to scoped.
+            services.TryAddSingleton<IAreaManager, AreaManager>();
+            services.TryAddSingleton<INavigationService, NavigationService>();
             return services;
         }
 
@@ -57,7 +67,7 @@ namespace MUDhub.Core.Abstracts
         }
 
 
-        public static IServiceCollection AddTargetDatabase(this IServiceCollection services,IConfiguration configuration, DatabaseConfiguration conf)
+        public static IServiceCollection AddTargetDatabase(this IServiceCollection services, IConfiguration configuration, DatabaseConfiguration conf)
         {
             if (services is null)
                 throw new ArgumentNullException(nameof(services));
@@ -70,39 +80,39 @@ namespace MUDhub.Core.Abstracts
             switch (conf.Provider)
             {
                 case DatabaseProvider.Sqlite:
-                {
-                    services.AddDbContext<MudDbContext>(options =>
-                        options.UseSqlite(conf.ConnectionString, b =>
-                        {
-                            b.MigrationsAssembly("MUDhub.Server");
-                        }),lifetime);
-                    break;
-                }
+                    {
+                        services.AddDbContext<MudDbContext>(options =>
+                            options.UseSqlite(conf.ConnectionString, b =>
+                            {
+                                b.MigrationsAssembly("MUDhub.Server");
+                            }), lifetime);
+                        break;
+                    }
                 case DatabaseProvider.MySql:
                 case DatabaseProvider.MariaDB:
-                {
-                    var mysqlConString = configuration.GetValue<string>("MYSQLCONNSTR_localdb");
-                    if (!(mysqlConString is null))
                     {
-                        conf.ConnectionString = mysqlConString;
-                        Console.WriteLine($"MysqlConnectionstring:'{mysqlConString}'");
-                    }
-                    services.AddDbContext<MudDbContext>(options =>
-                        options.UseMySql(conf.ConnectionString, b =>
+                        var mysqlConString = configuration.GetValue<string>("MYSQLCONNSTR_localdb");
+                        if (!(mysqlConString is null))
                         {
-                            b.MigrationsAssembly("MUDhub.Server");
-                        }), lifetime);
-                    break;
-                }
+                            conf.ConnectionString = mysqlConString;
+                            Console.WriteLine($"MysqlConnectionstring:'{mysqlConString}'");
+                        }
+                        services.AddDbContext<MudDbContext>(options =>
+                            options.UseMySql(conf.ConnectionString, b =>
+                            {
+                                b.MigrationsAssembly("MUDhub.Server");
+                            }), lifetime);
+                        break;
+                    }
                 case DatabaseProvider.MsSql:
-                {
-                    services.AddDbContext<MudDbContext>(options =>
-                       options.UseSqlServer(conf.ConnectionString, b =>
-                       {
-                           b.MigrationsAssembly("MUDhub.Server");
-                       }), lifetime);
-                    break;
-                }
+                    {
+                        services.AddDbContext<MudDbContext>(options =>
+                           options.UseSqlServer(conf.ConnectionString, b =>
+                           {
+                               b.MigrationsAssembly("MUDhub.Server");
+                           }), lifetime);
+                        break;
+                    }
                 default:
                     throw new ArgumentException($"No Supported Database Provider is used.", nameof(conf));
             }

@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace MUDhub.Core.Models
+namespace MUDhub.Core.Models.Users
 {
     [Flags]
     public enum Roles

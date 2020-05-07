@@ -1,3 +1,4 @@
+using MUDhub.Core.Models.Connections;
 using MUDhub.Core.Models.Muds;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,7 @@ namespace MUDhub.Core.Models.Rooms
         public string Name { get; set; } = string.Empty;
         public ICollection<RoomConnection> Connections { get; set; } = new Collection<RoomConnection>();
         public string AreaId { get; set; }
-        public Area Area { get; set; } = new Area();
+        public Area Area { get; set; } = null!;
         public ICollection<RoomInteraction> Interactions { get; set; } = new Collection<RoomInteraction>();
         public string ImageKey { get; set; } = string.Empty;
         public int X { get; set; } = 0;

@@ -4,8 +4,12 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MUDhub.Core.Abstracts;
 using MUDhub.Core.Abstracts.Models;
+using MUDhub.Core.Abstracts.Models.Areas;
+using MUDhub.Core.Abstracts.Models.Connections;
+using MUDhub.Core.Abstracts.Models.Rooms;
 using MUDhub.Core.Configurations;
-using MUDhub.Core.Models;
+using MUDhub.Core.Models.Connections;
+using MUDhub.Core.Models.Users;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,17 +20,20 @@ namespace MUDhub.Core.Services
     {
         private readonly IUserManager _userManager;
         private readonly IMudManager _mudManager;
+        private readonly IAreaManager _areaManager;
         private readonly MudDbContext _context;
         private readonly ILogger? _logger;
         private readonly DatabaseConfiguration _options;
 
         public DatabaseInitializer(IUserManager userManager,
                                     IMudManager mudManager,
+                                    IAreaManager areaManager,
                                     MudDbContext context,
                                     IOptions<DatabaseConfiguration> options,
                                     ILogger<DatabaseInitializer>? logger = null)
         {
             _userManager = userManager;
+            _areaManager = areaManager;
             _mudManager = mudManager;
             _context = context;
             _logger = logger;
@@ -54,13 +61,46 @@ namespace MUDhub.Core.Services
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == _options.DefaultMudAdminEmail)
                                         .ConfigureAwait(false);
-            await _mudManager.CreateMudAsync("Thors World", new MudCreationArgs
+            var resultGame = await _mudManager.CreateMudAsync("Thors World", new MudCreationArgs
             {
                 AutoRestart = true,
                 Description = "It's thors 9 worlds!",
                 ImageKey = "some awesome key",
                 IsPublic = true,
                 OwnerId = user.Id
+            }).ConfigureAwait(false);
+
+            var resultArea = await _areaManager.CreateAreaAsync(user.Id, resultGame!.Id, new AreaArgs()
+            {
+                Name = "First Etage",
+                Description = "Nice View"
+            }).ConfigureAwait(false);
+
+            var resultRoom1 = await _areaManager.CreateRoomAsync(user.Id, resultArea.Area.Id, new RoomArgs()
+            {
+                Name = "Dinner Room",
+                Description = "Yummy Food",
+                IsDefaultRoom = true,
+                X = 1,
+                Y = 1
+            }).ConfigureAwait(false);
+
+            var resultRoom2 = await _areaManager.CreateRoomAsync(user.Id, resultArea.Area.Id, new RoomArgs()
+            {
+                Name = "Sleeping Room",
+                Description = "Naughty Things to see",
+                IsDefaultRoom = false,
+                X = 2,
+                Y = 1
+            }).ConfigureAwait(false);
+
+            var resultConnection = await _areaManager.CreateConnectionAsync(user.Id, resultRoom1.Room.Id, resultRoom2.Room.Id, new RoomConnectionsArgs()
+            {
+                Description = "From Dinner to Sleep",
+                LockArgs = new LockArgs()
+                {
+                    LockType = LockType.NoLock
+                }
             }).ConfigureAwait(false);
         }
 

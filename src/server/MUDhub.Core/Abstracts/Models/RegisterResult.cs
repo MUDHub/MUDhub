@@ -1,7 +1,4 @@
-﻿using MUDhub.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using MUDhub.Core.Models.Users;
 
 namespace MUDhub.Core.Abstracts.Models
 {
@@ -16,6 +13,6 @@ namespace MUDhub.Core.Abstracts.Models
         }
         public bool Succeeded { get; }
         public bool UsernameAlreadyExists { get; }
-        public User? User{ get; set; }
+        public User? User { get; set; }
     }
 }
