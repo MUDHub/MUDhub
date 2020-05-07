@@ -34,7 +34,7 @@ export class MudListComponent implements OnInit {
 					const request = mudRequests.find(
 						m => m.userId === this.user.id
 					);
-					this.list.push({ mud, requestState: request.state });
+					this.list.push({ mud, requestState: request?.state });
 				} else {
 					this.list.push({ mud });
 				}
@@ -50,6 +50,10 @@ export class MudListComponent implements OnInit {
 	async requestAccess(mud: IMud) {
 		try {
 			await this.mudService.requestAccess(mud.mudId);
+			const found = this.list.find(m => m.mud === mud)
+			if (found) {
+				found.requestState = MudJoinState.Requested;
+			}
 		} catch (err) {
 			console.error('error in sending mud join request', err);
 		}

@@ -9,13 +9,13 @@
 			<button
 				mat-stroked-button
 				color="primary"
-				*ngIf="m.mud.isPublic || m.requestState === RequestState.Accepted"
+				*ngIf="m.mud.isPublic || m.requestState === RequestState.Accepted || m.mud.owner.id == user.id"
 				[routerLink]="'join'"
 				[queryParams]="{ mudid: m.mud.mudId }"
 			>
 				Spielen
 			</button>
-			<button mat-stroked-button color="primary" *ngIf="!m.mud.isPublic" [disabled]="m.requestState === RequestState.Requested" (click)="requestAccess(m.mud)">
+			<button mat-stroked-button color="primary" *ngIf="!m.mud.isPublic && m.mud.owner.id !== user.id" [disabled]="m.requestState === RequestState.Requested" (click)="requestAccess(m.mud)">
 				Anfragen
 			</button>
 			<button mat-stroked-button color="primary" *ngIf="m.requestState === RequestState.Rejected" disabled>
