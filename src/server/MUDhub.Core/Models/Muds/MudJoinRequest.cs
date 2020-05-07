@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
+﻿using MUDhub.Core.Models.Users;
 
 namespace MUDhub.Core.Models.Muds
 {

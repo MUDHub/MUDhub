@@ -1,7 +1,4 @@
-﻿using MUDhub.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using MUDhub.Core.Models.Users;
 
 namespace MUDhub.Core.Abstracts.Models
 {

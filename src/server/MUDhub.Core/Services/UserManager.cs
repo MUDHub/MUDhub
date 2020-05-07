@@ -1,10 +1,10 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MUDhub.Core.Abstracts;
 using MUDhub.Core.Abstracts.Models;
 using MUDhub.Core.Helper;
-using MUDhub.Core.Models;
+using MUDhub.Core.Models.Users;
+using System;
 using System.Threading.Tasks;
 
 namespace MUDhub.Core.Services
@@ -196,7 +196,7 @@ namespace MUDhub.Core.Services
             user.PasswordResetKey = Guid.NewGuid().ToString();
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
-            return await _emailService.SendAsync(email,user.PasswordResetKey)
+            return await _emailService.SendAsync(email, user.PasswordResetKey)
                 .ConfigureAwait(false);
         }
 
@@ -275,6 +275,6 @@ namespace MUDhub.Core.Services
             return await _context.Users.FirstOrDefaultAsync(u => u.Id == userId).ConfigureAwait(false);
         }
 
-       
+
     }
 }
