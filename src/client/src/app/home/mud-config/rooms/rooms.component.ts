@@ -27,7 +27,7 @@ export class RoomsComponent implements OnInit {
 		/* Object erstellen */
 		/* Request zur API schicken */
 
-		//Redirect zur nächsten Konfigurationsseite
+		// Redirect zur nächsten Konfigurationsseite
 		this.router.navigate(['/my-muds/' + this.mudId + '/finish']);
 	}
 }

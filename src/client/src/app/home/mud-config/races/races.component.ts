@@ -19,11 +19,11 @@ export class RacesComponent implements OnInit {
 		imagekey: [''],
 	});
 
-	dialog =  false;
+	dialog = false;
 	mudId: string;
 
 	//Todo Interface muss implementiert werden
-	races: Array<{name: string; description: string; imagekey: string }> = [];
+	races: Array<{ name: string; description: string; imagekey: string }> = [];
 
 	ngOnInit(): void {
 		/* Daten fetchen und in Array laden */
@@ -50,7 +50,7 @@ export class RacesComponent implements OnInit {
 		this.changeDialog();
 	}
 
-	deleteRow(index: number){
+	deleteRow(index: number) {
 		this.races.splice(index, 1);
 	}
 

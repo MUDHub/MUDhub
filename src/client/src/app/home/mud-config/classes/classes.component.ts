@@ -3,12 +3,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'mh-classes',
-  templateUrl: './classes.component.html',
-  styleUrls: ['./classes.component.scss']
+	selector: 'mh-classes',
+	templateUrl: './classes.component.html',
+	styleUrls: ['./classes.component.scss'],
 })
 export class ClassesComponent implements OnInit {
-
 	constructor(
 		private fb: FormBuilder,
 		private route: ActivatedRoute,
@@ -21,11 +20,15 @@ export class ClassesComponent implements OnInit {
 		imagekey: [''],
 	});
 
-	dialog =  false;
+	dialog = false;
 	mudId: string;
 
 	//Todo Interface muss implementiert werden
-	classes: Array<{name: string; description: string; imagekey: string }> = [];
+	classes: Array<{
+		name: string;
+		description: string;
+		imagekey: string;
+	}> = [];
 
 	ngOnInit(): void {
 		/* Daten fetchen und in Array laden */
@@ -52,7 +55,7 @@ export class ClassesComponent implements OnInit {
 		this.changeDialog();
 	}
 
-	deleteRow(index: number){
+	deleteRow(index: number) {
 		this.classes.splice(index, 1);
 	}
 
@@ -60,12 +63,11 @@ export class ClassesComponent implements OnInit {
 		this.router.navigate(['/my-muds/' + this.mudId + '/races']);
 	}
 
-	async onSubmit(){
+	async onSubmit() {
 		/* Object erstellen */
 		/* Request zur API schicken */
-		
-		//Redirect zur nächsten Konfigurationsseite
-		this.router.navigate(['/my-muds/'+this.mudId+'/items']);
-	}
 
+		//Redirect zur nächsten Konfigurationsseite
+		this.router.navigate(['/my-muds/' + this.mudId + '/items']);
+	}
 }
