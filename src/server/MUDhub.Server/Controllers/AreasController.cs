@@ -87,5 +87,28 @@ namespace MUDhub.Server.Controllers
                 Errormessage = "Cannot create the area."
             });
         }
+        
+        [HttpPut("areas/{areaId}")]
+        public async Task<IActionResult> UpdateArea([FromRoute] string areaId, [FromBody] UpdateAreaRequest args)
+        {
+            if (args is null)
+                throw new ArgumentNullException(nameof(args));
+
+            var updateResult = await _areaManager.UpdateAreaAsync(HttpContext.GetUserId(), areaId,
+                UpdateAreaRequest.ConvertUpdatesArgs(args)).ConfigureAwait(false);
+            
+            if (updateResult.Success)
+            {
+                return Ok(new UpdateAreaResponse()
+                {
+                    Area = AreaApiModel.ConvertFromArea(updateResult.Area!)
+                });
+            }
+            return BadRequest(new UpdateAreaResponse()
+            {
+                Succeeded = false,
+                Errormessage = $"Cannot update the area: '{areaId}'"
+            });
+        }
     }
 }

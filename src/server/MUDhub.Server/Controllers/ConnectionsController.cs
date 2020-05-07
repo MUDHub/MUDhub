@@ -109,5 +109,29 @@ namespace MUDhub.Server.Controllers
                 Errormessage = "Cannot create the connection."
             });
         }
+
+        [HttpPut("connections/{connectionId}")]
+        public async Task<IActionResult> UpdateConnection([FromRoute] string connectionId, [FromBody] UpdateConnectionRequest args)
+        {
+            if (args is null)
+                throw new ArgumentNullException(nameof(args));
+
+            var updateResult = await _areaManager.UpdateConnectionAsync(HttpContext.GetUserId(), connectionId,
+                UpdateConnectionRequest.ConvertUpdatesArgs(args)).ConfigureAwait(false);
+
+            if (updateResult.Success)
+            {
+                return Ok(new UpdateConnectionResponse()
+                {
+                    Connection = RoomConnectionApiModel.ConvertFromRoomConnection(updateResult.RoomConnection!)
+                });
+            }
+            return BadRequest(new UpdateConnectionResponse()
+            {
+                Succeeded = false,
+                Errormessage = $"Cannot update the connection: '{connectionId}'"
+            });
+        }
+
     }
 }

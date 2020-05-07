@@ -88,5 +88,29 @@ namespace MUDhub.Server.Controllers
                 Errormessage = "Cannot create the room."
             });
         }
+
+        [HttpPut("rooms/{roomId}")]
+        public async Task<IActionResult> UpdateRoom([FromRoute] string roomId, [FromBody] UpdateRoomRequest args)
+        {
+            if (args is null)
+                throw new ArgumentNullException(nameof(args));
+
+            var updateResult = await _areaManager.UpdateRoomAsync(HttpContext.GetUserId(), roomId,
+                UpdateRoomRequest.ConvertUpdatesArgs(args)).ConfigureAwait(false);
+
+            if (updateResult.Success)
+            {
+                return Ok(new UpdateRoomResponse()
+                {
+                    Room = RoomApiModel.ConvertFromRoom(updateResult.Room!)
+                });
+            }
+            return BadRequest(new UpdateRoomResponse()
+            {
+                Succeeded = false,
+                Errormessage = $"Cannot update the room: '{roomId}'"
+            });
+        }
+
     }
 }
