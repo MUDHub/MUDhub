@@ -1,8 +1,9 @@
-﻿using MUDhub.Core.Models.Characters;
+using MUDhub.Core.Models.Characters;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
+using MUDhub.Core.Models.Rooms;
 
 namespace MUDhub.Core.Models.Muds
 {
@@ -10,7 +11,6 @@ namespace MUDhub.Core.Models.Muds
     {
         public MudGame()
         {
-            JoinRequests = new List<MudJoinRequest>();
         }
 
         public MudGame(string id)
@@ -42,5 +42,7 @@ namespace MUDhub.Core.Models.Muds
         public ICollection<MudJoinRequest> JoinRequests { get; set; } = new Collection<MudJoinRequest>();
 
         public ICollection<Character> Characters { get; set; } = new Collection<Character>();
+
+        public ICollection<Area> Areas { get; set; } = new Collection<Area>();
     }
 }

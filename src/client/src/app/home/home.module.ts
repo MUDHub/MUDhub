@@ -33,6 +33,7 @@ import { ClassesComponent } from './mud-config/classes/classes.component';
 import { RoomsComponent } from './mud-config/rooms/rooms.component';
 import { ItemsComponent } from './mud-config/items/items.component';
 import { FinishComponent } from './mud-config/finish/finish.component';
+
 @NgModule({
 	declarations: [
 		HomeShellComponent,
@@ -64,6 +65,7 @@ import { FinishComponent } from './mud-config/finish/finish.component';
 		MatFormFieldModule,
 		MatInputModule,
 		MatProgressSpinnerModule,
+		SharedModule,
 		MatCheckboxModule,
 		MatIconModule,
 		SharedModule,
