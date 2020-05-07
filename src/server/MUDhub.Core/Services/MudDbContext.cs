@@ -57,10 +57,6 @@ namespace MUDhub.Core.Services
         public DbSet<CharacterClass> Classes { get; set; } = null!;
         public DbSet<CharacterRace> Races { get; set; } = null!;
 
-
-        public DbSet<Character> Characters { get; set; } = null!;
-        public DbSet<CharacterClass> Classes { get; set; } = null!;
-        public DbSet<CharacterRace> Races { get; set; } = null!;
         public DbSet<Area> Areas { get; set; } = null!;
         public DbSet<Room> Rooms { get; set; } = null!;
         public DbSet<RoomConnection> RoomConnections { get; set; } = null!;
