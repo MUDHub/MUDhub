@@ -1,11 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MUDhub.Core.Services;
+using MUDhub.Server.ApiModels.Areas;
 using MUDhub.Server.ApiModels.Muds.Areas;
 using MUDhub.Server.ApiModels.Muds.RoomConnections;
 using MUDhub.Server.ApiModels.Muds.Rooms;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MUDhub.Core.Abstracts;
+using MUDhub.Server.Helpers;
 
 namespace MUDhub.Server.Controllers
 {
@@ -14,10 +17,12 @@ namespace MUDhub.Server.Controllers
     public class AreaController : ControllerBase
     {
         private readonly MudDbContext _context;
+        private readonly IAreaManager _areaManager;
 
-        public AreaController(MudDbContext context)
+        public AreaController(MudDbContext context, IAreaManager areaManager)
         {
             _context = context;
+            _areaManager = areaManager;
         }
 
         [HttpGet("areas")]
@@ -44,6 +49,23 @@ namespace MUDhub.Server.Controllers
             return BadRequest();
         }
 
+        [HttpDelete("areas/{areaId}")]
+        public async Task<ActionResult<AreaDeleteResponse>> DeleteArea([FromRoute] string areaId)
+        {
+            var result = await _areaManager.RemoveAreaAsync(HttpContext.GetUserId(), areaId)
+                .ConfigureAwait(false);
+            if (result.Success)
+            {
+                return Ok(new AreaDeleteResponse());
+            }
+
+            return BadRequest(new AreaDeleteResponse()
+            {
+                Succeeded = false,
+                Errormessage = $"Area with the Id: {areaId} does not exist!"
+            });
+        }
+
         [HttpGet("areas/{areaId}/rooms")]
         public ActionResult<IEnumerable<RoomApiModel>> GetAllRooms([FromRoute] string mudId, [FromRoute] string areaId)
         {
@@ -66,6 +88,24 @@ namespace MUDhub.Server.Controllers
                 return Ok(RoomApiModel.ConvertFromRoom(room));
             }
             return BadRequest();
+        }
+
+        [HttpDelete("areas/{areaId}/rooms/{roomId}")]
+        public async Task<ActionResult<RoomDeleteResponse>> DeleteRoom([FromRoute] string roomId)
+        {
+
+            var result = await _areaManager.RemoveRoomAsync(HttpContext.GetUserId(), roomId)
+                .ConfigureAwait(false);
+            if (result.Success)
+            {
+                return Ok(new RoomDeleteResponse());
+            }
+
+            return BadRequest(new RoomDeleteResponse()
+            {
+                Succeeded = false,
+                Errormessage = $"Room with the Id: {roomId} does not exist!"
+            });
         }
 
         [HttpGet("areas/connections")]
@@ -98,6 +138,24 @@ namespace MUDhub.Server.Controllers
                 return Ok(RoomConnectionApiModel.ConvertFromRoomConnection(connection));
             }
             return BadRequest();
+        }
+
+        [HttpDelete("areas/connections/{connectionId}")]
+        public async Task<ActionResult<ConnectionDeleteResponse>> DeleteConnection([FromRoute] string connectionId)
+        {
+
+            var result = await _areaManager.RemoveConnectionAsync(HttpContext.GetUserId(), connectionId)
+                .ConfigureAwait(false);
+            if (result.Success)
+            {
+                return Ok(new ConnectionDeleteResponse());
+            }
+
+            return BadRequest(new ConnectionDeleteResponse()
+            {
+                Succeeded = false,
+                Errormessage = $"Connection with the Id: {connectionId} does not exist!"
+            });
         }
     }
 }
