@@ -2,32 +2,31 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'mh-finish',
-  templateUrl: './finish.component.html',
-  styleUrls: ['./finish.component.scss']
+	selector: 'mh-finish',
+	templateUrl: './finish.component.html',
+	styleUrls: ['./finish.component.scss'],
 })
 export class FinishComponent implements OnInit {
+	constructor(private route: ActivatedRoute, private router: Router) {}
 
-  constructor(private route: ActivatedRoute, private router: Router) { }
+	mudId: string;
 
-  mudId: string;
+	ngOnInit(): void {
+		this.mudId = this.route.snapshot.params.mudid;
+	}
 
-  ngOnInit(): void {
-    this.mudId = this.route.snapshot.params.mudid;
-  }
-
-  onAbort(){
-	this.router.navigate(['/my-muds']);
+	onAbort() {
+		this.router.navigate(['/my-muds']);
 	}
 
 	onLast() {
 		this.router.navigate(['/my-muds/' + this.mudId + '/rooms']);
 	}
 
-	async onSubmit(){
+	async onSubmit() {
 		/* Object erstellen */
 		/* Request zur API schicken */
-		
+
 		//Redirect zur MyMuds Seite - Configuration completed
 		this.router.navigate(['/my-muds']);
 	}

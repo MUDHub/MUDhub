@@ -14,7 +14,7 @@
 	>
 		Meine MUDs
 	</button>
-	<button mat-button [matMenuTriggerFor]="adminMenu">
+	<button mat-button [matMenuTriggerFor]="adminMenu" *ngIf="user.roles.includes('Admin')">
 		Admin
 	</button>
 	<mat-menu #adminMenu="matMenu">
