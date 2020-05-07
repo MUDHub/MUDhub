@@ -84,7 +84,7 @@ namespace MUDhub.Server.Controllers
                 return BadRequest(new MudCreationResponse
                 {
                     Succeeded = false,
-                    Errormessage = "Can' create mudgame, maybe user not found" //Todo: refactor message
+                    Errormessage = "Can' create mudgame, maybe user not found"
                 });
             }
             return Ok(new MudCreationResponse
