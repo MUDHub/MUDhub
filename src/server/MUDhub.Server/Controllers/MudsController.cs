@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MUDhub.Core.Abstracts;
-using MUDhub.Core.Abstracts.Models;
+using MUDhub.Core.Models.Muds;
 using MUDhub.Core.Services;
 using MUDhub.Server.ApiModels.Muds;
+using MUDhub.Server.ApiModels.Muds.Areas;
+using MUDhub.Server.ApiModels.Muds.RoomConnections;
+using MUDhub.Server.ApiModels.Muds.Rooms;
 using MUDhub.Server.Helpers;
 
 namespace MUDhub.Server.Controllers
@@ -20,6 +21,7 @@ namespace MUDhub.Server.Controllers
     {
         private readonly MudDbContext _context;
         private readonly IMudManager _mudManager;
+        private readonly IAreaManager _areaManager;
 
         public MudsController(MudDbContext context, IMudManager mudManager)
         {
@@ -131,10 +133,37 @@ namespace MUDhub.Server.Controllers
                                 .Select(mjr => MudJoinsApiModel.CreateFromJoin(mjr)));
         }
 
-        [HttpPost("{mudId}/request/{joinId}")]
-        public MudJoinsResponse ChangeRequest([FromRoute] string mudId, [FromRoute] string joinId)
+        [HttpPut("{mudId}/request/{userid}")]
+        public async Task<IActionResult> ChangeRequestAsync([FromRoute] string mudId, [FromRoute] string userid, [FromBody] int state)
         {
-            throw new NotImplementedException();
+            switch ((MudJoinState)state)
+            {
+                case MudJoinState.Accepted:
+                {
+                    var result = await _mudManager.ApproveUserToJoinAsync(userid, mudId)
+                                        .ConfigureAwait(false);
+                    if (result)
+                    {
+                        return Ok();
+                    }
+                    return BadRequest();
+                }
+                case MudJoinState.Rejected:
+                {
+                    var result = await _mudManager.RejectUserToJoinAsync(userid, mudId)
+                                        .ConfigureAwait(false);
+                    if (result)
+                    {
+                        return Ok();
+                    }
+                    return BadRequest();
+                }
+                default:
+                {
+                    //todo: throw exception
+                    return BadRequest();
+                }
+            }
         }
 
         [HttpPost("{mudId}/requestjoin")]

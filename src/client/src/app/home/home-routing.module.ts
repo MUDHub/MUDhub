@@ -18,6 +18,7 @@ import { ItemsComponent } from './mud-config/items/items.component';
 import { RoomsComponent } from './mud-config/rooms/rooms.component';
 import { FinishComponent } from './mud-config/finish/finish.component';
 
+
 const routes: Routes = [
 	{
 		path: '',
@@ -80,6 +81,10 @@ const routes: Routes = [
 						component: RequestsComponent
 					}
 				]
+			},
+			{
+				path: 'profile',
+				component: ProfileComponent,
 			},
 			{
 				path: 'profile',

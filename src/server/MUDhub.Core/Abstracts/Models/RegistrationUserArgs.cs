@@ -9,7 +9,6 @@ namespace MUDhub.Core.Abstracts.Models
         public string? Email { get; set; } = null;
         public string? Password { get; set; } = null;
 
-
         public override bool Equals(object? obj)
         {
             if (obj is null)

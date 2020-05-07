@@ -1,11 +1,17 @@
-﻿namespace MUDhub.Core.Models.Rooms
+using System;
+
+namespace MUDhub.Core.Models.Rooms
 {
     public class RoomInteraction
     {
-
-        public RoomInteraction(string roomInteractionId)
+        public RoomInteraction()
         {
-            Id = roomInteractionId;
+            Id = Guid.NewGuid().ToString();
+        }
+
+        public RoomInteraction(string id)
+        {
+            Id = id;
         }
 
         public string Id { get; }
@@ -13,10 +19,9 @@
         public string ExecutionMessage { get; set; } = string.Empty;
         public Room Room { get; set; } = new Room();
 
-        //Todo: Was ist der Default-Wert für diese Property?
         public InteractionType Type { get; set; } = InteractionType.Mob;
 
-        //Todo: Was ist die RelatedId
         public string RelatedId { get; set; } = string.Empty;
+        public string GameId { get; set; } = string.Empty;
     }
 }
