@@ -19,7 +19,7 @@ namespace MUDhub.Core.Services
     public class MudDbContext : DbContext
     {
         public MudDbContext(DbContextOptions options,
-                            IOptions<DatabaseConfiguration> conf = null,
+                            IOptions<DatabaseConfiguration>? conf = null,
                             ILogger<MudDbContext>? logger = null,
                             bool useNotInUnitests = true)
             : base(options)
