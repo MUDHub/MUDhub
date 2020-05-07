@@ -25,7 +25,6 @@ namespace MUDhub.Server.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> LoginAsync([FromBody] LoginRequest args)
         {
-            _logger?.LogCritical($"start login!");
             if (args is null)
                 throw new ArgumentNullException(nameof(args));
 
