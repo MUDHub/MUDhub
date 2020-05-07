@@ -429,7 +429,6 @@ namespace MUDhub.Core.Tests
             _mudGame1 = new MudGame("1")
             {
                 Name = "Game 1",
-                //DefaultRoom = _room1Default,
                 Description = "Beschreibung Game 1",
                 IsPublic = true,
                 Owner = _user1
@@ -439,7 +438,6 @@ namespace MUDhub.Core.Tests
             _mudGame2 = new MudGame("2")
             {
                 Name = "Game 2",
-                //DefaultRoom = _room6Default,
                 Description = "Beschreibung Game 2",
                 IsPublic = true,
                 Owner = _user1

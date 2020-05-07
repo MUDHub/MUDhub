@@ -29,7 +29,7 @@ namespace MUDhub.Core.Models.Rooms
         public int X { get; set; } = 0;
         public int Y { get; set; } = 0;
         public string GameId { get; set; } = string.Empty;
-        public MudGame Game { get; set; } = new MudGame();
+        public MudGame Game { get; set; } = null!;
         public bool IsDefaultRoom { get; set; } = false;
 
     }
