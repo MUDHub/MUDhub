@@ -1,12 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Moq;
 using MUDhub.Core.Helper;
-using MUDhub.Core.Models;
+using MUDhub.Core.Models.Users;
 using MUDhub.Core.Services;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace MUDhub.Server.Tests
 {

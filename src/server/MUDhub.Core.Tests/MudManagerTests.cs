@@ -1,14 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 using Moq;
 using MUDhub.Core.Abstracts;
 using MUDhub.Core.Abstracts.Models;
 using MUDhub.Core.Models.Muds;
 using MUDhub.Core.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -49,7 +45,7 @@ namespace MUDhub.Core.Tests
         public async Task AddMudSuccessfully()
         {
             var mudName = "MyMud1";
-            var mud = await _mudManager.CreateMudAsync(mudName, new MudCreationArgs() { OwnerId = _user.User!.Id});
+            var mud = await _mudManager.CreateMudAsync(mudName, new MudCreationArgs() { OwnerId = _user.User!.Id });
             var mudgame = await _context.MudGames.FindAsync(mud.Id);
             Assert.NotNull(mud);
             Assert.NotNull(mudgame);
@@ -194,7 +190,7 @@ namespace MUDhub.Core.Tests
         public async Task RequestUserToJoinInPublicMudShouldFail()
         {
 
-            var mud = await _mudManager.CreateMudAsync("", new MudCreationArgs() { IsPublic = true , OwnerId = _user.User!.Id });
+            var mud = await _mudManager.CreateMudAsync("", new MudCreationArgs() { IsPublic = true, OwnerId = _user.User!.Id });
             var userId = Guid.NewGuid().ToString();
 
             var result = await _mudManager.RequestUserForJoinAsync(userId, mud.Id);

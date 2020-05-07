@@ -2,10 +2,14 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using MUDhub.Core.Abstracts.Models.Areas;
+using MUDhub.Core.Abstracts.Models.Connections;
 using MUDhub.Core.Abstracts.Models.Rooms;
 using MUDhub.Core.Models;
+using MUDhub.Core.Models.Connections;
 using MUDhub.Core.Models.Muds;
 using MUDhub.Core.Models.Rooms;
+using MUDhub.Core.Models.Users;
 using MUDhub.Core.Services;
 using Xunit;
 

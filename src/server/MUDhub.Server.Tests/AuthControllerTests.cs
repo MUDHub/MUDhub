@@ -1,13 +1,12 @@
-﻿using MUDhub.Server.ApiModels.Auth;
-using System.Threading.Tasks;
-using MUDhub.Server.Controllers;
-using Xunit;
-using MUDhub.Core.Abstracts;
-using MUDhub.Core.Services;
+﻿using Microsoft.AspNetCore.Mvc;
 using Moq;
-using MUDhub.Core.Models;
+using MUDhub.Core.Abstracts;
 using MUDhub.Core.Abstracts.Models;
-using Microsoft.AspNetCore.Mvc;
+using MUDhub.Core.Models.Users;
+using MUDhub.Server.ApiModels.Auth;
+using MUDhub.Server.Controllers;
+using System.Threading.Tasks;
+using Xunit;
 
 namespace MUDhub.Server.Tests
 {
