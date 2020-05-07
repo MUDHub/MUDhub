@@ -7,7 +7,7 @@
 </div>
 
 <div class="disable-background" *ngIf="dialog">
-	<div  class="add-race">
+	<div class="add-race">
 		<div class="exit-button">
 			<mh-exit-button (click)="changeDialog()"></mh-exit-button>
 		</div>
@@ -43,9 +43,7 @@
 				</mat-form-field>
 			</div>
 			<div class="form-row">
-
-				<input type="file" name="imagekey" id="imagekey"/>
-
+				<input accept="image/*" ide="imagekey" type="file" class="custom-file-input" (change)="onFileSelected($event)"/>
 			</div>
 			<div class="form-row">
 				<button
@@ -71,7 +69,14 @@
 	<tr class="table-item" *ngFor="let race of races; index as index">
 		<td>{{ race.name }}</td>
 		<td>{{ race.description }}</td>
-		<td>{{ race.imagekey }}</td>
+		<td>
+			<div *ngIf="race.imagekey != null">
+				<mat-icon>check</mat-icon>
+			</div>
+			<div *ngIf="race.imagekey == null">
+				<mat-icon>clear</mat-icon>
+			</div>
+		</td>
 		<td>
 			<button mat-flat-button color="primary" (click)="deleteRow(index)">
 				Löschen

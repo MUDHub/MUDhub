@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
+import { ImageService } from 'src/app/services/image.service';
 
 @Component({
 	templateUrl: './races.component.html',
@@ -10,7 +11,8 @@ export class RacesComponent implements OnInit {
 	constructor(
 		private fb: FormBuilder,
 		private route: ActivatedRoute,
-		private router: Router
+		private router: Router,
+		private imageService: ImageService
 	) {}
 
 	form = this.fb.group({
@@ -21,6 +23,7 @@ export class RacesComponent implements OnInit {
 
 	dialog = false;
 	mudId: string;
+	selectedFile: File = null;
 
 	//Todo Interface muss implementiert werden
 	races: Array<{ name: string; description: string; imagekey: string }> = [];
@@ -40,14 +43,20 @@ export class RacesComponent implements OnInit {
 		this.router.navigate(['/my-muds']);
 	}
 
-	addRace() {
+	async addRace() {
 		this.races.push({
 			name: this.form.get('name').value,
 			description: this.form.get('description').value,
-			imagekey: this.form.get('imagekey').value,
+			imagekey: await this.imageService.getImageKey(this.selectedFile),
 		});
 
+		this.selectedFile = null;
+
 		this.changeDialog();
+	}
+
+	onFileSelected(event){
+		this.selectedFile = <File>event.target.files[0];
 	}
 
 	deleteRow(index: number) {
