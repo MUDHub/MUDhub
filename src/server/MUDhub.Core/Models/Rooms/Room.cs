@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace MUDhub.Core.Models.Rooms
@@ -7,12 +8,12 @@ namespace MUDhub.Core.Models.Rooms
     {
         public Room()
         {
-            
+            Id = Guid.NewGuid().ToString();
         }
 
-        public Room(string roomId)
+        public Room(string id)
         {
-            Id = roomId;
+            Id = id;
         }
 
         public string Id { get; }
@@ -25,6 +26,8 @@ namespace MUDhub.Core.Models.Rooms
         public string ImageKey { get; set; } = string.Empty;
         public int X { get; set; } = 0;
         public int Y { get; set; } = 0;
+        public string GameId { get; set; } = string.Empty;
+        public bool IsDefaultRoom { get; set; } = false;
 
     }
 }

@@ -5,9 +5,8 @@ using MUDhub.Core.Models.Rooms;
 
 namespace MUDhub.Core.Abstracts.Models.Rooms
 {
-    public class RoomResult : BaseResult
+    public class ConnectionResult : BaseResult
     {
-        public Room? Room { get; set; }
-        public bool IsDefaultRoom { get; set; } = false;
+        public RoomConnection? RoomConnection { get; set; }
     }
 }

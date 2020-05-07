@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MUDhub.Core.Abstracts;
-using MUDhub.Core.Abstracts.Models;
 using MUDhub.Core.Models.Muds;
 using MUDhub.Core.Services;
 using MUDhub.Server.ApiModels.Muds;
+using MUDhub.Server.ApiModels.Muds.Areas;
+using MUDhub.Server.ApiModels.Muds.RoomConnections;
+using MUDhub.Server.ApiModels.Muds.Rooms;
 using MUDhub.Server.Helpers;
 
 namespace MUDhub.Server.Controllers
@@ -21,6 +21,7 @@ namespace MUDhub.Server.Controllers
     {
         private readonly MudDbContext _context;
         private readonly IMudManager _mudManager;
+        private readonly IAreaManager _areaManager;
 
         public MudsController(MudDbContext context, IMudManager mudManager)
         {
@@ -138,30 +139,30 @@ namespace MUDhub.Server.Controllers
             switch ((MudJoinState)state)
             {
                 case MudJoinState.Accepted:
-                {
-                    var result = await _mudManager.ApproveUserToJoinAsync(userid,mudId)
-                                        .ConfigureAwait(false);
-                    if (result)
                     {
-                        return Ok();
+                        var result = await _mudManager.ApproveUserToJoinAsync(userid, mudId)
+                                            .ConfigureAwait(false);
+                        if (result)
+                        {
+                            return Ok();
+                        }
+                        return BadRequest();
                     }
-                    return BadRequest();
-                }
                 case MudJoinState.Rejected:
-                {
-                    var result = await _mudManager.RejectUserToJoinAsync(userid, mudId)
-                                        .ConfigureAwait(false);
-                    if (result)
                     {
-                        return Ok();
+                        var result = await _mudManager.RejectUserToJoinAsync(userid, mudId)
+                                            .ConfigureAwait(false);
+                        if (result)
+                        {
+                            return Ok();
+                        }
+                        return BadRequest();
                     }
-                    return BadRequest();
-                }
                 default:
-                {
-                    //todo: throw exception
-                    return BadRequest();
-                }
+                    {
+                        //todo: throw exception
+                        return BadRequest();
+                    }
             }
         }
 
@@ -182,6 +183,79 @@ namespace MUDhub.Server.Controllers
             {
                 return Ok(new MudJoinsResponse());
             }
+        }
+
+        //TODO: Folgende Schnittstellen sind von Moris gemacht und müssen überprüft werden.
+
+        [HttpGet("{mudId}/areas")]
+        public ActionResult<IEnumerable<AreaApiModel>> GetAllAreas([FromRoute] string mudId)
+        {
+            return Ok(_context.Areas.Where(g => g.GameId == mudId)
+                .AsEnumerable()
+                .Select(g => AreaApiModel.ConvertFromArea(g)));
+        }
+
+        [HttpGet("{mudId}/areas/{areaId}")]
+        public async Task<ActionResult<AreaApiModel>> GetArea([FromRoute] string mudId, [FromRoute] string areaId)
+        {
+            //TODO: Kann hier der Parameter "mudId" entfernt werden?
+            var area = await _context.Areas.FindAsync(areaId)
+                .ConfigureAwait(false);
+            if (area is null)
+            {
+                return BadRequest();
+            }
+            return Ok(AreaApiModel.ConvertFromArea(area));
+        }
+
+        [HttpGet("{mudId}/areas/{areaId}/rooms")]
+        public ActionResult<IEnumerable<RoomApiModel>> GetAllRooms([FromRoute] string mudId, [FromRoute] string areaId)
+        {
+            return Ok(_context.Rooms.Where(r => r.GameId == mudId && r.Area.Id == areaId)
+                .AsEnumerable()
+                .Select(r => RoomApiModel.ConvertFromRoom(r)));
+        }
+
+        [HttpGet("{mudId}/areas/{areaId}/rooms/{roomId}")]
+        public async Task<ActionResult<RoomApiModel>> GetRoom([FromRoute] string mudId, [FromRoute] string areaId, [FromRoute] string roomId)
+        {
+            //TODO: Kann hier der Parameter "mudId" und "areaId" entfernt werden?
+            var room = await _context.Rooms.FindAsync(roomId)
+                .ConfigureAwait(false);
+            if (room is null)
+            {
+                return BadRequest();
+            }
+            return Ok(RoomApiModel.ConvertFromRoom(room));
+        }
+
+        [HttpGet("{mudId}/areas/connections")]
+        public ActionResult<IEnumerable<RoomConnectionApiModel>> GetAllConnections([FromRoute] string mudId)
+        {
+            return Ok(_context.RoomConnections.Where(r => r.GameId == mudId)
+                .AsEnumerable()
+                .Select(r => RoomConnectionApiModel.ConvertFromRoomConnection(r)));
+        }
+        [HttpGet("{mudId}/areas/{areaId}/connections")]
+        public ActionResult<IEnumerable<RoomConnectionApiModel>> GetAllConnectionsInsideArea([FromRoute] string mudId, [FromRoute] string areaId)
+        {
+            return Ok(_context.RoomConnections.Where(r => r.GameId == mudId
+                                                          && (r.Room1.Area.Id == areaId || r.Room2.Area.Id == areaId))
+                .AsEnumerable()
+                .Select(r => RoomConnectionApiModel.ConvertFromRoomConnection(r)));
+        }
+
+        [HttpGet("{mudId}/areas/connections/{connectionId}")]
+        public async Task<ActionResult<RoomConnectionApiModel>> GetConnection([FromRoute] string mudId, [FromRoute] string connectionId)
+        {
+            //TODO: Kann hier der Parameter "mudId" entfernt werden?
+            var connection = await _context.RoomConnections.FindAsync(connectionId)
+                .ConfigureAwait(false);
+            if (connection is null)
+            {
+                return BadRequest();
+            }
+            return Ok(RoomConnectionApiModel.ConvertFromRoomConnection(connection));
         }
     }
 }

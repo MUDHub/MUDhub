@@ -1,19 +1,13 @@
-﻿using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using MUDhub.Core.Abstracts;
 using MUDhub.Core.Configurations;
 using MUDhub.Core.Models;
 using MUDhub.Core.Models.Characters;
 using MUDhub.Core.Models.Muds;
-using SQLitePCL;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using MUDhub.Core.Models.Rooms;
 
 namespace MUDhub.Core.Services
 {
@@ -62,6 +56,10 @@ namespace MUDhub.Core.Services
         public DbSet<Character> Characters { get; set; } = null!;
         public DbSet<CharacterClass> Classes { get; set; } = null!;
         public DbSet<CharacterRace> Races { get; set; } = null!;
+        public DbSet<Area> Areas { get; set; } = null!;
+        public DbSet<Room> Rooms { get; set; } = null!;
+        public DbSet<RoomConnection> RoomConnections { get; set; } = null!;
+        public DbSet<RoomInteraction> RoomInteractions { get; set; } = null!;
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -74,6 +72,13 @@ namespace MUDhub.Core.Services
             //Configures MudGame
             modelBuilder.Entity<MudGame>()
                 .HasKey(mg => mg.Id);
+            modelBuilder.Entity<MudGame>()
+                .HasOne(mg => mg.DefaultRoom);
+            modelBuilder.Entity<MudGame>()
+                .HasMany(mg => mg.Characters)
+                .WithOne(c => c.Game);
+
+            //Configures Character
             modelBuilder.Entity<Character>()
                 .HasKey(c => c.Id);
             modelBuilder.Entity<Character>()
@@ -83,10 +88,15 @@ namespace MUDhub.Core.Services
                 .HasOne(c => c.Class)
                 .WithMany(cl => cl.Characters);
 
+            //Configures CharacterClass
             modelBuilder.Entity<CharacterClass>()
                 .HasKey(cl => cl.Id);
+
+            //Configures CharacterRace
             modelBuilder.Entity<CharacterRace>()
                 .HasKey(r => r.Id);
+
+            //Configures CharacterBoost
             modelBuilder.Entity<CharacterBoost>()
                 .HasKey(b => b.Id);
 
@@ -98,9 +108,41 @@ namespace MUDhub.Core.Services
                 .WithMany(mg => mg.JoinRequests)
                 .HasForeignKey(mjr => mjr.MudId);
 
+            //Configures User
             modelBuilder.Entity<User>()
                 .HasKey(u => u.Id);
 
+            //Configures Room
+            modelBuilder.Entity<Room>()
+                .HasKey(r => r.Id);
+            modelBuilder.Entity<Room>()
+                .HasOne(r => r.Area)
+                .WithMany(a => a.Rooms);
+            modelBuilder.Entity<Room>()
+                .HasMany(r => r.Interactions)
+                .WithOne(ri => ri.Room);
+            modelBuilder.Entity<Room>()
+                .HasMany(r => r.Connections);
+
+            //Configures RoomInteraction
+            modelBuilder.Entity<RoomInteraction>()
+                .HasKey(ri => ri.Id);
+
+            //Configures Area
+            modelBuilder.Entity<Area>()
+                .HasKey(a => a.Id);
+            modelBuilder.Entity<Area>()
+                .HasOne(a => a.Game)
+                .WithMany(g => g.Areas)
+                .HasForeignKey(g => g.GameId);
+
+            //Configures RoomConnection
+            modelBuilder.Entity<RoomConnection>()
+                .HasKey(rc => rc.Id);
+            modelBuilder.Entity<RoomConnection>()
+                .HasOne(rc => rc.Room1);
+            modelBuilder.Entity<RoomConnection>()
+                .HasOne(rc => rc.Room2);
         }
 
 

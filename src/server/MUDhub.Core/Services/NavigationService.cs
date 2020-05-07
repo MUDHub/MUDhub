@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using MUDhub.Core.Abstracts;
 using MUDhub.Core.Abstracts.Models.Rooms;
-using MUDhub.Core.Models.Rooms;
 
 namespace MUDhub.Core.Services
 {
@@ -21,11 +18,6 @@ namespace MUDhub.Core.Services
         }
 
         public Task<RoomResult> TryEnterRoomAsync(string characterId, string roomId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<RoomResult> TryEnterRoomAsync(string characterId, ConnectionDirection direction)
         {
             throw new NotImplementedException();
         }

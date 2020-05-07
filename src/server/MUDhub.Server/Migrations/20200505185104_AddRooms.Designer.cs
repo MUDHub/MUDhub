@@ -2,14 +2,16 @@
 using MUDhub.Core.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MUDhub.Server.Migrations
 {
     [DbContext(typeof(MudDbContext))]
-    partial class MudDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200505185104_AddRooms")]
+    partial class AddRooms
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
