@@ -18,7 +18,6 @@ namespace MUDhub.Server.Controllers
     {
         private readonly MudDbContext _context;
         private readonly IMudManager _mudManager;
-        private readonly IAreaManager _areaManager;
 
         public MudsController(MudDbContext context, IMudManager mudManager)
         {
