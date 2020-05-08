@@ -1,0 +1,13 @@
+.rooms-grid {
+	width: 100%;
+	border-collapse: collapse;
+	table-layout: fixed;
+
+	text-align: center;
+
+
+	.room {
+		padding: 1rem;
+		border: 1px solid black;
+	}
+}

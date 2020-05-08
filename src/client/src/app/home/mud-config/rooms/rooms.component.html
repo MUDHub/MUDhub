@@ -1,22 +1,8 @@
+<h1>Raumsystem</h1>
 
-<div class="rooms-container">
-	<div class="width-controls">
-		<button class="sub" (click)="width = width - 1">-</button>
-		<button class="add" (click)="width = width + 1">+</button>
-	</div>
-
-	<div class="height-controls">
-		<button class="sub" (click)="height = height - 1">-</button>
-		<button class="add" (click)="height = height + 1">+</button>
-	</div>
-	<table class="rooms-grid">
-		<tr class="room-row" *ngFor="let row of rooms; let y = index">
-			<td class="room" *ngFor="let room of row; let x = index">
-				<div class="create-room" *ngIf="room == undefined" (click)="createRoom(x, y)">+</div>
-				<div *ngIf="room">{{ room.name }}</div>
-			</td>
-		</tr>
-	</table>
+<div class="container">
+	<mh-area-list [areas]="areas"></mh-area-list>
+	<mh-rooms-grid [rooms]="rooms"></mh-rooms-grid>
 </div>
 
 <div class="button-menu">

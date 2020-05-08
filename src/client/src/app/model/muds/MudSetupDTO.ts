@@ -10,7 +10,6 @@ export interface IMudClass {
 	imagekey: string;
 }
 
-export interface IMudRoom {}
 
 export interface IMudItem {
 	name: string;
