@@ -3,6 +3,7 @@ import { environment as env } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { IAreaCreateRequest, IAreaCreateResponse } from '../model/areas/AreaDTO';
 import { IArea } from '../model/areas/IArea';
+import { IRoom } from '../model/areas/IRoom';
 
 @Injectable({
 	providedIn: 'root',
@@ -38,7 +39,7 @@ export class AreaService {
 	/* ##### ROOMS ##### */
 	public async getRooms(mudid: string, areaid: string) {
 		return await this.http
-			.get(`${env.api.url}/muds/${mudid}/areas/${areaid}/rooms`)
+			.get<IRoom[]>(`${env.api.url}/muds/${mudid}/areas/${areaid}/rooms`)
 			.toPromise();
 	}
 }

@@ -47,6 +47,18 @@ export class RoomsComponent implements OnInit {
 		// TODO: show popup/dialog to get infos for room and then create it via API call
 	}
 
+
+	async selectArea(area: IArea) {
+		this.selectedArea = area;
+
+		try {
+			const roomsList = await this.areaService.getRooms(this.mudId, area.areaId);
+			this.rooms = this.mapRooms(roomsList);
+		} catch (err) {
+			console.error(`Error while fetching rooms for area(${area.areaId})`, err);
+		}
+	}
+
 	async addArea() {
 		// TODO: show popup/dialog to get infos for area and then create it via API call
 		try {
@@ -89,5 +101,24 @@ export class RoomsComponent implements OnInit {
 			default:
 				break;
 		}
+	}
+
+	private mapRooms(roomList: IRoom[]): IRoom[][] {
+		const matrix: IRoom[][] = [[]];
+		for (const room of roomList) {
+			while (matrix.length <= room.y) {
+				matrix.push(new Array(matrix[matrix.length - 1].length));
+			}
+
+			for (const row of matrix) {
+				while (row.length <= room.x) {
+					row.push(undefined);
+				}
+			}
+
+			matrix[room.y][room.x] = room;
+		}
+
+		return matrix;
 	}
 }
