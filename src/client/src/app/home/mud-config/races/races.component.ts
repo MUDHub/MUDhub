@@ -45,27 +45,26 @@ export class RacesComponent implements OnInit {
 	}
 
 	async addRace() {
-		//Get Imagekey from API if an Image was uploaded
+		// Get Imagekey from API if an Image was uploaded
 		let imageKey = null;
 		if (this.selectedFile != null) {
 			imageKey = await this.imageService.uploadFile(this.selectedFile);
 		}
 
-		//Push races Object to the array
+		// Push races Object to the array
 		this.races.push({
 			name: this.form.get('name').value,
 			description: this.form.get('description').value,
 			imagekey: imageKey,
 		});
 
-		//Reset File Buffer
+		// Reset File Buffer
 		this.selectedFile = null;
-
 		this.changeDialog();
 	}
 
-	onFileSelected(event) {
-		this.selectedFile = <File>event.target.files[0];
+	onFileSelected(event){
+		this.selectedFile = event.target.files[0] as File;
 	}
 
 	deleteRow(index: number) {
@@ -74,9 +73,10 @@ export class RacesComponent implements OnInit {
 
 	async onSubmit() {
 		/* Object erstellen */
+		await this.addRace();
 		/* Request zur API schicken */
 
-		//Redirect zur nächsten Konfigurationsseite
-		this.router.navigate(['/my-muds/' + this.mudId + '/classes']);
+		// Redirect zur nächsten Konfigurationsseite
+		// this.router.navigate(['/my-muds/' + this.mudId + '/classes']);
 	}
 }
