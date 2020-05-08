@@ -25,7 +25,7 @@ export class RacesComponent implements OnInit {
 	mudId: string;
 	selectedFile: File = null;
 
-	//Todo Interface muss implementiert werden
+	// TODO: Interface muss implementiert werden
 	races: Array<{ name: string; description: string; imagekey: string }> = [];
 
 	ngOnInit(): void {
@@ -44,19 +44,21 @@ export class RacesComponent implements OnInit {
 	}
 
 	async addRace() {
-		this.races.push({
+		const imageKey = await this.imageService.uploadFile(this.selectedFile);
+		const race = {
 			name: this.form.get('name').value,
 			description: this.form.get('description').value,
-			imagekey: await this.imageService.uploadFile(this.selectedFile),
-		});
+			imagekey: imageKey,
+		};
+
+		// Race upload über Service
 
 		this.selectedFile = null;
-
 		this.changeDialog();
 	}
 
 	onFileSelected(event){
-		this.selectedFile = <File>event.target.files[0];
+		this.selectedFile = event.target.files[0] as File;
 	}
 
 	deleteRow(index: number) {
@@ -65,9 +67,10 @@ export class RacesComponent implements OnInit {
 
 	async onSubmit() {
 		/* Object erstellen */
+		await this.addRace();
 		/* Request zur API schicken */
 
-		//Redirect zur nächsten Konfigurationsseite
-		this.router.navigate(['/my-muds/' + this.mudId + '/classes']);
+		// Redirect zur nächsten Konfigurationsseite
+		// this.router.navigate(['/my-muds/' + this.mudId + '/classes']);
 	}
 }
