@@ -1,3 +1,25 @@
+h1 {
+	text-align: center;
+}
+
+
+.container {
+	display: flex;
+	flex-direction: row;
+
+	height: 600px;
+
+	.areas {
+		width: 20%;
+		margin-right: 2rem;
+	}
+
+	.rooms {
+		flex: 1;
+	}
+}
+
+
 .button-menu{
     display: flex;
     flex-direction: row;
@@ -5,4 +27,12 @@
     button{
         margin-right: 1rem;
     }
+}
+
+
+.create-room {
+	color: #fff;
+	background: #333;
+	padding: 1rem;
+	cursor: pointer;
 }

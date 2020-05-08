@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
-import { IUser } from 'src/app/model/IUser';
+import { IUser } from 'src/app/model/auth/IUser';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UsersService } from 'src/app/services/users.service';
 import { findReadVarNames } from '@angular/compiler/src/output/output_ast';

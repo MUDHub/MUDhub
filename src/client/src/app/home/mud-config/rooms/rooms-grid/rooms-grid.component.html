@@ -1,0 +1,15 @@
+<div class="width-controls">
+	<button class="sub" (click)="width = width - 1">Width -</button>
+	<button class="add" (click)="width = width + 1">Wdith +</button>
+</div>
+<div class="height-controls">
+	<button class="sub" (click)="height = height - 1">Height -</button>
+	<button class="add" (click)="height = height + 1">Height +</button>
+</div>
+<table class="rooms-grid">
+	<tr class="room-row" *ngFor="let row of rooms; let y = index">
+		<td class="room" *ngFor="let room of row; let x = index">
+			TODO
+		</td>
+	</tr>
+</table>

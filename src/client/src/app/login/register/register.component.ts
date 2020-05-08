@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
-import { IRegistrationRequest } from 'src/app/model/AuthDTO';
+import { IRegistrationRequest } from 'src/app/model/auth/AuthDTO';
 import { PasswordErrorStateMatcher } from '../_helper/PasswordErrorStateMatcher';
 
 @Component({

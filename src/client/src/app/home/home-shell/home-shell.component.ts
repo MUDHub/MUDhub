@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
-import { IUser } from 'src/app/model/IUser';
+import { IUser } from 'src/app/model/auth/IUser';
 
 @Component({
 	templateUrl: './home-shell.component.html',

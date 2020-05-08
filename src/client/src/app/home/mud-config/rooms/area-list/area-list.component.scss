@@ -1,0 +1,33 @@
+@import "src/variables.scss";
+
+:host {
+	background-color: #fff;
+	border: 1px solid rgba(0, 0, 0, 0.3);
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	overflow-y: auto;
+}
+
+.area {
+	padding: 1rem;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+	border-left: 2px solid transparent;
+	width: 100%;
+	cursor: pointer;
+
+	color: #777;
+
+	&.active {
+		color: #000;
+		border-left-color: $color-primary;
+	}
+}
+
+.add-area {
+	padding: 0.5rem;
+	font-weight: bold;
+	cursor: pointer;
+}

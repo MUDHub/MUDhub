@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
-import { MudItem } from 'src/app/model/MudSetupDTO';
+import { IMudItem } from 'src/app/model/muds/MudSetupDTO';
 import { MudService } from 'src/app/services/mud.service';
 
 @Component({
@@ -23,7 +23,7 @@ export class ItemsComponent implements OnInit {
 	});
 	mudId: string;
 	dialog = false;
-	items: Array<MudItem> = [];
+	items: Array<IMudItem> = [];
 
 	deleteRow(index: number) {
 		this.mudService.deleteMudItem(this.mudId, this.items[index]);
@@ -51,7 +51,7 @@ export class ItemsComponent implements OnInit {
 			this.mudId,
 			this.items[this.items.length - 1]
 		);
-		
+
 		this.changeDialog();
 	}
 

@@ -10,11 +10,11 @@
 		mat-button
 		routerLinkActive="mat-accent"
 		routerLink="/my-muds"
-		*ngIf="user.roles.includes('Master')"
+		*ngIf="user?.roles.includes('Master')"
 	>
 		Meine MUDs
 	</button>
-	<button mat-button [matMenuTriggerFor]="adminMenu" *ngIf="user.roles.includes('Admin')">
+	<button mat-button [matMenuTriggerFor]="adminMenu" *ngIf="user?.roles.includes('Admin')">
 		Admin
 	</button>
 	<mat-menu #adminMenu="matMenu">
