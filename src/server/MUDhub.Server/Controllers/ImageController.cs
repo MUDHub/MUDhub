@@ -19,12 +19,14 @@ namespace MUDhub.Server.Controllers
 
         public ImageController(IOptions<ServerConfiguration> options, ILogger<ImageController>? logger = null)
         {
-            _options = options.Value ;
+            _options = options.Value;
             _logger = logger;
         }
 
 
         [HttpPost]
+        [ProducesResponseType(typeof(ImageUploadResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ImageUploadResponse), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> ImageUploadAsync(IFormFile file)
         {
             if (file is null)
@@ -54,7 +56,7 @@ namespace MUDhub.Server.Controllers
                 ImageUrl = imagekey,
             });
         }
-            
+
 
     }
 }

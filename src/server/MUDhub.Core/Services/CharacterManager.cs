@@ -274,14 +274,52 @@ namespace MUDhub.Core.Services
                 };
             }
 
-
-            return new CharacterResult();
+            _context.Characters.Remove(character);
+            await _context.SaveChangesAsync()
+                            .ConfigureAwait(false);
+            return new CharacterResult() {
+                Character = character,
+                Success = true
+            };
         }
 
-        public Task<CharacterClassResult> RemoveClassAsync(string userid, string classid)
+        public async Task<CharacterClassResult> RemoveClassAsync(string userid, string classid)
         {
 
-            return Task.FromResult(new CharacterClassResult());
+            _logger?.LogInformation($"Userid:'{userid}' requested remove a old character with id '{classid}'.");
+            var user = await _context.GetUserByIdAsnyc(userid)
+                                        .ConfigureAwait(false);
+            if (user is null)
+            {
+                var errormessage = $"User with the Userid: '{userid}' does not exist";
+                _logger?.LogWarning(errormessage);
+                return new CharacterClassResult
+                {
+                    Success = false,
+                    Errormessage = errormessage
+                };
+            }
+
+            var character = user.MudGames.Any(m => m.;
+            if (character is null)
+            {
+                var errormessage = $"User '{user.Email}' is not the owner from Character with the id: '{characterid}'";
+                _logger?.LogWarning(errormessage);
+                return new CharacterResult
+                {
+                    Success = false,
+                    Errormessage = errormessage
+                };
+            }
+
+            _context.Characters.Remove(character);
+            await _context.SaveChangesAsync()
+                            .ConfigureAwait(false);
+            return new CharacterResult()
+            {
+                Character = character,
+                Success = true
+            };
         }
 
         public Task<CharacterRaceResult> RemoveRaceAsync(string userid, string raceid)
