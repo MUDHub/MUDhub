@@ -9,6 +9,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment as env } from 'src/environments/environment';
 import { IMud } from '../model/IMud';
 import { IMudRequest } from '../model/IMudRequest';
+import { MudRace, MudClass, MudItem } from '../model/MudSetupDTO';
 
 @Injectable({
 	providedIn: 'root',
@@ -70,5 +71,17 @@ export class MudService {
 		return await this.http
 			.put(`${env.api.url}/muds/${mudId}/request/${userId}`, { state })
 			.toPromise();
+	}
+
+	async setMudRaces(mudId: string, mudRaces: MudRace[]){
+		//Function is not implemented on the api yet
+	}
+
+	async setMudClasses(mudId:string, mudClasses: MudClass[]){
+		//Function is not implemented on the api yet
+	}
+
+	async setMudItems(mudId:string , mudItems: MudItem[]){
+		//Function is not implemented on the api yet
 	}
 }
