@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IRoom } from 'src/app/model/areas/IRoom';
 import { IArea } from 'src/app/model/areas/IArea';
+import { AreaService } from 'src/app/services/area.service';
 
 @Component({
 	selector: 'mh-rooms',
@@ -9,7 +10,7 @@ import { IArea } from 'src/app/model/areas/IArea';
 	styleUrls: ['./rooms.component.scss'],
 })
 export class RoomsComponent implements OnInit {
-	constructor(private route: ActivatedRoute, private router: Router) {}
+	constructor(private route: ActivatedRoute, private router: Router, private areaService: AreaService) {}
 
 	mudId: string;
 
@@ -20,15 +21,7 @@ export class RoomsComponent implements OnInit {
 	ngOnInit(): void {
 		this.mudId = this.route.snapshot.params.mudid;
 		this.rooms = new Array(3).fill(new Array(3).fill(undefined));
-		this.areas = [
-			{
-				mud: undefined,
-				mudId: '',
-				name: 'Etage 0',
-				areaId: 'pw483zrf',
-				description: 'Das Ergeschoss der DHBW Horb'
-			}
-		];
+		this.areas = [];
 	}
 
 	onAbort() {
@@ -48,18 +41,15 @@ export class RoomsComponent implements OnInit {
 	}
 
 	createRoom(x: number, y: number) {
-		this.rooms[y][x] = {
-			name: 'Test Raum',
-		};
+		// TODO: show popup/dialog to get infos for room and then create it via API call
 	}
 
 	addArea() {
 		// TODO: show popup/dialog to get infos for area and then create it via API call
-		this.areas.push({
-			areaId: '',
-			mud: undefined,
-			mudId: '',
-			name: `Etage ${this.areas.length}`
+		// TODO: handle return object
+		this.areaService.createArea(this.mudId, {
+			name: `Etage ${Math.random() * 100}`,
+			description: 'Lorem ipsum dolor sit amet'
 		});
 	}
 }

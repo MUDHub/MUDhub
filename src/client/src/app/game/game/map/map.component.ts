@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { IMapRoom } from 'src/app/model/game/IRoom';
-import { RoomsService } from 'src/app/services/rooms.service';
+import { AreaService } from 'src/app/services/area.service';
 
 @Component({
 	selector: 'mh-map',
@@ -8,7 +8,7 @@ import { RoomsService } from 'src/app/services/rooms.service';
 	styleUrls: ['./map.component.scss'],
 })
 export class MapComponent implements OnInit {
-	constructor(private roomsService: RoomsService) {}
+	constructor(private roomsService: AreaService) {}
 
 	activeArea = 'Morgenland';
 

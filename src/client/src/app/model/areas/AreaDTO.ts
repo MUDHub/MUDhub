@@ -4,3 +4,7 @@ import { IBaseResponse } from '../BaseResponse';
 export interface IAreaCreateResponse extends IBaseResponse {
 
 }
+export interface IAreaCreateRequest {
+	name: string;
+	description: string;
+}
