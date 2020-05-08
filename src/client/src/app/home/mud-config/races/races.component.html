@@ -70,6 +70,14 @@
 		<td>{{ race.name }}</td>
 		<td>{{ race.description }}</td>
 		<td>
+			<div *ngIf="race.imagekey != null">
+				<mat-icon>check</mat-icon>
+			</div>
+			<div *ngIf="race.imagekey == null">
+				<mat-icon>clear</mat-icon>
+			</div>
+		</td>
+		<td>
 			<button mat-flat-button color="primary" (click)="deleteRow(index)">
 				Löschen
 			</button>

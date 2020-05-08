@@ -1,5 +1,68 @@
 <h1>Übersicht</h1>
 
+<mat-accordion>
+    <!--Übersicht Rassen-->
+
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                Rassen
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <div *ngFor="let race of races">
+            <p>Name: {{ race.name }}, Beschreibung: {{ race.description }}</p>
+		</div>
+		
+    </mat-expansion-panel>
+
+    <!--Übersicht Klassen-->
+
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                Klassen
+            </mat-panel-title>
+
+		</mat-expansion-panel-header>
+		
+		<div *ngFor="let class of classes">
+            <p>Name: {{ class.name }}, Beschreibung: {{ class.description }}</p>
+		</div>
+
+    </mat-expansion-panel>
+
+    <!--Übersicht Items-->
+
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                Gegenstände
+            </mat-panel-title>
+
+		</mat-expansion-panel-header>
+		
+		<div *ngFor="let item of items">
+            <p>Name: {{ item.name }}, Beschreibung: {{ item.description }}</p>
+		</div>
+		
+    </mat-expansion-panel>
+
+    <!--Übersicht Räume-->
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                Räume
+            </mat-panel-title>
+
+		</mat-expansion-panel-header>
+		
+		<div *ngFor="let race of races">
+            <p>Name: {{ race.name }}, Beschreibung: {{ race.description }}</p>
+		</div>
+
+    </mat-expansion-panel>
+</mat-accordion>
 
 
 <div class="button-menu">
