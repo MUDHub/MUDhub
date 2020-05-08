@@ -1,16 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
 using MUDhub.Core.Abstracts;
-using MUDhub.Core.Abstracts.Models;
-using MUDhub.Core.Models.Muds;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using MUDhub.Core.Abstracts.Models.Characters;
 using MUDhub.Core.Models.Characters;
-using MUDhub.Core.Models;
-using System.Xml.Serialization;
+using MUDhub.Core.Models.Muds;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MUDhub.Core.Services
 {
@@ -27,6 +21,13 @@ namespace MUDhub.Core.Services
             _logger = logger;
         }
 
+        /// <summary>
+        /// A new character is created.
+        /// </summary>
+        /// <param name="userid"></param>
+        /// <param name="mudid"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
         public async Task<CharacterResult> CreateCharacterAsync(string userid, string mudid, CharacterArgs args)
         {
             _logger?.LogInformation($"Userid:'{userid}' requested create a new character in mudgame '{mudid}'.");
@@ -125,6 +126,13 @@ namespace MUDhub.Core.Services
             }
         }
 
+        /// <summary>
+        /// A new class is created.
+        /// </summary>
+        /// <param name="userid"></param>
+        /// <param name="mudid"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
         public async Task<CharacterClassResult> CreateClassAsync(string userid, string mudid, CharacterClassArgs args)
         {
             _logger?.LogInformation($"Userid:'{userid}' requested create a new class in mudgame '{mudid}'.");
@@ -185,6 +193,13 @@ namespace MUDhub.Core.Services
             }
         }
 
+        /// <summary>
+        /// A new race is created.
+        /// </summary>
+        /// <param name="userid"></param>
+        /// <param name="mudid"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
         public async Task<CharacterRaceResult> CreateRaceAsync(string userid, string mudid, CharacterRaceArgs args)
         {
 
@@ -246,6 +261,13 @@ namespace MUDhub.Core.Services
             }
         }
 
+        /// <summary>
+        /// A class is updated.
+        /// </summary>
+        /// <param name="userid"></param>
+        /// <param name="classId"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
         public async Task<CharacterClassResult> UpdateClassAsync(string userid, string classId, CharacterClassArgs args)
         {
             _logger?.LogInformation($"Userid:'{userid}' requested create a new class in mudgame '{classId}'.");
@@ -290,6 +312,13 @@ namespace MUDhub.Core.Services
             }
         }
 
+        /// <summary>
+        /// A race is updated.
+        /// </summary>
+        /// <param name="userid"></param>
+        /// <param name="raceId"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
         public async Task<CharacterRaceResult> UpdateRaceAsync(string userid, string raceId, CharacterRaceArgs args)
         {
 
@@ -335,6 +364,12 @@ namespace MUDhub.Core.Services
             }
         }
 
+        /// <summary>
+        /// A character is removed.
+        /// </summary>
+        /// <param name="userid"></param>
+        /// <param name="characterid"></param>
+        /// <returns></returns>
         public async Task<CharacterResult> RemoveCharacterAsync(string userid, string characterid)
         {
             _logger?.LogInformation($"Userid:'{userid}' requested remove a old character with id '{characterid}'.");
@@ -373,6 +408,12 @@ namespace MUDhub.Core.Services
             };
         }
 
+        /// <summary>
+        /// A class is removed.
+        /// </summary>
+        /// <param name="userid"></param>
+        /// <param name="classid"></param>
+        /// <returns></returns>
         public async Task<CharacterClassResult> RemoveClassAsync(string userid, string classid)
         {
 
@@ -415,6 +456,12 @@ namespace MUDhub.Core.Services
             };
         }
 
+        /// <summary>
+        /// A race is removed.
+        /// </summary>
+        /// <param name="userid"></param>
+        /// <param name="raceid"></param>
+        /// <returns></returns>
         public async Task<CharacterRaceResult> RemoveRaceAsync(string userid, string raceid)
         {
 
