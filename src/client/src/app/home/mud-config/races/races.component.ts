@@ -44,10 +44,15 @@ export class RacesComponent implements OnInit {
 	}
 
 	async addRace() {
+		let imageKey = null;
+		if (this.selectedFile != null) {
+			imageKey = await this.imageService.uploadFile(this.selectedFile);
+		}
+
 		this.races.push({
 			name: this.form.get('name').value,
 			description: this.form.get('description').value,
-			imagekey: await this.imageService.uploadFile(this.selectedFile),
+			imagekey: imageKey,
 		});
 
 		this.selectedFile = null;
@@ -55,7 +60,7 @@ export class RacesComponent implements OnInit {
 		this.changeDialog();
 	}
 
-	onFileSelected(event){
+	onFileSelected(event) {
 		this.selectedFile = <File>event.target.files[0];
 	}
 
