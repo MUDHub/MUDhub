@@ -54,7 +54,7 @@ namespace MUDhub.Server.Controllers
         }
 
         [HttpGet("{mudId}")]
-        public async Task<ActionResult<MudGetResponse>> GetMud([FromRoute] string mudId)
+        public async Task<IActionResult> GetMud([FromRoute] string mudId)
         {
             var mud = await _context.MudGames.FindAsync(mudId)
                                                 .ConfigureAwait(false);

@@ -31,5 +31,7 @@ namespace MUDhub.Core.Models.Users
         public ICollection<Character> Characters { get; set; } = new Collection<Character>();
         public ICollection<MudJoinRequest> Joins { get; set; } = new Collection<MudJoinRequest>();
         public ICollection<MudGame> MudGames { get; set; } = new Collection<MudGame>();
+        
+
     }
 }

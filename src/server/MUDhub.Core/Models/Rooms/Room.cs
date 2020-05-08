@@ -1,3 +1,4 @@
+using MUDhub.Core.Models.Characters;
 using MUDhub.Core.Models.Connections;
 using MUDhub.Core.Models.Muds;
 using System;
@@ -32,5 +33,6 @@ namespace MUDhub.Core.Models.Rooms
         public string GameId { get; set; } = string.Empty;
         public MudGame Game { get; set; } = null!;
         public bool IsDefaultRoom { get; set; } = false;
+        public ICollection<Character> Characters { get; set; } = new Collection<Character>();
     }
 }

@@ -18,6 +18,7 @@ namespace MUDhub.Core.Abstracts
             services.AddUserManagment();
             services.AddMudGameManagment();
             services.AddAreaManagment();
+            services.AddCharacterManagment();
             return services;
         }
 
@@ -47,6 +48,20 @@ namespace MUDhub.Core.Abstracts
             //Todo: Later change this to scoped.
             services.TryAddSingleton<IAreaManager, AreaManager>();
             services.TryAddSingleton<INavigationService, NavigationService>();
+            return services;
+        }
+
+
+
+        /// <summary>
+        /// Adds all Services they relate to the mudhub AreaManagement, e.g. 
+        /// </summary>
+        /// <param name="services"></param>
+        /// <returns></returns>
+        public static IServiceCollection AddCharacterManagment(this IServiceCollection services)
+        {
+            //Todo: Later change this to scoped.
+            services.TryAddSingleton<ICharacterManager, CharacterManager>();
             return services;
         }
 

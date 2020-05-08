@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment as env } from 'src/environments/environment';
+import { IImageUploadResponse } from '../model/FileUploadDTO';
 
 @Injectable({
 	providedIn: 'root',
@@ -8,13 +9,13 @@ import { environment as env } from 'src/environments/environment';
 export class ImageService {
 	constructor(private http: HttpClient) {}
 
-	async uploadFile(file: File): Promise<string> {
+	async uploadFile(file: File) {
 		if (file != null) {
 			const formData = new FormData();
 			formData.append('file', file, file.name);
 
 			return await this.http
-				.post<string>(`${env.api.url}/images`, formData)
+				.post<IImageUploadResponse>(`${env.api.url}/images`, formData)
 				.toPromise();
 		}
 

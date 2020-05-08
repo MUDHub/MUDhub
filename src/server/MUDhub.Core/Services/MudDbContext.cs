@@ -97,6 +97,11 @@ namespace MUDhub.Core.Services
                 .WithMany(cl => cl.Characters)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            modelBuilder.Entity<Character>()
+                .HasOne(c => c.ActualRoom)
+                .WithMany(r => r.Characters)
+                .OnDelete(DeleteBehavior.Cascade);
+
             //Configures CharacterClass
             modelBuilder.Entity<CharacterClass>()
                 .HasKey(cl => cl.Id);
