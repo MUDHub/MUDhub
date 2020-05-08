@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ImageService } from 'src/app/services/image.service';
 import { MudRace } from 'src/app/model/MudSetupDTO';
+import { MudService } from 'src/app/services/mud.service';
 
 @Component({
 	templateUrl: './races.component.html',
@@ -13,7 +14,8 @@ export class RacesComponent implements OnInit {
 		private fb: FormBuilder,
 		private route: ActivatedRoute,
 		private router: Router,
-		private imageService: ImageService
+		private imageService: ImageService,
+		private mudService: MudService
 	) {}
 
 	form = this.fb.group({
@@ -79,7 +81,7 @@ export class RacesComponent implements OnInit {
 	async onSubmit() {
 		/* Object erstellen */
 		/* Request zur API schicken */
-
+		this.mudService.setMudRaces(this.mudId, this.races);
 		// Redirect zur nächsten Konfigurationsseite
 		this.router.navigate(['/my-muds/' + this.mudId + '/classes']);
 	}

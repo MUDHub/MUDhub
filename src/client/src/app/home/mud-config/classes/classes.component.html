@@ -1,77 +1,92 @@
 <h1>Klassen</h1>
 
 <div class="button-class">
-	<button mat-flat-button color="primary" (click)="changeDialog()">Hinzufügen</button>
+	<button mat-flat-button color="primary" (click)="changeDialog()">
+		Hinzufügen
+	</button>
 </div>
 
-<div *ngIf="dialog" class="add-class">
+<div class="disable-background" *ngIf="dialog">
+	<div class="add-class">
+		<div class="exit-button">
+			<mh-exit-button (click)="changeDialog()"></mh-exit-button>
+		</div>
 
-    <div class="exit-button">
-        <mh-exit-button (click)="changeDialog()"></mh-exit-button>
-    </div>
+		<br />
 
-    <br/>
-
-	<form class="general-form" [formGroup]="form" (ngSubmit)="addClass()">
-		<div class="form-row">
-			<mat-form-field>
-				<input matInput name="name" type="text" formControlName="name" placeholder="Name" />
-				<mat-error
-					>Bitte gebe einen Klassennamen ein</mat-error
+		<form class="general-form" [formGroup]="form" (ngSubmit)="addClass()">
+			<div class="form-row">
+				<mat-form-field>
+					<input
+						matInput
+						name="name"
+						type="text"
+						formControlName="name"
+						placeholder="Name"
+					/>
+					<mat-error>Bitte gebe einen Klassennamen ein</mat-error>
+				</mat-form-field>
+			</div>
+			<div class="form-row">
+				<mat-form-field appearance="fill">
+					<mat-label>Beschreibung</mat-label>
+					<textarea
+						matInput
+						formControlName="description"
+						placeholder="Beschreibung"
+						rows="5"
+					></textarea>
+					<mat-error
+						>Eine kurze Beschreibung der Rasse ist
+						erforderlich</mat-error
+					>
+				</mat-form-field>
+			</div>
+			<div class="form-row">
+				<input accept="image/*" ide="imagekey" type="file" class="custom-file-input" (change)="onFileSelected($event)"/>
+			</div>
+			<div class="form-row">
+				<button
+					mat-flat-button
+					type="submit"
+					color="primary"
+					[disabled]="form.invalid"
 				>
-			</mat-form-field>
-		</div>
-		<div class="form-row">
-			<mat-form-field>
-				<input
-					matInput
-					name="description"
-					type="text"
-                    placeholder="Beschreibung"
-                    formControlName="description"
-				/>
-				<mat-error
-					
-					>Bitte gebe eine Beschreibung ein</mat-error
-				>
-			</mat-form-field>
-		</div>
-		<div class="form-row">
-			<mat-form-field>
-				<input
-					matInput
-					name="imagekey"
-					type="text"
-                    placeholder="Bildschlüssel"
-                    formControlName="imagekey"
-				/>
-			</mat-form-field>
-        </div>
-		<div class="form-row">
-			<button mat-flat-button type="submit" color="primary" [disabled]="form.invalid">
-				Klasse hinzufügen
-			</button>
-		</div>
-	</form>
+					Rasse hinzufügen
+				</button>
+			</div>
+		</form>
+	</div>
 </div>
 
 <table class="table-list">
 	<tr class="table-item first">
 		<th>Name</th>
 		<th>Beschreibung</th>
-        <th>Bild</th>
-        <th>Löschen</th>
+		<th>Bild</th>
+		<th>Löschen</th>
 	</tr>
-	<tr class="table-item" *ngFor="let class of classes; index as index;">
+	<tr class="table-item" *ngFor="let class of classes; index as index">
 		<td>{{ class.name }}</td>
 		<td>{{ class.description }}</td>
-        <td>{{ class.imagekey }}</td>
-        <td><button mat-flat-button color="primary" (click)="deleteRow(index)">Löschen</button></td>
+		<td>
+			<div *ngIf="class.imagekey != null">
+				<mat-icon>check</mat-icon>
+			</div>
+			<div *ngIf="class.imagekey == null">
+				<mat-icon>clear</mat-icon>
+			</div>
+		</td>
+		<td>
+			<button mat-flat-button color="primary" (click)="deleteRow(index)">
+				Löschen
+			</button>
+		</td>
 	</tr>
 </table>
 
 <div class="button-menu">
-    <button mat-flat-button color="warn" (click)="onAbort()">Abbrechen</button>
-    <button mat-flat-button color="basic" (click)="onLast()">Zurück</button>
-    <button mat-flat-button color="primary" (click)="onSubmit()">Weiter</button>
+	<button mat-flat-button color="warn" (click)="onAbort()">Abbrechen</button>
+	<button mat-flat-button color="basic" (click)="onLast()">Zurück</button>
+	<button mat-flat-button color="primary" (click)="onSubmit()">Weiter</button>
 </div>
