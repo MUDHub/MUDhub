@@ -73,10 +73,9 @@ export class RacesComponent implements OnInit {
 
 	async onSubmit() {
 		/* Object erstellen */
-		await this.addRace();
 		/* Request zur API schicken */
 
 		// Redirect zur nächsten Konfigurationsseite
-		// this.router.navigate(['/my-muds/' + this.mudId + '/classes']);
+		this.router.navigate(['/my-muds/' + this.mudId + '/classes']);
 	}
 }
