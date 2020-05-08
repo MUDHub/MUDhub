@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ImageService } from 'src/app/services/image.service';
+import { MudRace } from 'src/app/model/MudSetupDTO';
 
 @Component({
 	templateUrl: './races.component.html',
@@ -26,7 +27,7 @@ export class RacesComponent implements OnInit {
 	selectedFile: File = null;
 
 	//Todo Interface muss implementiert werden
-	races: Array<{ name: string; description: string; imagekey: string }> = [];
+	races: Array<MudRace> = [];
 
 	ngOnInit(): void {
 		/* Daten fetchen und in Array laden */
