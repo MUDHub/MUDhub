@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { IArea } from 'src/app/model/areas/IArea';
 
 @Component({
@@ -10,6 +10,9 @@ export class AreaListComponent implements OnInit {
 	constructor() {}
 
 	@Input() areas: IArea[];
+	selectedArea: IArea;
+
+	@Output() newArea = new EventEmitter();
 
 	ngOnInit(): void {}
 }

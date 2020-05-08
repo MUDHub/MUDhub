@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { IRoom } from 'src/app/model/muds/IRoom';
+import { IRoom } from 'src/app/model/areas/IRoom';
 
 @Component({
 	selector: 'mh-rooms-grid',

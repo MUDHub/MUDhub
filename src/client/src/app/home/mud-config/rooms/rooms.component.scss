@@ -6,6 +6,17 @@ h1 {
 .container {
 	display: flex;
 	flex-direction: row;
+
+	height: 600px;
+
+	.areas {
+		width: 20%;
+		margin-right: 2rem;
+	}
+
+	.rooms {
+		flex: 1;
+	}
 }
 
 

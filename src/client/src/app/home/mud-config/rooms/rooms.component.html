@@ -1,8 +1,8 @@
 <h1>Raumsystem</h1>
 
 <div class="container">
-	<mh-area-list [areas]="areas"></mh-area-list>
-	<mh-rooms-grid [rooms]="rooms"></mh-rooms-grid>
+	<mh-area-list class="areas" [areas]="areas" (newArea)="addArea()"></mh-area-list>
+	<mh-rooms-grid class="rooms" [rooms]="rooms"></mh-rooms-grid>
 </div>
 
 <div class="button-menu">
