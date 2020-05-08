@@ -51,9 +51,16 @@ namespace MUDhub.Core.Services
                 _logger?.LogError(e, $"Can't deliver Email to target email address: '{receiver}'.");
                 return false;
             }
+            _logger?.LogInformation($"Can deliver Email to target email address: '{receiver}'.");
             return true;
         }
 
+        /// <summary>
+        /// Builds the email with the ResetKey.
+        /// </summary>
+        /// <param name="receiver"></param>
+        /// <param name="resetKey"></param>
+        /// <returns></returns>
         private MailMessage CreateResetMailMessage(string receiver, string resetKey)
         {
             var sender = new MailAddress(_mailConfiguration.Sender);
@@ -68,6 +75,11 @@ namespace MUDhub.Core.Services
             return email;
         }
 
+        /// <summary>
+        /// Builds the body of the email with the ResetKey.
+        /// </summary>
+        /// <param name="resetKey"></param>
+        /// <returns></returns>
         private string CreateResetMessage(string resetKey)
         {
             var resetLink = $"http://game.mudhub.de/login/reset?key={resetKey}";

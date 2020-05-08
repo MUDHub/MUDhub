@@ -1,4 +1,5 @@
 ﻿using MUDhub.Core.Models.Muds;
+using MUDhub.Core.Models.Rooms;
 using MUDhub.Core.Models.Users;
 using System;
 using System.Collections.Generic;
@@ -19,16 +20,12 @@ namespace MUDhub.Core.Models.Characters
         }
 
         public string Id { get; }
-
         public string Name { get; set; } = string.Empty;
-
         public MudGame Game { get; set; } = new MudGame();
-
         public User Owner { get; set; } = new User();
-
         public CharacterRace Race { get; set; } = new CharacterRace();
-
         public CharacterClass Class { get; set; } = new CharacterClass();
+        public Room ActualRoom { get; set; } = new Room();
 
         //"LiveUpdates"
 
