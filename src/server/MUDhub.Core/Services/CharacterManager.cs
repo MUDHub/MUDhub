@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using MUDhub.Core.Abstracts.Models.Characters;
 using MUDhub.Core.Models.Characters;
 using MUDhub.Core.Models;
+using System.Xml.Serialization;
 
 namespace MUDhub.Core.Services
 {
@@ -245,10 +246,36 @@ namespace MUDhub.Core.Services
             }
         }
 
-        public Task<CharacterResult> RemoveCharacterAsync(string userid, string characterid)
+        public async Task<CharacterResult> RemoveCharacterAsync(string userid, string characterid)
         {
+            _logger?.LogInformation($"Userid:'{userid}' requested remove a old character with id '{characterid}'.");
+            var user = await _context.GetUserByIdAsnyc(userid)
+                                        .ConfigureAwait(false);
+            if (user is null)
+            {
+                var errormessage = $"User with the Userid: '{userid}' does not exist";
+                _logger?.LogWarning(errormessage);
+                return new CharacterResult
+                {
+                    Success = false,
+                    Errormessage = errormessage
+                };
+            }
 
-            return Task.FromResult(new CharacterResult());
+            var character = user.Characters.FirstOrDefault(c => c.Id == characterid);
+            if (character is null)
+            {
+                var errormessage = $"User '{user.Email}' is not the owner from Character with the id: '{characterid}'";
+                _logger?.LogWarning(errormessage);
+                return new CharacterResult
+                {
+                    Success = false,
+                    Errormessage = errormessage
+                };
+            }
+
+
+            return new CharacterResult();
         }
 
         public Task<CharacterClassResult> RemoveClassAsync(string userid, string classid)

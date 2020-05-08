@@ -124,6 +124,7 @@ namespace MUDhub.Server.Controllers
         public ActionResult<MudJoinsApiModel> GetMudRequests([FromRoute] string mudId)
         {
             return Ok(_context.MudJoinRequests
+                                .Include(mjr => mjr.User)
                                 .Where(mjr => mjr.MudId == mudId)
                                 .AsEnumerable()
                                 .Select(mjr => MudJoinsApiModel.CreateFromJoin(mjr)));
