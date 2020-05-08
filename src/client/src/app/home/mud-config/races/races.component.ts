@@ -47,7 +47,7 @@ export class RacesComponent implements OnInit {
 		this.races.push({
 			name: this.form.get('name').value,
 			description: this.form.get('description').value,
-			imagekey: await this.imageService.getImageKey(this.selectedFile),
+			imagekey: await this.imageService.uploadFile(this.selectedFile),
 		});
 
 		this.selectedFile = null;
