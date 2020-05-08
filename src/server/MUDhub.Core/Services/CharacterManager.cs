@@ -246,6 +246,95 @@ namespace MUDhub.Core.Services
             }
         }
 
+        public async Task<CharacterClassResult> UpdateClassAsync(string userid, string classId, CharacterClassArgs args)
+        {
+            _logger?.LogInformation($"Userid:'{userid}' requested create a new class in mudgame '{classId}'.");
+            var user = await _context.GetUserByIdAsnyc(userid)
+                                        .ConfigureAwait(false);
+            if (user is null)
+            {
+                var errormessage = $"User with the Userid: '{userid}' does not exist";
+                _logger?.LogWarning(errormessage);
+                return new CharacterClassResult
+                {
+                    Success = false,
+                    Errormessage = errormessage
+                };
+            }
+
+            var mudgame = user.MudGames.FirstOrDefault(mg => mg.Classes.Any(c => c.Id == classId));
+            if (mudgame is null)
+            {
+                var errormessage = $"Class with the id '{classId}' user is not the owner.";
+                _logger?.LogWarning(errormessage);
+                return new CharacterClassResult
+                {
+                    Success = false,
+                    Errormessage = errormessage
+                };
+
+            }
+            else
+            {
+                var characterclass = mudgame.Classes.FirstOrDefault(c => c.Id == classId);
+                characterclass.Description = args.Desctiption;
+                characterclass.Name = args.Name;
+                _context.Classes.Update(characterclass);
+                await _context.SaveChangesAsync().ConfigureAwait(false);
+                _logger?.LogInformation($"Successfully updated new CharacterClass '{characterclass.Name}' with id: '{characterclass.Id}' in mudgame '{mudgame.Name}'");
+                return new CharacterClassResult
+                {
+                    Class = characterclass,
+                    Success = true
+                };
+            }
+        }
+
+        public async Task<CharacterRaceResult> UpdateRaceAsync(string userid, string raceId, CharacterRaceArgs args)
+        {
+
+            _logger?.LogInformation($"Userid:'{userid}' requested create a new class in mudgame '{raceId}'.");
+            var user = await _context.GetUserByIdAsnyc(userid)
+                                        .ConfigureAwait(false);
+            if (user is null)
+            {
+                var errormessage = $"User with the Userid: '{userid}' does not exist";
+                _logger?.LogWarning(errormessage);
+                return new CharacterRaceResult
+                {
+                    Success = false,
+                    Errormessage = errormessage
+                };
+            }
+
+            var mudgame = user.MudGames.FirstOrDefault(mg => mg.Races.Any(c => c.Id == raceId));
+            if (mudgame is null)
+            {
+                var errormessage = $"Class with the id '{raceId}' user is not the owner.";
+                _logger?.LogWarning(errormessage);
+                return new CharacterRaceResult
+                {
+                    Success = false,
+                    Errormessage = errormessage
+                };
+
+            }
+            else
+            {
+                var characterrace = mudgame.Races.FirstOrDefault(c => c.Id == raceId);
+                characterrace.Description = args.Desctiption;
+                characterrace.Name = args.Name;
+                _context.Races.Update(characterrace);
+                await _context.SaveChangesAsync().ConfigureAwait(false);
+                _logger?.LogInformation($"Successfully updated new CharacterRace '{characterrace.Name}' with id: '{characterrace.Id}' in mudgame '{mudgame.Name}'");
+                return new CharacterRaceResult
+                {
+                    Race = characterrace,
+                    Success = true
+                };
+            }
+        }
+
         public async Task<CharacterResult> RemoveCharacterAsync(string userid, string characterid)
         {
             _logger?.LogInformation($"Userid:'{userid}' requested remove a old character with id '{characterid}'.");
@@ -277,7 +366,8 @@ namespace MUDhub.Core.Services
             _context.Characters.Remove(character);
             await _context.SaveChangesAsync()
                             .ConfigureAwait(false);
-            return new CharacterResult() {
+            return new CharacterResult()
+            {
                 Character = character,
                 Success = true
             };
@@ -300,35 +390,71 @@ namespace MUDhub.Core.Services
                 };
             }
 
-            var character = user.MudGames.Any(m => m.;
-            if (character is null)
+            var mudgame = user.MudGames.FirstOrDefault(m => m.Classes.Any(c => c.Id == classid));
+            var characterClass = mudgame.Classes.FirstOrDefault(c => c.Id == classid);
+            if (characterClass is null)
             {
-                var errormessage = $"User '{user.Email}' is not the owner from Character with the id: '{characterid}'";
+                var errormessage = $"User '{user.Email}' is not the owner from CharacterClass with the id: '{classid}'";
                 _logger?.LogWarning(errormessage);
-                return new CharacterResult
+                return new CharacterClassResult
                 {
                     Success = false,
                     Errormessage = errormessage
                 };
             }
 
-            _context.Characters.Remove(character);
+            _context.Classes.Remove(characterClass);
             await _context.SaveChangesAsync()
                             .ConfigureAwait(false);
-            return new CharacterResult()
+            _logger?.LogInformation($"Successfully removed new characterclass '{characterClass.Name}' with id: '{characterClass.Id}' in mudgame '{mudgame.Name}'");
+
+            return new CharacterClassResult()
             {
-                Character = character,
+                Class = characterClass,
                 Success = true
             };
         }
 
-        public Task<CharacterRaceResult> RemoveRaceAsync(string userid, string raceid)
+        public async Task<CharacterRaceResult> RemoveRaceAsync(string userid, string raceid)
         {
 
-            return Task.FromResult(new CharacterRaceResult());
+            _logger?.LogInformation($"Userid:'{userid}' requested remove a old character with id '{raceid}'.");
+            var user = await _context.GetUserByIdAsnyc(userid)
+                                        .ConfigureAwait(false);
+            if (user is null)
+            {
+                var errormessage = $"User with the Userid: '{userid}' does not exist";
+                _logger?.LogWarning(errormessage);
+                return new CharacterRaceResult
+                {
+                    Success = false,
+                    Errormessage = errormessage
+                };
+            }
+
+            var mudgame = user.MudGames.FirstOrDefault(m => m.Races.Any(c => c.Id == raceid));
+            var characterRace = mudgame.Races.FirstOrDefault(c => c.Id == raceid);
+            if (characterRace is null)
+            {
+                var errormessage = $"User '{user.Email}' is not the owner from CharacterClass with the id: '{raceid}'";
+                _logger?.LogWarning(errormessage);
+                return new CharacterRaceResult
+                {
+                    Success = false,
+                    Errormessage = errormessage
+                };
+            }
+
+            _context.Races.Remove(characterRace);
+            await _context.SaveChangesAsync()
+                            .ConfigureAwait(false);
+            _logger?.LogInformation($"Successfully removed new CharacterClass '{characterRace.Name}' with id: '{characterRace.Id}' in mudgame '{mudgame.Name}'");
+            return new CharacterRaceResult()
+            {
+                Race = characterRace,
+                Success = true
+            };
         }
-
-
 
         private async Task<CharacterClass?> GetClassByIdAsync(string id)
             => await _context.Classes.FindAsync(id)

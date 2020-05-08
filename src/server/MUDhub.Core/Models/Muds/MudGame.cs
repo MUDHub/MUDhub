@@ -43,5 +43,7 @@ namespace MUDhub.Core.Models.Muds
         public ICollection<Character> Characters { get; set; } = new Collection<Character>();
 
         public ICollection<Area> Areas { get; set; } = new Collection<Area>();
+        public ICollection<CharacterClass> Classes { get; set; } = new Collection<CharacterClass>();
+        public ICollection<CharacterRace> Races { get; set; } = new Collection<CharacterRace>();
     }
 }
