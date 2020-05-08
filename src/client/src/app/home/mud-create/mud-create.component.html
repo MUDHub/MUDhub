@@ -7,9 +7,7 @@
 		>
 		<mat-error *ngIf="createForm.controls.name.errors?.minlength"
 			>Der Name muss mindestens
-			{{
-				createForm.controls.name.errors?.minlength.requiredLength
-			}}
+			{{ createForm.controls.name.errors?.minlength.requiredLength }}
 			Zeichen lang sein, aktuell
 			{{
 				createForm.controls.name.errors?.minlength.actualLength
@@ -23,6 +21,9 @@
 			>Eine kurze Beschreibung deines MUDs ist erforderlich</mat-error
 		>
 	</mat-form-field>
+	<div>
+		<input type="file" (change)="onSelectedFileChange($event)">
+	</div>
 	<mat-checkbox
 		formControlName="public"
 		matTooltip="Soll das MUD allen Spielern automatisch zur verfügung stehen?"
