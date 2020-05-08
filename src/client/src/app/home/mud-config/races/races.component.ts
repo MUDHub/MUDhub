@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ImageService } from 'src/app/services/image.service';
+import { MudRace } from 'src/app/model/MudSetupDTO';
+import { MudService } from 'src/app/services/mud.service';
 
 @Component({
 	templateUrl: './races.component.html',
@@ -12,7 +14,8 @@ export class RacesComponent implements OnInit {
 		private fb: FormBuilder,
 		private route: ActivatedRoute,
 		private router: Router,
-		private imageService: ImageService
+		private imageService: ImageService,
+		private mudService: MudService
 	) {}
 
 	form = this.fb.group({
@@ -26,7 +29,7 @@ export class RacesComponent implements OnInit {
 	selectedFile: File = null;
 
 	//Todo Interface muss implementiert werden
-	races: Array<{ name: string; description: string; imagekey: string }> = [];
+	races: Array<MudRace> = [];
 
 	ngOnInit(): void {
 		/* Daten fetchen und in Array laden */
@@ -44,19 +47,31 @@ export class RacesComponent implements OnInit {
 	}
 
 	async addRace() {
+		// Get Imagekey from API if an Image was uploaded
+		let imageKey = null;
+
+		try{
+			if (this.selectedFile != null) {
+				imageKey = await this.imageService.uploadFile(this.selectedFile);
+			}
+		}catch(e){
+			this.selectedFile = null;
+		}
+
+		// Push races Object to the array
 		this.races.push({
 			name: this.form.get('name').value,
 			description: this.form.get('description').value,
-			imagekey: await this.imageService.getImageKey(this.selectedFile),
+			imagekey: imageKey,
 		});
 
+		// Reset File Buffer
 		this.selectedFile = null;
-
 		this.changeDialog();
 	}
 
 	onFileSelected(event){
-		this.selectedFile = <File>event.target.files[0];
+		this.selectedFile = event.target.files[0] as File;
 	}
 
 	deleteRow(index: number) {
@@ -66,8 +81,8 @@ export class RacesComponent implements OnInit {
 	async onSubmit() {
 		/* Object erstellen */
 		/* Request zur API schicken */
-
-		//Redirect zur nächsten Konfigurationsseite
+		this.mudService.setMudRaces(this.mudId, this.races);
+		// Redirect zur nächsten Konfigurationsseite
 		this.router.navigate(['/my-muds/' + this.mudId + '/classes']);
 	}
 }

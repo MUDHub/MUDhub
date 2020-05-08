@@ -5,6 +5,7 @@ export interface IMudCreateRequest {
 	description: string;
 	isPublic: boolean;
 	autoRestart: boolean;
+	imagekey?: string;
 }
 
 export interface IMudCreateResponse {

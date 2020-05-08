@@ -19,26 +19,29 @@ namespace MUDhub.Server.Controllers
 
         public ImageController(IOptions<ServerConfiguration> options, ILogger<ImageController>? logger = null)
         {
-            _options = options.Value ;
+            _options = options.Value;
             _logger = logger;
         }
 
 
         [HttpPost]
-        public async Task<IActionResult> ImageUploadAsync(IFormFile image)
+        [ProducesResponseType(typeof(ImageUploadResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ImageUploadResponse), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> ImageUploadAsync(IFormFile file)
         {
-            if (image is null)
-                throw new ArgumentNullException(nameof(image));
+            if (file is null)
+                throw new ArgumentNullException(nameof(file));
 
             var imagekey = Guid.NewGuid().ToString();
-            var filetype = image.FileName.Substring(image.FileName.IndexOf('.', StringComparison.InvariantCultureIgnoreCase));
+            var filetype = file.FileName.Substring(file.FileName.IndexOf('.', StringComparison.InvariantCultureIgnoreCase));
             imagekey += filetype;
             var imagepath = Path.Combine(_options.ImageResourcePath, imagekey);
             try
             {
                 using var imagestream = System.IO.File.Create(imagepath);
-                await image.CopyToAsync(imagestream)
+                await file.CopyToAsync(imagestream)
                     .ConfigureAwait(false);
+                _logger?.LogInformation("Uploaded file {0} {1}", imagekey, imagepath);
             }
             catch (Exception e)
             {
