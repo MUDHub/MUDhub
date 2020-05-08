@@ -47,8 +47,13 @@ export class RacesComponent implements OnInit {
 	async addRace() {
 		// Get Imagekey from API if an Image was uploaded
 		let imageKey = null;
-		if (this.selectedFile != null) {
-			imageKey = await this.imageService.uploadFile(this.selectedFile);
+
+		try{
+			if (this.selectedFile != null) {
+				imageKey = await this.imageService.uploadFile(this.selectedFile);
+			}
+		}catch(e){
+			this.selectedFile = null;
 		}
 
 		// Push races Object to the array
