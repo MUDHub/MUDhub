@@ -33,7 +33,6 @@ export class RacesComponent implements OnInit {
 
 	ngOnInit(): void {
 		/* Daten fetchen und in Array laden */
-
 		this.mudId = this.route.snapshot.params.mudid;
 	}
 
@@ -50,11 +49,13 @@ export class RacesComponent implements OnInit {
 		// Get Imagekey from API if an Image was uploaded
 		let imageKey = null;
 
-		try{
+		try {
 			if (this.selectedFile != null) {
-				imageKey = await this.imageService.uploadFile(this.selectedFile);
+				imageKey = await this.imageService.uploadFile(
+					this.selectedFile
+				);
 			}
-		}catch(e){
+		} catch (e) {
 			this.selectedFile = null;
 		}
 
@@ -65,24 +66,26 @@ export class RacesComponent implements OnInit {
 			imagekey: imageKey,
 		});
 
+		this.mudService.addMudRace(
+			this.mudId,
+			this.races[this.races.length - 1]
+		);
+
 		// Reset File Buffer
 		this.selectedFile = null;
 		this.changeDialog();
 	}
 
-	onFileSelected(event){
+	onFileSelected(event) {
 		this.selectedFile = event.target.files[0] as File;
 	}
 
 	deleteRow(index: number) {
+		this.mudService.deleteMudRace(this.mudId, this.races[index]);
 		this.races.splice(index, 1);
 	}
 
-	async onSubmit() {
-		/* Object erstellen */
-		/* Request zur API schicken */
-		this.mudService.setMudRaces(this.mudId, this.races);
-		// Redirect zur nächsten Konfigurationsseite
+	onNext(){
 		this.router.navigate(['/my-muds/' + this.mudId + '/classes']);
 	}
 }
