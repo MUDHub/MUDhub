@@ -22,7 +22,7 @@
 		>
 	</mat-form-field>
 	<div>
-		<input type="file" (change)="onSelectedFileChange($event)">
+		<input type="file" (change)="onSelectedFileChange($event)" accept="image/*">
 	</div>
 	<mat-checkbox
 		formControlName="public"
