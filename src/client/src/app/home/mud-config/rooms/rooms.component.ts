@@ -10,7 +10,11 @@ import { AreaService } from 'src/app/services/area.service';
 	styleUrls: ['./rooms.component.scss'],
 })
 export class RoomsComponent implements OnInit {
-	constructor(private route: ActivatedRoute, private router: Router, private areaService: AreaService) {}
+	constructor(
+		private route: ActivatedRoute,
+		private router: Router,
+		private areaService: AreaService
+	) {}
 
 	mudId: string;
 
@@ -18,10 +22,9 @@ export class RoomsComponent implements OnInit {
 	areas: IArea[] = [];
 	selectedArea: IArea;
 
-	ngOnInit(): void {
+	async ngOnInit() {
 		this.mudId = this.route.snapshot.params.mudid;
-		this.rooms = new Array(3).fill(new Array(3).fill(undefined));
-		this.areas = [];
+		this.areas = await this.areaService.getAreasForMUD(this.mudId);
 	}
 
 	onAbort() {
@@ -44,34 +47,47 @@ export class RoomsComponent implements OnInit {
 		// TODO: show popup/dialog to get infos for room and then create it via API call
 	}
 
-	addArea() {
+	async addArea() {
 		// TODO: show popup/dialog to get infos for area and then create it via API call
-		// TODO: handle return object
-		this.areaService.createArea(this.mudId, {
-			name: `Etage ${Math.random() * 100}`,
-			description: 'Lorem ipsum dolor sit amet'
-		});
+		try {
+			const response = await this.areaService.createArea(this.mudId, {
+				name: `Etage ${Math.floor(Math.random() * 100)}`,
+				description: 'Lorem ipsum dolor sit amet',
+			});
+			this.areas.push(response.area);
+		} catch (err) {
+			console.error('Error while creating area', err);
+		}
 	}
 
-	jump(componentName: string){
+	async deleteArea(area: IArea) {
+		try {
+			await this.areaService.deleteArea(this.mudId, area.areaId);
+			this.areas.splice(this.areas.indexOf(area), 1);
+		} catch (err) {
+			console.error('Error while deleting area', err);
+		}
+	}
+
+	jump(componentName: string) {
 		switch (componentName) {
-			case "races":
+			case 'races':
 				this.router.navigate(['/my-muds/' + this.mudId + '/races']);
-			  break;
-			case "classes":
+				break;
+			case 'classes':
 				this.router.navigate(['/my-muds/' + this.mudId + '/classes']);
 				break;
-			case "items":
+			case 'items':
 				this.router.navigate(['/my-muds/' + this.mudId + '/items']);
 				break;
-			case "rooms":
+			case 'rooms':
 				this.router.navigate(['/my-muds/' + this.mudId + '/rooms']);
 				break;
-			case "finish":
+			case 'finish':
 				this.router.navigate(['/my-muds/' + this.mudId + '/finish']);
 				break;
 			default:
-			  break;
+				break;
 		}
 	}
 }

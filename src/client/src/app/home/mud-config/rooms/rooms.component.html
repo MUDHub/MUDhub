@@ -36,6 +36,7 @@
 		[selectedArea]="selectedArea"
 		(newArea)="addArea()"
 		(select)="selectedArea = $event"
+		(delete)="deleteArea($event)"
 	></mh-area-list>
 	<mh-rooms-grid *ngIf="selectedArea" class="rooms" [rooms]="rooms"></mh-rooms-grid>
 </div>
