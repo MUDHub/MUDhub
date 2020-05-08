@@ -23,7 +23,7 @@ export class ItemsComponent implements OnInit {
 	});
 	mudId: string;
 	dialog = false;
-	items: Array<MudItem>;
+	items: Array<MudItem> = [];
 
 	deleteRow(index: number) {
 		this.mudService.deleteMudItem(this.mudId, this.items[index]);

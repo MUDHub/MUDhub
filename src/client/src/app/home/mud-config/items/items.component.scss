@@ -72,21 +72,6 @@ h1 {
 	}
 }
 
-.custom-file-input::-webkit-file-upload-button {
-	content: 'Datei auswählen';
-	display: inline-block;
-	background-color: $color-primary;
-	color: white;
-	border: none;
-	border-radius: 3px;
-	padding: 5px 8px;
-	outline: none;
-	white-space: nowrap;
-	-webkit-user-select: none;
-	cursor: pointer;
-	width: 50%;
-}
-
 .exit-button {
 	width: 100%;
 	display: flex;
