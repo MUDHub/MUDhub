@@ -38,7 +38,7 @@ namespace MUDhub.Core.Services
             var norm = UserHelpers.ToNormelizedEmail(email);
             var user = await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.NormalizedEmail == norm).ConfigureAwait(false);
             var passwordHash = UserHelpers.CreatePasswordHash(password);
-            if (user == null)
+            if (user is null)
             {
                 _logger?.LogWarning($"No user was found with the email {email}");
                 return new LoginResult(false);
@@ -49,7 +49,7 @@ namespace MUDhub.Core.Services
                 _logger?.LogWarning($"The Password of '{user.Name} {user.Lastname}' is wrong");
                 return new LoginResult(false);
             }
-            _logger?.LogInformation($"The User '{user.Name} {user.Lastname}'  was logged in.");
+            _logger?.LogInformation($"The User '{user.Name} {user.Lastname}' was logged in.");
             return new LoginResult(true, UserHelpers.CreateToken(user, _tokensecret), user);
         }
     }
