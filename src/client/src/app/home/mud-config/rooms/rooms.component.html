@@ -1,12 +1,18 @@
 <h1>Raumsystem</h1>
 
 <div class="container">
-	<mh-area-list class="areas" [areas]="areas" (newArea)="addArea()"></mh-area-list>
-	<mh-rooms-grid class="rooms" [rooms]="rooms"></mh-rooms-grid>
+	<mh-area-list
+		class="areas"
+		[areas]="areas"
+		[selectedArea]="selectedArea"
+		(newArea)="addArea()"
+		(select)="selectedArea = $event"
+	></mh-area-list>
+	<mh-rooms-grid *ngIf="selectedArea" class="rooms" [rooms]="rooms"></mh-rooms-grid>
 </div>
 
 <div class="button-menu">
-    <button mat-flat-button color="warn" (click)="onAbort()">Abbrechen</button>
-    <button mat-flat-button color="basic" (click)="onLast()">Zurück</button>
-    <button mat-flat-button color="primary" (click)="onNext()">Weiter</button>
+	<button mat-flat-button color="warn" (click)="onAbort()">Abbrechen</button>
+	<button mat-flat-button color="basic" (click)="onLast()">Zurück</button>
+	<button mat-flat-button color="primary" (click)="onNext()">Weiter</button>
 </div>

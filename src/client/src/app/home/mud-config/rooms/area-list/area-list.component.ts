@@ -10,9 +10,10 @@ export class AreaListComponent implements OnInit {
 	constructor() {}
 
 	@Input() areas: IArea[];
-	selectedArea: IArea;
+	@Input() selectedArea: IArea;
 
 	@Output() newArea = new EventEmitter();
+	@Output() select = new EventEmitter<IArea>();
 
 	ngOnInit(): void {}
 }

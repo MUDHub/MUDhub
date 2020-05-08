@@ -12,7 +12,7 @@ export class RoomsGridComponent {
 	@Input() rooms: IRoom[][];
 
 	get width() {
-		return this.rooms[0]?.length;
+		return this.rooms[this.rooms.length - 1]?.length;
 	}
 
 	set width(value: number) {
@@ -26,7 +26,7 @@ export class RoomsGridComponent {
 				}
 			} else if (value < this.width) {
 				for (const row of this.rooms) {
-					row.splice(value - 1, 1);
+					row.splice(value, 1);
 				}
 			}
 		}
@@ -43,7 +43,7 @@ export class RoomsGridComponent {
 					this.rooms.push(new Array(this.width).fill(undefined));
 				}
 			} else if (value < this.height) {
-				this.rooms.splice(value - 1, 1);
+				this.rooms.splice(value , 1);
 			}
 		}
 	}

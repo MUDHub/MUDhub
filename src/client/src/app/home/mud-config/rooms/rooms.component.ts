@@ -15,6 +15,7 @@ export class RoomsComponent implements OnInit {
 
 	rooms: IRoom[][] = [[]];
 	areas: IArea[] = [];
+	selectedArea: IArea;
 
 	ngOnInit(): void {
 		this.mudId = this.route.snapshot.params.mudid;
@@ -27,7 +28,7 @@ export class RoomsComponent implements OnInit {
 				areaId: 'pw483zrf',
 				description: 'Das Ergeschoss der DHBW Horb'
 			}
-		]
+		];
 	}
 
 	onAbort() {
@@ -53,11 +54,12 @@ export class RoomsComponent implements OnInit {
 	}
 
 	addArea() {
+		// TODO: show popup/dialog to get infos for area and then create it via API call
 		this.areas.push({
 			areaId: '',
 			mud: undefined,
 			mudId: '',
 			name: `Etage ${this.areas.length}`
-		})
+		});
 	}
 }
