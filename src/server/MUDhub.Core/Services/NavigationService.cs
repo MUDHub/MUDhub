@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using MUDhub.Core.Abstracts;
 using MUDhub.Core.Abstracts.Models.Rooms;
 using MUDhub.Core.Configurations;
@@ -15,7 +16,7 @@ namespace MUDhub.Core.Services
         private readonly ILogger? _logger;
 
 
-        internal NavigationService(MudDbContext context, ServerConfiguration options, ILogger<LoginService>? logger = null)
+        public NavigationService(MudDbContext context, ILogger<LoginService>? logger = null)
         {
             _dbContext = context;
             _logger = logger;

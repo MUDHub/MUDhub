@@ -14,7 +14,6 @@ namespace MUDhub.Core.Abstracts
 
         public static IServiceCollection AddMudServices(this IServiceCollection services)
         {
-            //Todo: Later change this to scoped.
             services.AddUserManagment();
             services.AddMudGameManagment();
             services.AddAreaManagment();
@@ -30,10 +29,9 @@ namespace MUDhub.Core.Abstracts
         /// <returns>the given service collection</returns>
         public static IServiceCollection AddUserManagment(this IServiceCollection services)
         {
-            //Todo: Later change this to scoped.
-            services.TryAddSingleton<ILoginService, LoginService>();
-            services.TryAddSingleton<IUserManager, UserManager>();
-            services.TryAddSingleton<IEmailService, EmailService>();
+            services.TryAddScoped<ILoginService, LoginService>();
+            services.TryAddScoped<IUserManager, UserManager>();
+            services.TryAddScoped<IEmailService, EmailService>();
             return services;
         }
 
@@ -45,9 +43,8 @@ namespace MUDhub.Core.Abstracts
         /// <returns></returns>
         public static IServiceCollection AddAreaManagment(this IServiceCollection services)
         {
-            //Todo: Later change this to scoped.
-            services.TryAddSingleton<IAreaManager, AreaManager>();
-            services.TryAddSingleton<INavigationService, NavigationService>();
+            services.TryAddScoped<IAreaManager, AreaManager>();
+            services.TryAddScoped<INavigationService, NavigationService>();
             return services;
         }
 
@@ -60,8 +57,7 @@ namespace MUDhub.Core.Abstracts
         /// <returns></returns>
         public static IServiceCollection AddCharacterManagment(this IServiceCollection services)
         {
-            //Todo: Later change this to scoped.
-            services.TryAddSingleton<ICharacterManager, CharacterManager>();
+            services.TryAddScoped<ICharacterManager, CharacterManager>();
             return services;
         }
 
@@ -73,11 +69,8 @@ namespace MUDhub.Core.Abstracts
         /// <returns>the given service collection</returns>
         public static IServiceCollection AddMudGameManagment(this IServiceCollection services)
         {
-            //Todo: Later change this to scoped.
-            services.TryAddSingleton<IMudManager, MudManager>();
-            services.TryAddSingleton<IGameService, GameService>();
-
-
+            services.TryAddScoped<IMudManager, MudManager>();
+            services.TryAddScoped<IGameService, GameService>();
             return services;
         }
 
@@ -89,8 +82,7 @@ namespace MUDhub.Core.Abstracts
             if (conf is null)
                 throw new ArgumentNullException(nameof(conf));
 
-            //Todo: Later change this to Scoped!
-            var lifetime = ServiceLifetime.Singleton;
+            var lifetime = ServiceLifetime.Scoped;
 
             switch (conf.Provider)
             {
