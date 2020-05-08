@@ -51,11 +51,13 @@ export class ClassesComponent implements OnInit {
 		// Get Imagekey from API if an Image was uploaded
 		let imageKey = null;
 
-		try{
+		try {
 			if (this.selectedFile != null) {
-				imageKey = await this.imageService.uploadFile(this.selectedFile);
+				imageKey = await this.imageService.uploadFile(
+					this.selectedFile
+				);
 			}
-		}catch(e){
+		} catch (e) {
 			this.selectedFile = null;
 		}
 
@@ -66,16 +68,23 @@ export class ClassesComponent implements OnInit {
 			imagekey: imageKey,
 		});
 
+		//Make API request
+		this.mudService.addMudClass(
+			this.mudId,
+			this.classes[this.classes.length - 1]
+		);
+
 		// Reset File Buffer
 		this.selectedFile = null;
 		this.changeDialog();
 	}
 
-	onFileSelected(event){
+	onFileSelected(event) {
 		this.selectedFile = event.target.files[0] as File;
 	}
 
 	deleteRow(index: number) {
+		this.mudService.deleteMudClass(this.mudId, this.classes[index]);
 		this.classes.splice(index, 1);
 	}
 
@@ -83,11 +92,7 @@ export class ClassesComponent implements OnInit {
 		this.router.navigate(['/my-muds/' + this.mudId + '/races']);
 	}
 
-	async onSubmit() {
-		/* Object erstellen */
-		/* Request zur API schicken */
-		this.mudService.setMudClasses(this.mudId, this.classes);
-		//Redirect zur nächsten Konfigurationsseite
+	onNext() {
 		this.router.navigate(['/my-muds/' + this.mudId + '/items']);
 	}
 }

@@ -73,15 +73,43 @@ export class MudService {
 			.toPromise();
 	}
 
-	async setMudRaces(mudId: string, mudRaces: MudRace[]){
+	//SETUP Process
+	//SETUP - Race
+	async getMudRace(mudId: string):Promise<MudRace[]>{
+		return null;
+	}
+
+	async addMudRace(mudId: string, mudRace: MudRace) {
 		//Function is not implemented on the api yet
 	}
 
-	async setMudClasses(mudId:string, mudClasses: MudClass[]){
+	async deleteMudRace(mudId: string, mudRace: MudRace) {
 		//Function is not implemented on the api yet
 	}
 
-	async setMudItems(mudId:string , mudItems: MudItem[]){
+	//SETUP - Class
+	async getMudClass(mudId: string):Promise<MudClass[]>{
+		return null;
+	}
+
+	async addMudClass(mudId: string, mudClass: MudClass) {
+		//Function is not implemented on the api yet
+	}
+
+	async deleteMudClass(mudId: string, mudClass: MudClass) {
+		//Function is not implemented on the api yet
+	}
+
+	//SETUP - Item
+	async getMudItem(mudId: string):Promise<MudItem[]>{
+		return null;
+	}
+
+	async addMudItem(mudId: string, mudItem: MudItem) {
+		//Function is not implemented on the api yet
+	}
+
+	async deleteMudItem(mudId: string, mudItem: MudItem) {
 		//Function is not implemented on the api yet
 	}
 }

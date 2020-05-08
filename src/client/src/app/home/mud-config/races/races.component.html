@@ -7,7 +7,7 @@
 </div>
 
 <div class="disable-background" *ngIf="dialog">
-	<div class="add-race">
+	<div class="add-item">
 		<div class="exit-button">
 			<mh-exit-button (click)="changeDialog()"></mh-exit-button>
 		</div>
@@ -70,14 +70,6 @@
 		<td>{{ race.name }}</td>
 		<td>{{ race.description }}</td>
 		<td>
-			<div *ngIf="race.imagekey != null">
-				<mat-icon>check</mat-icon>
-			</div>
-			<div *ngIf="race.imagekey == null">
-				<mat-icon>clear</mat-icon>
-			</div>
-		</td>
-		<td>
 			<button mat-flat-button color="primary" (click)="deleteRow(index)">
 				Löschen
 			</button>
@@ -87,5 +79,5 @@
 
 <div class="button-menu">
 	<button mat-flat-button color="warn" (click)="onAbort()">Abbrechen</button>
-	<button mat-flat-button color="primary" (click)="onSubmit()">Weiter</button>
+	<button mat-flat-button color="primary" (click)="onNext()">Weiter</button>
 </div>
