@@ -4,6 +4,7 @@ import { MudService } from 'src/app/services/mud.service';
 import { IMudCreateRequest } from 'src/app/model/MudDTO';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ImageService } from 'src/app/services/image.service';
 
 @Component({
 	templateUrl: './mud-create.component.html',
@@ -14,11 +15,13 @@ export class MudCreateComponent {
 		private fb: FormBuilder,
 		private mud: MudService,
 		private router: Router,
-		private snackbar: MatSnackBar
+		private snackbar: MatSnackBar,
+		private imageService: ImageService
 	) {}
 
 	isLoading = false;
 
+	selectedFile: File = undefined;
 	createForm = this.fb.group({
 		name: ['', [Validators.required, Validators.minLength(4)]],
 		description: ['', Validators.required],
@@ -37,14 +40,29 @@ export class MudCreateComponent {
 		this.isLoading = true;
 
 		try {
+			if (this.selectedFile) {
+				const response = await this.imageService.uploadFile(this.selectedFile);
+				mud.imagekey = response.imageUrl;
+			}
+		} catch (err) {
+			console.error('Error while uploading image', err);
+		}
+
+		try {
+			console.log('sending:', mud);
 			const res = await this.mud.create(mud);
 			this.router.navigate(['/my-muds', res.mudId, 'races']);
 		} catch (err) {
+			console.error('Error while creating MUD', err);
 			this.snackbar.open('Fehler beim Erstellen des MUDS', 'OK', {
 				duration: 10000,
 			});
 		} finally {
 			this.isLoading = false;
 		}
+	}
+
+	onSelectedFileChange(event) {
+		this.selectedFile = event.target.files[0] as File;
 	}
 }
