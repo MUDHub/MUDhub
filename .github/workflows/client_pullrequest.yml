@@ -19,5 +19,5 @@ jobs:
       run: npm ci
       working-directory: ${{env.ANGUALR_DIR}}
     - name: Test
-      run: npm run test
+      run: npm run test:ci
       working-directory: ${{env.ANGUALR_DIR}}
