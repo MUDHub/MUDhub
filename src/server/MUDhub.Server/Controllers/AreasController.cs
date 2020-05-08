@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using MUDhub.Core.Abstracts;
 using MUDhub.Core.Services;
 using MUDhub.Server.ApiModels.Areas;
@@ -25,7 +26,9 @@ namespace MUDhub.Server.Controllers
         }
 
         [HttpGet("areas")]
-        public ActionResult<IEnumerable<AreaApiModel>> GetAllAreas([FromRoute] string mudId)
+        [ProducesResponseType(typeof(IEnumerable<AreaApiModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<AreaApiModel>), StatusCodes.Status400BadRequest)]
+        public ActionResult<IActionResult> GetAllAreas([FromRoute] string mudId)
         {
             return Ok(_context.Areas.Where(g => g.GameId == mudId)
                 .AsEnumerable()
@@ -33,7 +36,9 @@ namespace MUDhub.Server.Controllers
         }
 
         [HttpGet("areas/{areaId}")]
-        public async Task<ActionResult<AreaApiModel>> GetArea([FromRoute] string mudId, [FromRoute] string areaId)
+        [ProducesResponseType(typeof(AreaApiModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(AreaApiModel), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetArea([FromRoute] string mudId, [FromRoute] string areaId)
         {
             var area = await _context.Areas.FindAsync(areaId)
                 .ConfigureAwait(false);
@@ -49,6 +54,9 @@ namespace MUDhub.Server.Controllers
         }
 
         [HttpDelete("areas/{areaId}")]
+        [ProducesResponseType(typeof(AreaDeleteResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(AreaDeleteResponse), StatusCodes.Status400BadRequest)]
+
         public async Task<ActionResult<AreaDeleteResponse>> DeleteArea([FromRoute] string areaId)
         {
             var result = await _areaManager.RemoveAreaAsync(HttpContext.GetUserId(), areaId)
@@ -66,6 +74,8 @@ namespace MUDhub.Server.Controllers
         }
 
         [HttpPost("areas")]
+        [ProducesResponseType(typeof(CreateAreaResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(CreateAreaResponse), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateArea([FromRoute] string mudId, [FromBody] CreateAreaRequest args)
         {
             if (args is null)
@@ -89,6 +99,8 @@ namespace MUDhub.Server.Controllers
         }
         
         [HttpPut("areas/{areaId}")]
+        [ProducesResponseType(typeof(UpdateAreaResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(UpdateAreaResponse), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateArea([FromRoute] string areaId, [FromBody] UpdateAreaRequest args)
         {
             if (args is null)

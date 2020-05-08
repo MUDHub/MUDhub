@@ -20,10 +20,6 @@ namespace MUDhub.Core.Services
 {
     public class DatabaseInitializer : IHostedService
     {
-        //private readonly IUserManager _userManager;
-        //private readonly IMudManager _mudManager;
-        //private readonly IAreaManager _areaManager;
-        //private readonly MudDbContext _context;
         private readonly IServiceScopeFactory _scopeFactory;
         private readonly ILogger? _logger;
         private readonly DatabaseConfiguration _options;

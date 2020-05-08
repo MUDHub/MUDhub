@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using MUDhub.Core.Abstracts;
 using MUDhub.Core.Services;
 using MUDhub.Server.ApiModels.Areas;
@@ -25,7 +26,9 @@ namespace MUDhub.Server.Controllers
         }
 
         [HttpGet("rooms")]
-        public ActionResult<IEnumerable<RoomApiModel>> GetAllRooms([FromRoute] string mudId, [FromRoute] string areaId)
+        [ProducesResponseType(typeof(IEnumerable<RoomApiModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<RoomApiModel>), StatusCodes.Status400BadRequest)]
+        public ActionResult<IActionResult> GetAllRooms([FromRoute] string mudId, [FromRoute] string areaId)
         {
             return Ok(_context.Rooms.Where(r => r.GameId == mudId && r.Area.Id == areaId)
                 .AsEnumerable()
@@ -33,7 +36,9 @@ namespace MUDhub.Server.Controllers
         }
 
         [HttpGet("rooms/{roomId}")]
-        public async Task<ActionResult<RoomApiModel>> GetRoom([FromRoute] string mudId, [FromRoute] string areaId, [FromRoute] string roomId)
+        [ProducesResponseType(typeof(RoomApiModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(RoomApiModel), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetRoom([FromRoute] string mudId, [FromRoute] string areaId, [FromRoute] string roomId)
         {
             var room = await _context.Rooms.FindAsync(roomId)
                 .ConfigureAwait(false);
