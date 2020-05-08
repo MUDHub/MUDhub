@@ -85,6 +85,28 @@ export class RacesComponent implements OnInit {
 		this.races.splice(index, 1);
 	}
 
+	jump(componentName: string){
+		switch (componentName) {
+			case "races":
+				this.router.navigate(['/my-muds/' + this.mudId + '/races']);
+			  break;
+			case "classes":
+				this.router.navigate(['/my-muds/' + this.mudId + '/classes']);
+				break;
+			case "items":
+				this.router.navigate(['/my-muds/' + this.mudId + '/items']);
+				break;
+			case "rooms":
+				this.router.navigate(['/my-muds/' + this.mudId + '/rooms']);
+				break;
+			case "finish":
+				this.router.navigate(['/my-muds/' + this.mudId + '/finish']);
+				break;
+			default:
+			  break;
+		}
+	}
+
 	onNext(){
 		this.router.navigate(['/my-muds/' + this.mudId + '/classes']);
 	}

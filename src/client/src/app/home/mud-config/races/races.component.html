@@ -1,5 +1,37 @@
+<!--Stepper-->
+<mat-horizontal-stepper [linear]="true" #stepper="matHorizontalStepper">
+	<mat-step>
+		<ng-template matStepLabel>
+			<div (click)="jump('races')">Rassen</div>
+		</ng-template>
+	</mat-step>
+	<mat-step>
+		<ng-template matStepLabel>
+			<div (click)="jump('classes')">Klassen</div>
+		</ng-template>
+	</mat-step>
+	<mat-step>
+		<ng-template matStepLabel>
+			<div (click)="jump('items')">Gegenstände</div>
+		</ng-template>
+	</mat-step>
+	<mat-step>
+		<ng-template matStepLabel>
+			<div (click)="jump('rooms')">Räume</div>
+		</ng-template>
+	</mat-step>
+	<mat-step>
+		<ng-template matStepLabel>
+			<div (click)="jump('finish')">Fertig</div>
+		</ng-template>
+	</mat-step>
+</mat-horizontal-stepper>
+
+
 <h1>Rassen</h1>
 
+
+<!--Rassen Inhalt-->
 <div class="button-class">
 	<button mat-flat-button color="primary" (click)="changeDialog()">
 		Hinzufügen
@@ -17,41 +49,24 @@
 		<form class="general-form" [formGroup]="form" (ngSubmit)="addRace()">
 			<div class="form-row">
 				<mat-form-field>
-					<input
-						matInput
-						name="name"
-						type="text"
-						formControlName="name"
-						placeholder="Name"
-					/>
+					<input matInput name="name" type="text" formControlName="name" placeholder="Name" />
 					<mat-error>Bitte gebe einen Rassennamen ein</mat-error>
 				</mat-form-field>
 			</div>
 			<div class="form-row">
 				<mat-form-field appearance="fill">
 					<mat-label>Beschreibung</mat-label>
-					<textarea
-						matInput
-						formControlName="description"
-						placeholder="Beschreibung"
-						rows="5"
-					></textarea>
-					<mat-error
-						>Eine kurze Beschreibung der Rasse ist
-						erforderlich</mat-error
-					>
+					<textarea matInput formControlName="description" placeholder="Beschreibung" rows="5"></textarea>
+					<mat-error>Eine kurze Beschreibung der Rasse ist
+						erforderlich</mat-error>
 				</mat-form-field>
 			</div>
 			<div class="form-row">
-				<input accept="image/*" ide="imagekey" type="file" class="custom-file-input" (change)="onFileSelected($event)"/>
+				<input accept="image/*" ide="imagekey" type="file" class="custom-file-input"
+					(change)="onFileSelected($event)" />
 			</div>
 			<div class="form-row">
-				<button
-					mat-flat-button
-					type="submit"
-					color="primary"
-					[disabled]="form.invalid"
-				>
+				<button mat-flat-button type="submit" color="primary" [disabled]="form.invalid">
 					Rasse hinzufügen
 				</button>
 			</div>
