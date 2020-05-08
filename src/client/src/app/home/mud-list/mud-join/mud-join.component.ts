@@ -1,7 +1,7 @@
 import { Component, OnInit, HostBinding } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MudService } from 'src/app/services/mud.service';
-import { IMud } from 'src/app/model/IMud';
+import { IMud } from 'src/app/model/muds/IMud';
 import {
 	trigger,
 	state,

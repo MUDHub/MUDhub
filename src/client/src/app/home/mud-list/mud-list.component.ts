@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { IMud } from 'src/app/model/IMud';
+import { IMud } from 'src/app/model/muds/IMud';
 import { MudService } from 'src/app/services/mud.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { IUser } from 'src/app/model/IUser';
-import { MudJoinState } from 'src/app/model/MudDTO';
+import { IUser } from 'src/app/model/auth/IUser';
+import { MudJoinState } from 'src/app/model/muds/MudDTO';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({

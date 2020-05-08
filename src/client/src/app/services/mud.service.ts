@@ -4,12 +4,12 @@ import {
 	IMudCreateResponse,
 	IRequestResponse,
 	MudJoinState,
-} from '../model/MudDTO';
+} from '../model/muds/MudDTO';
 import { HttpClient } from '@angular/common/http';
 import { environment as env } from 'src/environments/environment';
-import { IMud } from '../model/IMud';
-import { IMudRequest } from '../model/IMudRequest';
-import { MudRace, MudClass, MudItem } from '../model/MudSetupDTO';
+import { IMud } from '../model/muds/IMud';
+import { IMudRequest } from '../model/muds/IMudRequest';
+import { IMudRace, IMudClass, IMudItem } from '../model/muds/MudSetupDTO';
 
 @Injectable({
 	providedIn: 'root',
@@ -75,41 +75,41 @@ export class MudService {
 
 	//SETUP Process
 	//SETUP - Race
-	async getMudRace(mudId: string):Promise<MudRace[]>{
+	async getMudRace(mudId: string):Promise<IMudRace[]>{
 		return null;
 	}
 
-	async addMudRace(mudId: string, mudRace: MudRace) {
+	async addMudRace(mudId: string, mudRace: IMudRace) {
 		//Function is not implemented on the api yet
 	}
 
-	async deleteMudRace(mudId: string, mudRace: MudRace) {
+	async deleteMudRace(mudId: string, mudRace: IMudRace) {
 		//Function is not implemented on the api yet
 	}
 
 	//SETUP - Class
-	async getMudClass(mudId: string):Promise<MudClass[]>{
+	async getMudClass(mudId: string):Promise<IMudClass[]>{
 		return null;
 	}
 
-	async addMudClass(mudId: string, mudClass: MudClass) {
+	async addMudClass(mudId: string, mudClass: IMudClass) {
 		//Function is not implemented on the api yet
 	}
 
-	async deleteMudClass(mudId: string, mudClass: MudClass) {
+	async deleteMudClass(mudId: string, mudClass: IMudClass) {
 		//Function is not implemented on the api yet
 	}
 
 	//SETUP - Item
-	async getMudItem(mudId: string):Promise<MudItem[]>{
+	async getMudItem(mudId: string):Promise<IMudItem[]>{
 		return null;
 	}
 
-	async addMudItem(mudId: string, mudItem: MudItem) {
+	async addMudItem(mudId: string, mudItem: IMudItem) {
 		//Function is not implemented on the api yet
 	}
 
-	async deleteMudItem(mudId: string, mudItem: MudItem) {
+	async deleteMudItem(mudId: string, mudItem: IMudItem) {
 		//Function is not implemented on the api yet
 	}
 }

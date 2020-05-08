@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { IMessage } from '../model/IMessage';
+import { IMessage } from '../model/chat/IMessage';
 
 import { HubConnection, HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { MudService } from 'src/app/services/mud.service';
-import { IMudCreateRequest } from 'src/app/model/MudDTO';
+import { IMudCreateRequest } from 'src/app/model/muds/MudDTO';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ImageService } from 'src/app/services/image.service';

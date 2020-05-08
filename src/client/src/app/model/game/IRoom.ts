@@ -1,4 +1,4 @@
-export interface IRoom {
+export interface IMapRoom {
 	id?: string;
 	name: string;
 	enterMessage?: string;

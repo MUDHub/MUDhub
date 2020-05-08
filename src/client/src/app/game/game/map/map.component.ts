@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IRoom } from 'src/app/model/IRoom';
+import { IMapRoom } from 'src/app/model/game/IRoom';
 import { RoomsService } from 'src/app/services/rooms.service';
 
 @Component({
@@ -12,9 +12,9 @@ export class MapComponent implements OnInit {
 
 	activeArea = 'Morgenland';
 
-	rooms: IRoom[] = [];
+	rooms: IMapRoom[] = [];
 
-	map: IRoom[][] = [[]];
+	map: IMapRoom[][] = [[]];
 
 
 	get width() {
@@ -31,12 +31,11 @@ export class MapComponent implements OnInit {
 
 	updateMap() {
 		// TODO: replace with correct implementation
-		this.rooms = this.roomsService.getRoomsForArea('');
 		this.renderMap(this.rooms);
 	}
 
 
-	renderMap(list: IRoom[]) {
+	renderMap(list: IMapRoom[]) {
 		for (const room of list) {
 			while (this.height - 1 < room.position.y) {
 				this.map.push(Array(this.width).fill(undefined));

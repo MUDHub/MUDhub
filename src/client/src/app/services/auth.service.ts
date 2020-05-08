@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { IUser } from 'src/app/model/IUser';
+import { IUser } from 'src/app/model/auth/IUser';
 import {
 	ILoginResponse,
 	IRegisterResponse,
 	IPasswordResetResponse,
 	IRegistrationRequest,
-} from 'src/app/model/AuthDTO';
+} from 'src/app/model/auth/AuthDTO';
 
 import { environment as env } from 'src/environments/environment';
 

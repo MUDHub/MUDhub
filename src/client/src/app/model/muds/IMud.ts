@@ -1,4 +1,4 @@
-import { IUser } from './IUser';
+import { IUser } from '../auth/IUser';
 
 export interface IMud {
 	mudId: string;

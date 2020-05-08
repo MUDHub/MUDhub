@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MudService } from 'src/app/services/mud.service';
-import { IMud } from 'src/app/model/IMud';
+import { IMud } from 'src/app/model/muds/IMud';
 import { MatTableDataSource, MatTable } from '@angular/material/table';
 
 @Component({

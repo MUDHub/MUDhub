@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ImageService } from 'src/app/services/image.service';
-import { MudClass } from 'src/app/model/MudSetupDTO';
+import { IMudClass } from 'src/app/model/muds/MudSetupDTO';
 import { MudService } from 'src/app/services/mud.service';
 
 @Component({
@@ -29,8 +29,8 @@ export class ClassesComponent implements OnInit {
 	mudId: string;
 	selectedFile: File = null;
 
-	//Todo Interface muss implementiert werden
-	classes: Array<MudClass> = [];
+	// Todo Interface muss implementiert werden
+	classes: Array<IMudClass> = [];
 
 	ngOnInit(): void {
 		/* Daten fetchen und in Array laden */
@@ -68,7 +68,7 @@ export class ClassesComponent implements OnInit {
 			imagekey: imageKey,
 		});
 
-		//Make API request
+		// Make API request
 		this.mudService.addMudClass(
 			this.mudId,
 			this.classes[this.classes.length - 1]

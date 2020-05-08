@@ -1,18 +1,18 @@
-export interface MudRace {
+export interface IMudRace {
 	name: string;
 	description: string;
 	imagekey: string;
 }
 
-export interface MudClass {
+export interface IMudClass {
 	name: string;
 	description: string;
 	imagekey: string;
 }
 
-export interface MudRoom {}
+export interface IMudRoom {}
 
-export interface MudItem {
+export interface IMudItem {
 	name: string;
 	description: string;
 }

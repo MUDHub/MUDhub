@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MudService } from 'src/app/services/mud.service';
-import { IMud } from 'src/app/model/IMud';
+import { IMud } from 'src/app/model/muds/IMud';
 import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
