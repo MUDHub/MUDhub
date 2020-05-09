@@ -65,6 +65,11 @@ namespace MUDhub.Core.Services
         public DbSet<RoomInteraction> RoomInteractions { get; set; } = null!;
 
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseLazyLoadingProxies();
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         { 
 

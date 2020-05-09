@@ -21,11 +21,11 @@ namespace MUDhub.Core.Models.Characters
 
         public string Id { get; }
         public string Name { get; set; } = string.Empty;
-        public MudGame Game { get; set; } = new MudGame();
-        public User Owner { get; set; } = new User();
-        public CharacterRace Race { get; set; } = new CharacterRace();
-        public CharacterClass Class { get; set; } = new CharacterClass();
-        public Room ActualRoom { get; set; } = new Room();
+        public virtual MudGame Game { get; set; } = new MudGame();
+        public virtual User Owner { get; set; } = new User();
+        public virtual CharacterRace Race { get; set; } = new CharacterRace();
+        public virtual CharacterClass Class { get; set; } = new CharacterClass();
+        public virtual Room ActualRoom { get; set; } = new Room();
 
         //"LiveUpdates"
 
@@ -33,7 +33,7 @@ namespace MUDhub.Core.Models.Characters
         public int Starvation { get; set; }
 
 
-        public ICollection<CharacterBoost> ActiveBoosts { get; set; } = new Collection<CharacterBoost>();
+        public virtual ICollection<CharacterBoost> ActiveBoosts { get; set; } = new Collection<CharacterBoost>();
         //Todo: Later after room implementation
         //public string ActiveRoomId { get; set; }
     }

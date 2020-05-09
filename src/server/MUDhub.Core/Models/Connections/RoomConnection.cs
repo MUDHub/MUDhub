@@ -19,9 +19,9 @@ namespace MUDhub.Core.Models.Connections
 
         public string Description { get; set; } = string.Empty;
         public string Room1Id { get; set; } = string.Empty;
-        public Room Room1 { get; set; } = null!;
+        public virtual Room Room1 { get; set; } = null!;
         public string Room2Id { get; set; } = string.Empty;
-        public Room Room2 { get; set; } = null!;
+        public virtual Room Room2 { get; set; } = null!;
 
         public LockType LockType { get; set; } = LockType.NoLock;
 

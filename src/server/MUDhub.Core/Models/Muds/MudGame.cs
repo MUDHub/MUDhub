@@ -36,14 +36,14 @@ namespace MUDhub.Core.Models.Muds
         //Todo: Add Navigation properties
 
         public string OwnerId { get; set; } = string.Empty;
-        public User Owner { get; set; }
+        public virtual User Owner { get; set; }
 
-        public ICollection<MudJoinRequest> JoinRequests { get; set; } = new Collection<MudJoinRequest>();
+        public virtual ICollection<MudJoinRequest> JoinRequests { get; set; } = new Collection<MudJoinRequest>();
 
-        public ICollection<Character> Characters { get; set; } = new Collection<Character>();
+        public virtual ICollection<Character> Characters { get; set; } = new Collection<Character>();
 
-        public ICollection<Area> Areas { get; set; } = new Collection<Area>();
-        public ICollection<CharacterClass> Classes { get; set; } = new Collection<CharacterClass>();
-        public ICollection<CharacterRace> Races { get; set; } = new Collection<CharacterRace>();
+        public virtual ICollection<Area> Areas { get; set; } = new Collection<Area>();
+        public virtual ICollection<CharacterClass> Classes { get; set; } = new Collection<CharacterClass>();
+        public virtual ICollection<CharacterRace> Races { get; set; } = new Collection<CharacterRace>();
     }
 }
