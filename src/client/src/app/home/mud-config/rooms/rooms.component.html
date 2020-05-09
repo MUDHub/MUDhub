@@ -1,3 +1,32 @@
+<!--Stepper-->
+<mat-horizontal-stepper [linear]="true" #stepper="matHorizontalStepper">
+	<mat-step>
+		<ng-template matStepLabel>
+			<div (click)="jump('races')">Rassen</div>
+		</ng-template>
+	</mat-step>
+	<mat-step>
+		<ng-template matStepLabel>
+			<div (click)="jump('classes')">Klassen</div>
+		</ng-template>
+	</mat-step>
+	<mat-step>
+		<ng-template matStepLabel>
+			<div (click)="jump('items')">Gegenstände</div>
+		</ng-template>
+	</mat-step>
+	<mat-step>
+		<ng-template matStepLabel>
+			<div (click)="jump('rooms')">Räume</div>
+		</ng-template>
+	</mat-step>
+	<mat-step>
+		<ng-template matStepLabel>
+			<div (click)="jump('finish')">Fertig</div>
+		</ng-template>
+	</mat-step>
+</mat-horizontal-stepper>
+
 <h1>Raumsystem</h1>
 
 <div class="container">
@@ -6,7 +35,8 @@
 		[areas]="areas"
 		[selectedArea]="selectedArea"
 		(newArea)="addArea()"
-		(select)="selectedArea = $event"
+		(select)="selectArea($event)"
+		(delete)="deleteArea($event)"
 	></mh-area-list>
 	<mh-rooms-grid *ngIf="selectedArea" class="rooms" [rooms]="rooms"></mh-rooms-grid>
 </div>

@@ -16,6 +16,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatStepperModule } from '@angular/material/stepper';
 
 import { MudListComponent } from './mud-list/mud-list.component';
 import { MyGamesComponent } from './my-games/my-games.component';
@@ -74,6 +76,8 @@ import { RoomsGridComponent } from './mud-config/rooms/rooms-grid/rooms-grid.com
 		MatIconModule,
 		SharedModule,
 		MatSnackBarModule,
+		MatExpansionModule,
+		MatStepperModule,
 	],
 })
 export class HomeModule {}

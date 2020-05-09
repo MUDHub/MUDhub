@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { environment as env } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { IAreaCreateRequest } from '../model/areas/AreaDTO';
+import { IAreaCreateRequest, IAreaCreateResponse } from '../model/areas/AreaDTO';
+import { IArea } from '../model/areas/IArea';
+import { IRoom } from '../model/areas/IRoom';
 
 @Injectable({
 	providedIn: 'root',
@@ -12,7 +14,7 @@ export class AreaService {
 	/* ##### AREAS ##### */
 	public async getAreasForMUD(mudid: string) {
 		return await this.http
-			.get(`${env.api.url}/muds/${mudid}/areas`)
+			.get<IArea[]>(`${env.api.url}/muds/${mudid}/areas`)
 			.toPromise();
 	}
 
@@ -24,7 +26,7 @@ export class AreaService {
 
 	public async createArea(mudid: string, area: IAreaCreateRequest) {
 		return await this.http
-			.post(`${env.api.url}/muds/${mudid}/areas`, area)
+			.post<IAreaCreateResponse>(`${env.api.url}/muds/${mudid}/areas`, area)
 			.toPromise();
 	}
 
@@ -37,7 +39,7 @@ export class AreaService {
 	/* ##### ROOMS ##### */
 	public async getRooms(mudid: string, areaid: string) {
 		return await this.http
-			.get(`${env.api.url}/muds/${mudid}/areas/${areaid}/rooms`)
+			.get<IRoom[]>(`${env.api.url}/muds/${mudid}/areas/${areaid}/rooms`)
 			.toPromise();
 	}
 }

@@ -1,4 +1,4 @@
-@import "src/variables.scss";
+@import 'src/variables.scss';
 
 :host {
 	background-color: #fff;
@@ -13,6 +13,7 @@
 
 .area {
 	padding: 1rem;
+	position: relative;
 	border-bottom: 1px solid rgba(0, 0, 0, 0.3);
 	border-left: 2px solid transparent;
 	width: 100%;
@@ -23,6 +24,12 @@
 	&.active {
 		color: #000;
 		border-left-color: $color-primary;
+
+		&:hover {
+			.delete {
+				display: block;
+			}
+		}
 	}
 }
 
@@ -30,4 +37,41 @@
 	padding: 0.5rem;
 	font-weight: bold;
 	cursor: pointer;
+	width: 100%;
+	text-align: center;
+}
+
+.delete {
+	display: none;
+	position: absolute;
+	top: 50%;
+	right: 1rem;
+	transform: translateY(-50%);
+	height: 1.5rem;
+	width: 1.5rem;
+
+	border-radius: 50%;
+
+	&:hover {
+		background-color: #eee;
+	}
+
+	span {
+		display: block;
+		width: 50%;
+		height: 1px;
+		background-color: #444;
+
+		position: absolute;
+		top: 50%;
+		left: 50%;
+
+		&:first-child {
+			transform: translate(-50%, -50%) rotate(45deg);
+		}
+
+		&:last-child {
+			transform: translate(-50%, -50%) rotate(-45deg);
+		}
+	}
 }

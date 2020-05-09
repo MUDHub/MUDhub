@@ -14,6 +14,7 @@ export class AreaListComponent implements OnInit {
 
 	@Output() newArea = new EventEmitter();
 	@Output() select = new EventEmitter<IArea>();
+	@Output() delete = new EventEmitter<IArea>();
 
 	ngOnInit(): void {}
 }

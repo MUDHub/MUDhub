@@ -28,7 +28,7 @@ namespace MUDhub.Server.Controllers
         [HttpGet("rooms")]
         [ProducesResponseType(typeof(IEnumerable<RoomApiModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(IEnumerable<RoomApiModel>), StatusCodes.Status400BadRequest)]
-        public ActionResult<IActionResult> GetAllRooms([FromRoute] string mudId, [FromRoute] string areaId)
+        public IActionResult GetAllRooms([FromRoute] string mudId, [FromRoute] string areaId)
         {
             return Ok(_context.Rooms.Where(r => r.GameId == mudId && r.Area.Id == areaId)
                 .AsEnumerable()

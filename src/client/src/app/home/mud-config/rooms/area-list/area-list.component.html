@@ -1,5 +1,11 @@
 <div class="area" *ngFor="let area of areas" [class.active]="selectedArea === area" (click)="select.emit(area)">
-	{{ area.name }}
+	<div class="name">
+		{{ area.name }}
+	</div>
+	<div class="delete" (click)="delete.emit(area)">
+		<span></span>
+		<span></span>
+	</div>
 </div>
 <div class="add-area" (click)="newArea.emit()">
 	+
