@@ -1,0 +1,23 @@
+<div class="container">
+	<h1>{{ position.x }} | {{ position.y }}</h1>
+	<form class="form" [formGroup]="form">
+		<mat-form-field class="form-row">
+			<mat-label>Name</mat-label>
+			<input matInput type="text" formControlName="name">
+		</mat-form-field>
+		<mat-form-field class="form-row">
+			<mat-label>Beschreibung</mat-label>
+			<input matInput type="text" formControlName="description">
+		</mat-form-field>
+		<div class="form-row">
+			<mat-checkbox formControlName="isDefault">Eintrittsraum</mat-checkbox>
+		</div>
+		<div class="form-row">
+			<input type="file">
+		</div>
+	</form>
+	<div class="actions">
+		<button mat-button [disabled]="form.invalid" (click)="onCreate()">Erstellen</button>
+		<button mat-button routerLink="../">Abbrechen</button>
+	</div>
+</div>

@@ -1,32 +1,70 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { IRoom } from 'src/app/model/areas/IRoom';
+import { VirtualTimeScheduler } from 'rxjs';
+import { AreaService } from 'src/app/services/area.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
 	selector: 'mh-rooms-grid',
 	templateUrl: './rooms-grid.component.html',
 	styleUrls: ['./rooms-grid.component.scss'],
 })
-export class RoomsGridComponent {
-	constructor() {}
+export class RoomsGridComponent implements OnInit {
+	constructor(
+		private route: ActivatedRoute,
+		private areaService: AreaService
+	) {}
 
-	@Input() rooms: IRoom[][];
+	mudid: string;
+	areaid: string;
+	rooms: IRoom[][] = [[]];
+
+	async ngOnInit() {
+		this.route.params.subscribe(async (params) => {
+			this.mudid = params.mudid;
+			this.areaid = params.areaid;
+			const rooms = await this.areaService.getRooms(this.mudid, this.areaid);
+			this.rooms = this.mapRooms(rooms);
+		});
+	}
 
 	get width() {
 		return this.rooms[this.rooms.length - 1]?.length;
 	}
 
-	set width(value: number) {
-		if (value > 0) {
-			if (value > this.width) {
-				const width = this.width;
-				for (const row of this.rooms) {
-					while (value > row.length) {
-						row.push(undefined);
-					}
+	addColumn() {
+		if (this.width < 6) {
+			for (const row of this.rooms) {
+				row.push(undefined);
+			}
+		}
+	}
+
+	removeColumn() {
+		if (this.rooms[this.rooms.length - 1].length > 1) {
+			let isSafe = true;
+			for (const row of this.rooms) {
+				if (row[row.length - 1] !== undefined) {
+					isSafe = false;
 				}
-			} else if (value < this.width) {
+			}
+
+			if (isSafe) {
 				for (const row of this.rooms) {
-					row.splice(value, 1);
+					row.pop();
+				}
+			} else {
+				if (
+					confirm(
+						'Durch diese Aktion werden Räume gelöscht! Fortfahren?'
+					)
+				) {
+					for (const row of this.rooms) {
+						const room = row.pop();
+						if (room) {
+							// TODO: delete // this.delete.emit(room);
+						}
+					}
 				}
 			}
 		}
@@ -36,15 +74,55 @@ export class RoomsGridComponent {
 		return this.rooms.length;
 	}
 
-	set height(value: number) {
-		if (value > 0) {
-			if (value > this.height) {
-				while (value > this.rooms.length) {
-					this.rooms.push(new Array(this.width).fill(undefined));
+	addRow() {
+		if (this.height < 6) {
+			this.rooms.push(new Array(this.width).fill(undefined));
+		}
+	}
+
+	removeRow() {
+		if (this.rooms.length > 1) {
+			const isSafe = !this.rooms[this.rooms.length - 1].some(
+				r => r !== undefined
+			);
+			if (isSafe) {
+				this.rooms.pop();
+			} else {
+				if (
+					confirm(
+						'Durch diese Aktion werden Räume gelöscht! Fortfahren?'
+					)
+				) {
+					const toDelete = this.rooms[this.rooms.length - 1].filter(
+						r => r !== undefined
+					);
+
+					for (const room of toDelete) {
+						// TODO: delete // this.delete.emit(room);
+					}
+
+					this.rooms.pop();
 				}
-			} else if (value < this.height) {
-				this.rooms.splice(value , 1);
 			}
 		}
+	}
+
+	private mapRooms(roomList: IRoom[]): IRoom[][] {
+		const matrix: IRoom[][] = [[]];
+		for (const room of roomList) {
+			while (matrix.length <= room.y) {
+				matrix.push(new Array(matrix[matrix.length - 1].length));
+			}
+
+			for (const row of matrix) {
+				while (row.length <= room.x) {
+					row.push(undefined);
+				}
+			}
+
+			matrix[room.y][room.x] = room;
+		}
+
+		return matrix;
 	}
 }

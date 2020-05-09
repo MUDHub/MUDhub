@@ -9,7 +9,6 @@ using MUDhub.Core.Abstracts.Models.Areas;
 using MUDhub.Core.Abstracts.Models.Connections;
 using MUDhub.Core.Abstracts.Models.Rooms;
 using MUDhub.Core.Configurations;
-using MUDhub.Core.Models;
 using MUDhub.Core.Models.Connections;
 using MUDhub.Core.Models.Users;
 using System;
@@ -42,16 +41,34 @@ namespace MUDhub.Core.Services
             var userManager = serviceScope.ServiceProvider.GetRequiredService<IUserManager>();
             var areaManager = serviceScope.ServiceProvider.GetRequiredService<IAreaManager>();
 
+            if (_options.DeleteDatabase)
+            {
+                _logger?.LogWarning("Database will be deleted.");
+                context.Database.EnsureDeleted();
+            }
+            if (context.Database.IsSqlite())
+            {
+
+                _logger?.LogWarning("The Server may has a new Data schema Version, sqlite don't support some Migration operations. " +
+                                    "The old database must be deleted and a will be automatically created. " +
+                                    $"Delete database manually or set '{nameof(DatabaseConfiguration.DeleteDatabase)}' option to 'true'.");
+                context.Database.EnsureCreated();
+            }
+            else
+            {
+                context.Database.Migrate();
+            }
+
             var userExists = true;
             if (_options.CreateDefaultUser)
             {
-                userExists = await CreateDefaultUserAsnyc(context,userManager)
+                userExists = await CreateDefaultUserAsnyc(context, userManager)
                          .ConfigureAwait(false);
             }
 
             if (_options.CreateDefaultMudData && userExists)
             {
-                await CreateDefaultMudDataAsync(context,mudManager,areaManager)
+                await CreateDefaultMudDataAsync(context, mudManager, areaManager)
                         .ConfigureAwait(false);
             }
         }
@@ -145,6 +162,8 @@ namespace MUDhub.Core.Services
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
-            => Task.CompletedTask;
+        {
+            return Task.CompletedTask;
+        }
     }
 }

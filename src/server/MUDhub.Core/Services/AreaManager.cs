@@ -249,7 +249,7 @@ namespace MUDhub.Core.Services
 
             if (args.IsDefaultRoom)
             {
-                foreach (var otherRoom in area.Rooms)
+                foreach (var otherRoom in area.Game.Areas.SelectMany(a => a.Rooms))
                 {
                     otherRoom.IsDefaultRoom = false;
                 }
@@ -641,7 +641,7 @@ namespace MUDhub.Core.Services
             }
             if (args.IsDefaultRoom)
             {
-                foreach (var otherRoom in room.Area.Rooms)
+                foreach (var otherRoom in room.Area.Game.Areas.SelectMany(r => r.Rooms))
                 {
                     otherRoom.IsDefaultRoom = false;
                 }

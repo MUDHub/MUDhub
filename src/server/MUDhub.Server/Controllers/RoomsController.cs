@@ -69,7 +69,8 @@ namespace MUDhub.Server.Controllers
             return BadRequest(new RoomDeleteResponse()
             {
                 Succeeded = false,
-                Errormessage = $"Room with the Id: {roomId} does not exist!"
+                Errormessage = result.Errormessage,
+                IsDefaultRoom = result.IsDefaultRoom
             });
         }
 
