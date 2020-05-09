@@ -6,8 +6,10 @@ using MUDhub.Core.Abstracts.Models.Connections;
 using MUDhub.Core.Abstracts.Models.Rooms;
 using MUDhub.Core.Models;
 using MUDhub.Core.Models.Connections;
+using MUDhub.Core.Models.Muds;
 using MUDhub.Core.Models.Rooms;
 using MUDhub.Core.Models.Users;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -37,32 +39,35 @@ namespace MUDhub.Core.Services
             var user = await GetUserById(userId).ConfigureAwait(false);
             if (user is null)
             {
-                _logger?.LogWarning($"No user with the UserId: {userId} was found.");
+                var message = $"No user with the UserId: '{userId}' was found.";
+                _logger?.LogWarning(message);
                 return new AreaResult()
                 {
                     Success = false,
-                    Errormessage = $"No user with the UserId: {userId} was found."
+                    Errormessage = message
                 };
             }
             var mud = await _context.MudGames.FindAsync(mudId)
                 .ConfigureAwait(false);
             if (mud is null)
             {
-                _logger?.LogWarning($"No MUDGame found with the MudGameId: {mudId}");
+                var message = $"No MUDGame found with the MudGameId: '{mudId}'";
+                _logger?.LogWarning(message);
                 return new AreaResult()
                 {
                     Success = false,
-                    Errormessage = $"No MUDGame found with the MudGameId: {mudId}"
+                    Errormessage = message
                 };
             }
 
             if (!IsUserOwner(user, mud.Id))
             {
-                _logger?.LogWarning($"The user: {user.Lastname} is not the owner of the MudGame: {mud.Name}");
+                var message = $"The user: '{user.Lastname}' is not the owner of the MudGame: '{mud.Name}'";
+                _logger?.LogWarning(message);
                 return new AreaResult()
                 {
                     Success = false,
-                    Errormessage = $"The user: {user.Lastname} is not the owner of the MudGame: {mud.Name}"
+                    Errormessage = message
                 };
             }
 
@@ -75,7 +80,7 @@ namespace MUDhub.Core.Services
             _context.Areas.Add(area);
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
-            _logger?.LogInformation($"The area: {area.Name} was created in MudGame: {mud.Name}");
+            _logger?.LogInformation($"The area: '{area.Name}' with id '{area.Id}' was created in MudGame: '{mud.Name}'");
             return new AreaResult()
             {
                 Area = area
@@ -96,21 +101,23 @@ namespace MUDhub.Core.Services
             var user = await GetUserById(userId).ConfigureAwait(false);
             if (user is null)
             {
-                _logger?.LogWarning($"No user with the UserId: {userId} was found.");
+                var message = $"No user with the UserId: '{userId}' was found.";
+                _logger?.LogWarning(message);
                 return new ConnectionResult()
                 {
                     Success = false,
-                    Errormessage = $"No user with the UserId: {userId} was found."
+                    Errormessage = message
                 };
             }
 
             if (room1Id == room2Id)
             {
-                _logger?.LogWarning($"Rooms {room1Id} and {room2Id} are identical. A connection is not possible.");
+                var message = $"Rooms '{room1Id}' and '{room2Id}' are identical. A connection is not possible.";
+                _logger?.LogWarning(message);
                 return new ConnectionResult()
                 {
                     Success = false,
-                    Errormessage = $"Rooms {room1Id} and {room2Id} are identical. A connection is not possible."
+                    Errormessage = message
                 };
             }
 
@@ -118,11 +125,12 @@ namespace MUDhub.Core.Services
                 .ConfigureAwait(false);
             if (room1 is null)
             {
-                _logger?.LogWarning($"No Room found with the RoomId: {room1Id}");
+                var message = $"No Room found with the RoomId: '{room1Id}'";
+                _logger?.LogWarning(message);
                 return new ConnectionResult()
                 {
                     Success = false,
-                    Errormessage = $"No Room found with the RoomId: {room1Id}"
+                    Errormessage = message
                 };
             }
 
@@ -130,30 +138,33 @@ namespace MUDhub.Core.Services
                 .ConfigureAwait(false);
             if (room2 is null)
             {
-                _logger?.LogWarning($"No Room found with the RoomId: {room2Id}");
+                var message = $"No Room found with the RoomId: '{room2Id}'";
+                _logger?.LogWarning(message);
                 return new ConnectionResult()
                 {
                     Success = false,
-                    Errormessage = $"No Room found with the RoomId: {room2Id}"
+                    Errormessage = message
                 };
             }
             if (room1.GameId != room2.GameId)
             {
-                _logger?.LogWarning($"The rooms {room1.Name} and {room2.Name} are not in the same MudGame.");
+                var message = $"The rooms '{room1.Name}' and '{room2.Name}' are not in the same MudGame.";
+                _logger?.LogWarning(message);
                 return new ConnectionResult()
                 {
                     Success = false,
-                    Errormessage = $"The rooms {room1.Name} and {room2.Name} are not in the same MudGame."
+                    Errormessage = message
                 };
             }
 
             if (!IsUserOwner(user, room1.GameId))
             {
-                _logger?.LogWarning($"The user: {user.Lastname} is not the owner of the MudGame: {room1.GameId}");
+                var message = $"The user: '{user.Lastname}' is not the owner of the MudGame: '{room1.GameId}'";
+                _logger?.LogWarning(message);
                 return new ConnectionResult()
                 {
                     Success = false,
-                    Errormessage = $"The user: {user.Lastname} is not the owner of the MudGame: {room1.GameId}"
+                    Errormessage = message
                 };
             }
 
@@ -191,32 +202,35 @@ namespace MUDhub.Core.Services
             var user = await GetUserById(userId).ConfigureAwait(false);
             if (user is null)
             {
-                _logger?.LogWarning($"No user with the UserId: {userId} was found.");
+                var message = $"No user with the UserId: '{userId}' was found.";
+                _logger?.LogWarning(message);
                 return new RoomResult()
                 {
                     Success = false,
-                    Errormessage = $"No user with the UserId: {userId} was found."
+                    Errormessage = message
                 };
             }
             var area = await _context.Areas.FindAsync(areaId)
                 .ConfigureAwait(false);
             if (area is null)
             {
-                _logger?.LogWarning($"No area with the AreaId: {areaId} was found.");
+                var message = $"No area with the AreaId: '{areaId}' was found.";
+                _logger?.LogWarning(message);
                 return new RoomResult()
                 {
                     Success = false,
-                    Errormessage = $"No area with the AreaId: {areaId} was found."
+                    Errormessage = message
                 };
             }
 
             if (!IsUserOwner(user, area.GameId))
             {
-                _logger?.LogWarning($"The user: {user.Lastname} is not the owner of the MudGame: {area.Game.Name}");
+                var message = $"The user: '{user.Lastname}' is not the owner of the MudGame: '{area.Game.Name}'";
+                _logger?.LogWarning(message);
                 return new RoomResult()
                 {
                     Success = false,
-                    Errormessage = $"The user: {user.Lastname} is not the owner of the MudGame: {area.Game.Name}"
+                    Errormessage = message
                 };
             }
 
@@ -224,11 +238,12 @@ namespace MUDhub.Core.Services
                                              .ConfigureAwait(false);
             if (roomXy != null)
             {
-                _logger?.LogWarning($"At position X: {args.X} and Y: {args.Y} there is already a room");
+                var message = $"At position X: '{args.X}' and Y: '{args.Y}' there is already a room";
+                _logger?.LogWarning(message);
                 return new RoomResult()
                 {
                     Success = false,
-                    Errormessage = $"At position X: {args.X} and Y: {args.Y} there is already a room"
+                    Errormessage = message
                 };
             }
 
@@ -254,13 +269,12 @@ namespace MUDhub.Core.Services
             _context.Rooms.Add(room);
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
-            _logger?.LogInformation($"A room: {room.Id} was created in area: {area.Name}");
+            _logger?.LogInformation($"A room: '{room.Id}' was created in area: '{area.Name}'");
             return new RoomResult()
             {
                 Room = room
             };
         }
-
 
         /// <summary>
         /// An area is being removed from the MudGame.
@@ -273,11 +287,12 @@ namespace MUDhub.Core.Services
             var user = await GetUserById(userId).ConfigureAwait(false);
             if (user is null)
             {
-                _logger?.LogWarning($"No user with the UserId: {userId} was found.");
+                var message = $"No user with the UserId: '{userId}' was found.";
+                _logger?.LogWarning(message);
                 return new AreaResult()
                 {
                     Success = false,
-                    Errormessage = $"No user with the UserId: {userId} was found."
+                    Errormessage = message
                 };
             }
 
@@ -285,32 +300,35 @@ namespace MUDhub.Core.Services
                 .ConfigureAwait(false);
             if (area is null)
             {
-                _logger?.LogWarning($"No area with the AreaId: {areaId} was found.");
+                var message = $"No area with the AreaId: '{areaId}' was found.";
+                _logger?.LogWarning(message);
                 return new AreaResult()
                 {
                     Success = false,
-                    Errormessage = $"No area with the AreaId: {areaId} was found."
+                    Errormessage = message
                 };
             }
 
             if (!IsUserOwner(user, area.GameId))
             {
-                _logger?.LogWarning($"The user: {user.Lastname} is not the owner of the MudGame: {area.Game.Name}");
+                var message = $"The user: '{user.Lastname}' is not the owner of the MudGame: '{area.Game.Name}'";
+                _logger?.LogWarning(message);
                 return new AreaResult()
                 {
                     Success = false,
-                    Errormessage = $"The user: {user.Lastname} is not the owner of the MudGame: {area.Game.Name}"
+                    Errormessage = message
                 };
             }
 
             var isDefault = area.Rooms.Any(r => r.IsDefaultRoom);
             if (isDefault)
             {
-                _logger?.LogWarning($"Area: {area.Name} could not be deleted because it has a default room");
+                var message = $"Area: {area.Name} could not be deleted because it has a default room";
+                _logger?.LogWarning(message);
                 return new AreaResult()
                 {
                     Success = false,
-                    Errormessage = $"Area: {area.Name} could not be deleted because it has a default room",
+                    Errormessage = message,
                     Area = area
                 };
             }
@@ -324,7 +342,7 @@ namespace MUDhub.Core.Services
             _context.Areas.Remove(area);
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
-            _logger?.LogInformation($"The area: {area.Name} has been removed from the MudGame: {area.Game.Name}");
+            _logger?.LogInformation($"The area: '{area.Name}' has been removed from the MudGame: '{area.Game.Name}'");
             return new AreaResult()
             {
                 Area = area
@@ -342,11 +360,12 @@ namespace MUDhub.Core.Services
             var user = await GetUserById(userId).ConfigureAwait(false);
             if (user is null)
             {
-                _logger?.LogWarning($"No user with the UserId: {userId} was found.");
+                var message = $"No user with the UserId: '{userId}' was found.";
+                _logger?.LogWarning(message);
                 return new ConnectionResult()
                 {
                     Success = false,
-                    Errormessage = $"No user with the UserId: {userId} was found."
+                    Errormessage = message
                 };
             }
 
@@ -354,28 +373,30 @@ namespace MUDhub.Core.Services
                 .ConfigureAwait(false);
             if (connection is null)
             {
-                _logger?.LogWarning($"No room connection with the connectionId: {connectionId} was found.");
+                var message = $"No room connection with the connectionId: '{connectionId}' was found.";
+                _logger?.LogWarning(message);
                 return new ConnectionResult()
                 {
                     Success = false,
-                    Errormessage = $"No room connection with the connectionId: {connectionId} was found."
+                    Errormessage = message
                 };
             }
 
             if (!IsUserOwner(user, connection.Room1.GameId))
             {
-                _logger?.LogWarning($"The user: {user.Lastname} is not the owner of the MudGame: {connection.Room1.GameId}");
+                var message = $"The user: {user.Lastname} is not the owner of the MudGame: {connection.Room1.GameId}";
+                _logger?.LogWarning(message);
                 return new ConnectionResult()
                 {
                     Success = false,
-                    Errormessage = $"The user: {user.Lastname} is not the owner of the MudGame: {connection.Room1.GameId}"
+                    Errormessage = message
                 };
             }
 
             _context.RoomConnections.Remove(connection);
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
-            //_logger?.LogInformation($"The room connection: {connection.Id} has been removed from the MudGame: {connection.Room1.GameId}");
+            _logger?.LogInformation($"The room connection: '{connection.Id}' has been removed from the MudGame: '{connection.Room1.GameId}'");
             return new ConnectionResult()
             {
                 RoomConnection = connection
@@ -393,11 +414,12 @@ namespace MUDhub.Core.Services
             var user = await GetUserById(userId).ConfigureAwait(false);
             if (user is null)
             {
-                _logger?.LogWarning($"No user with the UserId: {userId} was found.");
+                var message = $"No user with the UserId: '{userId}' was found.";
+                _logger?.LogWarning(message);
                 return new RoomResult()
                 {
                     Success = false,
-                    Errormessage = $"No user with the UserId: {userId} was found."
+                    Errormessage = message
                 };
             }
 
@@ -405,31 +427,34 @@ namespace MUDhub.Core.Services
                 .ConfigureAwait(false);
             if (room is null)
             {
-                _logger?.LogWarning($"No room with the RoomId: {roomId} was found.");
+                var message = $"No room with the RoomId: '{roomId}' was found.";
+                _logger?.LogWarning(message);
                 return new RoomResult()
                 {
                     Success = false,
-                    Errormessage = $"No room with the RoomId: {roomId} was found."
+                    Errormessage = message
                 };
             }
 
             if (!IsUserOwner(user, room.Area.GameId))
             {
-                _logger?.LogWarning($"The user: {user.Lastname} is not the owner of the MudGame: {room.GameId}");
+                var message = $"The user: {user.Lastname} is not the owner of the MudGame: {room.GameId}";
+                _logger?.LogWarning(message);
                 return new RoomResult()
                 {
                     Success = false,
-                    Errormessage = $"The user: {user.Lastname} is not the owner of the MudGame: {room.GameId}"
+                    Errormessage = message
                 };
             }
 
             if (room.IsDefaultRoom)
             {
-                _logger?.LogWarning($"Room: {room.Name} could not be deleted because it is a default room");
+                var message = $"Room: '{room.Name}' could not be deleted because it is a default room";
+                _logger?.LogWarning(message);
                 return new RoomResult()
                 {
                     Success = false,
-                    Errormessage = $"Room: {room.Name} could not be deleted because it is a default room",
+                    Errormessage = message,
                     Room = room,
                     IsDefaultRoom = true
                 };
@@ -444,7 +469,7 @@ namespace MUDhub.Core.Services
             _context.Rooms.Remove(room);
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
-            _logger?.LogInformation($"The room: {room.Name} has been removed from the MudGame: {room.GameId}");
+            _logger?.LogInformation($"The room: '{room.Name}' with the id: '{room.Id}' has been removed from the MudGame: '{room.Game.Name}' with the id '{room.GameId}'");
             return new RoomResult()
             {
                 Room = room
@@ -463,11 +488,12 @@ namespace MUDhub.Core.Services
             var user = await GetUserById(userId).ConfigureAwait(false);
             if (user is null)
             {
-                _logger?.LogWarning($"No user with the UserId: {userId} was found.");
+                var message = $"No user with the UserId: '{userId}' was found.";
+                _logger?.LogWarning(message);
                 return new AreaResult()
                 {
                     Success = false,
-                    Errormessage = $"No user with the UserId: {userId} was found."
+                    Errormessage = message
                 };
             }
 
@@ -475,21 +501,23 @@ namespace MUDhub.Core.Services
                 .ConfigureAwait(false);
             if (area is null)
             {
-                _logger?.LogWarning($"No area with the AreaId: {areaId} was found.");
+                var message = $"No area with the AreaId: '{areaId}' was found.";
+                _logger?.LogWarning(message);
                 return new AreaResult()
                 {
                     Success = false,
-                    Errormessage = $"No area with the AreaId: {areaId} was found."
+                    Errormessage = message
                 };
             }
 
             if (!IsUserOwner(user, area.GameId))
             {
-                _logger?.LogWarning($"The user: {user.Lastname} is not the owner of the MudGame: {area.Game.Name}");
+                var message = $"The user: '{user.Lastname}' is not the owner of the MudGame: '{area.Game.Name}'";
+                _logger?.LogWarning(message);
                 return new AreaResult()
                 {
                     Success = false,
-                    Errormessage = $"The user: {user.Lastname} is not the owner of the MudGame: {area.Game.Name}"
+                    Errormessage = message
                 };
             }
 
@@ -505,7 +533,9 @@ namespace MUDhub.Core.Services
 
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
-            _logger?.LogInformation($"The area: {area.Name} was updated");
+            _logger?.LogInformation($"The area: '{area.Name}' was updated {Environment.NewLine}" +
+                $"- Name: {args.Name} {Environment.NewLine}" +
+                $"- Description: {args.Description}");
             return new AreaResult()
             {
                 Area = area
@@ -524,44 +554,41 @@ namespace MUDhub.Core.Services
             var user = await GetUserById(userId).ConfigureAwait(false);
             if (user is null)
             {
-                _logger?.LogWarning($"No user with the UserId: {userId} was found.");
+                var message = $"No user with the UserId: '{userId}' was found.";
+                _logger?.LogWarning(message);
                 return new ConnectionResult()
                 {
                     Success = false,
-                    Errormessage = $"No user with the UserId: {userId} was found."
+                    Errormessage = message
                 };
             }
             var connection = await _context.RoomConnections.FindAsync(connectionId)
                 .ConfigureAwait(false);
             if (connection is null)
             {
-                _logger?.LogWarning($"No room connection with the connectionId: {connectionId} was found.");
+                var message = $"No room connection with the connectionId: '{connectionId}' was found.";
+                _logger?.LogWarning(message);
                 return new ConnectionResult()
                 {
                     Success = false,
-                    Errormessage = $"No room connection with the connectionId: {connectionId} was found."
+                    Errormessage = message
                 };
             }
 
             if (!IsUserOwner(user, connection.Room1.GameId))
             {
-                _logger?.LogWarning($"The user: {user.Lastname} is not the owner of the MudGame: {connection.Room1.GameId}");
+                var message = $"The user: '{user.Lastname}' is not the owner of the MudGame: '{connection.Room1.GameId}'.";
+                _logger?.LogWarning(message);
                 return new ConnectionResult()
                 {
                     Success = false,
-                    Errormessage = $"The user: {user.Lastname} is not the owner of the MudGame: {connection.Room1.GameId}"
+                    Errormessage = message
                 };
             }
-
-            if (args.Description != null)
-            {
-                connection.Description = args.Description;
-            }
-
+            connection.Description = args.Description;
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
-            //Todo: update connectionid
-            //_logger?.LogInformation($"The room connection: {connection.room} was updated");
+            _logger?.LogInformation($"The room connection: '{connection.Id}' was updated");
             return new ConnectionResult()
             {
                 RoomConnection = connection
@@ -580,11 +607,12 @@ namespace MUDhub.Core.Services
             var user = await GetUserById(userId).ConfigureAwait(false);
             if (user is null)
             {
-                _logger?.LogWarning($"No user with the UserId: {userId} was found.");
+                var message = $"No user with the UserId: '{userId}' was found.";
+                _logger?.LogWarning(message);
                 return new RoomResult()
                 {
                     Success = false,
-                    Errormessage = $"No user with the UserId: {userId} was found."
+                    Errormessage = message
                 };
             }
 
@@ -592,21 +620,23 @@ namespace MUDhub.Core.Services
                 .ConfigureAwait(false);
             if (room is null)
             {
-                _logger?.LogWarning($"No room with the RoomId: {roomId} was found.");
+                var message = $"No room with the RoomId: '{roomId}' was found.";
+                _logger?.LogWarning(message);
                 return new RoomResult()
                 {
                     Success = false,
-                    Errormessage = $"No room with the RoomId: {roomId} was found."
+                    Errormessage = message
                 };
             }
 
             if (!IsUserOwner(user, room.GameId))
             {
-                _logger?.LogWarning($"The user: {user.Lastname} is not the owner of the MudGame: {room.GameId}");
+                var message = $"The user: '{user.Lastname}' is not the owner of the MudGame: '{room.GameId}'";
+                _logger?.LogWarning(message);
                 return new RoomResult()
                 {
                     Success = false,
-                    Errormessage = $"The user: {user.Lastname} is not the owner of the MudGame: {room.GameId}"
+                    Errormessage = message
                 };
             }
             if (args.IsDefaultRoom)
@@ -636,7 +666,10 @@ namespace MUDhub.Core.Services
 
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
-            _logger?.LogInformation($"The room: {room.Name} was updated");
+            _logger?.LogInformation($"The room: '{room.Name}' was updated: {Environment.NewLine}" +
+                $"- Name: {args.Name ?? "<no modification>"} {Environment.NewLine}" +
+                $"- Name: {args.Description ?? "<no modification>"} {Environment.NewLine}" + 
+                $"- Name: {args.ImageKey ?? "<no modification>"}");
             return new RoomResult()
             {
                 Room = room

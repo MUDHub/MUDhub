@@ -57,7 +57,7 @@ namespace MUDhub.Server.Controllers
         [ProducesResponseType(typeof(AreaDeleteResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(AreaDeleteResponse), StatusCodes.Status400BadRequest)]
 
-        public async Task<ActionResult<AreaDeleteResponse>> DeleteArea([FromRoute] string areaId)
+        public async Task<IActionResult> DeleteArea([FromRoute] string areaId)
         {
             var result = await _areaManager.RemoveAreaAsync(HttpContext.GetUserId(), areaId)
                 .ConfigureAwait(false);

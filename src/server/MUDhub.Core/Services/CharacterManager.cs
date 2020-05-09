@@ -209,21 +209,33 @@ namespace MUDhub.Core.Services
             if (isOwner)
             {
                 var mud = await _context.GetMudByIdAsnyc(mudid).ConfigureAwait(false);
-
-                var characterRace = new CharacterRace
+                if (mud is null)
                 {
-                    Game = mud,
-                    Description = args.Desctiption,
-                    Name = args.Name
-                };
-                _context.Races.Add(characterRace);
-                await _context.SaveChangesAsync().ConfigureAwait(false);
-                _logger?.LogInformation($"Successfully created new CharacterClass '{characterRace.Name}' with id: '{characterRace.Id}' in mudgame '{mudid}'");
-                return new CharacterRaceResult
+                    var errormessage = $"Mud with the id '{mudid}' does not exist.";
+                    _logger?.LogWarning(errormessage);
+                    return new CharacterRaceResult
+                    {
+                        Success = false,
+                        Errormessage = errormessage
+                    };
+                }
+                else
                 {
-                    Race = characterRace,
-                    Success = true
-                };
+                    var characterRace = new CharacterRace
+                    {
+                        Game = mud,
+                        Description = args.Desctiption,
+                        Name = args.Name
+                    };
+                    _context.Races.Add(characterRace);
+                    await _context.SaveChangesAsync().ConfigureAwait(false);
+                    _logger?.LogInformation($"Successfully created new CharacterClass '{characterRace.Name}' with id: '{characterRace.Id}' in mudgame '{mudid}'");
+                    return new CharacterRaceResult
+                    {
+                        Race = characterRace,
+                        Success = true
+                    };
+                }
             }
             else
             {
@@ -277,6 +289,7 @@ namespace MUDhub.Core.Services
                 var characterclass = mudgame.Classes.FirstOrDefault(c => c.Id == classId);
                 characterclass.Description = args.Desctiption;
                 characterclass.Name = args.Name;
+                characterclass.ImageKey = args.ImageKey;
                 _context.Classes.Update(characterclass);
                 await _context.SaveChangesAsync().ConfigureAwait(false);
                 _logger?.LogInformation($"Successfully updated new CharacterClass '{characterclass.Name}' with id: '{characterclass.Id}' in mudgame '{mudgame.Name}'");
@@ -329,6 +342,7 @@ namespace MUDhub.Core.Services
                 var characterrace = mudgame.Races.FirstOrDefault(c => c.Id == raceId);
                 characterrace.Description = args.Desctiption;
                 characterrace.Name = args.Name;
+                characterrace.ImageKey = args.ImageKey;
                 _context.Races.Update(characterrace);
                 await _context.SaveChangesAsync().ConfigureAwait(false);
                 _logger?.LogInformation($"Successfully updated new CharacterRace '{characterrace.Name}' with id: '{characterrace.Id}' in mudgame '{mudgame.Name}'");

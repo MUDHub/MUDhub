@@ -54,7 +54,9 @@ namespace MUDhub.Server.Controllers
         }
 
         [HttpDelete("rooms/{roomId}")]
-        public async Task<ActionResult<RoomDeleteResponse>> DeleteRoom([FromRoute] string roomId)
+        [ProducesResponseType(typeof(RoomDeleteResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(RoomDeleteResponse), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> DeleteRoom([FromRoute] string roomId)
         {
 
             var result = await _areaManager.RemoveRoomAsync(HttpContext.GetUserId(), roomId)
@@ -73,6 +75,8 @@ namespace MUDhub.Server.Controllers
         }
 
         [HttpPost("rooms")]
+        [ProducesResponseType(typeof(CreateRoomResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(CreateRoomResponse), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateRoom([FromRoute] string areaId, [FromBody] CreateRoomRequest args)
         {
             if (args is null)
@@ -96,6 +100,8 @@ namespace MUDhub.Server.Controllers
         }
 
         [HttpPut("rooms/{roomId}")]
+        [ProducesResponseType(typeof(UpdateRoomResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(UpdateRoomResponse), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateRoom([FromRoute] string roomId, [FromBody] UpdateRoomRequest args)
         {
             if (args is null)
