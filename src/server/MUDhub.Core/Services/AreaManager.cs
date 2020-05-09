@@ -328,7 +328,8 @@ namespace MUDhub.Core.Services
                 {
                     Success = false,
                     Errormessage = message,
-                    Area = area
+                    Area = area,
+                    DisplayMessage = "Das Gebiet konnte nicht gelöscht werde, da den Eintrittsraum enthält."
                 };
             }
 
@@ -667,8 +668,8 @@ namespace MUDhub.Core.Services
                 .ConfigureAwait(false);
             _logger?.LogInformation($"The room: '{room.Name}' was updated: {Environment.NewLine}" +
                 $"- Name: {args.Name ?? "<no modification>"} {Environment.NewLine}" +
-                $"- Name: {args.Description ?? "<no modification>"} {Environment.NewLine}" + 
-                $"- Name: {args.ImageKey ?? "<no modification>"}");
+                $"- Description: {args.Description ?? "<no modification>"} {Environment.NewLine}" + 
+                $"- ImageKey: {args.ImageKey ?? "<no modification>"}");
             return new RoomResult()
             {
                 Room = room

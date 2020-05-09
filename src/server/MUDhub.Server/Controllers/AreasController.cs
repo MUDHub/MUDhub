@@ -69,7 +69,8 @@ namespace MUDhub.Server.Controllers
             return BadRequest(new AreaDeleteResponse()
             {
                 Succeeded = false,
-                Errormessage = result.Errormessage
+                Errormessage = result.Errormessage,
+                DisplayMessage = result.DisplayMessage
             });
         }
 

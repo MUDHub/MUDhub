@@ -20,6 +20,6 @@ namespace MUDhub.Core.Models.Inventories
         public string Id { get; }
         public int Capacity { get; set; }
         public int UsedCapacity { get; set; }
-        public virtual ICollection<ItemInstance> Items { get; set; } = new Collection<ItemInstance>();
+        public virtual ICollection<ItemInstance> ItemInstances { get; set; } = new Collection<ItemInstance>();
     }
 }

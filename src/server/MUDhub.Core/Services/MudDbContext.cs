@@ -60,8 +60,7 @@ namespace MUDhub.Core.Services
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        { 
-
+        {
             //Configures MudGame
             modelBuilder.Entity<MudGame>()
                 .HasKey(mg => mg.Id);
@@ -148,12 +147,10 @@ namespace MUDhub.Core.Services
             //Configures RoomConnection
             modelBuilder.Entity<RoomConnection>()
                 .HasKey(rc => rc.Id);
-
             modelBuilder.Entity<RoomConnection>()
                 .HasOne(rc => rc.Room1)
                 .WithMany(r => r.Connections)
                 .HasForeignKey(rc => rc.Room1Id);
-
             modelBuilder.Entity<RoomConnection>()
                 .HasOne(rc => rc.Room2)
                 .WithMany()
@@ -170,6 +167,10 @@ namespace MUDhub.Core.Services
             //Configure Inventory
             modelBuilder.Entity<Inventory>()
                 .HasKey(it => it.Id);
+            modelBuilder.Entity<Inventory>()
+                .HasMany(i => i.ItemInstances)
+                .WithOne(ii => ii.Inventory)
+                .HasForeignKey(ii => ii.InventoryId);
         }
 
 
