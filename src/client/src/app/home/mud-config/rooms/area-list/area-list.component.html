@@ -7,7 +7,7 @@
 	<div class="name">
 		{{ area.name }}
 	</div>
-	<div class="delete">
+	<div class="delete" (click)="deleteArea(area)">
 		<span></span>
 		<span></span>
 	</div>
@@ -16,6 +16,6 @@
 <div class="area area-new" *ngIf="isFormActive">
 	<input type="text" class="" #nameInput (keydown.enter)="onAdd(nameInput)"/>
 </div>
-<div class="add-area" (click)="isFormActive = true">
+<div class="add-area" *ngIf="!isFormActive" (click)="isFormActive = true">
 	+
 </div>

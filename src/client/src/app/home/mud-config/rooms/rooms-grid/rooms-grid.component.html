@@ -33,6 +33,9 @@
 				+
 			</div>
 			<div class="room" *ngIf="room">
+				<div class="default-icon" *ngIf="room.isDefaultRoom">
+					<span>D</span>
+				</div>
 				{{ room?.name }}
 				<div class="overlay">
 					<button mat-button (click)="deleteRoom(room)">Löschen</button>

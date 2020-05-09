@@ -20,14 +20,33 @@ export class RoomsGridComponent implements OnInit {
 	rooms: IRoom[][] = [[]];
 
 	async ngOnInit() {
-		this.route.params.subscribe(async (params) => {
+		this.route.params.subscribe(async params => {
 			this.mudid = params.mudid;
 			this.areaid = params.areaid;
-			const rooms = await this.areaService.getRooms(this.mudid, this.areaid);
-			this.rooms = this.mapRooms(rooms);
+			const rooms = await this.areaService.getRooms(
+				this.mudid,
+				this.areaid
+			);
+			if (rooms.length > 0) {
+				this.rooms = this.mapRooms(rooms);
+			} else {
+				this.rooms = [
+					[undefined, undefined],
+					[undefined, undefined],
+				];
+			}
 		});
 
-		this.areaService.roomCreated$.subscribe(room => {
+		this.areaService.roomCreated$.subscribe(async room => {
+			if (room.isDefaultRoom) {
+				for (const row of this.rooms) {
+					for (const r of row) {
+						if (r && r.isDefaultRoom) {
+							r.isDefaultRoom = false;
+						}
+					}
+				}
+			}
 			this.rooms[room.y][room.x] = room;
 		});
 	}
@@ -66,7 +85,11 @@ export class RoomsGridComponent implements OnInit {
 					for (const row of this.rooms) {
 						const room = row.pop();
 						if (room) {
-							this.areaService.deleteRoom(this.mudid, this.areaid, room.roomId);
+							this.areaService.deleteRoom(
+								this.mudid,
+								this.areaid,
+								room.roomId
+							);
 						}
 					}
 				}
@@ -102,7 +125,11 @@ export class RoomsGridComponent implements OnInit {
 					);
 
 					for (const room of toDelete) {
-						this.areaService.deleteRoom(this.mudid, this.areaid, room.roomId);
+						this.areaService.deleteRoom(
+							this.mudid,
+							this.areaid,
+							room.roomId
+						);
 					}
 
 					this.rooms.pop();
@@ -130,17 +157,28 @@ export class RoomsGridComponent implements OnInit {
 		return matrix;
 	}
 
-
 	public async deleteRoom(room: IRoom) {
 		try {
-			await this.areaService.deleteRoom(this.mudid, this.areaid, room.roomId);
+			await this.areaService.deleteRoom(
+				this.mudid,
+				this.areaid,
+				room.roomId
+			);
+
+			for (const row of this.rooms) {
+				for (let r of row) {
+					if (room === r) {
+						r = undefined;
+					}
+				}
+			}
 		} catch (err) {
+			console.error('Error while deleting room');
 			if (err.error.isDefaultRoom) {
 				alert('Eintrittsräume können nicht gelöscht werden!');
 			}
 		}
 	}
-
 
 	public addConnection(room1: IRoom, room2: IRoom) {
 		console.log('connection', room1, 'and', room2);
