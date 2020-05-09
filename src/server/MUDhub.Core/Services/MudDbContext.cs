@@ -66,41 +66,40 @@ namespace MUDhub.Core.Services
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            if (modelBuilder is null)
-            {
-                throw new ArgumentNullException(nameof(modelBuilder));
-            }
+        { 
 
             //Configures MudGame
             modelBuilder.Entity<MudGame>()
                 .HasKey(mg => mg.Id);
             modelBuilder.Entity<MudGame>()
                 .HasMany(mg => mg.Characters)
-                .WithOne(c => c.Game)
-                .OnDelete(DeleteBehavior.Cascade);
+                .WithOne(c => c.Game);
             modelBuilder.Entity<MudGame>()
                 .HasMany(g => g.Areas)
                 .WithOne(a => a.Game)
-                .HasForeignKey(a => a.GameId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .HasForeignKey(a => a.GameId);
+            modelBuilder.Entity<MudGame>()
+                .HasMany(g => g.Classes)
+                .WithOne(c => c.Game)
+                .HasForeignKey(c => c.GameId);
+            modelBuilder.Entity<MudGame>()
+                .HasMany(g => g.Races)
+                .WithOne(r => r.Game)
+                .HasForeignKey(r => r.GameId);
 
             //Configures Character
             modelBuilder.Entity<Character>()
                 .HasKey(c => c.Id);
             modelBuilder.Entity<Character>()
                 .HasOne(c => c.Race)
-                .WithMany(r => r.Characters)
-                .OnDelete(DeleteBehavior.Cascade);
+                .WithMany(r => r.Characters);
             modelBuilder.Entity<Character>()
                 .HasOne(c => c.Class)
-                .WithMany(cl => cl.Characters)
-                .OnDelete(DeleteBehavior.Cascade);
+                .WithMany(cl => cl.Characters);
 
             modelBuilder.Entity<Character>()
                 .HasOne(c => c.ActualRoom)
-                .WithMany(r => r.Characters)
-                .OnDelete(DeleteBehavior.Cascade);
+                .WithMany(r => r.Characters);
 
             //Configures CharacterClass
             modelBuilder.Entity<CharacterClass>()
