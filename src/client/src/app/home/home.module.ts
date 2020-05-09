@@ -39,6 +39,7 @@ import { AreaListComponent } from './mud-config/rooms/area-list/area-list.compon
 import { RoomsGridComponent } from './mud-config/rooms/rooms-grid/rooms-grid.component';
 import { RoomCreateComponent } from './mud-config/rooms/rooms-grid/room-create/room-create.component';
 import { MudConfigShellComponent } from './mud-config/mud-config-shell.component';
+import { MatRippleModule } from '@angular/material/core';
 
 @NgModule({
 	declarations: [
@@ -82,6 +83,7 @@ import { MudConfigShellComponent } from './mud-config/mud-config-shell.component
 		MatSnackBarModule,
 		MatExpansionModule,
 		MatStepperModule,
+		MatRippleModule,
 	],
 })
 export class HomeModule {}

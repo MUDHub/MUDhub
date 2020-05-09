@@ -1,18 +1,21 @@
 <div
 	class="area"
 	*ngFor="let area of areas"
-	[class.active]="selectedArea === area"
 	[routerLink]="area.areaId + '/rooms'"
 	routerLinkActive="active"
 >
 	<div class="name">
 		{{ area.name }}
 	</div>
-	<div class="delete" (click)="delete.emit(area)">
+	<div class="delete">
 		<span></span>
 		<span></span>
 	</div>
 </div>
-<div class="add-area" (click)="newArea.emit()">
+
+<div class="area area-new" *ngIf="isFormActive">
+	<input type="text" class="" #nameInput (keydown.enter)="onAdd(nameInput)"/>
+</div>
+<div class="add-area" (click)="isFormActive = true">
 	+
 </div>

@@ -1,5 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { IArea } from 'src/app/model/areas/IArea';
+import { AreaService } from 'src/app/services/area.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
 	selector: 'mh-area-list',
@@ -7,14 +9,21 @@ import { IArea } from 'src/app/model/areas/IArea';
 	styleUrls: ['./area-list.component.scss'],
 })
 export class AreaListComponent implements OnInit {
-	constructor() {}
+	constructor(private route: ActivatedRoute, private areaService: AreaService) {}
 
-	@Input() areas: IArea[];
-	@Input() selectedArea: IArea;
+	mudid: string;
+	areas: IArea[];
 
-	@Output() newArea = new EventEmitter();
-	@Output() select = new EventEmitter<IArea>();
-	@Output() delete = new EventEmitter<IArea>();
+	isFormActive = false;
 
-	ngOnInit(): void {}
+	async ngOnInit() {
+		this.mudid = this.route.snapshot.params.mudid;
+		this.areas = await this.areaService.getAreasForMUD(this.mudid);
+	}
+
+
+	async onAdd(input: HTMLInputElement) {
+		const name = input.value;
+
+	}
 }

@@ -1,20 +1,58 @@
+@import "src/variables.scss";
+
 .navbar {
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
 	align-items: center;
 
+	margin-bottom: 1rem;
+
 	.nav-item {
-		padding: 1rem;
+		padding: 1rem 2rem;
 		cursor: pointer;
+		display: flex;
+		align-items: center;
+
+		font-weight: 500;
+
+		outline: none;
+
+		.number {
+			flex: none;
+			background-color: #ccc;
+			color: #fff;
+			width: 1.7rem;
+			height: 1.7rem;
+			border-radius: 50%;
+
+			margin-right: 0.5rem;
+
+			position: relative;
+
+			span {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+			}
+		}
+		&.active .number {
+			background-color: $color-primary;
+		}
+
+		&:hover {
+			background-color: rgba(0, 0, 0, 0.05);
+		}
 	}
 
 	.line {
 		min-width: 32px;
 		border-top-width: 1px;
 		border-top-style: solid;
-		border-top-color: #ccc;
+		border-top-color: rgba(0,0,0,.12);
 		flex: auto;
 		height: 0;
+		margin: 0 -0.7rem;
 	}
 }

@@ -132,7 +132,13 @@ export class RoomsGridComponent implements OnInit {
 
 
 	public async deleteRoom(room: IRoom) {
-		await this.areaService.deleteRoom(this.mudid, this.areaid, room.roomId);
+		try {
+			await this.areaService.deleteRoom(this.mudid, this.areaid, room.roomId);
+		} catch (err) {
+			if (err.error.isDefaultRoom) {
+				alert('Eintrittsräume können nicht gelöscht werden!');
+			}
+		}
 	}
 
 

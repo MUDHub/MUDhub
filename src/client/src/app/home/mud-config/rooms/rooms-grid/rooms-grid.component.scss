@@ -52,6 +52,26 @@
 	background-color: #fff;
 	width: 100%;
 	padding: 1rem;
+	position: relative;
+
+	.overlay {
+		position: absolute;
+		display: none;
+		background-color: rgba(0, 0, 0, 0.8);
+		color: #fff;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+	}
+
+	&:hover .overlay {
+		display: flex;
+	}
 }
 
 .room-add {

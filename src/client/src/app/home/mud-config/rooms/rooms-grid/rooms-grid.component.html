@@ -34,7 +34,9 @@
 			</div>
 			<div class="room" *ngIf="room">
 				{{ room?.name }}
-				<span (click)="deleteRoom(room)">X</span>
+				<div class="overlay">
+					<button mat-button (click)="deleteRoom(room)">Löschen</button>
+				</div>
 			</div>
 			<div
 				class="room-add"
