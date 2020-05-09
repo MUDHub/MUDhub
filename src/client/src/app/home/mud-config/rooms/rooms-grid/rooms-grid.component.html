@@ -19,6 +19,7 @@
 					room !== undefined
 				"
 				(click)="addConnection(room, row[x + 1])"
+				matTooltip="Verbinden"
 			>
 				+
 			</div>
@@ -29,6 +30,8 @@
 					rooms[y + 1][x] !== undefined && room !== undefined
 				"
 				(click)="addConnection(room, rooms[y + 1][x])"
+				matTooltip="Verbinden"
+				[matTooltipPosition]="'after'"
 			>
 				+
 			</div>
@@ -37,8 +40,8 @@
 					<span>D</span>
 				</div>
 				{{ room?.name }}
-				<div class="overlay">
-					<button mat-button (click)="deleteRoom(room)">Löschen</button>
+				<div class="toolbar">
+					<div class="item" (click)="deleteRoom(room)">Löschen</div>
 				</div>
 			</div>
 			<div

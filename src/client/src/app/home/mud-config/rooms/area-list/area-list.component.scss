@@ -1,6 +1,9 @@
 @import 'src/variables.scss';
-
 :host {
+
+}
+
+.areas {
 	background-color: #fff;
 	border: 1px solid rgba(0, 0, 0, 0.3);
 
@@ -15,7 +18,6 @@
 	padding: 1rem;
 	position: relative;
 	border-bottom: 1px solid rgba(0, 0, 0, 0.3);
-	border-left: 2px solid transparent;
 	width: 100%;
 	cursor: pointer;
 	outline: none;
@@ -24,7 +26,7 @@
 
 	&.active {
 		color: #000;
-		border-left-color: $color-primary;
+		background-color: transparentize($color-primary, 0.8);
 
 		&:hover {
 			.delete {
@@ -60,7 +62,7 @@
 	border-radius: 50%;
 
 	&:hover {
-		background-color: #eee;
+		background-color: transparentize($color-primary, 0.5);
 	}
 
 	span {

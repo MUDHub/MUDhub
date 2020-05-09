@@ -168,25 +168,25 @@ export class RoomsGridComponent implements OnInit {
 
 			for (let y = 0; y < this.rooms.length; y++) {
 				for (let x = 0; x < this.rooms[y].length; x++) {
-					if (this.rooms[y][x].roomId === room.roomId) {
+					if (this.rooms[y][x]?.roomId === room.roomId) {
 						this.rooms[y][x] = undefined;
 					}
 				}
 			}
 		} catch (err) {
-			console.error('Error while deleting room');
+			console.error('Error while deleting room', err);
 			swal.fire({
 				icon: 'error',
 				title: 'Fehler',
 				text:
-					err.error.displayMessage ||
-					err.error.errormessage ||
+					err.error?.displayMessage ||
+					err.error?.errormessage ||
 					'Fehler beim Löschen des Raumes',
 			});
 		}
 	}
 
 	public addConnection(room1: IRoom, room2: IRoom) {
-		console.log('connection', room1, 'and', room2);
+		console.log('connecting', room1, 'and', room2);
 	}
 }
