@@ -37,7 +37,8 @@ namespace MUDhub.Core.Services
                 return new ItemResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"Kein User mit der UserId: '{userId}' gefunden."
                 };
             }
 
@@ -50,7 +51,8 @@ namespace MUDhub.Core.Services
                 return new ItemResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"Kein MudGame mit der MudGameId: '{mudId}' gefunden."
                 };
             }
 
@@ -61,7 +63,8 @@ namespace MUDhub.Core.Services
                 return new ItemResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"Der User: '{user.Lastname}' hat keine Berechtigung für das MudGame: '{mud.Name}'"
                 };
             }
 
@@ -99,7 +102,8 @@ namespace MUDhub.Core.Services
                 return new ItemResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"Kein User mit der UserId: '{userId}' gefunden."
                 };
             }
 
@@ -112,7 +116,8 @@ namespace MUDhub.Core.Services
                 return new ItemResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"Kein Item mit der ItemId: '{itemId}' gefunden."
                 };
             }
 
@@ -123,7 +128,8 @@ namespace MUDhub.Core.Services
                 return new ItemResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"Der User: '{user.Lastname}' hat keine Berechtigung für das MudGame: '{item.MudGame.Name}'"
                 };
             }
 
@@ -168,7 +174,8 @@ namespace MUDhub.Core.Services
                 return new ItemResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"Kein User mit der UserId: '{userId}' gefunden."
                 };
             }
             var item = await _context.Items.FindAsync(itemId)
@@ -180,7 +187,8 @@ namespace MUDhub.Core.Services
                 return new ItemResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"Kein Item mit der ItemId: '{itemId}' gefunden."
                 };
             }
 
@@ -191,7 +199,8 @@ namespace MUDhub.Core.Services
                 return new ItemResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"Der User: '{user.Lastname}' hat keine Berechtigung für das MudGame: '{item.MudGame.Name}'"
                 };
             }
 

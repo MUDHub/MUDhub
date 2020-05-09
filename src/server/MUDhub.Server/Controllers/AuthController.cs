@@ -30,7 +30,7 @@ namespace MUDhub.Server.Controllers
 
             var result = await _loginService.LoginUserAsync(args.Email, args.Password)
                 .ConfigureAwait(false);
-            if (result.Succeeded)
+            if (result.Success)
             {
                 return Ok(new LoginResponse()
                 {
@@ -41,7 +41,9 @@ namespace MUDhub.Server.Controllers
 
             return BadRequest(new LoginResponse()
             {
-                Errormessage = "Username or Password is wrong!"
+                Errormessage = result.Errormessage,
+                DisplayMessage = result.DisplayMessage,
+                Succeeded = false
             });
         }
 
@@ -52,7 +54,7 @@ namespace MUDhub.Server.Controllers
                 throw new ArgumentNullException(nameof(args));
 
             var registerResult = await _userManager.RegisterUserAsync(RegisterRequest.ConvertFromRequest(args)).ConfigureAwait(false);
-            if (registerResult.Succeeded)
+            if (registerResult.Success)
             {
                 return Ok(new RegisterResponse()
                 {
@@ -63,7 +65,8 @@ namespace MUDhub.Server.Controllers
             return BadRequest(new RegisterResponse()
             {
                 Succeeded = false,
-                Errormessage = registerResult.UsernameAlreadyExists ? "Username already exist" : "Cannot register the User"
+                Errormessage = registerResult.UsernameAlreadyExists ? "Username already exist" : "Cannot register the User",
+                DisplayMessage = registerResult.DisplayMessage
             });
         }
 

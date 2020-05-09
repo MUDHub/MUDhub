@@ -139,7 +139,7 @@ namespace MUDhub.Core.Services
                 Firstname = "DefaultUser"
             }).ConfigureAwait(false);
 
-            if (!registerResult.Succeeded)
+            if (!registerResult.Success)
             {
                 _logger?.LogError($"Something went wrong, can't create Default user: '{_options.DefaultMudAdminEmail}'.");
                 return false;

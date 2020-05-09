@@ -95,7 +95,8 @@ namespace MUDhub.Server.Controllers
             return BadRequest(new CreateAreaResponse()
             {
                 Succeeded = false,
-                Errormessage = createResult.Errormessage
+                Errormessage = createResult.Errormessage,
+                DisplayMessage = createResult.DisplayMessage
             });
         }
         
@@ -120,7 +121,8 @@ namespace MUDhub.Server.Controllers
             return BadRequest(new UpdateAreaResponse()
             {
                 Succeeded = false,
-                Errormessage = updateResult.Errormessage
+                Errormessage = updateResult.Errormessage,
+                DisplayMessage = updateResult.DisplayMessage
             });
         }
     }

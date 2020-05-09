@@ -249,7 +249,7 @@ namespace MUDhub.Core.Tests
 
 
             RegisterResult registerResult = await _userManager.RegisterUserAsync(RegistrationUserArgs);
-            Assert.False(registerResult.Succeeded);
+            Assert.False(registerResult.Success);
         }
         [Fact]
         public async Task RegisterUserAsync_ReturnFalseUserExist()
@@ -263,7 +263,7 @@ namespace MUDhub.Core.Tests
                 Password = "Test1234"
             };
             RegisterResult registerResult = await _userManager.RegisterUserAsync(regiArgs);
-            Assert.True(registerResult.Succeeded);
+            Assert.True(registerResult.Success);
         }
 
         [Fact]
@@ -278,7 +278,7 @@ namespace MUDhub.Core.Tests
                 Password = "Test1234"
             };
             RegisterResult registerResult = await _userManager.RegisterUserAsync(regiArgs);
-            Assert.True(registerResult.Succeeded);
+            Assert.True(registerResult.Success);
         }
 
         [Fact]

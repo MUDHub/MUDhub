@@ -51,7 +51,7 @@ namespace MUDhub.Core.Tests
             var email = "Max@Mustermann.de";
             var password = "PW1234";
             var loginResult = await _loginService.LoginUserAsync(email, password);
-            Assert.True(loginResult.Succeeded);
+            Assert.True(loginResult.Success);
         }
 
         [Fact]
@@ -60,7 +60,7 @@ namespace MUDhub.Core.Tests
             var email = "Tobi@Wurst.de";
             var password = "PW1234";
             var loginResult = await _loginService.LoginUserAsync(email, password);
-            Assert.False(loginResult.Succeeded);
+            Assert.False(loginResult.Success);
         }
 
         [Fact]
@@ -69,7 +69,7 @@ namespace MUDhub.Core.Tests
             var email = "Max@Mustermann.de";
             var password = "1234PW";
             var loginResult = await _loginService.LoginUserAsync(email, password);
-            Assert.False(loginResult.Succeeded);
+            Assert.False(loginResult.Success);
         }
     }
 }

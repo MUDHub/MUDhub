@@ -45,7 +45,10 @@ namespace MUDhub.Core.Services
                                     $"- Lastname: {model.Firstname} {Environment.NewLine}" +
                                     $"- Emailname: {model.Firstname} {Environment.NewLine}" +
                                     $"- Password: {new string('*', model.Password.Length)}");
-                return new RegisterResult(false);
+                return new RegisterResult()
+                {
+                    Success = false
+                };
             }
             var normalizedEmail = UserHelpers.ToNormelizedEmail(model.Email);
             var user = await _context.Users.FirstOrDefaultAsync(u => u.NormalizedEmail == normalizedEmail)
@@ -64,13 +67,21 @@ namespace MUDhub.Core.Services
                 await _context.SaveChangesAsync()
                     .ConfigureAwait(false);
                 _logger?.LogInformation($"Successfully created a new User: {newUser.Email} with the id: {newUser.Id}.");
-                return new RegisterResult(true, user: newUser);
+                return new RegisterResult()
+                {
+                    User = newUser
+                };
             }
-            _logger?.LogWarning($"The email {model.Email} is already taken can't create the User!");
-            return new RegisterResult(false, true);
+            var message = $"The email {model.Email} is already taken can't create the User!";
+            _logger?.LogWarning(message);
+            return new RegisterResult()
+            {
+                Success = false,
+                Errormessage = message,
+                DisplayMessage = $"Registrieren fehlgeschlagen: Die Email: '{model.Email}' ist bereits vergeben.",
+                UsernameAlreadyExists = true
+            };
         }
-
-
 
         public async Task<User?> UpdateUserAsync(string userId, UpdateUserArgs model)
         {

@@ -40,17 +40,33 @@ namespace MUDhub.Core.Services
             var passwordHash = UserHelpers.CreatePasswordHash(password);
             if (user is null)
             {
-                _logger?.LogWarning($"No user was found with the email {email}");
-                return new LoginResult(false);
+                var message = $"No user was found with the email {email}";
+                _logger?.LogWarning(message);
+                return new LoginResult()
+                {
+                    Success = false,
+                    Errormessage = message,
+                    DisplayMessage = $"Es wurd kein User mit der Email-Adresse: '{email}'."
+                };
             }
 
             if (passwordHash != user.PasswordHash)
             {
-                _logger?.LogWarning($"The Password of '{user.Name} {user.Lastname}' is wrong");
-                return new LoginResult(false);
+                var message = $"The Password of '{user.Name} {user.Lastname}' is wrong";
+                _logger?.LogWarning(message);
+                return new LoginResult()
+                {
+                    Success = false,
+                    Errormessage = message,
+                    DisplayMessage = $"Das Passwort von '{user.Name} {user.Lastname}' ist nicht korrekt."
+                };
             }
             _logger?.LogInformation($"The User '{user.Name} {user.Lastname}' was logged in.");
-            return new LoginResult(true, UserHelpers.CreateToken(user, _tokensecret), user);
+            return new LoginResult()
+            {
+                Token = UserHelpers.CreateToken(user, _tokensecret),
+                User = user
+            };
         }
     }
 }

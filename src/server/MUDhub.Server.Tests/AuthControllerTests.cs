@@ -20,7 +20,12 @@ namespace MUDhub.Server.Tests
             var loginServiceMock = new Mock<ILoginService>();
             loginServiceMock
                 .Setup(ls => ls.LoginUserAsync("Test", "test"))
-                .Returns(Task.FromResult(new LoginResult(true, "token", new User())));
+                .Returns(Task.FromResult(new LoginResult()
+                {
+                    Success = true,
+                    Token = "token",
+                    User = new User()
+                }));
             var ls = loginServiceMock.Object;
 
             var authController = new AuthController(ls, Mock.Of<IUserManager>());
@@ -43,7 +48,12 @@ namespace MUDhub.Server.Tests
             var ls = Mock.Of<ILoginService>();
             var umMock = new Mock<IUserManager>();
             umMock.Setup(um => um.RegisterUserAsync(RegisterRequest.ConvertFromRequest(args)))
-                            .Returns(Task.FromResult(new RegisterResult(true, false, new User())));
+                            .Returns(Task.FromResult(new RegisterResult()
+                            {
+                                Success = true,
+                                UsernameAlreadyExists = false,
+                                User = new User()
+                            }));
 
 
             var authController = new AuthController(ls, umMock.Object);

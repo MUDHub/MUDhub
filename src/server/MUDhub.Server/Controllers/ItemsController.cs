@@ -56,7 +56,7 @@ namespace MUDhub.Server.Controllers
             {
                 Succeeded = false,
                 Errormessage = createResult.Errormessage,
-                DisplayMessage = "Es konnte kein neues Item angelegt werden."
+                DisplayMessage = createResult.DisplayMessage
             });
         }
 
