@@ -5,6 +5,7 @@ using MUDhub.Core.Models.Muds;
 using MUDhub.Core.Models.Users;
 using MUDhub.Core.Services;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -84,21 +85,186 @@ namespace MUDhub.Core.Tests
         {
             var result = await _characterManager.CreateCharacterAsync("1", "1", _createCharacterArgs);
             Assert.True(result.Success);
+
+            var newCharacter = _context.Characters.FirstOrDefault(
+                a => a.Name.Equals("New Character 1"));
+            Assert.True(newCharacter.Race.Id == "1");
         }
 
         //*********************************************************//
 
+        [Fact]
+        public async Task CreateClassAsync_ReturnFalse_UserNull()
+        {
+            var result = await _characterManager.CreateClassAsync("99", "1", _createCharacterClassArgs);
+            Assert.False(result.Success);
+        }
+        [Fact]
+        public async Task CreateClassAsync_ReturnFalse_MudGameNull()
+        {
+            var result = await _characterManager.CreateClassAsync("1", "99", _createCharacterClassArgs);
+            Assert.False(result.Success);
+        }
+        [Fact]
+        public async Task CreateClassAsync_ReturnTrue()
+        {
+            var result = await _characterManager.CreateClassAsync("1", "1", _createCharacterClassArgs);
+            Assert.True(result.Success);
 
-
+            var newClass = _context.Classes.FirstOrDefault(
+                a => a.Name.Equals("New Class"));
+            Assert.True(newClass.Description == "Beschreibung New Class");
+        }
 
         //*********************************************************//
 
+        [Fact]
+        public async Task CreateRaceAsync_ReturnFalse_UserNull()
+        {
+            var result = await _characterManager.CreateRaceAsync("99", "1", _createCharacterRaceArgs);
+            Assert.False(result.Success);
+        }
+        [Fact]
+        public async Task CreateRaceAsync_ReturnFalse_MudGameNull()
+        {
+            var result = await _characterManager.CreateRaceAsync("1", "99", _createCharacterRaceArgs);
+            Assert.False(result.Success);
+        }
+        [Fact]
+        public async Task CreateRaceAsync_ReturnTrue()
+        {
+            var result = await _characterManager.CreateRaceAsync("1", "1", _createCharacterRaceArgs);
+            Assert.True(result.Success);
 
-
+            var newRace = _context.Races.FirstOrDefault(
+                a => a.Name.Equals("New Race"));
+            Assert.True(newRace.Description == "Beschreibung New Race");
+        }
 
         //*********************************************************//
 
+        [Fact]
+        public async Task UpdateClassAsync_ReturnFalse_UserNull()
+        {
+            var result = await _characterManager.UpdateClassAsync("99", "1", _updateCharacterClassArgs);
+            Assert.False(result.Success);
+        }
+        [Fact]
+        public async Task UpdateClassAsync_ReturnFalse_MudGameNull()
+        {
+            var result = await _characterManager.UpdateClassAsync("1", "99", _updateCharacterClassArgs);
+            Assert.False(result.Success);
+        }
+        [Fact]
+        public async Task UpdateClassAsync_ReturnTrue()
+        {
+            var result = await _characterManager.UpdateClassAsync("1", "1", _updateCharacterClassArgs);
+            Assert.True(result.Success);
 
+            var newRace = _context.Classes.FirstOrDefault(
+                a => a.Name.Equals("Updated New Class"));
+            Assert.True(newRace.Description == "Updated Beschreibung New Class");
+        }
+
+        //*********************************************************//
+
+        [Fact]
+        public async Task UpdateRaceAsync_ReturnFalse_UserNull()
+        {
+            var result = await _characterManager.UpdateRaceAsync("99", "1", _updateCharacterRaceArgs);
+            Assert.False(result.Success);
+        }
+        [Fact]
+        public async Task UpdateRaceAsync_ReturnFalse_MudGameNull()
+        {
+            var result = await _characterManager.UpdateRaceAsync("1", "99", _updateCharacterRaceArgs);
+            Assert.False(result.Success);
+        }
+        [Fact]
+        public async Task UpdateRaceAsync_ReturnTrue()
+        {
+            var result = await _characterManager.UpdateRaceAsync("1", "1", _updateCharacterRaceArgs);
+            Assert.True(result.Success);
+
+            var newRace = _context.Races.FirstOrDefault(
+                a => a.Name.Equals("Updated New Race"));
+            Assert.True(newRace.Description == "Updated Beschreibung New Race");
+        }
+
+        //*********************************************************//
+
+        [Fact]
+        public async Task RemoveCharacterAsync_ReturnFalse_UserNull()
+        {
+            var result = await _characterManager.RemoveCharacterAsync("99", "1");
+            Assert.False(result.Success);
+        }
+        [Fact]
+        public async Task RemoveCharacterAsync_ReturnFalse_CharacterNull()
+        {
+            var result = await _characterManager.RemoveCharacterAsync("1", "99");
+            Assert.False(result.Success);
+        }
+        [Fact]
+        public async Task RemoveCharacterAsync_ReturnTrue()
+        {
+            var result = await _characterManager.RemoveCharacterAsync("1", "1");
+            Assert.True(result.Success);
+
+            var newRace = _context.Characters.FirstOrDefault(
+                a => a.Id == "1");
+            Assert.Null(newRace);
+        }
+
+        //*********************************************************//
+
+        [Fact]
+        public async Task RemoveClassAsync_ReturnFalse_UserNull()
+        {
+            var result = await _characterManager.RemoveClassAsync("99", "1");
+            Assert.False(result.Success);
+        }
+        [Fact]
+        public async Task RemoveClassAsync_ReturnFalse_CharacterNull()
+        {
+            var result = await _characterManager.RemoveClassAsync("1", "99");
+            Assert.False(result.Success);
+        }
+        [Fact]
+        public async Task RemoveClassAsync_ReturnTrue()
+        {
+            var result = await _characterManager.RemoveClassAsync("1", "1");
+            Assert.True(result.Success);
+
+            var newRace = _context.Classes.FirstOrDefault(
+                a => a.Id == "1");
+            Assert.Null(newRace);
+        }
+
+        //*********************************************************//
+
+        [Fact]
+        public async Task RemoveRaceAsync_ReturnFalse_UserNull()
+        {
+            var result = await _characterManager.RemoveRaceAsync("99", "1");
+            Assert.False(result.Success);
+        }
+        [Fact]
+        public async Task RemoveRaceAsync_ReturnFalse_CharacterNull()
+        {
+            var result = await _characterManager.RemoveRaceAsync("1", "99");
+            Assert.False(result.Success);
+        }
+        [Fact]
+        public async Task RemoveRaceAsync_ReturnTrue()
+        {
+            var result = await _characterManager.RemoveRaceAsync("1", "1");
+            Assert.True(result.Success);
+
+            var newRace = _context.Races.FirstOrDefault(
+                a => a.Id == "1");
+            Assert.Null(newRace);
+        }
 
         //*********************************************************//
 
@@ -227,7 +393,6 @@ namespace MUDhub.Core.Tests
 
             _context.Users.Add(_user1);
             _context.Users.Add(_user2);
-            //_context.Classes.Add(_class1);
             _context.SaveChanges();
 
 
@@ -274,7 +439,7 @@ namespace MUDhub.Core.Tests
             _updateCharacterClassArgs = new CharacterClassArgs()
             {
                 Name = "Updated New Class",
-                Desctiption = "Updated Beschreibung New Clas"
+                Desctiption = "Updated Beschreibung New Class"
             };
             _updateCharacterRaceArgs = new CharacterRaceArgs()
             {
