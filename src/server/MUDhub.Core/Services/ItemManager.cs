@@ -20,7 +20,6 @@ namespace MUDhub.Core.Services
             _logger = logger;
         }
 
-
         /// <summary>
         /// A new item is created in the MudGame.
         /// </summary>
@@ -28,7 +27,7 @@ namespace MUDhub.Core.Services
         /// <param name="mudId"></param>
         /// <param name="args"></param>
         /// <returns></returns>
-        public async Task<ItemResult> CreateItem(string userId, string mudId, ItemArgs args)
+        public async Task<ItemResult> CreateItemAsync(string userId, string mudId, ItemArgs args)
         {
             var user = await GetUserById(userId).ConfigureAwait(false);
             if (user is null)
@@ -91,7 +90,7 @@ namespace MUDhub.Core.Services
         /// <param name="itemId"></param>
         /// <param name="args"></param>
         /// <returns></returns>
-        public async Task<ItemResult> UpdateItem(string userId, string itemId, ItemArgs args)
+        public async Task<ItemResult> UpdateItemAsync(string userId, string itemId, ItemArgs args)
         {
             var user = await GetUserById(userId).ConfigureAwait(false);
             if (user is null)
@@ -148,6 +147,59 @@ namespace MUDhub.Core.Services
                 $"- Name: {args.Name ?? "<no modification>"} {Environment.NewLine}" +
                 $"- Description: {args.Description ?? "<no modification>"} {Environment.NewLine}" +
                 $"- ImageKey: {args.ImageKey ?? "<no modification>"}");
+            return new ItemResult()
+            {
+                Item = item
+            };
+        }
+
+        /// <summary>
+        /// An item is deleted.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="itemId"></param>
+        /// <returns></returns>
+        public async Task<ItemResult> DeleteItemAsync(string userId, string itemId)
+        {
+            var user = await GetUserById(userId).ConfigureAwait(false);
+            if (user is null)
+            {
+                var message = $"No user with the UserId: '{userId}' was found.";
+                _logger?.LogWarning(message);
+                return new ItemResult()
+                {
+                    Success = false,
+                    Errormessage = message
+                };
+            }
+            var item = await _context.Items.FindAsync(itemId)
+                .ConfigureAwait(false);
+            if (item is null)
+            {
+                var message = $"No Item with the itemId: '{itemId}' was found.";
+                _logger?.LogWarning(message);
+                return new ItemResult()
+                {
+                    Success = false,
+                    Errormessage = message
+                };
+            }
+
+            if (!IsUserOwner(user, item.MudGameId))
+            {
+                var message = $"The user: {user.Lastname} is not the owner of the MudGame: {item.MudGameId}";
+                _logger?.LogWarning(message);
+                return new ItemResult()
+                {
+                    Success = false,
+                    Errormessage = message
+                };
+            }
+
+            _context.Items.Remove(item);
+            await _context.SaveChangesAsync()
+                .ConfigureAwait(false);
+            _logger?.LogInformation($"The item: '{item.Id}' has been removed from the MudGame: '{item.MudGameId}'");
             return new ItemResult()
             {
                 Item = item

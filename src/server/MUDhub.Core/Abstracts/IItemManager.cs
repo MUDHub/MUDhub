@@ -5,7 +5,8 @@ namespace MUDhub.Core.Abstracts
 {
     public interface IItemManager
     {
-        Task<ItemResult> CreateItem(string userId, string mudId, ItemArgs args);
-        Task<ItemResult> UpdateItem(string userId, string itemId, ItemArgs args);
+        Task<ItemResult> CreateItemAsync(string userId, string mudId, ItemArgs args);
+        Task<ItemResult> UpdateItemAsync(string userId, string itemId, ItemArgs args);
+        Task<ItemResult> DeleteItemAsync(string userId, string itemId);
     }
 }
