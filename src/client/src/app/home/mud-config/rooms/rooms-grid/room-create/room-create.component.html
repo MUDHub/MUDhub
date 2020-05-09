@@ -1,0 +1,19 @@
+<div class="container">
+	<div class="form">
+		<mat-form-field class="form-row">
+			<mat-label>Name</mat-label>
+			<input matInput type="text">
+		</mat-form-field>
+		<mat-form-field class="form-row">
+			<mat-label>Beschreibung</mat-label>
+			<input matInput type="text">
+		</mat-form-field>
+		<div class="form-row">
+			<input type="file">
+		</div>
+	</div>
+	<div class="actions">
+		<button mat-button (click)="onCreate()">Erstellen</button>
+		<button mat-button routerLink="../">Abbrechen</button>
+	</div>
+</div>

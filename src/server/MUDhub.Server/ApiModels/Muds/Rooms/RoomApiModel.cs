@@ -23,7 +23,7 @@ namespace MUDhub.Server.ApiModels.Muds.Rooms
             }
             return new RoomApiModel()
             {
-                //Area = AreaApiModel.ConvertFromArea(room.Area),
+                Area = AreaApiModel.ConvertFromArea(room.Area),
                 RoomId = room.Id,
                 Name = room.Name,
                 Description = room.Description,

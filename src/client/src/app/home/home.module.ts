@@ -37,6 +37,7 @@ import { ItemsComponent } from './mud-config/items/items.component';
 import { FinishComponent } from './mud-config/finish/finish.component';
 import { AreaListComponent } from './mud-config/rooms/area-list/area-list.component';
 import { RoomsGridComponent } from './mud-config/rooms/rooms-grid/rooms-grid.component';
+import { RoomCreateComponent } from './mud-config/rooms/rooms-grid/room-create/room-create.component';
 
 @NgModule({
 	declarations: [
@@ -57,6 +58,7 @@ import { RoomsGridComponent } from './mud-config/rooms/rooms-grid/rooms-grid.com
 		FinishComponent,
 		AreaListComponent,
 		RoomsGridComponent,
+		RoomCreateComponent,
 	],
 	imports: [
 		CommonModule,

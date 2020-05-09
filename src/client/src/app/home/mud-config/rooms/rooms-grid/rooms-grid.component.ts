@@ -1,5 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { IRoom } from 'src/app/model/areas/IRoom';
+import { VirtualTimeScheduler } from 'rxjs';
 
 @Component({
 	selector: 'mh-rooms-grid',
@@ -11,22 +12,46 @@ export class RoomsGridComponent {
 
 	@Input() rooms: IRoom[][];
 
+	@Output() delete = new EventEmitter<IRoom>();
+	@Output() create = new EventEmitter<IRoom>();
+
 	get width() {
 		return this.rooms[this.rooms.length - 1]?.length;
 	}
 
-	set width(value: number) {
-		if (value > 0) {
-			if (value > this.width) {
-				const width = this.width;
-				for (const row of this.rooms) {
-					while (value > row.length) {
-						row.push(undefined);
-					}
+	addColumn() {
+		if (this.width < 6) {
+			for (const row of this.rooms) {
+				row.push(undefined);
+			}
+		}
+	}
+
+	removeColumn() {
+		if (this.rooms[this.rooms.length - 1].length > 1) {
+			let isSafe = true;
+			for (const row of this.rooms) {
+				if (row[row.length - 1] !== undefined) {
+					isSafe = false;
 				}
-			} else if (value < this.width) {
+			}
+
+			if (isSafe) {
 				for (const row of this.rooms) {
-					row.splice(value, 1);
+					row.pop();
+				}
+			} else {
+				if (
+					confirm(
+						'Durch diese Aktion werden Räume gelöscht! Fortfahren?'
+					)
+				) {
+					for (const row of this.rooms) {
+						const room = row.pop();
+						if (room) {
+							this.delete.emit(room);
+						}
+					}
 				}
 			}
 		}
@@ -36,14 +61,35 @@ export class RoomsGridComponent {
 		return this.rooms.length;
 	}
 
-	set height(value: number) {
-		if (value > 0) {
-			if (value > this.height) {
-				while (value > this.rooms.length) {
-					this.rooms.push(new Array(this.width).fill(undefined));
+	addRow() {
+		if (this.height < 6) {
+			this.rooms.push(new Array(this.width).fill(undefined));
+		}
+	}
+
+	removeRow() {
+		if (this.rooms.length > 1) {
+			const isSafe = !this.rooms[this.rooms.length - 1].some(
+				r => r !== undefined
+			);
+			if (isSafe) {
+				this.rooms.pop();
+			} else {
+				if (
+					confirm(
+						'Durch diese Aktion werden Räume gelöscht! Fortfahren?'
+					)
+				) {
+					const toDelete = this.rooms[this.rooms.length - 1].filter(
+						r => r !== undefined
+					);
+
+					for (const room of toDelete) {
+						this.delete.emit(room);
+					}
+
+					this.rooms.pop();
 				}
-			} else if (value < this.height) {
-				this.rooms.splice(value , 1);
 			}
 		}
 	}

@@ -1,3 +1,12 @@
+:host {
+	position: relative;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
 .rooms-grid {
 	width: 100%;
 	border-collapse: collapse;
@@ -6,8 +15,44 @@
 	text-align: center;
 
 
-	.room {
-		padding: 1rem;
-		border: 1px solid black;
+	.room-cell {
+		border: 1px dashed rgba(0, 0, 0, 0.3);
+		padding: 1rem 0.5rem;
+	}
+}
+
+
+.room {
+	background-color: #fff;
+	width: 100%;
+	padding: 1rem;
+}
+
+.room-add {
+	width: 40px;
+	height: 40px;
+	background-color: #333;
+	color: #fff;
+	border-radius: 4px;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0 auto;
+
+	cursor: pointer;
+}
+
+
+.popup ::ng-deep {
+
+	ng-component {
+		position: fixed;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		background-color: rgba(0, 0, 0, 0.2);
+		z-index: 100;
 	}
 }

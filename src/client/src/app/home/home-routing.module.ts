@@ -17,6 +17,7 @@ import { ClassesComponent } from './mud-config/classes/classes.component';
 import { ItemsComponent } from './mud-config/items/items.component';
 import { RoomsComponent } from './mud-config/rooms/rooms.component';
 import { FinishComponent } from './mud-config/finish/finish.component';
+import { RoomCreateComponent } from './mud-config/rooms/rooms-grid/room-create/room-create.component';
 
 
 const routes: Routes = [
@@ -70,7 +71,13 @@ const routes: Routes = [
 					},
 					{
 						path: 'rooms',
-						component: RoomsComponent
+						component: RoomsComponent,
+						children: [
+							{
+								path: 'create',
+								component: RoomCreateComponent
+							}
+						]
 					},
 					{
 						path: 'finish',
