@@ -18,6 +18,8 @@ import { ItemsComponent } from './mud-config/items/items.component';
 import { RoomsComponent } from './mud-config/rooms/rooms.component';
 import { FinishComponent } from './mud-config/finish/finish.component';
 import { RoomCreateComponent } from './mud-config/rooms/rooms-grid/room-create/room-create.component';
+import { componentFactoryName } from '@angular/compiler';
+import { RoomsGridComponent } from './mud-config/rooms/rooms-grid/rooms-grid.component';
 
 
 const routes: Routes = [
@@ -70,12 +72,18 @@ const routes: Routes = [
 						component: ItemsComponent
 					},
 					{
-						path: 'rooms',
+						path: 'areas',
 						component: RoomsComponent,
 						children: [
 							{
-								path: 'create',
-								component: RoomCreateComponent
+								path: ':areaid/rooms',
+								component: RoomsGridComponent,
+								children: [
+									{
+										path: 'create',
+										component: RoomCreateComponent
+									}
+								]
 							}
 						]
 					},

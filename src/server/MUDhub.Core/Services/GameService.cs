@@ -6,12 +6,12 @@ namespace MUDhub.Core.Services
 {
     internal class GameService : IGameService
     {
-        public Task<bool> StartMudAsync(string mudId)
+        public Task<bool> StartMudAsync(string mudId, string userid)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> StopMudAsync(string mudId)
+        public Task<bool> StopMudAsync(string mudId, string userid)
         {
             throw new NotImplementedException();
         }

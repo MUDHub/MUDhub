@@ -7,7 +7,11 @@ import {
 } from '../model/areas/AreaDTO';
 import { IArea } from '../model/areas/IArea';
 import { IRoom } from '../model/areas/IRoom';
-import { IRoomDeleteResponse } from '../model/areas/RoomDTO';
+import {
+	IRoomDeleteResponse,
+	IRoomCreateRequest,
+	IRoomCreateResponse,
+} from '../model/areas/RoomDTO';
 
 @Injectable({
 	providedIn: 'root',
@@ -47,6 +51,19 @@ export class AreaService {
 	public async getRooms(mudid: string, areaid: string) {
 		return await this.http
 			.get<IRoom[]>(`${env.api.url}/muds/${mudid}/areas/${areaid}/rooms`)
+			.toPromise();
+	}
+
+	public async createRoom(
+		mudid: string,
+		areaid: string,
+		room: IRoomCreateRequest
+	) {
+		return await this.http
+			.post<IRoomCreateResponse>(
+				`${env.api.url}/muds/${mudid}/areas/${areaid}/rooms`,
+				room
+			)
 			.toPromise();
 	}
 
