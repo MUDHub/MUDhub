@@ -161,7 +161,8 @@ namespace MUDhub.Core.Services
                     {
                         Game = mud,
                         Description = args.Desctiption,
-                        Name = args.Name
+                        Name = args.Name,
+                        ImageKey = args.ImageKey
                     };
                     _context.Classes.Add(characterclass);
                     await _context.SaveChangesAsync().ConfigureAwait(false);

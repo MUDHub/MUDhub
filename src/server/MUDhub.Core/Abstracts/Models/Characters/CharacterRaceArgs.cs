@@ -8,5 +8,6 @@ namespace MUDhub.Core.Abstracts.Models.Characters
     {
         public string Name { get; set; } = string.Empty;
         public string Desctiption { get; set; } = string.Empty;
+        public string ImageKey { get; set; } = string.Empty;
     }
 }
