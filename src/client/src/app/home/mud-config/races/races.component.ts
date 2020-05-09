@@ -41,10 +41,6 @@ export class RacesComponent implements OnInit {
 		this.dialog = !this.dialog;
 	}
 
-	onAbort() {
-		this.router.navigate(['/my-muds']);
-	}
-
 	async addRace() {
 		// Get Imagekey from API if an Image was uploaded
 		let imageKey = null;
@@ -83,9 +79,5 @@ export class RacesComponent implements OnInit {
 	deleteRow(index: number) {
 		this.mudService.deleteMudRace(this.mudId, this.races[index]);
 		this.races.splice(index, 1);
-	}
-
-	onNext(){
-		this.router.navigate(['/my-muds/' + this.mudId + '/classes']);
 	}
 }

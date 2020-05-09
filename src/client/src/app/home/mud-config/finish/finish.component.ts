@@ -26,23 +26,23 @@ export class FinishComponent implements OnInit {
 	races: IMudRace[] = [];
 
 	async getRaces() {
-		//Noch nicht in API implementiert
+		// Noch nicht in API implementiert
 		this.races = [
 			{
-				name: "name",
-				description: "desc",
-				imagekey: "imagekey",
+				name: 'name',
+				description: 'desc',
+				imagekey: 'imagekey',
 			},
 			{
-				name: "name2",
-				description: "desc2",
-				imagekey: "imagekey2",
+				name: 'name2',
+				description: 'desc2',
+				imagekey: 'imagekey2',
 			},
 			{
-				name: "name3",
-				description: "desc3",
-				imagekey: "imagekey3",
-			}
+				name: 'name3',
+				description: 'desc3',
+				imagekey: 'imagekey3',
+			},
 		];
 	}
 
@@ -50,23 +50,23 @@ export class FinishComponent implements OnInit {
 	classes: IMudClass[] = [];
 
 	async getClasses() {
-		//Noch nicht in API implementiert
+		// Noch nicht in API implementiert
 		this.classes = [
 			{
-				name: "name",
-				description: "desc",
-				imagekey: "imagekey",
+				name: 'name',
+				description: 'desc',
+				imagekey: 'imagekey',
 			},
 			{
-				name: "name2",
-				description: "desc2",
-				imagekey: "imagekey2",
+				name: 'name2',
+				description: 'desc2',
+				imagekey: 'imagekey2',
 			},
 			{
-				name: "name3",
-				description: "desc3",
-				imagekey: "imagekey3",
-			}
+				name: 'name3',
+				description: 'desc3',
+				imagekey: 'imagekey3',
+			},
 		];
 	}
 
@@ -74,20 +74,20 @@ export class FinishComponent implements OnInit {
 	items: IMudItem[] = [];
 
 	async getItems() {
-		//Noch nicht in API implementiert
+		// Noch nicht in API implementiert
 		this.items = [
 			{
-				name: "name",
-				description: "desc",
+				name: 'name',
+				description: 'desc',
 			},
 			{
-				name: "name2",
-				description: "desc2",
+				name: 'name2',
+				description: 'desc2',
 			},
 			{
-				name: "name3",
-				description: "desc3",
-			}
+				name: 'name3',
+				description: 'desc3',
+			},
 		];
 	}
 
@@ -96,12 +96,12 @@ export class FinishComponent implements OnInit {
 	areas: IArea[] = [];
 
 	async getAreas() {
-		//this.areas = await this.areaService.getAreasForMUD(this.mudId);
+		// this.areas = await this.areaService.getAreasForMUD(this.mudId);
 	}
 
 	async getRooms() {
 		for (let i = 0; i < this.areas.length; i++) {
-			//this.rooms = await this.areaService.getRooms(this.mudId, this.areas[i].areaId);
+			// this.rooms = await this.areaService.getRooms(this.mudId, this.areas[i].areaId);
 		}
 	}
 
@@ -110,7 +110,7 @@ export class FinishComponent implements OnInit {
 	ngOnInit(): void {
 		this.mudId = this.route.snapshot.params.mudid;
 
-		//Fetch Ressources from Service
+		// Fetch Ressources from Service
 		this.getRaces();
 		this.getClasses();
 		this.getItems();
@@ -118,19 +118,11 @@ export class FinishComponent implements OnInit {
 		this.getRooms();
 	}
 
-	onAbort() {
-		this.router.navigate(['/my-muds']);
-	}
-
-	onLast() {
-		this.router.navigate(['/my-muds/' + this.mudId + '/rooms']);
-	}
-
 	async onSubmit() {
 		/* Object erstellen */
 		/* Request zur API schicken */
 
-		//Redirect zur MyMuds Seite - Configuration completed
+		// Redirect zur MyMuds Seite - Configuration completed
 		this.router.navigate(['/my-muds']);
 	}
 }
