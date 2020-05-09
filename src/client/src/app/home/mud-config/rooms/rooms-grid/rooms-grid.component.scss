@@ -14,13 +14,39 @@
 
 	text-align: center;
 
-
 	.room-cell {
 		border: 1px dashed rgba(0, 0, 0, 0.3);
 		padding: 1rem 0.5rem;
+
+		position: relative;
 	}
 }
 
+.connection-add {
+	position: absolute;
+	z-index: 99;
+	height: 1.5rem;
+	width: 1.5rem;
+	background-color: orange;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: #fff;
+	border-radius: 50%;
+	cursor: pointer;
+
+	&.connection-horizontal {
+		right: -0.75rem;
+		top: 50%;
+		transform: translateY(-50%);
+	}
+
+	&.connection-vertical {
+		bottom: -0.75rem;
+		left: 50%;
+		transform: translateX(-50%);
+	}
+}
 
 .room {
 	background-color: #fff;
@@ -43,9 +69,7 @@
 	cursor: pointer;
 }
 
-
 .popup ::ng-deep {
-
 	ng-component {
 		position: fixed;
 		top: 0;

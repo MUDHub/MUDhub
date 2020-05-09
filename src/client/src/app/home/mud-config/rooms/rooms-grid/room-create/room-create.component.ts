@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { IRoom } from 'src/app/model/areas/IRoom';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AreaService } from 'src/app/services/area.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { IRoomCreateRequest } from 'src/app/model/areas/RoomDTO';
@@ -11,12 +11,17 @@ import { ImageService } from 'src/app/services/image.service';
 	styleUrls: ['./room-create.component.scss'],
 })
 export class RoomCreateComponent implements OnInit {
-	constructor(private route: ActivatedRoute, private areaService: AreaService, private imageService: ImageService) {}
+	constructor(
+		private route: ActivatedRoute,
+		private router: Router,
+		private areaService: AreaService,
+		private imageService: ImageService
+	) {}
 
 	mudid: string;
 	areaid: string;
 
-	position: {x: number, y: number};
+	position: { x: number; y: number };
 
 	selectedImage: File;
 
@@ -24,20 +29,18 @@ export class RoomCreateComponent implements OnInit {
 		name: new FormControl('', Validators.required),
 		description: new FormControl(''),
 		imageKey: new FormControl(''),
-		isDefault: new FormControl(false)
+		isDefault: new FormControl(false),
 	});
-
 
 	ngOnInit() {
 		const params = this.route.snapshot.queryParams;
 		this.position = {
-			x: params.x,
-			y: params.y
+			x: parseInt(params.x, 10),
+			y: parseInt(params.y, 10),
 		};
-		this.mudid = params.mudid;
-		this.areaid = params.areaid;
+		this.mudid = this.route.snapshot.params.mudid;
+		this.areaid = this.route.snapshot.params.areaid;
 	}
-
 
 	async onCreate() {
 		let imageKey;
@@ -50,8 +53,10 @@ export class RoomCreateComponent implements OnInit {
 			isDefaultRoom: this.form.get('isDefault').value,
 			imageKey,
 			x: this.position.x,
-			y: this.position.y
+			y: this.position.y,
 		};
-		this.areaService.createRoom()
+		this.areaService.createRoom(this.mudid, this.areaid, room);
+
+		this.router.navigate(['../'], { relativeTo: this.route});
 	}
 }

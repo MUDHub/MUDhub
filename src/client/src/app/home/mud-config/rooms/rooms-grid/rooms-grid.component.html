@@ -11,16 +11,42 @@
 <table class="rooms-grid">
 	<tr class="room-row" *ngFor="let row of rooms; let y = index">
 		<td class="room-cell" *ngFor="let room of row; let x = index">
+			<div
+				class="connection-add connection-horizontal"
+				*ngIf="
+					x < width - 1 &&
+					row[x + 1] !== undefined &&
+					room !== undefined
+				"
+				(click)="addConnection(room, row[x + 1])"
+			>
+				+
+			</div>
+			<div
+				class="connection-add connection-vertical"
+				*ngIf="
+					y < height - 1 &&
+					rooms[y + 1][x] !== undefined && room !== undefined
+				"
+				(click)="addConnection(room, rooms[y + 1][x])"
+			>
+				+
+			</div>
 			<div class="room" *ngIf="room">
 				{{ room?.name }}
+				<span (click)="deleteRoom(room)">X</span>
 			</div>
-			<div class="room-add" *ngIf="!room" routerLink="create" [queryParams]="{x: x, y: y }">
+			<div
+				class="room-add"
+				*ngIf="!room"
+				routerLink="create"
+				[queryParams]="{ x: x, y: y }"
+			>
 				+
 			</div>
 		</td>
 	</tr>
 </table>
-
 
 <div class="popup">
 	<router-outlet></router-outlet>

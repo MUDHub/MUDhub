@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { IRoom } from 'src/app/model/areas/IRoom';
 import { VirtualTimeScheduler } from 'rxjs';
 import { AreaService } from 'src/app/services/area.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
 	selector: 'mh-rooms-grid',
@@ -25,6 +25,10 @@ export class RoomsGridComponent implements OnInit {
 			this.areaid = params.areaid;
 			const rooms = await this.areaService.getRooms(this.mudid, this.areaid);
 			this.rooms = this.mapRooms(rooms);
+		});
+
+		this.areaService.roomCreated$.subscribe(room => {
+			this.rooms[room.y][room.x] = room;
 		});
 	}
 
@@ -62,7 +66,7 @@ export class RoomsGridComponent implements OnInit {
 					for (const row of this.rooms) {
 						const room = row.pop();
 						if (room) {
-							// TODO: delete // this.delete.emit(room);
+							this.areaService.deleteRoom(this.mudid, this.areaid, room.roomId);
 						}
 					}
 				}
@@ -98,7 +102,7 @@ export class RoomsGridComponent implements OnInit {
 					);
 
 					for (const room of toDelete) {
-						// TODO: delete // this.delete.emit(room);
+						this.areaService.deleteRoom(this.mudid, this.areaid, room.roomId);
 					}
 
 					this.rooms.pop();
@@ -124,5 +128,15 @@ export class RoomsGridComponent implements OnInit {
 		}
 
 		return matrix;
+	}
+
+
+	public async deleteRoom(room: IRoom) {
+		await this.areaService.deleteRoom(this.mudid, this.areaid, room.roomId);
+	}
+
+
+	public addConnection(room1: IRoom, room2: IRoom) {
+		console.log('connection', room1, 'and', room2);
 	}
 }
