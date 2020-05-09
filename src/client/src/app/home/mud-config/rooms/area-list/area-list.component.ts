@@ -1,5 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { IArea } from 'src/app/model/areas/IArea';
+import { AreaService } from 'src/app/services/area.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { IAreaCreateRequest } from 'src/app/model/areas/AreaDTO';
+import swal from 'sweetalert2';
 
 @Component({
 	selector: 'mh-area-list',
@@ -7,14 +11,47 @@ import { IArea } from 'src/app/model/areas/IArea';
 	styleUrls: ['./area-list.component.scss'],
 })
 export class AreaListComponent implements OnInit {
-	constructor() {}
+	constructor(
+		private route: ActivatedRoute,
+		private router: Router,
+		private areaService: AreaService
+	) {}
 
-	@Input() areas: IArea[];
-	@Input() selectedArea: IArea;
+	mudid: string;
+	areas: IArea[];
 
-	@Output() newArea = new EventEmitter();
-	@Output() select = new EventEmitter<IArea>();
-	@Output() delete = new EventEmitter<IArea>();
+	isFormActive = false;
 
-	ngOnInit(): void {}
+	async ngOnInit() {
+		this.mudid = this.route.snapshot.params.mudid;
+		this.areas = await this.areaService.getAreasForMUD(this.mudid);
+	}
+
+	async deleteArea(area: IArea) {
+		try {
+			await this.areaService.deleteArea(this.mudid, area.areaId);
+			this.areas.splice(this.areas.indexOf(area), 1);
+			this.router.navigate(['../areas'], { relativeTo: this.route });
+		} catch (err) {
+			swal.fire({
+				icon: 'error',
+				title: 'Fehler',
+				text: err.error.errormessage
+			});
+			console.error('Error while deleting area', err);
+		}
+	}
+
+	async onAdd(input: HTMLInputElement) {
+		const name = input.value;
+		const area: IAreaCreateRequest = { name };
+		try {
+			const response = await this.areaService.createArea(this.mudid, area);
+			this.areas.push(response.area);
+			input.value = '';
+			this.isFormActive = false;
+		} catch (err) {
+			console.error('Error while creating area', err);
+		}
+	}
 }

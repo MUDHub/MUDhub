@@ -20,6 +20,7 @@ import { FinishComponent } from './mud-config/finish/finish.component';
 import { RoomCreateComponent } from './mud-config/rooms/rooms-grid/room-create/room-create.component';
 import { componentFactoryName } from '@angular/compiler';
 import { RoomsGridComponent } from './mud-config/rooms/rooms-grid/rooms-grid.component';
+import { MudConfigShellComponent } from './mud-config/mud-config-shell.component';
 
 
 const routes: Routes = [
@@ -58,7 +59,13 @@ const routes: Routes = [
 			},
 			{
 				path: 'my-muds/:mudid',
+				component: MudConfigShellComponent,
 				children: [
+					{
+						path: '',
+						pathMatch: 'full',
+						redirectTo: 'races'
+					},
 					{
 						path: 'races',
 						component: RacesComponent

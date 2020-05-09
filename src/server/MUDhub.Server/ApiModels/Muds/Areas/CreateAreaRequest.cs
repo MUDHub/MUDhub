@@ -8,7 +8,6 @@ namespace MUDhub.Server.ApiModels.Muds.Areas
         [Required]
         public string Name { get; set; } = string.Empty;
         //TODO: Soll die Description required sein?
-        [Required]
         public string Description { get; set; } = string.Empty;
 
         public static AreaArgs ConvertFromRequest(CreateAreaRequest request)

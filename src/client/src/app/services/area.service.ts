@@ -12,12 +12,16 @@ import {
 	IRoomCreateRequest,
 	IRoomCreateResponse,
 } from '../model/areas/RoomDTO';
+import { Subject } from 'rxjs';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class AreaService {
 	constructor(private http: HttpClient) {}
+
+	private roomCreatedSubject = new Subject<IRoom>();
+	public roomCreated$ = this.roomCreatedSubject.asObservable();
 
 	/* ##### AREAS ##### */
 	public async getAreasForMUD(mudid: string) {
@@ -59,12 +63,18 @@ export class AreaService {
 		areaid: string,
 		room: IRoomCreateRequest
 	) {
-		return await this.http
-			.post<IRoomCreateResponse>(
-				`${env.api.url}/muds/${mudid}/areas/${areaid}/rooms`,
-				room
-			)
-			.toPromise();
+		try {
+			const response = await this.http
+				.post<IRoomCreateResponse>(
+					`${env.api.url}/muds/${mudid}/areas/${areaid}/rooms`,
+					room
+				)
+				.toPromise();
+			this.roomCreatedSubject.next(response.room);
+			return response;
+		} catch (err) {
+			throw err;
+		}
 	}
 
 	public async deleteRoom(mudid: string, areaid: string, roomid: string) {
@@ -73,5 +83,11 @@ export class AreaService {
 				`${env.api.url}/muds/${mudid}/areas/${areaid}/rooms/${roomid}`
 			)
 			.toPromise();
+	}
+
+
+	/* ##### ROOMS ##### */
+	public async getConnections() {
+
 	}
 }

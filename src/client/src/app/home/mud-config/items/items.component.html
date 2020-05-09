@@ -1,34 +1,3 @@
-<!--Stepper-->
-<mat-horizontal-stepper [linear]="true" #stepper="matHorizontalStepper">
-	<mat-step>
-		<ng-template matStepLabel>
-			<div (click)="jump('races')">Rassen</div>
-		</ng-template>
-	</mat-step>
-	<mat-step>
-		<ng-template matStepLabel>
-			<div (click)="jump('classes')">Klassen</div>
-		</ng-template>
-	</mat-step>
-	<mat-step>
-		<ng-template matStepLabel>
-			<div (click)="jump('items')">Gegenstände</div>
-		</ng-template>
-	</mat-step>
-	<mat-step>
-		<ng-template matStepLabel>
-			<div (click)="jump('rooms')">Räume</div>
-		</ng-template>
-	</mat-step>
-	<mat-step>
-		<ng-template matStepLabel>
-			<div (click)="jump('finish')">Fertig</div>
-		</ng-template>
-	</mat-step>
-</mat-horizontal-stepper>
-
-<h1>Gegenstände</h1>
-
 <div class="button-class">
     <button mat-flat-button color="primary" (click)="changeDialog()">
         Hinzufügen
