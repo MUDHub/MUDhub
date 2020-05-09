@@ -33,25 +33,37 @@ export class AreaListComponent implements OnInit {
 			this.areas.splice(this.areas.indexOf(area), 1);
 			this.router.navigate(['../areas'], { relativeTo: this.route });
 		} catch (err) {
+			console.error('Error while deleting area', err);
 			swal.fire({
 				icon: 'error',
 				title: 'Fehler',
-				text: err.error.errormessage
+				text: err.error.displayMessage
 			});
-			console.error('Error while deleting area', err);
 		}
 	}
 
 	async onAdd(input: HTMLInputElement) {
 		const name = input.value;
-		const area: IAreaCreateRequest = { name };
-		try {
-			const response = await this.areaService.createArea(this.mudid, area);
-			this.areas.push(response.area);
-			input.value = '';
-			this.isFormActive = false;
-		} catch (err) {
-			console.error('Error while creating area', err);
+		if (name) {
+			const area: IAreaCreateRequest = { name };
+			try {
+				const response = await this.areaService.createArea(this.mudid, area);
+				this.areas.push(response.area);
+				input.value = '';
+				this.isFormActive = false;
+			} catch (err) {
+				console.error('Error while creating area', err);
+				swal.fire({
+					icon: 'error',
+					title: 'Fehler',
+					text: err.error?.displayMessage || err.error?.errormessage || 'Fehler beim Erstellen der Area'
+				});
+			}
 		}
+	}
+
+	async updateName(area: IArea, newName: string) {
+		area.name = newName;
+		await this.areaService.updateArea(this.mudid, area.areaId, { name: newName });
 	}
 }

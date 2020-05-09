@@ -45,6 +45,16 @@ export class AreaService {
 			.toPromise();
 	}
 
+
+	public async updateArea(mudid: string, areaid: string, area: IAreaCreateRequest) {
+		return await this.http
+			.put<IAreaCreateResponse>(
+				`${env.api.url}/muds/${mudid}/areas/${areaid}`,
+				area
+			)
+			.toPromise();
+	}
+
 	public async deleteArea(mudid: string, areaid: string) {
 		return await this.http
 			.delete(`${env.api.url}/muds/${mudid}/areas/${areaid}`)

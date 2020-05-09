@@ -43,9 +43,6 @@ export class ClassesComponent implements OnInit {
 		this.dialog = !this.dialog;
 	}
 
-	onAbort() {
-		this.router.navigate(['/my-muds']);
-	}
 
 	async addClass() {
 		// Get Imagekey from API if an Image was uploaded
@@ -86,13 +83,5 @@ export class ClassesComponent implements OnInit {
 	deleteRow(index: number) {
 		this.mudService.deleteMudClass(this.mudId, this.classes[index]);
 		this.classes.splice(index, 1);
-	}
-
-	onLast() {
-		this.router.navigate(['/my-muds/' + this.mudId + '/races']);
-	}
-
-	onNext() {
-		this.router.navigate(['/my-muds/' + this.mudId + '/items']);
 	}
 }

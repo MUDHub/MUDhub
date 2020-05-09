@@ -1,6 +1,6 @@
 @import 'src/variables.scss';
 
-:host {
+.areas {
 	background-color: #fff;
 	border: 1px solid rgba(0, 0, 0, 0.3);
 
@@ -15,7 +15,6 @@
 	padding: 1rem;
 	position: relative;
 	border-bottom: 1px solid rgba(0, 0, 0, 0.3);
-	border-left: 2px solid transparent;
 	width: 100%;
 	cursor: pointer;
 	outline: none;
@@ -24,7 +23,7 @@
 
 	&.active {
 		color: #000;
-		border-left-color: $color-primary;
+		background-color: transparentize($color-primary, 0.8);
 
 		&:hover {
 			.delete {
@@ -35,8 +34,49 @@
 }
 
 .area-new {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0.6rem 1rem;
+	width: 100%;
+	position: relative;
+
 	input {
-		padding: 0.2rem;
+		flex-grow: 1;
+		padding: 0.4rem;
+		border-radius: 4px;
+		border: 1px solid rgba(0, 0, 0, 0.2);
+		outline: none;
+		width: 100%;
+		padding-right: 2rem;
+	}
+
+	.close {
+		cursor: pointer;
+		width: 1.5rem;
+		min-width: 1.5rem;
+		height: 1.5rem;
+		min-height: 1.5rem;
+		margin: 0;
+		position: absolute;
+		right: 1.5rem;
+		span {
+			width: 50%;
+			height: 2px;
+			background-color: #333;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+
+			&:first-child {
+				transform: translate(-50%, -50%) rotate(45deg);
+			}
+
+			&:last-child {
+				transform: translate(-50%, -50%) rotate(-45deg);
+			}
+		}
 	}
 }
 
@@ -60,7 +100,7 @@
 	border-radius: 50%;
 
 	&:hover {
-		background-color: #eee;
+		background-color: transparentize($color-primary, 0.5);
 	}
 
 	span {

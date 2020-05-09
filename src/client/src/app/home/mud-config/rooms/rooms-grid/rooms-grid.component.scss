@@ -50,29 +50,48 @@
 
 .room {
 	background-color: #fff;
+	border-radius: 4px;
 	width: 100%;
 	padding: 1rem;
 	position: relative;
+	min-height: 80px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 
-	.overlay {
+	&:hover {
+		.toolbar {
+			display: flex;
+		}
+	}
+
+
+	.toolbar {
 		position: absolute;
-		display: none;
-		background-color: rgba(0, 0, 0, 0.8);
-		color: #fff;
-		top: 0;
 		bottom: 0;
 		left: 0;
 		right: 0;
+		background-color: rgba(0, 0, 0, 0.5);
+		color: #fff;
+		font-size: 85%;
 
+		display: none;
 		flex-direction: row;
-		align-items: center;
 		justify-content: center;
+		align-items: center;
+
+		.item {
+			cursor: pointer;
+			padding: 0.3rem;
+		}
 	}
 
 	.default-icon {
+		user-select: none;
 		position: absolute;
 		top: 0.2rem;
-		right: 0.5rem;
+		left: 50%;
+		transform: translateX(-50%);
 		border: 1px solid rgba(0, 0, 0, 0.3);
 		color:rgba(0, 0, 0, 0.3);
 		width: 20px;
@@ -87,18 +106,14 @@
 			transform: translate(-50%, -50%);
 		}
 	}
-
-	&:hover .overlay {
-		display: flex;
-	}
 }
 
 .room-add {
 	width: 40px;
 	height: 40px;
-	background-color: #333;
+	background-color: rgba(0, 0, 0, 0.3);
 	color: #fff;
-	border-radius: 4px;
+	border-radius: 50%;
 
 	display: flex;
 	align-items: center;

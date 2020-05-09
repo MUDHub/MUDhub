@@ -1,21 +1,28 @@
-<div
-	class="area"
-	*ngFor="let area of areas"
-	[routerLink]="area.areaId + '/rooms'"
-	routerLinkActive="active"
->
-	<div class="name">
-		{{ area.name }}
-	</div>
-	<div class="delete" (click)="deleteArea(area)">
-		<span></span>
-		<span></span>
-	</div>
-</div>
+<h2>Areas</h2>
+<div class="areas">
+	<mh-area-element
+		*ngFor="let area of areas"
+		class="area"
+		[routerLink]="area.areaId + '/rooms'"
+		routerLinkActive="active"
+		[area]="area"
+		(update)="updateName(area, $event)"
+		(delete)="deleteArea($event)"
+	></mh-area-element>
 
-<div class="area area-new" *ngIf="isFormActive">
-	<input type="text" class="" #nameInput (keydown.enter)="onAdd(nameInput)"/>
-</div>
-<div class="add-area" *ngIf="!isFormActive" (click)="isFormActive = true">
-	+
+	<div class="area-new" *ngIf="isFormActive">
+		<input
+			type="text"
+			class=""
+			#nameInput
+			(keydown.enter)="onAdd(nameInput)"
+		/>
+		<div class="close" (click)="isFormActive = false">
+			<span></span>
+			<span></span>
+		</div>
+	</div>
+	<div class="add-area" *ngIf="!isFormActive" (click)="isFormActive = true">
+		+
+	</div>
 </div>

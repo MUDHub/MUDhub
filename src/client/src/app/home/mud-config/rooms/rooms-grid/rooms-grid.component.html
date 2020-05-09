@@ -7,7 +7,6 @@
 	<button class="add" (click)="addRow()">Height +</button>
 </div>
 
-{{ width }} x {{ height }}
 <table class="rooms-grid">
 	<tr class="room-row" *ngFor="let row of rooms; let y = index">
 		<td class="room-cell" *ngFor="let room of row; let x = index">
@@ -19,6 +18,7 @@
 					room !== undefined
 				"
 				(click)="addConnection(room, row[x + 1])"
+				matTooltip="Verbinden"
 			>
 				+
 			</div>
@@ -29,6 +29,8 @@
 					rooms[y + 1][x] !== undefined && room !== undefined
 				"
 				(click)="addConnection(room, rooms[y + 1][x])"
+				matTooltip="Verbinden"
+				[matTooltipPosition]="'after'"
 			>
 				+
 			</div>
@@ -37,8 +39,9 @@
 					<span>D</span>
 				</div>
 				{{ room?.name }}
-				<div class="overlay">
-					<button mat-button (click)="deleteRoom(room)">Löschen</button>
+				<div class="toolbar">
+					<div class="item" (click)="deleteRoom(room)">Löschen</div>
+					<div class="item">Bearbeiten</div>
 				</div>
 			</div>
 			<div
