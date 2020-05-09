@@ -4,6 +4,7 @@ import { VirtualTimeScheduler } from 'rxjs';
 import { AreaService } from 'src/app/services/area.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import swal from 'sweetalert2';
+import { switchMapTo } from 'rxjs/operators';
 
 @Component({
 	selector: 'mh-rooms-grid',
@@ -15,6 +16,9 @@ export class RoomsGridComponent implements OnInit {
 		private route: ActivatedRoute,
 		private areaService: AreaService
 	) {}
+
+	readonly maxWidth = 8;
+	readonly maxHeight = 6;
 
 	mudid: string;
 	areaid: string;
@@ -57,14 +61,14 @@ export class RoomsGridComponent implements OnInit {
 	}
 
 	addColumn() {
-		if (this.width < 6) {
+		if (this.width < this.maxWidth) {
 			for (const row of this.rooms) {
 				row.push(undefined);
 			}
 		}
 	}
 
-	removeColumn() {
+	async removeColumn() {
 		if (this.rooms[this.rooms.length - 1].length > 1) {
 			let isSafe = true;
 			for (const row of this.rooms) {
@@ -78,11 +82,15 @@ export class RoomsGridComponent implements OnInit {
 					row.pop();
 				}
 			} else {
-				if (
-					confirm(
-						'Durch diese Aktion werden Räume gelöscht! Fortfahren?'
-					)
-				) {
+				const dialogResult = await swal.fire({
+					icon: 'warning',
+					title: 'Warnung',
+					text: 'Durch das Löschen einer Spalte würden Räume gelöscht werden! Fortfahren?',
+					showCancelButton: true,
+					cancelButtonText: 'Nein',
+					confirmButtonText: 'Ja'
+				});
+				if (dialogResult.value) {
 					for (const row of this.rooms) {
 						const room = row.pop();
 						if (room) {
@@ -103,12 +111,12 @@ export class RoomsGridComponent implements OnInit {
 	}
 
 	addRow() {
-		if (this.height < 6) {
+		if (this.height < this.maxHeight) {
 			this.rooms.push(new Array(this.width).fill(undefined));
 		}
 	}
 
-	removeRow() {
+	async removeRow() {
 		if (this.rooms.length > 1) {
 			const isSafe = !this.rooms[this.rooms.length - 1].some(
 				r => r !== undefined
@@ -116,11 +124,15 @@ export class RoomsGridComponent implements OnInit {
 			if (isSafe) {
 				this.rooms.pop();
 			} else {
-				if (
-					confirm(
-						'Durch diese Aktion werden Räume gelöscht! Fortfahren?'
-					)
-				) {
+				const dialogResult = await swal.fire({
+					icon: 'warning',
+					title: 'Warnung',
+					text: 'Durch das Löschen einer Reihe würden Räume gelöscht werden! Fortfahren?',
+					showCancelButton: true,
+					cancelButtonText: 'Nein',
+					confirmButtonText: 'Ja'
+				});
+				if (dialogResult.value) {
 					const toDelete = this.rooms[this.rooms.length - 1].filter(
 						r => r !== undefined
 					);
@@ -166,6 +178,7 @@ export class RoomsGridComponent implements OnInit {
 				room.roomId
 			);
 
+			// tslint:disable-next-line: prefer-for-of
 			for (let y = 0; y < this.rooms.length; y++) {
 				for (let x = 0; x < this.rooms[y].length; x++) {
 					if (this.rooms[y][x]?.roomId === room.roomId) {

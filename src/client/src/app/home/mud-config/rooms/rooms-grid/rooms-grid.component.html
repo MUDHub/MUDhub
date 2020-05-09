@@ -7,7 +7,6 @@
 	<button class="add" (click)="addRow()">Height +</button>
 </div>
 
-{{ width }} x {{ height }}
 <table class="rooms-grid">
 	<tr class="room-row" *ngFor="let row of rooms; let y = index">
 		<td class="room-cell" *ngFor="let room of row; let x = index">
