@@ -4,6 +4,7 @@ using MUDhub.Core.Abstracts.Models.Inventories;
 using MUDhub.Core.Models.Inventories;
 using MUDhub.Core.Models.Users;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace MUDhub.Core.Services
