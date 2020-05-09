@@ -153,33 +153,22 @@ namespace MUDhub.Core.Services
             if (isOwner)
             {
                 var mud = await _context.GetMudByIdAsnyc(mudid).ConfigureAwait(false);
-                if (mud is null)
+
+                var characterclass = new CharacterClass
                 {
-                    var errormessage = $"Mud with the id '{mudid}' does not exist.";
-                    _logger?.LogWarning(errormessage);
-                    return new CharacterClassResult
-                    {
-                        Success = false,
-                        Errormessage = errormessage
-                    };
-                }
-                else
+                    Game = mud,
+                    Description = args.Desctiption,
+                    Name = args.Name
+                };
+                _context.Classes.Add(characterclass);
+                await _context.SaveChangesAsync().ConfigureAwait(false);
+                _logger?.LogInformation($"Successfully created new CharacterClass '{characterclass.Name}' with id: '{characterclass.Id}' in mudgame '{mudid}'");
+                return new CharacterClassResult
                 {
-                    var characterclass = new CharacterClass
-                    {
-                        Game = mud,
-                        Description = args.Desctiption,
-                        Name = args.Name
-                    };
-                    _context.Classes.Add(characterclass);
-                    await _context.SaveChangesAsync().ConfigureAwait(false);
-                    _logger?.LogInformation($"Successfully created new CharacterClass '{characterclass.Name}' with id: '{characterclass.Id}' in mudgame '{mudid}'");
-                    return new CharacterClassResult
-                    {
-                        Class = characterclass,
-                        Success = true
-                    };
-                }
+                    Class = characterclass,
+                    Success = true
+                };
+
             }
             else
             {
@@ -202,7 +191,6 @@ namespace MUDhub.Core.Services
         /// <returns></returns>
         public async Task<CharacterRaceResult> CreateRaceAsync(string userid, string mudid, CharacterRaceArgs args)
         {
-
             _logger?.LogInformation($"Userid:'{userid}' requested create a new race in mudgame '{mudid}'.");
             var user = await _context.GetUserByIdAsnyc(userid)
                                         .ConfigureAwait(false);
@@ -221,33 +209,21 @@ namespace MUDhub.Core.Services
             if (isOwner)
             {
                 var mud = await _context.GetMudByIdAsnyc(mudid).ConfigureAwait(false);
-                if (mud is null)
+
+                var characterRace = new CharacterRace
                 {
-                    var errormessage = $"Mud with the id '{mudid}' does not exist.";
-                    _logger?.LogWarning(errormessage);
-                    return new CharacterRaceResult
-                    {
-                        Success = false,
-                        Errormessage = errormessage
-                    };
-                }
-                else
+                    Game = mud,
+                    Description = args.Desctiption,
+                    Name = args.Name
+                };
+                _context.Races.Add(characterRace);
+                await _context.SaveChangesAsync().ConfigureAwait(false);
+                _logger?.LogInformation($"Successfully created new CharacterClass '{characterRace.Name}' with id: '{characterRace.Id}' in mudgame '{mudid}'");
+                return new CharacterRaceResult
                 {
-                    var characterRace = new CharacterRace
-                    {
-                        Game = mud,
-                        Description = args.Desctiption,
-                        Name = args.Name
-                    };
-                    _context.Races.Add(characterRace);
-                    await _context.SaveChangesAsync().ConfigureAwait(false);
-                    _logger?.LogInformation($"Successfully created new CharacterClass '{characterRace.Name}' with id: '{characterRace.Id}' in mudgame '{mudid}'");
-                    return new CharacterRaceResult
-                    {
-                        Race = characterRace,
-                        Success = true
-                    };
-                }
+                    Race = characterRace,
+                    Success = true
+                };
             }
             else
             {
@@ -432,7 +408,7 @@ namespace MUDhub.Core.Services
             }
 
             var mudgame = user.MudGames.FirstOrDefault(m => m.Classes.Any(c => c.Id == classid));
-            var characterClass = mudgame.Classes.FirstOrDefault(c => c.Id == classid);
+            var characterClass = mudgame?.Classes.FirstOrDefault(c => c.Id == classid);
             if (characterClass is null)
             {
                 var errormessage = $"User '{user.Email}' is not the owner from CharacterClass with the id: '{classid}'";
@@ -480,7 +456,7 @@ namespace MUDhub.Core.Services
             }
 
             var mudgame = user.MudGames.FirstOrDefault(m => m.Races.Any(c => c.Id == raceid));
-            var characterRace = mudgame.Races.FirstOrDefault(c => c.Id == raceid);
+            var characterRace = mudgame?.Races.FirstOrDefault(c => c.Id == raceid);
             if (characterRace is null)
             {
                 var errormessage = $"User '{user.Email}' is not the owner from CharacterClass with the id: '{raceid}'";
