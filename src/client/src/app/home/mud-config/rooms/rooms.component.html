@@ -27,8 +27,6 @@
 	</mat-step>
 </mat-horizontal-stepper>
 
-<h1>Raumsystem</h1>
-
 <div class="container">
 	<mh-area-list
 		class="areas"
@@ -38,7 +36,13 @@
 		(select)="selectArea($event)"
 		(delete)="deleteArea($event)"
 	></mh-area-list>
-	<mh-rooms-grid *ngIf="selectedArea" class="rooms" [rooms]="rooms"></mh-rooms-grid>
+	<mh-rooms-grid
+		*ngIf="selectedArea"
+		class="rooms"
+		[rooms]="rooms"
+		(create)="createRoom($event)"
+		(delete)="deleteRoom($event)"
+	></mh-rooms-grid>
 </div>
 
 <div class="button-menu">

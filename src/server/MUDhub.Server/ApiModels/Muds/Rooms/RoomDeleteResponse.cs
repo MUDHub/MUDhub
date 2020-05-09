@@ -2,5 +2,6 @@
 {
     public class RoomDeleteResponse : BaseResponse
     {
+        public bool IsDefaultRoom { get; set; }
     }
 }

@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { IRoom } from 'src/app/model/areas/IRoom';
 import { IArea } from 'src/app/model/areas/IArea';
 import { AreaService } from 'src/app/services/area.service';
+import { IRoomDeleteResponse } from 'src/app/model/areas/RoomDTO';
 
 @Component({
 	selector: 'mh-rooms',
@@ -25,6 +26,9 @@ export class RoomsComponent implements OnInit {
 	async ngOnInit() {
 		this.mudId = this.route.snapshot.params.mudid;
 		this.areas = await this.areaService.getAreasForMUD(this.mudId);
+		if (this.areas.length > 0) {
+			this.selectArea(this.areas[0]);
+		}
 	}
 
 	onAbort() {
@@ -43,19 +47,25 @@ export class RoomsComponent implements OnInit {
 		this.router.navigate(['/my-muds/' + this.mudId + '/finish']);
 	}
 
-	createRoom(x: number, y: number) {
+	createRoom(position: { x: number; y: number }) {
+		console.log(position);
 		// TODO: show popup/dialog to get infos for room and then create it via API call
 	}
-
 
 	async selectArea(area: IArea) {
 		this.selectedArea = area;
 
 		try {
-			const roomsList = await this.areaService.getRooms(this.mudId, area.areaId);
+			const roomsList = await this.areaService.getRooms(
+				this.mudId,
+				area.areaId
+			);
 			this.rooms = this.mapRooms(roomsList);
 		} catch (err) {
-			console.error(`Error while fetching rooms for area(${area.areaId})`, err);
+			console.error(
+				`Error while fetching rooms for area(${area.areaId})`,
+				err
+			);
 		}
 	}
 
@@ -78,6 +88,31 @@ export class RoomsComponent implements OnInit {
 			this.areas.splice(this.areas.indexOf(area), 1);
 		} catch (err) {
 			console.error('Error while deleting area', err);
+		}
+	}
+
+	async deleteRoom(room: IRoom) {
+		try {
+			await this.areaService.deleteRoom(
+				this.mudId,
+				room.area.areaId,
+				room.roomId
+			);
+		} catch (err) {
+			console.error('Error while deleting room', err);
+			const error = err.error as IRoomDeleteResponse;
+
+			const roomsList = await this.areaService.getRooms(
+				this.mudId,
+				this.selectedArea.areaId
+			);
+			this.rooms = this.mapRooms(roomsList);
+
+			if (error.isDefaultRoom) {
+				alert(
+					'Raum kann nicht gelöscht werden, er ist ein Einstiegsraum'
+				);
+			}
 		}
 	}
 

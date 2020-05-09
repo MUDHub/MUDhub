@@ -2,6 +2,6 @@
 {
     public class UpdateRoomConnectionsArgs
     {
-        public string? Description { get; set; } = null;
+        public string Description { get; set; } = string.Empty;
     }
 }

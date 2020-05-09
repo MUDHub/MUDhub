@@ -1,15 +1,27 @@
 <div class="width-controls">
-	<button class="sub" (click)="width = width - 1">Width -</button>
-	<button class="add" (click)="width = width + 1">Width +</button>
+	<button class="sub" (click)="removeColumn()">Width -</button>
+	<button class="add" (click)="addColumn()">Width +</button>
 </div>
 <div class="height-controls">
-	<button class="sub" (click)="height = height - 1">Height -</button>
-	<button class="add" (click)="height = height + 1">Height +</button>
+	<button class="sub" (click)="removeRow()">Height -</button>
+	<button class="add" (click)="addRow()">Height +</button>
 </div>
+
+{{ width }} x {{ height }}
 <table class="rooms-grid">
 	<tr class="room-row" *ngFor="let row of rooms; let y = index">
-		<td class="room" *ngFor="let room of row; let x = index">
-			{{ room?.name }}
+		<td class="room-cell" *ngFor="let room of row; let x = index">
+			<div class="room" *ngIf="room">
+				{{ room?.name }}
+			</div>
+			<div class="room-add" *ngIf="!room" routerLink="create" [queryParams]="{x: x, y: y}">
+				+
+			</div>
 		</td>
 	</tr>
 </table>
+
+
+<div class="popup">
+	<router-outlet></router-outlet>
+</div>
