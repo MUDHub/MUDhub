@@ -170,7 +170,7 @@ namespace MUDhub.Core.Tests
             {
                 Name = "Class 3",
                 Description = "Beschreibung Class 3",
-                Game = _mudGame2
+                Game = _mudGame3
             };
 
             _race1 = new CharacterRace("1")
@@ -183,13 +183,13 @@ namespace MUDhub.Core.Tests
             {
                 Name = "Race 2",
                 Description = "Beschreibung Race 2",
-                Game = _mudGame1
+                Game = _mudGame2
             };
             _race3 = new CharacterRace("3")
             {
                 Name = "Race 3",
                 Description = "Beschreibung Race 3",
-                Game = _mudGame1
+                Game = _mudGame3
             };
 
             _character1 = new Character("1")
