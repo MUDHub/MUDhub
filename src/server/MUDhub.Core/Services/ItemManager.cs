@@ -82,7 +82,6 @@ namespace MUDhub.Core.Services
             };
         }
 
-
         /// <summary>
         /// An item is updated.
         /// </summary>
