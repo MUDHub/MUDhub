@@ -15,7 +15,9 @@ namespace MUDhub.Core.Models.Inventories
         }
 
         public string Id { get; }
-        public string ResourceId { get; set; } = string.Empty;
+        public string ItemId { get; set; } = string.Empty;
         public virtual Item Item { get; set; }
+        public string InventoryId { get; set; } = string.Empty;
+        public virtual Inventory Inventory { get; set; }
     }
 }

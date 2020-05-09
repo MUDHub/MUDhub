@@ -1,10 +1,12 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MUDhub.Core.Configurations;
 using MUDhub.Core.Models;
 using MUDhub.Core.Models.Characters;
 using MUDhub.Core.Models.Connections;
+using MUDhub.Core.Models.Inventories;
 using MUDhub.Core.Models.Muds;
 using MUDhub.Core.Models.Rooms;
 using MUDhub.Core.Models.Users;
@@ -47,6 +49,9 @@ namespace MUDhub.Core.Services
         public DbSet<Room> Rooms { get; set; } = null!;
         public DbSet<RoomConnection> RoomConnections { get; set; } = null!;
         public DbSet<RoomInteraction> RoomInteractions { get; set; } = null!;
+        public DbSet<Item> Items { get; set; } = null!;
+        public DbSet<ItemInstance> ItemInstances { get; set; } = null!;
+        public DbSet<Inventory> Inventories { get; set; } = null!;
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -131,7 +136,7 @@ namespace MUDhub.Core.Services
                 .HasMany(r => r.Interactions)
                 .WithOne(i => i.Room);
 
-            ////Configures RoomInteraction
+            //Configures RoomInteraction
             modelBuilder.Entity<RoomInteraction>()
                 .HasKey(ri => ri.Id);
 
@@ -140,7 +145,7 @@ namespace MUDhub.Core.Services
                 .HasKey(a => a.Id);
 
 
-            ////Configures RoomConnection
+            //Configures RoomConnection
             modelBuilder.Entity<RoomConnection>()
                 .HasKey(rc => rc.Id);
 
@@ -153,6 +158,18 @@ namespace MUDhub.Core.Services
                 .HasOne(rc => rc.Room2)
                 .WithMany()
                 .HasForeignKey(rc => rc.Room2Id);
+
+            //Configures Item
+            modelBuilder.Entity<Item>()
+                .HasKey(i => i.Id);
+
+            //Configures ItemInstance
+            modelBuilder.Entity<ItemInstance>()
+                .HasKey(ii => ii.Id);
+
+            //Configure Inventory
+            modelBuilder.Entity<Inventory>()
+                .HasKey(it => it.Id);
         }
 
 
