@@ -38,32 +38,35 @@ namespace MUDhub.Core.Services
             var user = await GetUserById(userId).ConfigureAwait(false);
             if (user is null)
             {
-                _logger?.LogWarning($"No user with the UserId: {userId} was found.");
+                var message = $"No user with the UserId: '{userId}' was found.";
+                _logger?.LogWarning(message);
                 return new AreaResult()
                 {
                     Success = false,
-                    Errormessage = $"No user with the UserId: {userId} was found."
+                    Errormessage = message
                 };
             }
             var mud = await _context.MudGames.FindAsync(mudId)
                 .ConfigureAwait(false);
             if (mud is null)
             {
-                _logger?.LogWarning($"No MUDGame found with the MudGameId: {mudId}");
+                var message = $"No MUDGame found with the MudGameId: '{mudId}'";
+                _logger?.LogWarning(message);
                 return new AreaResult()
                 {
                     Success = false,
-                    Errormessage = $"No MUDGame found with the MudGameId: {mudId}"
+                    Errormessage = message
                 };
             }
 
             if (!IsUserOwner(user, mud.Id))
             {
-                _logger?.LogWarning($"The user: {user.Lastname} is not the owner of the MudGame: {mud.Name}");
+                var message = $"The user: '{user.Lastname}' is not the owner of the MudGame: '{mud.Name}'";
+                _logger?.LogWarning(message);
                 return new AreaResult()
                 {
                     Success = false,
-                    Errormessage = $"The user: {user.Lastname} is not the owner of the MudGame: {mud.Name}"
+                    Errormessage = message
                 };
             }
 
@@ -76,7 +79,7 @@ namespace MUDhub.Core.Services
             _context.Areas.Add(area);
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
-            _logger?.LogInformation($"The area: {area.Name} was created in MudGame: {mud.Name}");
+            _logger?.LogInformation($"The area: '{area.Name}' with id '{area.Id}' was created in MudGame: '{mud.Name}'");
             return new AreaResult()
             {
                 Area = area
@@ -97,21 +100,23 @@ namespace MUDhub.Core.Services
             var user = await GetUserById(userId).ConfigureAwait(false);
             if (user is null)
             {
-                _logger?.LogWarning($"No user with the UserId: {userId} was found.");
+                var message = $"No user with the UserId: '{userId}' was found.";
+                _logger?.LogWarning(message);
                 return new ConnectionResult()
                 {
                     Success = false,
-                    Errormessage = $"No user with the UserId: {userId} was found."
+                    Errormessage = message
                 };
             }
 
             if (room1Id == room2Id)
             {
-                _logger?.LogWarning($"Rooms {room1Id} and {room2Id} are identical. A connection is not possible.");
+                var message = $"Rooms '{room1Id}' and '{room2Id}' are identical. A connection is not possible.";
+                _logger?.LogWarning(message);
                 return new ConnectionResult()
                 {
                     Success = false,
-                    Errormessage = $"Rooms {room1Id} and {room2Id} are identical. A connection is not possible."
+                    Errormessage = message
                 };
             }
 
@@ -119,11 +124,12 @@ namespace MUDhub.Core.Services
                 .ConfigureAwait(false);
             if (room1 is null)
             {
-                _logger?.LogWarning($"No Room found with the RoomId: {room1Id}");
+                var message = $"No Room found with the RoomId: '{room1Id}'";
+                _logger?.LogWarning(message);
                 return new ConnectionResult()
                 {
                     Success = false,
-                    Errormessage = $"No Room found with the RoomId: {room1Id}"
+                    Errormessage = message
                 };
             }
 
@@ -131,30 +137,33 @@ namespace MUDhub.Core.Services
                 .ConfigureAwait(false);
             if (room2 is null)
             {
-                _logger?.LogWarning($"No Room found with the RoomId: {room2Id}");
+                var message = $"No Room found with the RoomId: '{room2Id}'";
+                _logger?.LogWarning(message);
                 return new ConnectionResult()
                 {
                     Success = false,
-                    Errormessage = $"No Room found with the RoomId: {room2Id}"
+                    Errormessage = message
                 };
             }
             if (room1.GameId != room2.GameId)
             {
-                _logger?.LogWarning($"The rooms {room1.Name} and {room2.Name} are not in the same MudGame.");
+                var message = $"The rooms '{room1.Name}' and '{room2.Name}' are not in the same MudGame.";
+                _logger?.LogWarning(message);
                 return new ConnectionResult()
                 {
                     Success = false,
-                    Errormessage = $"The rooms {room1.Name} and {room2.Name} are not in the same MudGame."
+                    Errormessage = message
                 };
             }
 
             if (!IsUserOwner(user, room1.GameId))
             {
-                _logger?.LogWarning($"The user: {user.Lastname} is not the owner of the MudGame: {room1.GameId}");
+                var message = $"The user: '{user.Lastname}' is not the owner of the MudGame: '{room1.GameId}'";
+                _logger?.LogWarning(message);
                 return new ConnectionResult()
                 {
                     Success = false,
-                    Errormessage = $"The user: {user.Lastname} is not the owner of the MudGame: {room1.GameId}"
+                    Errormessage = message
                 };
             }
 
@@ -192,32 +201,35 @@ namespace MUDhub.Core.Services
             var user = await GetUserById(userId).ConfigureAwait(false);
             if (user is null)
             {
-                _logger?.LogWarning($"No user with the UserId: {userId} was found.");
+                var message = $"No user with the UserId: '{userId}' was found.";
+                _logger?.LogWarning(message);
                 return new RoomResult()
                 {
                     Success = false,
-                    Errormessage = $"No user with the UserId: {userId} was found."
+                    Errormessage = message
                 };
             }
             var area = await _context.Areas.FindAsync(areaId)
                 .ConfigureAwait(false);
             if (area is null)
             {
-                _logger?.LogWarning($"No area with the AreaId: {areaId} was found.");
+                var message = $"No area with the AreaId: '{areaId}' was found.";
+                _logger?.LogWarning(message);
                 return new RoomResult()
                 {
                     Success = false,
-                    Errormessage = $"No area with the AreaId: {areaId} was found."
+                    Errormessage = message
                 };
             }
 
             if (!IsUserOwner(user, area.GameId))
             {
-                _logger?.LogWarning($"The user: {user.Lastname} is not the owner of the MudGame: {area.Game.Name}");
+                var message = $"The user: '{user.Lastname}' is not the owner of the MudGame: '{area.Game.Name}'";
+                _logger?.LogWarning(message);
                 return new RoomResult()
                 {
                     Success = false,
-                    Errormessage = $"The user: {user.Lastname} is not the owner of the MudGame: {area.Game.Name}"
+                    Errormessage = message
                 };
             }
 
@@ -225,11 +237,12 @@ namespace MUDhub.Core.Services
                                              .ConfigureAwait(false);
             if (roomXy != null)
             {
-                _logger?.LogWarning($"At position X: {args.X} and Y: {args.Y} there is already a room");
+                var message = $"At position X: '{args.X}' and Y: '{args.Y}' there is already a room";
+                _logger?.LogWarning(message);
                 return new RoomResult()
                 {
                     Success = false,
-                    Errormessage = $"At position X: {args.X} and Y: {args.Y} there is already a room"
+                    Errormessage = message
                 };
             }
 
@@ -255,12 +268,14 @@ namespace MUDhub.Core.Services
             _context.Rooms.Add(room);
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
-            _logger?.LogInformation($"A room: {room.Id} was created in area: {area.Name}");
+            _logger?.LogInformation($"A room: '{room.Id}' was created in area: '{area.Name}'");
             return new RoomResult()
             {
                 Room = room
             };
         }
+
+        //Todo: logmessage reminder marvin
 
 
         /// <summary>

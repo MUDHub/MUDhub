@@ -18,8 +18,7 @@ namespace MUDhub.Server.Controllers
             _manager = manager;
         }
 
-
-        [HttpPost("")]
+        [HttpPost()]
         public async Task<IActionResult> CreateCharacterAsync([FromRoute] string mudid, [FromBody] CharacterRequest request)
         {
             var result = await _manager.CreateCharacterAsync(HttpContext.GetUserId(), mudid, CharacterRequest.CreateArgs(request)).ConfigureAwait(false);
