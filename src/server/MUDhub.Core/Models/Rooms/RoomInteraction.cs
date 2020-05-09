@@ -17,7 +17,7 @@ namespace MUDhub.Core.Models.Rooms
         public string Id { get; }
         public string Description { get; set; } = string.Empty;
         public string ExecutionMessage { get; set; } = string.Empty;
-        public Room Room { get; set; } = new Room();
+        public virtual Room Room { get; set; } = new Room();
 
         public InteractionType Type { get; set; } = InteractionType.Mob;
 

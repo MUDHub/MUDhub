@@ -28,9 +28,9 @@ namespace MUDhub.Core.Models.Users
         public string? PasswordResetKey { get; set; }
 
         //Todo: add Navigation properties
-        public ICollection<Character> Characters { get; set; } = new Collection<Character>();
-        public ICollection<MudJoinRequest> Joins { get; set; } = new Collection<MudJoinRequest>();
-        public ICollection<MudGame> MudGames { get; set; } = new Collection<MudGame>();
+        public virtual ICollection<Character> Characters { get; set; } = new Collection<Character>();
+        public virtual ICollection<MudJoinRequest> Joins { get; set; } = new Collection<MudJoinRequest>();
+        public virtual ICollection<MudGame> MudGames { get; set; } = new Collection<MudGame>();
         
 
     }

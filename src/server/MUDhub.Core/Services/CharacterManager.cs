@@ -270,7 +270,7 @@ namespace MUDhub.Core.Services
         /// <returns></returns>
         public async Task<CharacterClassResult> UpdateClassAsync(string userid, string classId, CharacterClassArgs args)
         {
-            _logger?.LogInformation($"Userid:'{userid}' requested create a new class in mudgame '{classId}'.");
+            _logger?.LogInformation($"Userid:'{userid}' requested update a class in mudgame '{classId}'.");
             var user = await _context.GetUserByIdAsnyc(userid)
                                         .ConfigureAwait(false);
             if (user is null)
