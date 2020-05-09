@@ -3,6 +3,7 @@ import { IRoom } from 'src/app/model/areas/IRoom';
 import { VirtualTimeScheduler } from 'rxjs';
 import { AreaService } from 'src/app/services/area.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import swal from 'sweetalert2';
 
 @Component({
 	selector: 'mh-rooms-grid',
@@ -165,18 +166,23 @@ export class RoomsGridComponent implements OnInit {
 				room.roomId
 			);
 
-			for (const row of this.rooms) {
-				for (let r of row) {
-					if (room === r) {
-						r = undefined;
+			for (let y = 0; y < this.rooms.length; y++) {
+				for (let x = 0; x < this.rooms[y].length; x++) {
+					if (this.rooms[y][x].roomId === room.roomId) {
+						this.rooms[y][x] = undefined;
 					}
 				}
 			}
 		} catch (err) {
 			console.error('Error while deleting room');
-			if (err.error.isDefaultRoom) {
-				alert('Eintrittsräume können nicht gelöscht werden!');
-			}
+			swal.fire({
+				icon: 'error',
+				title: 'Fehler',
+				text:
+					err.error.displayMessage ||
+					err.error.errormessage ||
+					'Fehler beim Löschen des Raumes',
+			});
 		}
 	}
 
