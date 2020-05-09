@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MUDhub.Server.ApiModels.Characters
 {
-    public class RaceApiModel
+    public class ClassApiModel
     {
         public string Description { get; set; } = string.Empty;
         public string RaceId { get; set; } = string.Empty;
@@ -14,9 +14,9 @@ namespace MUDhub.Server.ApiModels.Characters
         public string ImageKey { get; set; } = string.Empty;
 
 
-        public static RaceApiModel ConvertFromCharacterRace(CharacterRace race)
+        public static ClassApiModel ConvertFromCharacterClass(CharacterClass race)
         {
-            return new RaceApiModel
+            return new ClassApiModel
             {
                 MudGameId = race.GameId,
                 Description = race.Description,

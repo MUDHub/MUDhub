@@ -238,7 +238,8 @@ namespace MUDhub.Core.Services
                     {
                         Game = mud,
                         Description = args.Desctiption,
-                        Name = args.Name
+                        Name = args.Name,
+                        ImageKey = args.ImageKey
                     };
                     _context.Races.Add(characterRace);
                     await _context.SaveChangesAsync().ConfigureAwait(false);
@@ -302,6 +303,7 @@ namespace MUDhub.Core.Services
                 var characterclass = mudgame.Classes.FirstOrDefault(c => c.Id == classId);
                 characterclass.Description = args.Desctiption;
                 characterclass.Name = args.Name;
+                characterclass.ImageKey = args.ImageKey;
                 _context.Classes.Update(characterclass);
                 await _context.SaveChangesAsync().ConfigureAwait(false);
                 _logger?.LogInformation($"Successfully updated new CharacterClass '{characterclass.Name}' with id: '{characterclass.Id}' in mudgame '{mudgame.Name}'");
@@ -354,6 +356,7 @@ namespace MUDhub.Core.Services
                 var characterrace = mudgame.Races.FirstOrDefault(c => c.Id == raceId);
                 characterrace.Description = args.Desctiption;
                 characterrace.Name = args.Name;
+                characterrace.ImageKey = args.ImageKey;
                 _context.Races.Update(characterrace);
                 await _context.SaveChangesAsync().ConfigureAwait(false);
                 _logger?.LogInformation($"Successfully updated new CharacterRace '{characterrace.Name}' with id: '{characterrace.Id}' in mudgame '{mudgame.Name}'");
