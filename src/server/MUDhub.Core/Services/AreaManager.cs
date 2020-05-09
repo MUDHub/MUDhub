@@ -329,7 +329,7 @@ namespace MUDhub.Core.Services
                     Success = false,
                     Errormessage = message,
                     Area = area,
-                    DisplayMessage = "Das Gebiet konnte nicht gelöscht werde, da den Eintrittsraum enthält."
+                    DisplayMessage = "Das Gebiet konnte nicht gelöscht werde, da es den Eintrittsraum enthält."
                 };
             }
 

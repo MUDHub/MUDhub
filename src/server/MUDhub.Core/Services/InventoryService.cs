@@ -3,7 +3,7 @@ using MUDhub.Core.Abstracts;
 using MUDhub.Core.Abstracts.Models.Inventories;
 using MUDhub.Core.Models.Inventories;
 using MUDhub.Core.Models.Users;
-using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace MUDhub.Core.Services
@@ -174,7 +174,42 @@ namespace MUDhub.Core.Services
                 };
             }
 
-            throw new NotImplementedException();
+            if (sourceInventory.ItemInstances.FirstOrDefault(i => i.Id == itemInstanceId) is null)
+            {
+                var message = $"No matching item instance: {itemInstanceId} was found in the source inventory: {sourceInventory.Id}";
+                _logger?.LogWarning(message);
+                return new ItemInstanceResult()
+                {
+                    Success = false,
+                    Errormessage = message
+                };
+            }
+
+            var remainingCapacity = targetInventory.Capacity - targetInventory.UsedCapacity;
+            if (remainingCapacity > itemInstance.Item.Weight)
+            {
+                var message = $"No matching item instance: {itemInstanceId} was found in the source inventory: {sourceInventory.Id}";
+                _logger?.LogWarning(message);
+                return new ItemInstanceResult()
+                {
+                    Success = false,
+                    Errormessage = message
+                };
+            }
+
+            sourceInventory.ItemInstances.Remove(itemInstance);
+            targetInventory.ItemInstances.Add(itemInstance);
+
+            //TODO: Muss ich an der Db noch was machen oder wird das automatisch gespeichert?
+
+            await _context.SaveChangesAsync()
+                .ConfigureAwait(false);
+            _logger?.LogInformation($"The item instance: {itemInstance.Id} was transferred from inventory: {sourceInventoryId} to inventory: {targetInventoryId}");
+            return new ItemInstanceResult()
+            {
+                ItemInstance = itemInstance,
+                Inventory = targetInventory
+            };
         }
 
         /// <summary>
