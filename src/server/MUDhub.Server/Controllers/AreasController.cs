@@ -69,7 +69,7 @@ namespace MUDhub.Server.Controllers
             return BadRequest(new AreaDeleteResponse()
             {
                 Succeeded = false,
-                Errormessage = $"Area with the Id: {areaId} does not exist!"
+                Errormessage = result.Errormessage
             });
         }
 
@@ -94,7 +94,7 @@ namespace MUDhub.Server.Controllers
             return BadRequest(new CreateAreaResponse()
             {
                 Succeeded = false,
-                Errormessage = "Cannot create the area."
+                Errormessage = createResult.Errormessage
             });
         }
         
@@ -119,7 +119,7 @@ namespace MUDhub.Server.Controllers
             return BadRequest(new UpdateAreaResponse()
             {
                 Succeeded = false,
-                Errormessage = $"Cannot update the area: '{areaId}'"
+                Errormessage = updateResult.Errormessage
             });
         }
     }
