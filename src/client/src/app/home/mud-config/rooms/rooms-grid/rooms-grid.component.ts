@@ -1,19 +1,32 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { IRoom } from 'src/app/model/areas/IRoom';
 import { VirtualTimeScheduler } from 'rxjs';
+import { AreaService } from 'src/app/services/area.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
 	selector: 'mh-rooms-grid',
 	templateUrl: './rooms-grid.component.html',
 	styleUrls: ['./rooms-grid.component.scss'],
 })
-export class RoomsGridComponent {
-	constructor() {}
+export class RoomsGridComponent implements OnInit {
+	constructor(
+		private route: ActivatedRoute,
+		private areaService: AreaService
+	) {}
 
-	@Input() rooms: IRoom[][];
+	mudid: string;
+	areaid: string;
+	rooms: IRoom[][] = [[]];
 
-	@Output() delete = new EventEmitter<IRoom>();
-	@Output() create = new EventEmitter<IRoom>();
+	async ngOnInit() {
+		this.route.params.subscribe(async (params) => {
+			this.mudid = params.mudid;
+			this.areaid = params.areaid;
+			const rooms = await this.areaService.getRooms(this.mudid, this.areaid);
+			this.rooms = this.mapRooms(rooms);
+		});
+	}
 
 	get width() {
 		return this.rooms[this.rooms.length - 1]?.length;
@@ -49,7 +62,7 @@ export class RoomsGridComponent {
 					for (const row of this.rooms) {
 						const room = row.pop();
 						if (room) {
-							this.delete.emit(room);
+							// TODO: delete // this.delete.emit(room);
 						}
 					}
 				}
@@ -85,12 +98,31 @@ export class RoomsGridComponent {
 					);
 
 					for (const room of toDelete) {
-						this.delete.emit(room);
+						// TODO: delete // this.delete.emit(room);
 					}
 
 					this.rooms.pop();
 				}
 			}
 		}
+	}
+
+	private mapRooms(roomList: IRoom[]): IRoom[][] {
+		const matrix: IRoom[][] = [[]];
+		for (const room of roomList) {
+			while (matrix.length <= room.y) {
+				matrix.push(new Array(matrix[matrix.length - 1].length));
+			}
+
+			for (const row of matrix) {
+				while (row.length <= room.x) {
+					row.push(undefined);
+				}
+			}
+
+			matrix[room.y][room.x] = room;
+		}
+
+		return matrix;
 	}
 }

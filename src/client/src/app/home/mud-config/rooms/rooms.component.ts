@@ -19,16 +19,11 @@ export class RoomsComponent implements OnInit {
 
 	mudId: string;
 
-	rooms: IRoom[][] = [[]];
 	areas: IArea[] = [];
-	selectedArea: IArea;
 
 	async ngOnInit() {
 		this.mudId = this.route.snapshot.params.mudid;
 		this.areas = await this.areaService.getAreasForMUD(this.mudId);
-		if (this.areas.length > 0) {
-			this.selectArea(this.areas[0]);
-		}
 	}
 
 	onAbort() {
@@ -50,23 +45,6 @@ export class RoomsComponent implements OnInit {
 	createRoom(position: { x: number; y: number }) {
 		console.log(position);
 		// TODO: show popup/dialog to get infos for room and then create it via API call
-	}
-
-	async selectArea(area: IArea) {
-		this.selectedArea = area;
-
-		try {
-			const roomsList = await this.areaService.getRooms(
-				this.mudId,
-				area.areaId
-			);
-			this.rooms = this.mapRooms(roomsList);
-		} catch (err) {
-			console.error(
-				`Error while fetching rooms for area(${area.areaId})`,
-				err
-			);
-		}
 	}
 
 	async addArea() {
@@ -91,30 +69,6 @@ export class RoomsComponent implements OnInit {
 		}
 	}
 
-	async deleteRoom(room: IRoom) {
-		try {
-			await this.areaService.deleteRoom(
-				this.mudId,
-				room.area.areaId,
-				room.roomId
-			);
-		} catch (err) {
-			console.error('Error while deleting room', err);
-			const error = err.error as IRoomDeleteResponse;
-
-			const roomsList = await this.areaService.getRooms(
-				this.mudId,
-				this.selectedArea.areaId
-			);
-			this.rooms = this.mapRooms(roomsList);
-
-			if (error.isDefaultRoom) {
-				alert(
-					'Raum kann nicht gelöscht werden, er ist ein Einstiegsraum'
-				);
-			}
-		}
-	}
 
 	jump(componentName: string) {
 		switch (componentName) {
@@ -136,24 +90,5 @@ export class RoomsComponent implements OnInit {
 			default:
 				break;
 		}
-	}
-
-	private mapRooms(roomList: IRoom[]): IRoom[][] {
-		const matrix: IRoom[][] = [[]];
-		for (const room of roomList) {
-			while (matrix.length <= room.y) {
-				matrix.push(new Array(matrix[matrix.length - 1].length));
-			}
-
-			for (const row of matrix) {
-				while (row.length <= room.x) {
-					row.push(undefined);
-				}
-			}
-
-			matrix[room.y][room.x] = room;
-		}
-
-		return matrix;
 	}
 }

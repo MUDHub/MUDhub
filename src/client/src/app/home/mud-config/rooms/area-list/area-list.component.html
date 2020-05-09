@@ -1,4 +1,10 @@
-<div class="area" *ngFor="let area of areas" [class.active]="selectedArea === area" (click)="select.emit(area)">
+<div
+	class="area"
+	*ngFor="let area of areas"
+	[class.active]="selectedArea === area"
+	[routerLink]="area.areaId + '/rooms'"
+	routerLinkActive="active"
+>
 	<div class="name">
 		{{ area.name }}
 	</div>
