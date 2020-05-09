@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-	template: '<p>MUD CONFIG SHELL</p><router-outlet></router-outlet>'
+	templateUrl: './mud-config-shell.component.html',
+	styleUrls: ['./mud-config-shell.component.scss'],
 })
-export class MudConfigShellComponent {
-
-}
+export class MudConfigShellComponent {}

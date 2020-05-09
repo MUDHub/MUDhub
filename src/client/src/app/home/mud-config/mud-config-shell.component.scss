@@ -1,0 +1,20 @@
+.navbar {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+
+	.nav-item {
+		padding: 1rem;
+		cursor: pointer;
+	}
+
+	.line {
+		min-width: 32px;
+		border-top-width: 1px;
+		border-top-style: solid;
+		border-top-color: #ccc;
+		flex: auto;
+		height: 0;
+	}
+}

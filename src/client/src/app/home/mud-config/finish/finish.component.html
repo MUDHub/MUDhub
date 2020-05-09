@@ -1,34 +1,3 @@
-<!--Stepper-->
-<mat-horizontal-stepper [linear]="true" #stepper="matHorizontalStepper">
-	<mat-step>
-		<ng-template matStepLabel>
-			<div (click)="jump('races')">Rassen</div>
-		</ng-template>
-	</mat-step>
-	<mat-step>
-		<ng-template matStepLabel>
-			<div (click)="jump('classes')">Klassen</div>
-		</ng-template>
-	</mat-step>
-	<mat-step>
-		<ng-template matStepLabel>
-			<div (click)="jump('items')">Gegenstände</div>
-		</ng-template>
-	</mat-step>
-	<mat-step>
-		<ng-template matStepLabel>
-			<div (click)="jump('rooms')">Räume</div>
-		</ng-template>
-	</mat-step>
-	<mat-step>
-		<ng-template matStepLabel>
-			<div (click)="jump('finish')">Fertig</div>
-		</ng-template>
-	</mat-step>
-</mat-horizontal-stepper>
-
-<h1>Übersicht</h1>
-
 <mat-accordion multi="true">
     <!--Übersicht Rassen-->
 
@@ -42,7 +11,7 @@
         <div *ngFor="let race of races; let i = index">
             <p>Rasse {{i}}: Name: {{ race.name }}, Beschreibung: {{ race.description }}</p>
 		</div>
-		
+
     </mat-expansion-panel>
 
     <!--Übersicht Klassen-->
@@ -54,7 +23,7 @@
             </mat-panel-title>
 
 		</mat-expansion-panel-header>
-		
+
 		<div *ngFor="let class of classes; let i = index">
             <p>Klasse {{i}}: Name: {{ class.name }}, Beschreibung: {{ class.description }}</p>
 		</div>
@@ -70,11 +39,11 @@
             </mat-panel-title>
 
 		</mat-expansion-panel-header>
-		
+
 		<div *ngFor="let item of items; let i = index">
             <p>Gegenstand {{i}}: Name: {{ item.name }}, Beschreibung: {{ item.description }}</p>
 		</div>
-		
+
     </mat-expansion-panel>
 
     <!--Übersicht Räume-->
@@ -85,7 +54,7 @@
             </mat-panel-title>
 
 		</mat-expansion-panel-header>
-		
+
 		<div>
 			Todo Rooms
 		</div>

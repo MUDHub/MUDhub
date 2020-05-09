@@ -62,6 +62,11 @@ const routes: Routes = [
 				component: MudConfigShellComponent,
 				children: [
 					{
+						path: '',
+						pathMatch: 'full',
+						redirectTo: 'races'
+					},
+					{
 						path: 'races',
 						component: RacesComponent
 					},
