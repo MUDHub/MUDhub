@@ -22,7 +22,6 @@ import { componentFactoryName } from '@angular/compiler';
 import { RoomsGridComponent } from './mud-config/rooms/rooms-grid/rooms-grid.component';
 import { MudConfigShellComponent } from './mud-config/mud-config-shell.component';
 
-
 const routes: Routes = [
 	{
 		path: '',
@@ -39,9 +38,9 @@ const routes: Routes = [
 				children: [
 					{
 						path: 'join',
-						component: MudJoinComponent
-					}
-				]
+						component: MudJoinComponent,
+					},
+				],
 			},
 			{
 				path: 'my-games',
@@ -55,7 +54,11 @@ const routes: Routes = [
 			{
 				path: 'my-muds/create',
 				canActivate: [MasterGuard],
-				component: MudCreateComponent
+				component: MudCreateComponent,
+			},
+			{
+				path: 'my-muds/:mudid/requests',
+				component: RequestsComponent,
 			},
 			{
 				path: 'my-muds/:mudid',
@@ -64,19 +67,19 @@ const routes: Routes = [
 					{
 						path: '',
 						pathMatch: 'full',
-						redirectTo: 'races'
+						redirectTo: 'races',
 					},
 					{
 						path: 'races',
-						component: RacesComponent
+						component: RacesComponent,
 					},
 					{
 						path: 'classes',
-						component: ClassesComponent
+						component: ClassesComponent,
 					},
 					{
 						path: 'items',
-						component: ItemsComponent
+						component: ItemsComponent,
 					},
 					{
 						path: 'areas',
@@ -88,25 +91,21 @@ const routes: Routes = [
 								children: [
 									{
 										path: 'create',
-										component: RoomCreateComponent
+										component: RoomCreateComponent,
 									},
 									{
 										path: ':roomid/edit',
-										component: RoomCreateComponent
-									}
-								]
-							}
-						]
+										component: RoomCreateComponent,
+									},
+								],
+							},
+						],
 					},
 					{
 						path: 'finish',
-						component: FinishComponent
+						component: FinishComponent,
 					},
-					{
-						path: 'requests',
-						component: RequestsComponent
-					}
-				]
+				],
 			},
 			{
 				path: 'profile',
@@ -138,4 +137,4 @@ const routes: Routes = [
 	imports: [RouterModule.forChild(routes)],
 	exports: [RouterModule],
 })
-export class HomeRoutingModule { }
+export class HomeRoutingModule {}

@@ -20,7 +20,7 @@ h1 {
 		}
 
 		td{
-			text-align: center; 
+			text-align: center;
 			vertical-align: middle;
 		}
 
@@ -29,13 +29,16 @@ h1 {
 }
 
 table{
-	border-spacing: 0 1rem; 
+	border-spacing: 0 1rem;
+}
+
+button {
+	color: #fff;
 }
 
 .fab {
-	position: fixed;
-	bottom: 3rem;
-	right: 3rem;
+	margin: 1rem auto;
+	display: block;
 
 	opacity: 0.85;
 
