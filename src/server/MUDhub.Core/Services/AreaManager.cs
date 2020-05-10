@@ -44,7 +44,8 @@ namespace MUDhub.Core.Services
                 return new AreaResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    //DisplayMessage = 
                 };
             }
             var mud = await _context.MudGames.FindAsync(mudId)
@@ -87,7 +88,6 @@ namespace MUDhub.Core.Services
             };
         }
 
-
         /// <summary>
         /// A new connection is created between two rooms.
         /// </summary>
@@ -106,7 +106,8 @@ namespace MUDhub.Core.Services
                 return new ConnectionResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"Kein Benutzer mit der Benutzer-Id: '{userId}' wurde gefunden."
                 };
             }
 
@@ -117,7 +118,8 @@ namespace MUDhub.Core.Services
                 return new ConnectionResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"Die beiden Räume haben die gleiche Id: '{room1Id}'. Eine Verbindung ist nicht möglich"
                 };
             }
 
@@ -130,7 +132,8 @@ namespace MUDhub.Core.Services
                 return new ConnectionResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"Kein Raum mit der Raum-Id: '{room1Id}' wurde gefunden."
                 };
             }
 
@@ -143,7 +146,8 @@ namespace MUDhub.Core.Services
                 return new ConnectionResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"Kein Raum mit der Raum-Id: '{room1Id}' wurde gefunden."
                 };
             }
             if (room1.GameId != room2.GameId)
@@ -153,7 +157,8 @@ namespace MUDhub.Core.Services
                 return new ConnectionResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"Der Raum: '{room1.Name}' und der Raum: '{room2.Name}' sind nicht im selben MudGame."
                 };
             }
 
@@ -164,7 +169,8 @@ namespace MUDhub.Core.Services
                 return new ConnectionResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"Der Benutzer: '{user.Lastname}' ist nicht der Besitzer des MudGames: '{room1.GameId}'."
                 };
             }
 
@@ -183,7 +189,7 @@ namespace MUDhub.Core.Services
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
 
-            //_logger?.LogInformation($"A connection: {connection.Id} was created between room: {room1.Name} and room: {room2.Name}");
+            _logger?.LogInformation($"A connection: {connection.Id} was created between room: {room1.Name} and room: {room2.Name}");
             return new ConnectionResult()
             {
                 RoomConnection = connection
@@ -681,6 +687,108 @@ namespace MUDhub.Core.Services
             };
         }
 
+        public async Task<RoomInteractionResult> CreateRoomInteractionAsync(string userId, string roomId, RoomInteractionArgs args)
+        {
+            var user = await GetUserById(userId).ConfigureAwait(false);
+            if (user is null)
+            {
+                var message = $"No user with the UserId: '{userId}' was found.";
+                _logger?.LogWarning(message);
+                return new RoomInteractionResult()
+                {
+                    Success = false,
+                    Errormessage = message
+                };
+            }
+
+            var room = await _context.Rooms.FindAsync(roomId)
+                .ConfigureAwait(false);
+            if (room is null)
+            {
+                var message = $"No Room found with the RoomId: '{roomId}'";
+                _logger?.LogWarning(message);
+                return new RoomInteractionResult()
+                {
+                    Success = false,
+                    Errormessage = message
+                };
+            }
+
+            if (!IsUserOwner(user, room.GameId))
+            {
+                var message = $"The user: '{user.Lastname}' is not the owner of the MudGame: '{room.GameId}'";
+                _logger?.LogWarning(message);
+                return new RoomInteractionResult()
+                {
+                    Success = false,
+                    Errormessage = message
+                };
+            }
+
+            var roomInteraction = new RoomInteraction()
+            {
+                Description = args.Description,
+                ExecutionMessage = args.ExecutionMessage,
+                RelatedId = args.RelatedId,
+                Type = args.Type
+            };
+
+            _context.RoomInteractions.Add(roomInteraction);
+            await _context.SaveChangesAsync()
+                .ConfigureAwait(false);
+            _logger?.LogInformation($"A room interaction: '{roomInteraction.Description}' with Id: '{roomInteraction.Id}' was created in MudGame: '{room.Game.Name}'");
+            return new RoomInteractionResult()
+            {
+                RoomInteraction = roomInteraction
+            };
+        }
+
+        public async Task<RoomInteractionResult> RemoveRoomInteractionAsync(string userId, string roomInteractionId)
+        {
+            var user = await GetUserById(userId).ConfigureAwait(false);
+            if (user is null)
+            {
+                var message = $"No user with the UserId: '{userId}' was found.";
+                _logger?.LogWarning(message);
+                return new RoomInteractionResult()
+                {
+                    Success = false,
+                    Errormessage = message
+                };
+            }
+            var roomInteraction = await _context.RoomInteractions.FindAsync(roomInteractionId)
+                .ConfigureAwait(false);
+            if (roomInteraction is null)
+            {
+                var message = $"No room interaction found with the RoomInteractionId: '{roomInteractionId}'";
+                _logger?.LogWarning(message);
+                return new RoomInteractionResult()
+                {
+                    Success = false,
+                    Errormessage = message
+                };
+            }
+
+            if (!IsUserOwner(user, roomInteraction.GameId))
+            {
+                var message = $"The user: '{user.Lastname}' is not the owner of the MudGame: '{roomInteraction.GameId}'";
+                _logger?.LogWarning(message);
+                return new RoomInteractionResult()
+                {
+                    Success = false,
+                    Errormessage = message
+                };
+            }
+
+            _context.RoomInteractions.Remove(roomInteraction);
+            await _context.SaveChangesAsync()
+                .ConfigureAwait(false);
+            _logger?.LogInformation($"The room interaction: '{roomInteraction.Description}' with Id: '{roomInteraction.Id}' has been removed in MudGame: '{roomInteraction.Game.Name}'");
+            return new RoomInteractionResult()
+            {
+                RoomInteraction = roomInteraction
+            };
+        }
 
         /// <summary>
         /// Is the user really the owner of the MudGame?

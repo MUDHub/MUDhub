@@ -215,7 +215,7 @@ namespace MUDhub.Core.Services
             }
 
             var remainingCapacity = targetInventory.Capacity - targetInventory.UsedCapacity;
-            if (remainingCapacity > itemInstance.Item.Weight)
+            if (remainingCapacity < itemInstance.Item.Weight)
             {
                 var message = $"No matching item instance: {itemInstanceId} was found in the source inventory: {sourceInventory.Id}";
                 _logger?.LogWarning(message);

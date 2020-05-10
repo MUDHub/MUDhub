@@ -161,6 +161,10 @@ namespace MUDhub.Core.Services
             //Configures Item
             modelBuilder.Entity<Item>()
                 .HasKey(i => i.Id);
+            modelBuilder.Entity<Item>()
+                .HasMany(i => i.Instances)
+                .WithOne(i => i.Item)
+                .HasForeignKey(ii => ii.ItemId);
 
             //Configures ItemInstance
             modelBuilder.Entity<ItemInstance>()

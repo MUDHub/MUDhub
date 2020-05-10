@@ -1,13 +1,15 @@
 export interface IMudRace {
+	raceId: string;
 	name: string;
 	description: string;
 	imagekey: string;
 }
 
 export interface IMudClass {
+	classId: string;
 	name: string;
 	description: string;
-	imagekey: string;
+	imageKey: string;
 }
 
 

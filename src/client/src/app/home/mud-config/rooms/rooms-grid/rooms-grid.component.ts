@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import swal from 'sweetalert2';
 import { IConnectionCreateRequest, LockType } from 'src/app/model/areas/ConnectionsDTO';
 import { IConnection } from 'src/app/model/areas/IConnection';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
 	selector: 'mh-rooms-grid',
@@ -211,12 +212,40 @@ export class RoomsGridComponent implements OnInit {
 		};
 		try {
 			const response = await this.areaService.createConnection(this.mudid, this.areaid, connection);
-			
-			for (let i = 0; i < this.rooms.length; i++) {
-				
+
+			for (let y = 0; y < this.rooms.length; y++) {
+				for (let x = 0; x < this.rooms[y].length; x++) {
+					const room = this.rooms[y][x];
+					if (response.connection.room1Id === room?.roomId) {
+						if (this.rooms[y][x + 1]?.roomId === response.connection.room2Id) {
+							room.connections.east = true;
+							this.rooms[y][x + 1].connections.west = true;
+							continue;
+						}
+						if (this.rooms[y][x - 1]?.roomId === response.connection.room2Id) {
+							room.connections.west = true;
+							this.rooms[y][x - 1].connections.east = true;
+							continue;
+						}
+						if (this.rooms[y + 1][x]?.roomId === response.connection.room2Id) {
+							room.connections.south = true;
+							this.rooms[y + 1][x].connections.north = true;
+							continue;
+						}
+						if (this.rooms[y - 1][x]?.roomId === response.connection.room2Id) {
+							room.connections.north = true;
+							this.rooms[y - 1][x].connections.south = true;
+							continue;
+						}
+					}
+				}
 			}
 		} catch (err) {
 			console.error('Error while creating connection', err);
 		}
+	}
+
+	public async deleteConnection(room1: IRoom, room2: IRoom) {
+
 	}
 }

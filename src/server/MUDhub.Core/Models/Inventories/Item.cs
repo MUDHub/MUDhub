@@ -1,5 +1,7 @@
 ﻿using MUDhub.Core.Models.Muds;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace MUDhub.Core.Models.Inventories
 {
@@ -19,6 +21,7 @@ namespace MUDhub.Core.Models.Inventories
         public int Weight { get; set; }
         public string ImageKey { get; set; } = string.Empty;
         public string MudGameId { get; set; } = string.Empty;
-        public virtual MudGame? MudGame { get; set; }
+        public virtual MudGame MudGame { get; set; } = null!;
+        public virtual ICollection<ItemInstance> Instances { get; set; } = new Collection<ItemInstance>();
     }
 }
