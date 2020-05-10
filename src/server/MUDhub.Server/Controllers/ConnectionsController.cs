@@ -46,10 +46,10 @@ namespace MUDhub.Server.Controllers
             return Ok(result.AllConnections.Select(c => RoomConnectionApiModel.ConvertFromRoomConnection(c)));
         }
 
-        [HttpGet("connections/{connectionId}")]
+        [HttpGet("{areaId}/connections/{connectionId}")]
         [ProducesResponseType(typeof(RoomConnectionApiModel),StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(RoomConnectionApiModel),StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<RoomConnectionApiModel>> GetConnection([FromRoute] string mudId, [FromRoute] string connectionId)
+        public async Task<ActionResult<RoomConnectionApiModel>> GetConnection([FromRoute] string mudId,[FromRoute]string areaId, [FromRoute] string connectionId)
         {
             var connection = await _context.RoomConnections.FindAsync(connectionId)
                 .ConfigureAwait(false);
@@ -64,7 +64,7 @@ namespace MUDhub.Server.Controllers
             return BadRequest();
         }
 
-        [HttpDelete("connections/{connectionId}")]
+        [HttpDelete("{areaId}/connections/{connectionId}")]
         [ProducesResponseType(typeof(ConnectionDeleteResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ConnectionDeleteResponse), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> DeleteConnection([FromRoute] string connectionId)
@@ -120,7 +120,7 @@ namespace MUDhub.Server.Controllers
             });
         }
 
-        [HttpPut("connections/{connectionId}")]
+        [HttpPut("{areaId}/connections/{connectionId}")]
         [ProducesResponseType(typeof(UpdateConnectionRequest), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(UpdateConnectionRequest), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateConnection([FromRoute] string connectionId, [FromBody] UpdateConnectionRequest args)

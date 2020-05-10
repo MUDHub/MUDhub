@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MUDhub.Server.Controllers
 {
-    [Route("api/mudgame/{mudid}/Races")]
+    [Route("api/mudgame/{mudid}/races")]
     [ApiController]
     public class RacesController : ControllerBase
     {
@@ -99,7 +99,7 @@ namespace MUDhub.Server.Controllers
             }
             else
             {
-                return BadRequest(new ClassCreateResponse
+                return BadRequest(new RaceCreateResponse
                 {
                     Succeeded = false,
                     Errormessage = result.Errormessage

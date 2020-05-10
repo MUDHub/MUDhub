@@ -50,7 +50,7 @@
 					color="primary"
 					[disabled]="form.invalid"
 				>
-					Rasse hinzufügen
+					Klasse hinzufügen
 				</button>
 			</div>
 		</form>
@@ -68,10 +68,10 @@
 		<td>{{ class.name }}</td>
 		<td>{{ class.description }}</td>
 		<td>
-			<div *ngIf="class.imagekey != null">
+			<div *ngIf="class.imageKey != null">
 				<mat-icon>check</mat-icon>
 			</div>
-			<div *ngIf="class.imagekey == null">
+			<div *ngIf="class.imageKey == null">
 				<mat-icon>clear</mat-icon>
 			</div>
 		</td>

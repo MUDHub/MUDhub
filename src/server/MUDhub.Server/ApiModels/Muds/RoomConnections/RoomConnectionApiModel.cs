@@ -5,7 +5,7 @@ namespace MUDhub.Server.ApiModels.Muds.RoomConnections
 {
     public class RoomConnectionApiModel
     {
-        public string Id { get; set; }
+        public string Id { get; set; } = string.Empty;
 
         public string Description { get; set; } = string.Empty;
 

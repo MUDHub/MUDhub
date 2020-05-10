@@ -38,6 +38,7 @@ namespace MUDhub.Core.Services
                 OwnerId = args.OwnerId
             };
             _context.MudGames.Add(mud);
+            mud.State = MudGameState.InEdit;
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
             _logger?.LogInformation($"Mudgame with the id: '{mud.Id}' created, from User '{owner.Email}'.");

@@ -4,6 +4,8 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { ImageService } from 'src/app/services/image.service';
 import { IMudClass } from 'src/app/model/muds/MudSetupDTO';
 import { MudService } from 'src/app/services/mud.service';
+import { IMudClassResponse } from 'src/app/model/muds/MudDTO';
+import { IImageUploadResponse } from 'src/app/model/FileUploadDTO';
 
 @Component({
 	selector: 'mh-classes',
@@ -43,10 +45,9 @@ export class ClassesComponent implements OnInit {
 		this.dialog = !this.dialog;
 	}
 
-
 	async addClass() {
 		// Get Imagekey from API if an Image was uploaded
-		let imageKey = null;
+		let imageKey: IImageUploadResponse = null;
 
 		try {
 			if (this.selectedFile != null) {
@@ -58,18 +59,28 @@ export class ClassesComponent implements OnInit {
 			this.selectedFile = null;
 		}
 
-		// Push races Object to the array
-		this.classes.push({
+		let currentClass: IMudClass = {
+			classId: '',
 			name: this.form.get('name').value,
 			description: this.form.get('description').value,
-			imagekey: imageKey,
-		});
+			imageKey: imageKey?.imageUrl
+		};
 
 		// Make API request
-		this.mudService.addMudClass(
+		let obj: IMudClassResponse = await this.mudService.addMudClass(
 			this.mudId,
-			this.classes[this.classes.length - 1]
+			currentClass
 		);
+
+		currentClass = {
+			description: obj.class.description,
+			name: obj.class.name,
+			classId: obj.class.classId,
+			imageKey: obj.class.imageKey,
+		};
+
+		// Push races Object to the array
+		this.classes.push(currentClass);
 
 		// Reset File Buffer
 		this.selectedFile = null;

@@ -4,6 +4,8 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { ImageService } from 'src/app/services/image.service';
 import { IMudRace } from 'src/app/model/muds/MudSetupDTO';
 import { MudService } from 'src/app/services/mud.service';
+import { IMudRaceResponse } from 'src/app/model/muds/MudDTO';
+import { IImageUploadResponse } from 'src/app/model/FileUploadDTO';
 
 @Component({
 	templateUrl: './races.component.html',
@@ -21,19 +23,20 @@ export class RacesComponent implements OnInit {
 	form = this.fb.group({
 		name: ['', Validators.required],
 		description: ['', Validators.required],
-		imagekey: [''],
+		imageKey: [''],
 	});
 
 	dialog = false;
 	mudId: string;
 	selectedFile: File = null;
 
-	//Todo Interface muss implementiert werden
 	races: Array<IMudRace> = [];
 
-	ngOnInit(): void {
+	async ngOnInit() {
 		/* Daten fetchen und in Array laden */
 		this.mudId = this.route.snapshot.params.mudid;
+		this.races = await this.mudService.getMudRace(this.mudId);
+		console.log('Races von API: ' + this.races);
 	}
 
 	changeDialog() {
@@ -43,7 +46,7 @@ export class RacesComponent implements OnInit {
 
 	async addRace() {
 		// Get Imagekey from API if an Image was uploaded
-		let imageKey = null;
+		let imageKey: IImageUploadResponse = null;
 
 		try {
 			if (this.selectedFile != null) {
@@ -55,18 +58,30 @@ export class RacesComponent implements OnInit {
 			this.selectedFile = null;
 		}
 
-		// Push races Object to the array
-		this.races.push({
-			raceId: (this.races.length - 1).toString(),
+		let currentRace: IMudRace = {
+			raceId: '',
 			name: this.form.get('name').value,
 			description: this.form.get('description').value,
-			imagekey: imageKey,
-		});
+			imageKey: imageKey?.imageUrl
+		};
 
-		this.mudService.addMudRace(
+
+		let obj: IMudRaceResponse = await this.mudService.addMudRace(
 			this.mudId,
-			this.races[this.races.length - 1]
+			currentRace
 		);
+
+		console.log(obj);
+
+		currentRace = {
+			description: obj.race.description,
+			name: obj.race.name,
+			raceId: obj.race.raceId,
+			imageKey: obj.race.imageKey,
+		};
+
+		// Push races Object to the array
+		this.races.push(currentRace);
 
 		// Reset File Buffer
 		this.selectedFile = null;

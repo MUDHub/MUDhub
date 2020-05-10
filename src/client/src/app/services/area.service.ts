@@ -17,6 +17,8 @@ import {
 	IConnectionCreateRequest,
 	IConnectionCreateResponse,
 } from '../model/areas/ConnectionsDTO';
+import { IConnection } from '../model/areas/IConnection';
+import { IBaseResponse } from '../model/BaseResponse';
 
 @Injectable({
 	providedIn: 'root',
@@ -26,6 +28,8 @@ export class AreaService {
 
 	private roomCreatedSubject = new Subject<IRoom>();
 	public roomCreated$ = this.roomCreatedSubject.asObservable();
+	private roomUpdatedSubject = new Subject<IRoom>();
+	public roomUpdated$ = this.roomUpdatedSubject.asObservable();
 
 	/* ##### AREAS ##### */
 	public async getAreasForMUD(mudid: string) {
@@ -75,6 +79,12 @@ export class AreaService {
 			.toPromise();
 	}
 
+	public async getRoom(mudid: string, areaid: string, roomid: string) {
+		return await this.http
+			.get<IRoom>(`${env.api.url}/muds/${mudid}/areas/${areaid}/rooms/${roomid}`)
+			.toPromise();
+	}
+
 	public async createRoom(
 		mudid: string,
 		areaid: string,
@@ -94,6 +104,21 @@ export class AreaService {
 		}
 	}
 
+	public async updateRoom(mudid: string, areaid: string, roomid: string, room: IRoomCreateRequest) {
+		try {
+			const response = await this.http
+				.put<IRoomCreateResponse>(
+					`${env.api.url}/muds/${mudid}/areas/${areaid}/rooms/${roomid}`,
+					room
+				)
+				.toPromise();
+			this.roomUpdatedSubject.next(response.room);
+			return response;
+		} catch (err) {
+			throw err;
+		}
+	}
+
 	public async deleteRoom(mudid: string, areaid: string, roomid: string) {
 		return await this.http
 			.delete<IRoomDeleteResponse>(
@@ -102,8 +127,28 @@ export class AreaService {
 			.toPromise();
 	}
 
-	/* ##### ROOMS ##### */
-	public async getConnections() {}
+	/* ##### Connections ##### */
+	public async getConnections(
+		mudid: string,
+		areaid: string,
+		roomid?: string
+	) {
+		return await this.http
+			.get<IConnection[]>(
+				`${env.api.url}/muds/${mudid}/areas/${areaid}/connections${
+					roomid ? '?roomId=' + roomid : ''
+				}`
+			)
+			.toPromise();
+	}
+
+	public async getConnection(mudid: string, areaid: string, connid: string) {
+		return await this.http
+			.get<IConnection>(
+				`${env.api.url}/muds/${mudid}/areas/${areaid}/connections/${connid}`
+			)
+			.toPromise();
+	}
 
 	public async createConnection(
 		mudid: string,
@@ -114,6 +159,18 @@ export class AreaService {
 			.post<IConnectionCreateResponse>(
 				`${env.api.url}/muds/${mudid}/areas/${areaid}/connections`,
 				connection
+			)
+			.toPromise();
+	}
+
+	public async deleteConnection(
+		mudid: string,
+		areaid: string,
+		connid: string
+	) {
+		return await this.http
+			.delete<IBaseResponse>(
+				`${env.api.url}/muds/${mudid}/areas/${areaid}/connections/${connid}`
 			)
 			.toPromise();
 	}

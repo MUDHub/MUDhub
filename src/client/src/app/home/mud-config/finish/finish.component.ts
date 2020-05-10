@@ -26,88 +26,33 @@ export class FinishComponent implements OnInit {
 	races: IMudRace[] = [];
 
 	async getRaces() {
-		// Noch nicht in API implementiert
-		this.races = [
-			{
-				name: 'name',
-				description: 'desc',
-				imagekey: 'imagekey',
-				raceId: ''
-			},
-			{
-				name: 'name2',
-				description: 'desc2',
-				imagekey: 'imagekey2',
-				raceId: ''
-			},
-			{
-				name: 'name3',
-				description: 'desc3',
-				imagekey: 'imagekey3',
-				raceId: ''
-			},
-		];
+		this.races = await this.mudService.getMudRace(this.mudId);
 	}
-
 	/*Übersicht Klassen*/
 	classes: IMudClass[] = [];
 
 	async getClasses() {
-		// Noch nicht in API implementiert
-		this.classes = [
-			{
-				name: 'name',
-				description: 'desc',
-				imageKey: 'imagekey',
-				classId: ''
-			},
-			{
-				name: 'name2',
-				description: 'desc2',
-				imageKey: 'imagekey2',
-				classId: ''
-			},
-			{
-				name: 'name3',
-				description: 'desc3',
-				imageKey: 'imagekey3',
-				classId: ''
-			},
-		];
+		this.classes = await this.mudService.getMudClass(this.mudId);
 	}
 
 	/*Übersicht Items*/
 	items: IMudItem[] = [];
 
 	async getItems() {
-		// Noch nicht in API implementiert
-		this.items = [
-			{
-				name: 'name',
-				description: 'desc',
-			},
-			{
-				name: 'name2',
-				description: 'desc2',
-			},
-			{
-				name: 'name3',
-				description: 'desc3',
-			},
-		];
+		this.items = await this.mudService.getMudItem(this.mudId);
 	}
 
 	/*Übersicht Räume*/
-	rooms: IRoom[][] = [[]];
+	rooms: IRoom[] = [];
 	areas: IArea[] = [];
 
 	async getAreas() {
-		// this.areas = await this.areaService.getAreasForMUD(this.mudId);
+		this.areas = await this.areaService.getAreasForMUD(this.mudId);
 	}
 
 	async getRooms() {
 		for (let i = 0; i < this.areas.length; i++) {
-			// this.rooms = await this.areaService.getRooms(this.mudId, this.areas[i].areaId);
+			this.rooms = await this.areaService.getRooms(this.mudId, this.areas[i].areaId);
 		}
 	}
 

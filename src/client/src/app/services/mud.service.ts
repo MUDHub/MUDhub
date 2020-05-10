@@ -4,6 +4,8 @@ import {
 	IMudCreateResponse,
 	IRequestResponse,
 	MudJoinState,
+	IMudClassResponse,
+	IMudRaceResponse,
 } from '../model/muds/MudDTO';
 import { HttpClient } from '@angular/common/http';
 import { environment as env } from 'src/environments/environment';
@@ -75,35 +77,65 @@ export class MudService {
 
 	//SETUP Process
 	//SETUP - Race
-	async getMudRace(mudId: string):Promise<IMudRace[]>{
-		return await this.http.get<IMudRace[]>(`${env.api.url}/mudgame/${mudId}/Races`).toPromise();
+	async getMudRace(mudId: string): Promise<IMudRace[]> {
+		return await this.http
+			.get<IMudRace[]>(`${env.api.url}/mudgame/${mudId}/Races`)
+			.toPromise();
 	}
 
-	async addMudRace(mudId: string, mudRace: IMudRace) {
-		//return await this.http.put();
+	async addMudRace(
+		mudId: string,
+		mudRace: IMudRace
+	): Promise<IMudRaceResponse> {
+		console.log(mudRace)
+		return await this.http
+			.post<IMudRaceResponse>(`${env.api.url}/mudgame/${mudId}/Races`, {
+				name: mudRace.name,
+				description: mudRace.description,
+				imageKey: mudRace.imageKey,
+			})
+			.toPromise();
 	}
 
 	async deleteMudRace(mudId: string, mudRace: IMudRace) {
-		return await this.http.delete(`${env.api.url}/mudgame/${mudId}/Races/${mudRace.raceId}`).toPromise();
+		return await this.http
+			.delete(`${env.api.url}/mudgame/${mudId}/Races/${mudRace.raceId}`)
+			.toPromise();
 	}
 
 	// SETUP - Class
 	async getMudClass(mudId: string): Promise<IMudClass[]> {
 		return await this.http
-			.get<IMudClass[]>(`${env.api.url}/muds/${mudId}/classes`)
+			.get<IMudClass[]>(`${env.api.url}/mudgame/${mudId}/classes`)
 			.toPromise();
 	}
 
-	async addMudClass(mudId: string, mudClass: IMudClass) {
-		//Function is not implemented on the api yet
+	async addMudClass(
+		mudId: string,
+		mudClass: IMudClass
+	): Promise<IMudClassResponse> {
+		return await this.http
+			.post<IMudClassResponse>(
+				`${env.api.url}/mudgame/${mudId}/classes`,
+				{
+					name: mudClass.name,
+					description: mudClass.description,
+					imageKey: mudClass.imageKey,
+				}
+			)
+			.toPromise();
 	}
 
 	async deleteMudClass(mudId: string, mudClass: IMudClass) {
-		//Function is not implemented on the api yet
+		return await this.http
+			.delete(
+				`${env.api.url}/mudgame/${mudId}/classes/${mudClass.classId}`
+			)
+			.toPromise();
 	}
 
 	//SETUP - Item
-	async getMudItem(mudId: string):Promise<IMudItem[]>{
+	async getMudItem(mudId: string): Promise<IMudItem[]> {
 		return null;
 	}
 

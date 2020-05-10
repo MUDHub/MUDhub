@@ -22,4 +22,34 @@ export interface IRequestResponse {
 	state: MudJoinState;
 }
 
-export enum MudJoinState { Requested, Accepted, Rejected }
+export enum MudJoinState {
+	Requested,
+	Accepted,
+	Rejected,
+}
+
+export interface IMudRaceResponse {
+	race: {
+		description: string;
+		raceId: string;
+		mudGameId: string;
+		imageKey: string;
+		name: string;
+	};
+	displayMessage: string;
+	errormessage: string;
+	succeeded: true;
+}
+
+export interface IMudClassResponse {
+	class: {
+		description: string;
+		classId: string;
+		mudGameId: string;
+		imageKey: string;
+		name: string;
+	};
+	displayMessage: string;
+	errormessage: string;
+	succeeded: true;
+}
