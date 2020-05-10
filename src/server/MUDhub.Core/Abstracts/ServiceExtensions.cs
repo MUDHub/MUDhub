@@ -18,6 +18,7 @@ namespace MUDhub.Core.Abstracts
             services.AddMudGameManagment();
             services.AddAreaManagment();
             services.AddCharacterManagment();
+            services.AddItemsManagement();
             return services;
         }
 
@@ -32,6 +33,19 @@ namespace MUDhub.Core.Abstracts
             services.TryAddScoped<ILoginService, LoginService>();
             services.TryAddScoped<IUserManager, UserManager>();
             services.TryAddScoped<IEmailService, EmailService>();
+            return services;
+        }
+
+
+        /// <summary>
+        /// Adds all Services they relate to the mudhub AreaManagement, e.g. 
+        /// </summary>
+        /// <param name="services"></param>
+        /// <returns></returns>
+        public static IServiceCollection AddItemsManagement(this IServiceCollection services)
+        {
+            services.TryAddScoped<IInventoryService, InventoryService>();
+            services.TryAddScoped<IItemManager, ItemManager>();
             return services;
         }
 

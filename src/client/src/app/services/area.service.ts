@@ -13,6 +13,10 @@ import {
 	IRoomCreateResponse,
 } from '../model/areas/RoomDTO';
 import { Subject } from 'rxjs';
+import {
+	IConnectionCreateRequest,
+	IConnectionCreateResponse,
+} from '../model/areas/ConnectionsDTO';
 
 @Injectable({
 	providedIn: 'root',
@@ -45,8 +49,11 @@ export class AreaService {
 			.toPromise();
 	}
 
-
-	public async updateArea(mudid: string, areaid: string, area: IAreaCreateRequest) {
+	public async updateArea(
+		mudid: string,
+		areaid: string,
+		area: IAreaCreateRequest
+	) {
 		return await this.http
 			.put<IAreaCreateResponse>(
 				`${env.api.url}/muds/${mudid}/areas/${areaid}`,
@@ -95,9 +102,19 @@ export class AreaService {
 			.toPromise();
 	}
 
-
 	/* ##### ROOMS ##### */
-	public async getConnections() {
+	public async getConnections() {}
 
+	public async createConnection(
+		mudid: string,
+		areaid: string,
+		connection: IConnectionCreateRequest
+	) {
+		return await this.http
+			.post<IConnectionCreateResponse>(
+				`${env.api.url}/muds/${mudid}/areas/${areaid}/connections`,
+				connection
+			)
+			.toPromise();
 	}
 }
