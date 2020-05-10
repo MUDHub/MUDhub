@@ -37,7 +37,6 @@ export class RoomsGridComponent implements OnInit {
 			);
 			if (rooms.length > 0) {
 				this.rooms = this.mapRooms(rooms);
-				console.log(this.rooms);
 			} else {
 				this.rooms = [
 					[undefined, undefined],
@@ -246,6 +245,46 @@ export class RoomsGridComponent implements OnInit {
 	}
 
 	public async deleteConnection(room1: IRoom, room2: IRoom) {
-
+		const connectionsForRoom = await this.areaService.getConnections(this.mudid, this.areaid, room1.roomId);
+		const connectionToDelete = connectionsForRoom.filter(c => c.room1Id === room2.roomId || c.room2Id === room2.roomId)[0];
+		if (connectionToDelete) {
+			try {
+				await this.areaService.deleteConnection(this.mudid, this.areaid, connectionToDelete.id);
+				for (let y = 0; y < this.rooms.length; y++) {
+					for (let x = 0; x < this.rooms[y].length; x++) {
+						const room = this.rooms[y][x];
+						if (room?.roomId === connectionToDelete.room1Id) {
+							if (this.rooms[y][x + 1]?.roomId === connectionToDelete.room2Id) {
+								room.connections.east = false;
+								this.rooms[y][x + 1].connections.west = false;
+								continue;
+							}
+							if (this.rooms[y][x - 1]?.roomId === connectionToDelete.room2Id) {
+								room.connections.west = false;
+								this.rooms[y][x - 1].connections.east = false;
+								continue;
+							}
+							if (this.rooms[y + 1][x]?.roomId === connectionToDelete.room2Id) {
+								room.connections.south = false;
+								this.rooms[y + 1][x].connections.north = false;
+								continue;
+							}
+							if (this.rooms[y - 1][x]?.roomId === connectionToDelete.room2Id) {
+								room.connections.north = false;
+								this.rooms[y - 1][x].connections.south = false;
+								continue;
+							}
+						}
+					}
+				}
+			} catch (err) {
+				console.error('Error while deleting connection', err);
+				swal.fire({
+					icon: 'error',
+					title: 'Fehler',
+					text: err.error?.displayMessage || err.error?.errormessage || 'Fehler beim Löschen der Verbindung'
+				});
+			}
+		}
 	}
 }

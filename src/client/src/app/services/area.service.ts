@@ -17,6 +17,8 @@ import {
 	IConnectionCreateRequest,
 	IConnectionCreateResponse,
 } from '../model/areas/ConnectionsDTO';
+import { IConnection } from '../model/areas/IConnection';
+import { IBaseResponse } from '../model/BaseResponse';
 
 @Injectable({
 	providedIn: 'root',
@@ -103,7 +105,27 @@ export class AreaService {
 	}
 
 	/* ##### ROOMS ##### */
-	public async getConnections() {}
+	public async getConnections(
+		mudid: string,
+		areaid: string,
+		roomid?: string
+	) {
+		return await this.http
+			.get<IConnection[]>(
+				`${env.api.url}/muds/${mudid}/areas/${areaid}/connections${
+					roomid ? '?roomId=' + roomid : ''
+				}`
+			)
+			.toPromise();
+	}
+
+	public async getConnection(mudid: string, areaid: string, connid: string) {
+		return await this.http
+			.get<IConnection>(
+				`${env.api.url}/muds/${mudid}/areas/${areaid}/connections/${connid}`
+			)
+			.toPromise();
+	}
 
 	public async createConnection(
 		mudid: string,
@@ -114,6 +136,18 @@ export class AreaService {
 			.post<IConnectionCreateResponse>(
 				`${env.api.url}/muds/${mudid}/areas/${areaid}/connections`,
 				connection
+			)
+			.toPromise();
+	}
+
+	public async deleteConnection(
+		mudid: string,
+		areaid: string,
+		connid: string
+	) {
+		return await this.http
+			.delete<IBaseResponse>(
+				`${env.api.url}/muds/${mudid}/areas/${areaid}/connections/${connid}`
 			)
 			.toPromise();
 	}
