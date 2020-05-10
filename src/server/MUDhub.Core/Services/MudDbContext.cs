@@ -123,6 +123,8 @@ namespace MUDhub.Core.Services
             modelBuilder.Entity<Room>()
                 .HasKey(r => r.Id);
             modelBuilder.Entity<Room>()
+                .Ignore(r => r.AllConnections);
+            modelBuilder.Entity<Room>()
                 .HasOne(r => r.Area)
                 .WithMany(a => a.Rooms)
                 .HasForeignKey(r => r.AreaId)
@@ -149,11 +151,11 @@ namespace MUDhub.Core.Services
                 .HasKey(rc => rc.Id);
             modelBuilder.Entity<RoomConnection>()
                 .HasOne(rc => rc.Room1)
-                .WithMany(r => r.Connections)
+                .WithMany(r => r.Connections1)
                 .HasForeignKey(rc => rc.Room1Id);
             modelBuilder.Entity<RoomConnection>()
                 .HasOne(rc => rc.Room2)
-                .WithMany()
+                .WithMany(r => r.Connections2)
                 .HasForeignKey(rc => rc.Room2Id);
 
             //Configures Item

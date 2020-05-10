@@ -465,7 +465,7 @@ namespace MUDhub.Core.Services
                 };
             }
 
-            List<RoomConnection> roomConnectionsList = room.Connections.ToList();
+            List<RoomConnection> roomConnectionsList = room.Connections1.ToList();
             //foreach (RoomConnection roomConnection in roomConnectionsList)
             //{
             //    await RemoveConnectionAsync(userId, roomConnection.Id).ConfigureAwait(false);

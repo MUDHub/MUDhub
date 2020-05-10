@@ -15,7 +15,8 @@
 				*ngIf="
 					x < width - 1 &&
 					row[x + 1] !== undefined &&
-					room !== undefined
+					room !== undefined &&
+					!room.connections.east
 				"
 				(click)="addConnection(room, row[x + 1])"
 				matTooltip="Verbinden"
@@ -26,7 +27,8 @@
 				class="connection-add connection-vertical"
 				*ngIf="
 					y < height - 1 &&
-					rooms[y + 1][x] !== undefined && room !== undefined
+					rooms[y + 1][x] !== undefined && room !== undefined &&
+					!room.connections.south
 				"
 				(click)="addConnection(room, rooms[y + 1][x])"
 				matTooltip="Verbinden"
@@ -34,6 +36,8 @@
 			>
 				+
 			</div>
+			<div class="connection connection-vertical" *ngIf="y < height - 1 && room?.connections.south"></div>
+			<div class="connection connection-horizontal" *ngIf="x < width - 1 && room?.connections.east"></div>
 			<div class="room" *ngIf="room">
 				<div class="default-icon" *ngIf="room.isDefaultRoom">
 					<span>D</span>

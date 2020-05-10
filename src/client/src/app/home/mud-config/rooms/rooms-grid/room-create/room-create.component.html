@@ -1,4 +1,4 @@
-<form class="container" [formGroup]="form">
+<form class="container" [formGroup]="form" (ngSubmit)="onCreate()">
 	<mat-form-field class="form-row">
 		<mat-label>Name</mat-label>
 		<input matInput type="text" formControlName="name" />
@@ -14,7 +14,7 @@
 		<input type="file" />
 	</div>
 	<div class="actions">
-		<button mat-button type="submit" [disabled]="form.invalid" (click)="onCreate()">
+		<button mat-button type="submit" [disabled]="form.invalid">
 			Erstellen
 		</button>
 		<button mat-button type="button" routerLink="../">Abbrechen</button>

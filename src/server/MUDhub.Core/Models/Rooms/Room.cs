@@ -5,6 +5,7 @@ using MUDhub.Core.Models.Muds;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace MUDhub.Core.Models.Rooms
 {
@@ -24,7 +25,10 @@ namespace MUDhub.Core.Models.Rooms
 
         public string Description { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
-        public virtual ICollection<RoomConnection> Connections { get; set; } = new Collection<RoomConnection>();
+        public virtual ICollection<RoomConnection> Connections1 { get; set; } = new Collection<RoomConnection>();
+        public virtual ICollection<RoomConnection> Connections2 { get; set; } = new Collection<RoomConnection>();
+        public IEnumerable<RoomConnection> AllConnections 
+            => Enumerable.Concat(Connections1, Connections2);
         public string AreaId { get; set; } = string.Empty;
         public virtual Area Area { get; set; } = null!;
         public virtual ICollection<RoomInteraction> Interactions { get; set; } = new Collection<RoomInteraction>();

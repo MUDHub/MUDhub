@@ -7,18 +7,16 @@ namespace MUDhub.Server.ApiModels.Muds.RoomConnections
     public class CreateConnectionRequest
     {
         [Required]
-        public string Description { get; set; } = string.Empty;
-
-        [Required]
-        public LockType LockType { get; set; }
-
-        public string LockDescription { get; set; } = string.Empty;
-        public string LockAssociatedId { get; set; } = string.Empty;
-        [Required]
         public string RoomId1 { get; set; } = string.Empty;
         [Required]
         public string RoomId2 { get; set; } = string.Empty;
+        [Required]
+        public LockType LockType { get; set; }
 
+        public string Description { get; set; } = string.Empty;
+
+        public string LockDescription { get; set; } = string.Empty;
+        public string LockAssociatedId { get; set; } = string.Empty;
 
         public static RoomConnectionsArgs ConvertFromRequest(CreateConnectionRequest request)
         {

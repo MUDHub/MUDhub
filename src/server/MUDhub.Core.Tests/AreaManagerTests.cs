@@ -552,8 +552,8 @@ namespace MUDhub.Core.Tests
                 Description = "Connection von Room1 zu Room2",
             };
 
-            _room1Default.Connections.Add(_connection1);
-            _room2.Connections.Add(_connection1);
+            _room1Default.Connections1.Add(_connection1);
+            _room2.Connections1.Add(_connection1);
 
             _context.Users.Add(_user2);
             _context.MudGames.Add(_mudGame2);

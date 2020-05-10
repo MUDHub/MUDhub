@@ -9,4 +9,10 @@ export interface IRoom {
 	y: number;
 	isDefaultRoom: boolean;
 	area?: IArea;
+	connections: {
+		north: boolean;
+		south: boolean;
+		east: boolean;
+		west: boolean;
+	};
 }

@@ -4,7 +4,9 @@ import { VirtualTimeScheduler } from 'rxjs';
 import { AreaService } from 'src/app/services/area.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import swal from 'sweetalert2';
-import { switchMapTo } from 'rxjs/operators';
+import { IConnectionCreateRequest, LockType } from 'src/app/model/areas/ConnectionsDTO';
+import { IConnection } from 'src/app/model/areas/IConnection';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
 	selector: 'mh-rooms-grid',
@@ -23,6 +25,7 @@ export class RoomsGridComponent implements OnInit {
 	mudid: string;
 	areaid: string;
 	rooms: IRoom[][] = [[]];
+	connections: IConnection[];
 
 	async ngOnInit() {
 		this.route.params.subscribe(async params => {
@@ -34,6 +37,7 @@ export class RoomsGridComponent implements OnInit {
 			);
 			if (rooms.length > 0) {
 				this.rooms = this.mapRooms(rooms);
+				console.log(this.rooms);
 			} else {
 				this.rooms = [
 					[undefined, undefined],
@@ -199,7 +203,45 @@ export class RoomsGridComponent implements OnInit {
 		}
 	}
 
-	public addConnection(room1: IRoom, room2: IRoom) {
+	public async addConnection(room1: IRoom, room2: IRoom) {
 		console.log('connecting', room1, 'and', room2);
+		const connection: IConnectionCreateRequest = {
+			roomId1: room1.roomId,
+			roomId2: room2.roomId,
+			lockType: LockType.NoLock,
+		};
+		try {
+			const response = await this.areaService.createConnection(this.mudid, this.areaid, connection);
+
+			for (let y = 0; y < this.rooms.length; y++) {
+				for (let x = 0; x < this.rooms[y].length; x++) {
+					const room = this.rooms[y][x];
+					if (response.connection.room1Id === room?.roomId) {
+						if (this.rooms[y][x + 1]?.roomId === response.connection.room2Id) {
+							room.connections.east = true;
+							this.rooms[y][x + 1].connections.west = true;
+							continue;
+						}
+						if (this.rooms[y][x - 1]?.roomId === response.connection.room2Id) {
+							room.connections.west = true;
+							this.rooms[y][x - 1].connections.east = true;
+							continue;
+						}
+						if (this.rooms[y + 1][x]?.roomId === response.connection.room2Id) {
+							room.connections.south = true;
+							this.rooms[y + 1][x].connections.north = true;
+							continue;
+						}
+						if (this.rooms[y - 1][x]?.roomId === response.connection.room2Id) {
+							room.connections.north = true;
+							this.rooms[y - 1][x].connections.south = true;
+							continue;
+						}
+					}
+				}
+			}
+		} catch (err) {
+			console.error('Error while creating connection', err);
+		}
 	}
 }
