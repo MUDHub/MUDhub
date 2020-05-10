@@ -25,6 +25,7 @@ namespace MUDhub.Core.Tests
         private Area _area1, _area2, _area3;
         private Room _room1Default, _room2, _room3, _room4, _room5, _room6Default;
         private RoomConnection _connection1;
+        private RoomInteraction _roomInteraction1;
 
         private RoomConnectionsArgs _roomConnectionsArgs;
         private AreaArgs _areaArgs;
@@ -32,6 +33,7 @@ namespace MUDhub.Core.Tests
         private UpdateAreaArgs _updateAreaArgs;
         private UpdateRoomConnectionsArgs _updateRoomConnectionsArgs;
         private UpdateRoomArgs _updateRoomArgs;
+        private RoomInteractionArgs _roomInteractionArgs;
 
 
         public AreaManagerTests()
@@ -407,6 +409,67 @@ namespace MUDhub.Core.Tests
             Assert.True(newRoom.ImageKey.Equals("New Room ImageKey"));
         }
 
+        //*********************************************************//
+
+        [Fact]
+        public async Task CreateRoomInteractionAsync_ReturnFalse_UserNull()
+        {
+            var result = await _areaManager.CreateRoomInteractionAsync("99", "1", _roomInteractionArgs);
+            Assert.False(result.Success);
+        }
+        [Fact]
+        public async Task CreateRoomInteractionAsync_ReturnFalse_RoomNull()
+        {
+            var result = await _areaManager.CreateRoomInteractionAsync("1", "99", _roomInteractionArgs);
+            Assert.False(result.Success);
+        }
+        [Fact]
+        public async Task CreateRoomInteractionAsync_ReturnFalse_UserIsNotOwner()
+        {
+            var result = await _areaManager.CreateRoomInteractionAsync("2", "1", _roomInteractionArgs);
+            Assert.False(result.Success);
+        }
+        [Fact]
+        public async Task CreateRoomInteractionAsync_ReturnTrue()
+        {
+            var result = await _areaManager.CreateRoomInteractionAsync("1", "1", _roomInteractionArgs);
+            Assert.True(result.Success);
+
+            var roomInteraction = _context.RoomInteractions.FirstOrDefault(
+                a => a.Description == "New Room Interaction");
+            Assert.True(roomInteraction.ExecutionMessage == "Execution Room Interaction");
+            Assert.True(roomInteraction.RelatedId == "12345");
+            Assert.True(roomInteraction.Type == InteractionType.RoomLock);
+        }
+
+        //*********************************************************//
+
+        [Fact]
+        public async Task RemoveRoomInteractionAsync_ReturnFalse_UserNull()
+        {
+            var result = await _areaManager.RemoveRoomInteractionAsync("99", "1");
+            Assert.False(result.Success);
+        }
+        [Fact]
+        public async Task RemoveRoomInteractionAsync_ReturnFalse_RoomInteractionNull()
+        {
+            var result = await _areaManager.RemoveRoomInteractionAsync("1", "99");
+            Assert.False(result.Success);
+        }
+        [Fact]
+        public async Task RemoveRoomInteractionAsync_ReturnFalse_UserIsNotOwner()
+        {
+            var result = await _areaManager.RemoveRoomInteractionAsync("2", "1");
+            Assert.False(result.Success);
+        }
+        [Fact]
+        public async Task RemoveRoomInteractionAsync_ReturnTrue()
+        {
+            var result = await _areaManager.RemoveRoomInteractionAsync("1", "1");
+            Assert.True(result.Success);
+        }
+
+        //*********************************************************//
 
         private void InitializeTestDb()
         {
@@ -552,6 +615,16 @@ namespace MUDhub.Core.Tests
                 Description = "Connection von Room1 zu Room2",
             };
 
+            _roomInteraction1 = new RoomInteraction("1")
+            {
+                Description = "Room Interaction 1",
+                ExecutionMessage = "Execution Room Interaction 1",
+                RelatedId = "4321",
+                Type = InteractionType.Mob,
+                Game = _mudGame1
+            };
+
+            _room1Default.Interactions.Add(_roomInteraction1);
             _room1Default.Connections1.Add(_connection1);
             _room2.Connections1.Add(_connection1);
 
@@ -594,6 +667,13 @@ namespace MUDhub.Core.Tests
                 Name = "New Room",
                 Description = "Beschreibung New Room",
                 ImageKey = "New Room ImageKey"
+            };
+            _roomInteractionArgs = new RoomInteractionArgs()
+            {
+                Description = "New Room Interaction",
+                ExecutionMessage = "Execution Room Interaction",
+                RelatedId = "12345",
+                Type = InteractionType.RoomLock
             };
         }
     }
