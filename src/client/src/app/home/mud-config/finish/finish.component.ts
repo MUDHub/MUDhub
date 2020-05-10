@@ -32,16 +32,19 @@ export class FinishComponent implements OnInit {
 				name: 'name',
 				description: 'desc',
 				imagekey: 'imagekey',
+				raceId: ''
 			},
 			{
 				name: 'name2',
 				description: 'desc2',
 				imagekey: 'imagekey2',
+				raceId: ''
 			},
 			{
 				name: 'name3',
 				description: 'desc3',
 				imagekey: 'imagekey3',
+				raceId: ''
 			},
 		];
 	}
@@ -55,17 +58,20 @@ export class FinishComponent implements OnInit {
 			{
 				name: 'name',
 				description: 'desc',
-				imagekey: 'imagekey',
+				imageKey: 'imagekey',
+				classId: ''
 			},
 			{
 				name: 'name2',
 				description: 'desc2',
-				imagekey: 'imagekey2',
+				imageKey: 'imagekey2',
+				classId: ''
 			},
 			{
 				name: 'name3',
 				description: 'desc3',
-				imagekey: 'imagekey3',
+				imageKey: 'imagekey3',
+				classId: ''
 			},
 		];
 	}
