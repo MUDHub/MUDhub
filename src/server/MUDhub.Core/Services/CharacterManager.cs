@@ -207,37 +207,23 @@ namespace MUDhub.Core.Services
                 };
             }
 
-            var isOwner = user.MudGames.FirstOrDefault(mg => mg.Id == mudid) != null;
-            if (isOwner)
+            var mud = user.MudGames.FirstOrDefault(mg => mg.Id == mudid);
+            if (mud != null)
             {
-                var mud = await _context.GetMudByIdAsnyc(mudid).ConfigureAwait(false);
-                if (mud is null)
+                var characterRace = new CharacterRace
                 {
-                    var errormessage = $"Mud with the id '{mudid}' does not exist.";
-                    _logger?.LogWarning(errormessage);
-                    return new CharacterRaceResult
-                    {
-                        Success = false,
-                        Errormessage = errormessage
-                    };
-                }
-                else
+                    Game = mud,
+                    Description = args.Desctiption,
+                    Name = args.Name
+                };
+                _context.Races.Add(characterRace);
+                await _context.SaveChangesAsync().ConfigureAwait(false);
+                _logger?.LogInformation($"Successfully created new CharacterClass '{characterRace.Name}' with id: '{characterRace.Id}' in mudgame '{mudid}'");
+                return new CharacterRaceResult
                 {
-                    var characterRace = new CharacterRace
-                    {
-                        Game = mud,
-                        Description = args.Desctiption,
-                        Name = args.Name
-                    };
-                    _context.Races.Add(characterRace);
-                    await _context.SaveChangesAsync().ConfigureAwait(false);
-                    _logger?.LogInformation($"Successfully created new CharacterClass '{characterRace.Name}' with id: '{characterRace.Id}' in mudgame '{mudid}'");
-                    return new CharacterRaceResult
-                    {
-                        Race = characterRace,
-                        Success = true
-                    };
-                }
+                    Race = characterRace,
+                    Success = true
+                };
             }
             else
             {

@@ -141,7 +141,7 @@ namespace MUDhub.Core.Services
 
             if (!registerResult.Success)
             {
-                _logger?.LogError($"Something went wrong, can't create Default user: '{_options.DefaultMudAdminEmail}'.");
+                _logger?.LogError(registerResult.Errormessage);
                 return false;
             }
 
@@ -149,16 +149,15 @@ namespace MUDhub.Core.Services
                 .ConfigureAwait(false);
             if (success)
             {
-                //Todo: add logging message
+                _logger?.LogInformation("The role Admin was added to the user");
             }
             success = await userManager.AddRoleToUserAsync(registerResult!.User!.Id, Roles.Master)
                 .ConfigureAwait(false);
             if (success)
             {
-                //Todo: add logging 
+                _logger?.LogInformation("The role Master was added to the user");
             }
             return true;
-
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
