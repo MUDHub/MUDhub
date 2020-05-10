@@ -14,6 +14,9 @@ namespace MUDhub.Core.Abstracts
         Task<RoomResult> UpdateRoomAsync(string userId, string roomId, UpdateRoomArgs args);
         Task<RoomResult> RemoveRoomAsync(string userId, string roomId);
 
+        Task<RoomInteractionResult> CreateRoomInteractionAsync(string userId, string roomId, RoomInteractionArgs args);
+        Task<RoomInteractionResult> RemoveRoomInteractionAsync(string userId, string roomInteractionId);
+
         Task<ConnectionResult> CreateConnectionAsync(string userId, string room1Id, string room2Id, RoomConnectionsArgs args);
         Task<ConnectionResult> UpdateConnectionAsync(string userId, string connectionId, UpdateRoomConnectionsArgs args);
         Task<ConnectionResult> RemoveConnectionAsync(string userId, string connectionId);
