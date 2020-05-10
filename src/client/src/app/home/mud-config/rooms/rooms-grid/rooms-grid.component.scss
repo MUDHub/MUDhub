@@ -118,17 +118,41 @@
 	height: 0.5rem;
 	z-index: 20;
 
+	.popup {
+		display: none;
+		position: absolute;
+		cursor: pointer;
+	}
+
 	&.connection-vertical {
 		bottom: -1rem;
 		height: 2rem;
 		left: 50%;
 		transform: translateX(-50%);
+
+		.popup {
+			left: 100%;
+			top: 60%;
+			transform: translateY(-50%);
+			padding-left: 0.5rem;
+		}
 	}
 	&.connection-horizontal {
 		right: -1rem;
 		width: 2rem;
 		top: 50%;
 		transform: translateY(-50%);
+
+		.popup {
+			left: 50%;
+			top: 100%;
+			transform: translateX(-50%);
+			padding-top: 0.5rem;
+		}
+	}
+
+	&:hover .popup {
+		display: block;
 	}
 }
 

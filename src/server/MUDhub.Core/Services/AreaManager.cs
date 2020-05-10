@@ -45,7 +45,7 @@ namespace MUDhub.Core.Services
                 {
                     Success = false,
                     Errormessage = message,
-                    //DisplayMessage = 
+                    DisplayMessage = $"Kein Benutzer mit der Benutzer-Id: '{userId}' wurde gefunden."
                 };
             }
             var mud = await _context.MudGames.FindAsync(mudId)
@@ -57,7 +57,8 @@ namespace MUDhub.Core.Services
                 return new AreaResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"Kein MudGame mit der MudGame-Id: '{mudId}' wurde gefunden."
                 };
             }
 
@@ -68,7 +69,8 @@ namespace MUDhub.Core.Services
                 return new AreaResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"Der Benutzer: '{user.Lastname}' ist nicht der Besitzer des MudGames: '{mud.Name}'."
                 };
             }
 
@@ -76,7 +78,7 @@ namespace MUDhub.Core.Services
             {
                 Name = args.Name,
                 Description = args.Description,
-                Game = mud,
+                Game = mud
             };
             _context.Areas.Add(area);
             await _context.SaveChangesAsync()
@@ -213,7 +215,8 @@ namespace MUDhub.Core.Services
                 return new RoomResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"Kein Benutzer mit der Benutzer-Id: '{userId}' wurde gefunden."
                 };
             }
             var area = await _context.Areas.FindAsync(areaId)
@@ -225,7 +228,8 @@ namespace MUDhub.Core.Services
                 return new RoomResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"Keine Area mit der Area-Id: '{areaId}' wurde gefunden."
                 };
             }
 
@@ -236,7 +240,8 @@ namespace MUDhub.Core.Services
                 return new RoomResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"Der Benutzer: '{user.Lastname}' ist nicht der Besitzer des MudGames: '{area.Game.Name}'."
                 };
             }
 
@@ -249,7 +254,8 @@ namespace MUDhub.Core.Services
                 return new RoomResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"An der Position X: '{args.X}' und Y: '{args.Y}' befindet sich bereits ein Raum."
                 };
             }
 
@@ -302,7 +308,8 @@ namespace MUDhub.Core.Services
                 return new AreaResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"Kein Benutzer mit der Benutzer-Id: '{userId}' wurde gefunden."
                 };
             }
 
@@ -315,7 +322,8 @@ namespace MUDhub.Core.Services
                 return new AreaResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"Keine Area mit der Area-Id: '{areaId}' wurde gefunden."
                 };
             }
 
@@ -326,7 +334,8 @@ namespace MUDhub.Core.Services
                 return new AreaResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"Der Benutzer: '{user.Lastname}' ist nicht der Besitzer des MudGames: '{area.Game.Name}'."
                 };
             }
 
@@ -340,7 +349,7 @@ namespace MUDhub.Core.Services
                     Success = false,
                     Errormessage = message,
                     Area = area,
-                    DisplayMessage = "Das Gebiet konnte nicht gelöscht werde, da es den Eintrittsraum enthält."
+                    DisplayMessage = $"Das Gebiet: '{area.Name}' konnte nicht gelöscht werde, da es den Eintrittsraum enthält."
                 };
             }
 
@@ -376,7 +385,8 @@ namespace MUDhub.Core.Services
                 return new ConnectionResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"Kein Benutzer mit der Benutzer-Id: '{userId}' wurde gefunden."
                 };
             }
 
@@ -389,7 +399,8 @@ namespace MUDhub.Core.Services
                 return new ConnectionResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"Kein Raum-Verbindung mit der Verbindungs-Id: '{connectionId}' wurde gefunden."
                 };
             }
 
@@ -400,7 +411,8 @@ namespace MUDhub.Core.Services
                 return new ConnectionResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"Der Benutzer: '{user.Lastname}' ist nicht der Besitzer des MudGames: '{connection.Room1.Game.Name}'."
                 };
             }
 
@@ -430,7 +442,8 @@ namespace MUDhub.Core.Services
                 return new RoomResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"Kein Benutzer mit der Benutzer-Id: '{userId}' wurde gefunden."
                 };
             }
 
@@ -443,7 +456,8 @@ namespace MUDhub.Core.Services
                 return new RoomResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"Kein Raum mit der Raum-Id: '{roomId}' wurde gefunden."
                 };
             }
 
@@ -454,7 +468,8 @@ namespace MUDhub.Core.Services
                 return new RoomResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"Der Benutzer: '{user.Lastname}' ist nicht der Besitzer des MudGames: '{room.Game.Name}'."
                 };
             }
 
@@ -467,11 +482,12 @@ namespace MUDhub.Core.Services
                     Success = false,
                     Errormessage = message,
                     Room = room,
-                    IsDefaultRoom = true
+                    IsDefaultRoom = true,
+                    DisplayMessage = $"Der Raum: '{room.Name}' konnte nicht gelöscht werden, da er ein Eintrittsraum ist."
                 };
             }
 
-            List<RoomConnection> roomConnectionsList = room.Connections1.ToList();
+            //List<RoomConnection> roomConnectionsList = room.Connections1.ToList();
             //foreach (RoomConnection roomConnection in roomConnectionsList)
             //{
             //    await RemoveConnectionAsync(userId, roomConnection.Id).ConfigureAwait(false);
@@ -504,7 +520,8 @@ namespace MUDhub.Core.Services
                 return new AreaResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"Kein Benutzer mit der Benutzer-Id: '{userId}' wurde gefunden."
                 };
             }
 
@@ -517,7 +534,8 @@ namespace MUDhub.Core.Services
                 return new AreaResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"Kein Bereih mit der Bereich-Id: '{areaId}' wurde gefunden."
                 };
             }
 
@@ -528,7 +546,8 @@ namespace MUDhub.Core.Services
                 return new AreaResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"Der Benutzer: '{user.Lastname}' ist nicht der Besitzer des MudGames: '{area.Game.Name}'."
                 };
             }
 
@@ -570,7 +589,8 @@ namespace MUDhub.Core.Services
                 return new ConnectionResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"Kein Benutzer mit der Benutzer-Id: '{userId}' wurde gefunden."
                 };
             }
             var connection = await _context.RoomConnections.FindAsync(connectionId)
@@ -582,7 +602,8 @@ namespace MUDhub.Core.Services
                 return new ConnectionResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"Keine Raum-Verbindung mit der Verbindungs-Id: '{connectionId}' wurde gefunden."
                 };
             }
 
@@ -593,7 +614,8 @@ namespace MUDhub.Core.Services
                 return new ConnectionResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"Der Benutzer: '{user.Lastname}' ist nicht der Besitzer des MudGames: '{connection.Room1.Game.Name}'."
                 };
             }
             connection.Description = args.Description;
@@ -623,7 +645,8 @@ namespace MUDhub.Core.Services
                 return new RoomResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"Kein Benutzer mit der Benutzer-Id: '{userId}' wurde gefunden."
                 };
             }
 
@@ -636,7 +659,8 @@ namespace MUDhub.Core.Services
                 return new RoomResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"Kein Raum mit der Raum-Id: '{roomId}' wurde gefunden."
                 };
             }
 
@@ -647,7 +671,8 @@ namespace MUDhub.Core.Services
                 return new RoomResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"Der Benutzer: '{user.Lastname}' ist nicht der Besitzer des MudGames: '{room.Game.Name}'."
                 };
             }
             if (args.IsDefaultRoom)
@@ -687,6 +712,13 @@ namespace MUDhub.Core.Services
             };
         }
 
+        /// <summary>
+        /// A room interaction is added to the room.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="roomId"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
         public async Task<RoomInteractionResult> CreateRoomInteractionAsync(string userId, string roomId, RoomInteractionArgs args)
         {
             var user = await GetUserById(userId).ConfigureAwait(false);
@@ -697,7 +729,8 @@ namespace MUDhub.Core.Services
                 return new RoomInteractionResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"Kein Benutzer mit der Benutzer-Id: '{userId}' wurde gefunden."
                 };
             }
 
@@ -710,18 +743,20 @@ namespace MUDhub.Core.Services
                 return new RoomInteractionResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"Kein Raum mit der Raum-Id: '{roomId}' wurde gefunden."
                 };
             }
 
             if (!IsUserOwner(user, room.GameId))
             {
-                var message = $"The user: '{user.Lastname}' is not the owner of the MudGame: '{room.GameId}'";
+                var message = $"The user: '{user.Lastname}' is not the owner of the MudGame: '{room.Game.Name}'";
                 _logger?.LogWarning(message);
                 return new RoomInteractionResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"Der Benutzer: '{user.Lastname}' ist nicht der Besitzer des MudGames: '{room.Game.Name}'."
                 };
             }
 
@@ -743,6 +778,12 @@ namespace MUDhub.Core.Services
             };
         }
 
+        /// <summary>
+        /// A room interaction is removed from the room.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="roomInteractionId"></param>
+        /// <returns></returns>
         public async Task<RoomInteractionResult> RemoveRoomInteractionAsync(string userId, string roomInteractionId)
         {
             var user = await GetUserById(userId).ConfigureAwait(false);
@@ -753,7 +794,8 @@ namespace MUDhub.Core.Services
                 return new RoomInteractionResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"Kein Benutzer mit der Benutzer-Id: '{userId}' wurde gefunden."
                 };
             }
             var roomInteraction = await _context.RoomInteractions.FindAsync(roomInteractionId)
@@ -765,7 +807,8 @@ namespace MUDhub.Core.Services
                 return new RoomInteractionResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"Keine Raum-Interaktion mit der Interaktions-Id: '{roomInteractionId}' wurde gefunden."
                 };
             }
 
@@ -776,7 +819,8 @@ namespace MUDhub.Core.Services
                 return new RoomInteractionResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"Der Benutzer: '{user.Lastname}' ist nicht der Besitzer des MudGames: '{roomInteraction.Game.Name}'."
                 };
             }
 
