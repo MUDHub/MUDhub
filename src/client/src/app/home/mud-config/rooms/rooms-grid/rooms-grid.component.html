@@ -36,6 +36,8 @@
 			>
 				+
 			</div>
+			<div class="connection connection-vertical" *ngIf="y < height - 1 && room?.connections.south"></div>
+			<div class="connection connection-horizontal" *ngIf="x < width - 1 && room?.connections.east"></div>
 			<div class="room" *ngIf="room">
 				<div class="default-icon" *ngIf="room.isDefaultRoom">
 					<span>D</span>
