@@ -39,7 +39,7 @@ namespace MUDhub.Server.ApiModels.Muds.Rooms
                 ImageKey = room.ImageKey,
                 IsDefaultRoom = room.IsDefaultRoom,
                 ItemInstances = room.Inventory.ItemInstances.Select(ii => ItemInstanceApiModel.ConvertFromItemInstance(ii)),
-                Connections = Connections.CreateFromList(room.Connections)
+                Connections = Connections.CreateFromList(room.AllConnections)
             };
         }
     }
@@ -63,25 +63,25 @@ namespace MUDhub.Server.ApiModels.Muds.Rooms
                 switch ((xDif, yDif))
                 {
                     case (0, -1):
-                        {
-                            c.South = true;
-                        }
-                        break;
+                    {
+                        c.South = true;
+                    }
+                    break;
                     case (0, 1):
-                        {
-                            c.North = true;
-                        }
-                        break;
+                    {
+                        c.North = true;
+                    }
+                    break;
                     case (-1, 0):
-                        {
-                            c.East = true;
-                        }
-                        break;
+                    {
+                        c.East = true;
+                    }
+                    break;
                     case (1, 0):
-                        {
-                            c.West = true;
-                        }
-                        break;
+                    {
+                        c.West = true;
+                    }
+                    break;
                 }
             }
 

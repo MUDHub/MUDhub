@@ -39,7 +39,7 @@ namespace MUDhub.Server.Controllers
             {
                 return BadRequest();
             }
-            return Ok(result.Connections.Select(c => RoomConnectionApiModel.ConvertFromRoomConnection(c)));
+            return Ok(result.Connections1.Select(c => RoomConnectionApiModel.ConvertFromRoomConnection(c)));
         }
 
         [HttpGet("connections/{connectionId}")]
