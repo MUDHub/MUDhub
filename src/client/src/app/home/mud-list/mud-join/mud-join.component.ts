@@ -9,7 +9,9 @@ import {
 	transition,
 	animate,
 } from '@angular/animations';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, Validators, FormGroup } from '@angular/forms';
+import { CharacterService } from 'src/app/services/character.service';
+import { IMudRace, IMudClass } from 'src/app/model/muds/MudSetupDTO';
 
 @Component({
 	templateUrl: './mud-join.component.html',
@@ -43,7 +45,8 @@ import { FormControl, Validators } from '@angular/forms';
 export class MudJoinComponent implements OnInit {
 	constructor(
 		private route: ActivatedRoute,
-		private mudService: MudService
+		private mudService: MudService,
+		private characterService: CharacterService
 	) {}
 
 	@HostBinding('@slideInOutAnimation') get slideInOut() {
@@ -51,12 +54,16 @@ export class MudJoinComponent implements OnInit {
 	}
 
 	mud: IMud;
+	races: IMudRace[];
+	classes: IMudClass[];
+
 	previousChars = [{}];
 
-	characterName = new FormControl('', [
-		Validators.required,
-		Validators.minLength(3),
-	]);
+	character = new FormGroup({
+		name: new FormControl('', [Validators.required, Validators.minLength(3)]),
+		race: new FormControl('', Validators.required),
+		class: new FormControl('', Validators.required)
+	});
 
 	async ngOnInit() {
 		this.route.queryParams.subscribe(
@@ -67,15 +74,17 @@ export class MudJoinComponent implements OnInit {
 	async loadMudInfo(id: string) {
 		if (id) {
 			this.mud = await this.mudService.getById(id);
+			this.classes = await this.mudService.getMudClass(this.mud.mudId);
+			this.races = await this.mudService.getMudRace(this.mud.mudId);
 		}
 	}
 
 	async join() {
 		console.log(
-			'joining mud: ',
+			'joining mud:',
 			this.mud,
-			'with character-name:',
-			this.characterName.value
+			'with character:',
+			this.character.value
 		);
 	}
 }

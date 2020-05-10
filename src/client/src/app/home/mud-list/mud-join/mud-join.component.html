@@ -10,16 +10,38 @@
 	<div class="panel">
 		<div class="panel-header">...mit einem neuen Charakter erkunden</div>
 		<div class="panel-content">
-			<div class="form">
-				<mat-form-field>
+			<form class="form" [formGroup]="character">
+				<mat-form-field appearance="fill">
+					<mat-label>Rasse auswählen</mat-label>
+					<mat-select [disabled]="races?.length === 0" formControlName="race">
+						<mat-option
+							*ngFor="let race of races"
+							[value]="race.raceId"
+						>
+							{{ race.name }}
+						</mat-option>
+					</mat-select>
+				</mat-form-field>
+				<mat-form-field appearance="fill">
+					<mat-label>Klasse auswählen</mat-label>
+					<mat-select [disabled]="classes?.length === 0" formControlName="class">
+						<mat-option
+							*ngFor="let class of classes"
+							[value]="class.classId"
+						>
+							{{ class.name }}
+						</mat-option>
+					</mat-select>
+				</mat-form-field>
+				<mat-form-field appearance="fill">
 					<mat-label>Charakter-Name</mat-label>
-					<input type="text" matInput [formControl]="characterName" />
-					<mat-error *ngIf="characterName.hasError('required')"
+					<input type="text" matInput formControlName="name" />
+					<mat-error *ngIf="character.get('name').hasError('required')"
 						>Der Charakter muss einen Namen haben</mat-error
 					>
-					<mat-error *ngIf="characterName.hasError('minlength')"
+					<mat-error *ngIf="character.get('name').hasError('minlength')"
 						>Der Name muss länger als
-						{{ characterName.errors.minlength.requiredLength }}
+						{{ character.get('name').errors.minlength.requiredLength }}
 						sein</mat-error
 					>
 				</mat-form-field>
@@ -27,11 +49,11 @@
 					mat-stroked-button
 					color="primary"
 					(click)="join()"
-					[disabled]="characterName.invalid"
+					[disabled]="character.invalid"
 				>
 					Beitreten
 				</button>
-			</div>
+			</form>
 		</div>
 	</div>
 </div>

@@ -20,6 +20,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatRippleModule } from '@angular/material/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSelectModule } from '@angular/material/select';
 
 import { MudListComponent } from './mud-list/mud-list.component';
 import { MyGamesComponent } from './my-games/my-games.component';
@@ -88,6 +89,7 @@ import { AreaElementComponent } from './mud-config/rooms/area-list/area-element/
 		MatStepperModule,
 		MatRippleModule,
 		MatTooltipModule,
+		MatSelectModule,
 	],
 })
 export class HomeModule {}
