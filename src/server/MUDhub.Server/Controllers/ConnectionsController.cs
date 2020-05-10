@@ -120,7 +120,7 @@ namespace MUDhub.Server.Controllers
             });
         }
 
-        [HttpPut("connections/{connectionId}")]
+        [HttpPut("{areaId}/connections/{connectionId}")]
         [ProducesResponseType(typeof(UpdateConnectionRequest), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(UpdateConnectionRequest), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateConnection([FromRoute] string connectionId, [FromBody] UpdateConnectionRequest args)
