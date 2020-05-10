@@ -89,6 +89,10 @@ const routes: Routes = [
 									{
 										path: 'create',
 										component: RoomCreateComponent
+									},
+									{
+										path: ':roomid/edit',
+										component: RoomCreateComponent
 									}
 								]
 							}

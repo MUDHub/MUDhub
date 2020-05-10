@@ -45,7 +45,20 @@ export class RoomsGridComponent implements OnInit {
 			}
 		});
 
-		this.areaService.roomCreated$.subscribe(async room => {
+		this.areaService.roomCreated$.subscribe(room => {
+			if (room.isDefaultRoom) {
+				for (const row of this.rooms) {
+					for (const r of row) {
+						if (r && r.isDefaultRoom) {
+							r.isDefaultRoom = false;
+						}
+					}
+				}
+			}
+			this.rooms[room.y][room.x] = room;
+		});
+
+		this.areaService.roomUpdated$.subscribe(room => {
 			if (room.isDefaultRoom) {
 				for (const row of this.rooms) {
 					for (const r of row) {

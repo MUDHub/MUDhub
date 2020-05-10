@@ -20,6 +20,11 @@ export class RoomCreateComponent implements OnInit {
 
 	mudid: string;
 	areaid: string;
+	roomid?: string;
+
+	get isInEditMode() {
+		return this.roomid !== undefined;
+	}
 
 	position: { x: number; y: number };
 
@@ -32,7 +37,7 @@ export class RoomCreateComponent implements OnInit {
 		isDefault: new FormControl(false),
 	});
 
-	ngOnInit() {
+	async ngOnInit() {
 		const params = this.route.snapshot.queryParams;
 		this.position = {
 			x: parseInt(params.x, 10),
@@ -40,9 +45,21 @@ export class RoomCreateComponent implements OnInit {
 		};
 		this.mudid = this.route.snapshot.params.mudid;
 		this.areaid = this.route.snapshot.params.areaid;
+		this.roomid = this.route.snapshot.params.roomid;
+
+		if (this.roomid) {
+			const room = await this.areaService.getRoom(
+				this.mudid,
+				this.areaid,
+				this.roomid
+			);
+			this.form.get('name').setValue(room.name);
+			this.form.get('description').setValue(room.description);
+			this.form.get('isDefault').setValue(room.isDefaultRoom);
+		}
 	}
 
-	async onCreate() {
+	async onSubmit() {
 		let imageKey;
 		if (this.selectedImage) {
 			imageKey = this.imageService.uploadFile(this.selectedImage);
@@ -55,8 +72,20 @@ export class RoomCreateComponent implements OnInit {
 			x: this.position.x,
 			y: this.position.y,
 		};
-		this.areaService.createRoom(this.mudid, this.areaid, room);
 
-		this.router.navigate(['../'], { relativeTo: this.route});
+		if (!this.isInEditMode) {
+			this.areaService.createRoom(this.mudid, this.areaid, room);
+		} else {
+			this.areaService.updateRoom(
+				this.mudid,
+				this.areaid,
+				this.roomid,
+				room
+			);
+		}
+
+		this.router.navigate([this.isInEditMode ? '../../' : '../'], {
+			relativeTo: this.route,
+		});
 	}
 }
