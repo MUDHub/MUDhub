@@ -99,7 +99,7 @@ namespace MUDhub.Server.Controllers
             }
             else
             {
-                return BadRequest(new ClassCreateResponse
+                return BadRequest(new RaceCreateResponse
                 {
                     Succeeded = false,
                     Errormessage = result.Errormessage

@@ -443,7 +443,7 @@ namespace MUDhub.Core.Services
         public async Task<CharacterRaceResult> RemoveRaceAsync(string userid, string raceid)
         {
 
-            _logger?.LogInformation($"Userid:'{userid}' requested remove a old character with id '{raceid}'.");
+            _logger?.LogInformation($"Userid:'{userid}' requested remove a old race with id '{raceid}'.");
             var user = await _context.GetUserByIdAsnyc(userid)
                                         .ConfigureAwait(false);
             if (user is null)
