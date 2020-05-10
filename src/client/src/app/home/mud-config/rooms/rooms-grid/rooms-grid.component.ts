@@ -244,4 +244,8 @@ export class RoomsGridComponent implements OnInit {
 			console.error('Error while creating connection', err);
 		}
 	}
+
+	public async deleteConnection(room1: IRoom, room2: IRoom) {
+
+	}
 }
