@@ -33,6 +33,7 @@ export class FinishComponent implements OnInit {
 
 	async getClasses() {
 		this.classes = await this.mudService.getMudClass(this.mudId);
+		console.log(this.classes);
 	}
 
 	/*Übersicht Items*/
@@ -58,15 +59,15 @@ export class FinishComponent implements OnInit {
 
 	/*General*/
 
-	ngOnInit(): void {
+	async ngOnInit() {
 		this.mudId = this.route.snapshot.params.mudid;
 
 		// Fetch Ressources from Service
-		this.getRaces();
-		this.getClasses();
-		this.getItems();
-		this.getAreas();
-		this.getRooms();
+		await this.getRaces();
+		await this.getClasses();
+		await this.getItems();
+		await this.getAreas();
+		await this.getRooms();
 	}
 
 	async onSubmit() {

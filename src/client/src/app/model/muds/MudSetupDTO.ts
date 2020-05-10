@@ -14,6 +14,9 @@ export interface IMudClass {
 
 
 export interface IMudItem {
+	itemId: string;
 	name: string;
 	description: string;
+	imageKey: string;
+	weight: number;
 }

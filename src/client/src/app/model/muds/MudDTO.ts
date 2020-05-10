@@ -38,7 +38,7 @@ export interface IMudRaceResponse {
 	};
 	displayMessage: string;
 	errormessage: string;
-	succeeded: true;
+	succeeded: boolean;
 }
 
 export interface IMudClassResponse {
@@ -51,5 +51,32 @@ export interface IMudClassResponse {
 	};
 	displayMessage: string;
 	errormessage: string;
-	succeeded: true;
+	succeeded: boolean;
+}
+
+export interface IMudItemResponse {
+	itemId: string;
+	name: string;
+	description: string;
+	weight: number;
+	imageKey: string;
+}
+
+export interface IMudRaceRequest {
+	name: string;
+	description: string;
+	imageKey: string;
+}
+
+export interface IMudClassRequest {
+	name: string;
+	description: string;
+	imageKey: string;
+}
+
+export interface IMudItemRequest {
+	name: string;
+	description: string;
+	weight: number;
+	imageKey: string;
 }

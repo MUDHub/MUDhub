@@ -16,7 +16,7 @@
             <div class="form-row">
                 <mat-form-field>
                     <input matInput name="name" type="text" formControlName="name" placeholder="Name" />
-                    <mat-error>Bitte gebe einen Name ein</mat-error>
+                    <mat-error>Der Name ist erforderlich</mat-error>
                 </mat-form-field>
             </div>
             <div class="form-row">
@@ -25,6 +25,12 @@
                     <textarea matInput formControlName="description" placeholder="Beschreibung" rows="5"></textarea>
                     <mat-error>Eine kurze Beschreibung des Gegenstands ist
                         erforderlich</mat-error>
+                </mat-form-field>
+			</div>
+			<div class="form-row">
+                <mat-form-field>
+                    <input matInput name="weight" type="number" formControlName="weight" placeholder="Gewicht" />
+                    <mat-error>Das Gewicht ist erforderlich</mat-error>
                 </mat-form-field>
             </div>
             <div class="form-row">
@@ -39,12 +45,14 @@
 <table class="table-list">
     <tr class="table-item first">
         <th>Name</th>
-        <th>Beschreibung</th>
+		<th>Beschreibung</th>
+		<th>Gewicht</th>
         <th>Löschen</th>
     </tr>
     <tr class="table-item" *ngFor="let item of items; index as index">
         <td>{{ item.name }}</td>
-        <td>{{ item.description }}</td>
+		<td>{{ item.description }}</td>
+		<td>{{ item.weight }}</td>
         <td>
             <button mat-flat-button color="primary" (click)="deleteRow(index)">
                 Löschen

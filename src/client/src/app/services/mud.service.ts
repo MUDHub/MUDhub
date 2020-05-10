@@ -6,6 +6,10 @@ import {
 	MudJoinState,
 	IMudClassResponse,
 	IMudRaceResponse,
+	IMudItemResponse,
+	IMudItemRequest,
+	IMudRaceRequest,
+	IMudClassRequest,
 } from '../model/muds/MudDTO';
 import { HttpClient } from '@angular/common/http';
 import { environment as env } from 'src/environments/environment';
@@ -85,15 +89,13 @@ export class MudService {
 
 	async addMudRace(
 		mudId: string,
-		mudRace: IMudRace
+		mudRace: IMudRaceRequest
 	): Promise<IMudRaceResponse> {
-		console.log(mudRace)
 		return await this.http
-			.post<IMudRaceResponse>(`${env.api.url}/mudgame/${mudId}/Races`, {
-				name: mudRace.name,
-				description: mudRace.description,
-				imageKey: mudRace.imageKey,
-			})
+			.post<IMudRaceResponse>(
+				`${env.api.url}/mudgame/${mudId}/Races`,
+				mudRace
+			)
 			.toPromise();
 	}
 
@@ -112,16 +114,12 @@ export class MudService {
 
 	async addMudClass(
 		mudId: string,
-		mudClass: IMudClass
+		mudClass: IMudClassRequest
 	): Promise<IMudClassResponse> {
 		return await this.http
 			.post<IMudClassResponse>(
 				`${env.api.url}/mudgame/${mudId}/classes`,
-				{
-					name: mudClass.name,
-					description: mudClass.description,
-					imageKey: mudClass.imageKey,
-				}
+				mudClass
 			)
 			.toPromise();
 	}
@@ -134,16 +132,29 @@ export class MudService {
 			.toPromise();
 	}
 
-	//SETUP - Item
+	// SETUP - Item
 	async getMudItem(mudId: string): Promise<IMudItem[]> {
-		return null;
+		return await this.http
+			.get<IMudItem[]>(`${env.api.url}/muds/${mudId}/items`)
+			.toPromise();
 	}
 
-	async addMudItem(mudId: string, mudItem: IMudItem) {
-		//Function is not implemented on the api yet
+	async addMudItem(
+		mudId: string,
+		mudItem: IMudItemRequest
+	): Promise<IMudItemResponse> {
+		console.log(mudItem);
+		return await this.http
+			.post<IMudItemResponse>(
+				`${env.api.url}/muds/${mudId}/items`,
+				mudItem
+			)
+			.toPromise();
 	}
 
 	async deleteMudItem(mudId: string, mudItem: IMudItem) {
-		//Function is not implemented on the api yet
+		return await this.http
+			.delete(`${env.api.url}/muds/${mudId}/items/${mudItem.itemId}`)
+			.toPromise();
 	}
 }

@@ -4,7 +4,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { ImageService } from 'src/app/services/image.service';
 import { IMudRace } from 'src/app/model/muds/MudSetupDTO';
 import { MudService } from 'src/app/services/mud.service';
-import { IMudRaceResponse } from 'src/app/model/muds/MudDTO';
+import { IMudRaceResponse, IMudRaceRequest } from 'src/app/model/muds/MudDTO';
 import { IImageUploadResponse } from 'src/app/model/FileUploadDTO';
 
 @Component({
@@ -58,30 +58,23 @@ export class RacesComponent implements OnInit {
 			this.selectedFile = null;
 		}
 
-		let currentRace: IMudRace = {
-			raceId: '',
-			name: this.form.get('name').value,
-			description: this.form.get('description').value,
-			imageKey: imageKey?.imageUrl
-		};
-
-
-		let obj: IMudRaceResponse = await this.mudService.addMudRace(
+		// Make API request
+		const response: IMudRaceResponse = await this.mudService.addMudRace(
 			this.mudId,
-			currentRace
+			{
+				name: this.form.get('name').value,
+				description: this.form.get('description').value,
+				imageKey: imageKey?.imageUrl,
+			}
 		);
 
-		console.log(obj);
-
-		currentRace = {
-			description: obj.race.description,
-			name: obj.race.name,
-			raceId: obj.race.raceId,
-			imageKey: obj.race.imageKey,
-		};
-
 		// Push races Object to the array
-		this.races.push(currentRace);
+		this.races.push({
+			description: response.race.description,
+			name: response.race.name,
+			raceId: response.race.raceId,
+			imageKey: response.race.imageKey,
+		});
 
 		// Reset File Buffer
 		this.selectedFile = null;

@@ -59,28 +59,30 @@ export class ClassesComponent implements OnInit {
 			this.selectedFile = null;
 		}
 
-		let currentClass: IMudClass = {
-			classId: '',
-			name: this.form.get('name').value,
-			description: this.form.get('description').value,
-			imageKey: imageKey?.imageUrl
-		};
+		console.log(imageKey);
+
 
 		// Make API request
-		let obj: IMudClassResponse = await this.mudService.addMudClass(
+		const response: IMudClassResponse = await this.mudService.addMudClass(
 			this.mudId,
-			currentClass
+			{
+				name: this.form.get('name').value,
+				description: this.form.get('description').value,
+				imageKey: imageKey?.imageUrl,
+			}
 		);
 
-		currentClass = {
-			description: obj.class.description,
-			name: obj.class.name,
-			classId: obj.class.classId,
-			imageKey: obj.class.imageKey,
-		};
+		console.log(response);
 
 		// Push races Object to the array
-		this.classes.push(currentClass);
+		this.classes.push({
+			description: response.class.description,
+			name: response.class.name,
+			classId: response.class.classId,
+			imageKey: response.class.imageKey,
+		});
+
+		console.log(this.classes);
 
 		// Reset File Buffer
 		this.selectedFile = null;
