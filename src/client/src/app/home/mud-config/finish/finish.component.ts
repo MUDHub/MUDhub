@@ -26,75 +26,20 @@ export class FinishComponent implements OnInit {
 	races: IMudRace[] = [];
 
 	async getRaces() {
-		// Noch nicht in API implementiert
-		this.races = [
-			{
-				name: 'name',
-				description: 'desc',
-				imagekey: 'imagekey',
-				raceId: ''
-			},
-			{
-				name: 'name2',
-				description: 'desc2',
-				imagekey: 'imagekey2',
-				raceId: ''
-			},
-			{
-				name: 'name3',
-				description: 'desc3',
-				imagekey: 'imagekey3',
-				raceId: ''
-			},
-		];
+		// Todo
 	}
-
 	/*Übersicht Klassen*/
 	classes: IMudClass[] = [];
 
 	async getClasses() {
-		// Noch nicht in API implementiert
-		this.classes = [
-			{
-				name: 'name',
-				description: 'desc',
-				imageKey: 'imagekey',
-				classId: ''
-			},
-			{
-				name: 'name2',
-				description: 'desc2',
-				imageKey: 'imagekey2',
-				classId: ''
-			},
-			{
-				name: 'name3',
-				description: 'desc3',
-				imageKey: 'imagekey3',
-				classId: ''
-			},
-		];
+		// Todo
 	}
 
 	/*Übersicht Items*/
 	items: IMudItem[] = [];
 
 	async getItems() {
-		// Noch nicht in API implementiert
-		this.items = [
-			{
-				name: 'name',
-				description: 'desc',
-			},
-			{
-				name: 'name2',
-				description: 'desc2',
-			},
-			{
-				name: 'name3',
-				description: 'desc3',
-			},
-		];
+		// Todo
 	}
 
 	/*Übersicht Räume*/
