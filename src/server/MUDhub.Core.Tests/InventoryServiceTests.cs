@@ -25,8 +25,14 @@ namespace MUDhub.Core.Tests
 
         public void Dispose()
         {
-            _context.Users.Remove(_user1);
+            //_context.Users.Remove(_user1);
             //_context.MudGames.Remove(_mudGame1);
+
+            //_context.Users.Remove(_user2);
+            //_context.Users.Remove(_user1);
+            //_context.Inventories.Remove(_inventory1);
+            //_context.Inventories.Remove(_inventory2);
+            //_context.Items.Remove(_item2);
             _context.SaveChanges();
             _context.Dispose();
         }
@@ -135,7 +141,7 @@ namespace MUDhub.Core.Tests
         private void InitializeTestDb()
         {
             var options = new DbContextOptionsBuilder<MudDbContext>()
-                .UseInMemoryDatabase("Testdatabase_ItemManager")
+                .UseInMemoryDatabase("Testdatabase_InventoryService")
                 .Options;
             _context = new MudDbContext(options, useNotInUnitests: false);
             _inventoryService = new InventoryService(_context);
@@ -196,11 +202,6 @@ namespace MUDhub.Core.Tests
             _context.Users.Add(_user1);
             _context.Inventories.Add(_inventory1);
             _context.Inventories.Add(_inventory2);
-            _context.Items.Add(_item2);
-            //_context.Users.Add(_user1);
-            //_context.Users.Add(_user2);
-            //_context.Users.Add(_user1);
-            //_context.MudGames.Add(_mudGame1);
             _context.SaveChanges();
         }
     }
