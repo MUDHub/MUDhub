@@ -49,7 +49,7 @@ namespace MUDhub.Server.Controllers
         [HttpGet("connections/{connectionId}")]
         [ProducesResponseType(typeof(RoomConnectionApiModel),StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(RoomConnectionApiModel),StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<RoomConnectionApiModel>> GetConnection([FromRoute] string mudId, [FromRoute] string connectionId)
+        public async Task<ActionResult<RoomConnectionApiModel>> GetConnection([FromRoute] string mudId,[FromRoute]string areaId, [FromRoute] string connectionId)
         {
             var connection = await _context.RoomConnections.FindAsync(connectionId)
                 .ConfigureAwait(false);
