@@ -1,16 +1,59 @@
 @import "src/variables.scss";
 
 :host {
-	position: relative;
+	height: 100%;
+	width: 100%;
 
+	display: block;
+
+	position: relative;
+}
+
+.width-controls, .height-controls {
+	position: absolute;
 	display: flex;
+	justify-content: space-between;
+	button {
+		background-color: #fff;
+		border: 1px solid rgba(0, 0, 0, 0.2);
+	}
+}
+
+.width-controls {
+	height: 2rem;
+	top: 0;
+	left: 2rem;
+	flex-direction: row;
+	width: calc(100% - 2rem);
+
+	button {
+		padding: 0 1rem;
+	}
+}
+
+.height-controls {
+	width: 2rem;
+	top: 2rem;
+	left: 0;
 	flex-direction: column;
-	justify-content: center;
-	align-items: center;
+	height: calc(100% - 2rem);
+
+	button {
+		padding: 0.5rem 0;
+	}
+}
+
+.rooms-grid-container {
+	width: 100%;
+	height: 100%;
+
+	padding-top: 2rem;
+	padding-left: 2rem;
 }
 
 .rooms-grid {
 	width: 100%;
+	height: 100%;
 	border-collapse: collapse;
 	table-layout: fixed;
 
@@ -169,6 +212,7 @@
 	margin: 0 auto;
 
 	cursor: pointer;
+	user-select: none;
 }
 
 .popup ::ng-deep {

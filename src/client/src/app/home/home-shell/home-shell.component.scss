@@ -3,7 +3,8 @@
 :host {
 	height: 100%;
 	background-color: #eee;
-	display: block;
+	display: flex;
+	flex-direction: column;
 	overflow-y: auto;
 }
 
@@ -21,6 +22,7 @@
 
 .container {
 	width: 100%;
+	flex-grow: 1;
 	max-width: 1200px;
 	margin: 0 auto;
 	padding: 2rem;

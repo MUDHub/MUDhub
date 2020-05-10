@@ -1,5 +1,12 @@
 @import "src/variables.scss";
 
+:host {
+	flex-grow: 1;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
 .navbar {
 	display: flex;
 	flex-direction: row;
@@ -55,4 +62,9 @@
 		height: 0;
 		margin: 0 -0.7rem;
 	}
+}
+
+
+.outlet {
+	flex-grow: 1;
 }

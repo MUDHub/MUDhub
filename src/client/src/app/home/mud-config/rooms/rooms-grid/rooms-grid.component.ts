@@ -19,8 +19,8 @@ export class RoomsGridComponent implements OnInit {
 		private areaService: AreaService
 	) {}
 
-	readonly maxWidth = 8;
-	readonly maxHeight = 6;
+	readonly maxWidth = 10;
+	readonly maxHeight = 7;
 
 	mudid: string;
 	areaid: string;
@@ -216,7 +216,6 @@ export class RoomsGridComponent implements OnInit {
 	}
 
 	public async addConnection(room1: IRoom, room2: IRoom) {
-		console.log('connecting', room1, 'and', room2);
 		const connection: IConnectionCreateRequest = {
 			roomId1: room1.roomId,
 			roomId2: room2.roomId,

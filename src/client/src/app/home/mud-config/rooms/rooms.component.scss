@@ -1,37 +1,29 @@
-
 :host {
 	width: 90%;
 	position: absolute;
 	left: 5%;
-}
-
-
-.container {
 	display: flex;
 	flex-direction: row;
-
-	height: 600px;
-
-	.areas {
-		width: 20%;
-		margin-right: 2rem;
-	}
-
-	.rooms {
-		flex: 1;
-	}
 }
 
-
-.button-menu{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    button{
-        margin-right: 1rem;
-    }
+.areas {
+	width: 20%;
+	max-width: 400px;
+	margin-right: 2rem;
 }
 
+.rooms {
+	flex: 1;
+}
+
+.button-menu {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	button {
+		margin-right: 1rem;
+	}
+}
 
 .create-room {
 	color: #fff;
