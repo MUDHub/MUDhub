@@ -55,8 +55,8 @@
 
 		</mat-expansion-panel-header>
 
-		<div>
-			Todo Rooms
+		<div *ngFor="let room of rooms; let i = index">
+            <p>Raum {{i}}: Name: {{ room.name }}, Beschreibung: {{ room.description }}, in Area: {{ room.area.name}}</p>
 		</div>
 
     </mat-expansion-panel>

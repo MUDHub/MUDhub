@@ -5,6 +5,7 @@ import { ImageService } from 'src/app/services/image.service';
 import { IMudRace } from 'src/app/model/muds/MudSetupDTO';
 import { MudService } from 'src/app/services/mud.service';
 import { IMudRaceResponse } from 'src/app/model/muds/MudDTO';
+import { IImageUploadResponse } from 'src/app/model/FileUploadDTO';
 
 @Component({
 	templateUrl: './races.component.html',
@@ -22,7 +23,7 @@ export class RacesComponent implements OnInit {
 	form = this.fb.group({
 		name: ['', Validators.required],
 		description: ['', Validators.required],
-		imagekey: [''],
+		imageKey: [''],
 	});
 
 	dialog = false;
@@ -45,7 +46,7 @@ export class RacesComponent implements OnInit {
 
 	async addRace() {
 		// Get Imagekey from API if an Image was uploaded
-		let imageKey = null;
+		let imageKey: IImageUploadResponse = null;
 
 		try {
 			if (this.selectedFile != null) {
@@ -61,7 +62,7 @@ export class RacesComponent implements OnInit {
 			raceId: '',
 			name: this.form.get('name').value,
 			description: this.form.get('description').value,
-			imageKey: this.form.get('imagekey').value
+			imageKey: imageKey?.imageUrl
 		};
 
 
@@ -69,6 +70,8 @@ export class RacesComponent implements OnInit {
 			this.mudId,
 			currentRace
 		);
+
+		console.log(obj);
 
 		currentRace = {
 			description: obj.race.description,
