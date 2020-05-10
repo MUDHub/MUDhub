@@ -87,9 +87,11 @@ export class MudService {
 		//Function is not implemented on the api yet
 	}
 
-	//SETUP - Class
-	async getMudClass(mudId: string):Promise<IMudClass[]>{
-		return null;
+	// SETUP - Class
+	async getMudClass(mudId: string): Promise<IMudClass[]> {
+		return await this.http
+			.get<IMudClass[]>(`${env.api.url}/muds/${mudId}/classes`)
+			.toPromise();
 	}
 
 	async addMudClass(mudId: string, mudClass: IMudClass) {

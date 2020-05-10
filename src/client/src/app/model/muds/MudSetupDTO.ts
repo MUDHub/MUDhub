@@ -5,9 +5,10 @@ export interface IMudRace {
 }
 
 export interface IMudClass {
+	classId: string;
 	name: string;
 	description: string;
-	imagekey: string;
+	imageKey: string;
 }
 
 
