@@ -56,7 +56,5 @@ namespace MUDhub.Server.Controllers
                 ImageUrl = imagekey,
             });
         }
-
-
     }
 }

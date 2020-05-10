@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Microsoft.Extensions.Logging;
 using MUDhub.Core.Abstracts;
 using MUDhub.Core.Abstracts.Models.Inventories;
 using MUDhub.Core.Models.Inventories;
@@ -41,6 +42,18 @@ namespace MUDhub.Core.Services
                 };
             }
 
+            if (!(user.IsInRole(Roles.Master)))
+            {
+                var message = $"The user: '{user.Lastname}' has no authorization";
+                _logger?.LogWarning(message);
+                return new ItemInstanceResult()
+                {
+                    Success = false,
+                    Errormessage = message,
+                    DisplayMessage = $"Der User: '{user.Lastname}' hat keine ausreichende Berechtigung."
+                };
+            }
+
             var inventory = await _context.Inventories.FindAsync(inventoryId)
                 .ConfigureAwait(false);
             if (inventory is null)
@@ -50,7 +63,8 @@ namespace MUDhub.Core.Services
                 return new ItemInstanceResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"Es wurde kein Inventar mit der InventarId: '{inventoryId}' gefunden."
                 };
             }
 
@@ -63,10 +77,22 @@ namespace MUDhub.Core.Services
                 return new ItemInstanceResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"Es wurde kein Item mit der IId: '{itemId}' gefunden."
                 };
             }
 
+            if ((inventory.UsedCapacity + item.Weight) > inventory.Capacity)
+            {
+                var message = $"The item: '{itemId}' is too big for the inventory: '{inventoryId}'";
+                _logger?.LogWarning(message);
+                return new ItemInstanceResult()
+                {
+                    Success = false,
+                    Errormessage = message,
+                    DisplayMessage = $"Das Item: '{itemId}' ist zu groß für das Inventar: '{inventoryId}'"
+                };
+            }
             var itemInstance = new ItemInstance()
             {
                 Inventory = inventory,
@@ -75,6 +101,7 @@ namespace MUDhub.Core.Services
                 ItemId = itemId
             };
             _context.ItemInstances.Add(itemInstance);
+            inventory.UsedCapacity += item.Weight;
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
             _logger?.LogInformation($"A item instance: '{itemInstance.Id}' was created in inventory: '{inventory.Id}'");
@@ -119,6 +146,7 @@ namespace MUDhub.Core.Services
             }
 
             _context.ItemInstances.Remove(itemInstance);
+            itemInstance.Inventory.UsedCapacity -= itemInstance.Item.Weight;
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
             _logger?.LogInformation($"The item instance: '{itemInstance.Id}' has been removed from the Inventory: '{itemInstance.InventoryId}'");
@@ -201,8 +229,6 @@ namespace MUDhub.Core.Services
             sourceInventory.ItemInstances.Remove(itemInstance);
             targetInventory.ItemInstances.Add(itemInstance);
 
-            //TODO: Muss ich an der Db noch was machen oder wird das automatisch gespeichert?
-
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
             _logger?.LogInformation($"The item instance: {itemInstance.Id} was transferred from inventory: {sourceInventoryId} to inventory: {targetInventoryId}");
@@ -211,18 +237,6 @@ namespace MUDhub.Core.Services
                 ItemInstance = itemInstance,
                 Inventory = targetInventory
             };
-        }
-
-        /// <summary>
-        /// Is the user really the owner of the MudGame?
-        /// </summary>
-        /// <param name="user"></param>
-        /// <param name="gameId"></param>
-        /// <returns></returns>
-        private bool IsUserOwner(User user, string gameId)
-        {
-            var mudGameOwner = user.MudGames.FirstOrDefault(mg => mg.Id == gameId);
-            return !(mudGameOwner is null);
         }
 
         /// <summary>

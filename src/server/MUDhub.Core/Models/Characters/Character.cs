@@ -1,4 +1,5 @@
-﻿using MUDhub.Core.Models.Muds;
+﻿using MUDhub.Core.Models.Inventories;
+using MUDhub.Core.Models.Muds;
 using MUDhub.Core.Models.Rooms;
 using MUDhub.Core.Models.Users;
 using System;
@@ -26,6 +27,7 @@ namespace MUDhub.Core.Models.Characters
         public virtual CharacterRace Race { get; set; } = new CharacterRace();
         public virtual CharacterClass Class { get; set; } = new CharacterClass();
         public virtual Room ActualRoom { get; set; } = new Room();
+        public virtual Inventory Inventory { get; set; } = new Inventory();
 
         //"LiveUpdates"
 

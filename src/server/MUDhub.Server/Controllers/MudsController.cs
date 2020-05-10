@@ -27,29 +27,22 @@ namespace MUDhub.Server.Controllers
 
 
         [HttpGet()]
-        public ActionResult<IEnumerable<MudApiModel>> GetAllMuds([FromQuery] bool fullData = false, [FromQuery] string? userid = null)
+        public ActionResult<IEnumerable<MudApiModel>> GetAllMuds([FromQuery] string? userid = null)
         {
-
-            if (fullData)
+            if (userid is null)
             {
-                //Todo: add fulld data, later with references.
+                return Ok(_context.MudGames.Include(mg => mg.Owner)
+                                           .AsEnumerable()
+                                           .Select(mg => MudApiModel.ConvertFromMudGame(mg)));
             }
             else
             {
-                if (userid is null)
-                {
-                    return Ok(_context.MudGames.Include(mg => mg.Owner)
-                                               .AsEnumerable()
-                                               .Select(mg => MudApiModel.ConvertFromMudGame(mg)));
-                }
-                else
-                {
-                    return Ok(_context.MudGames.Where(g => g.OwnerId == userid)
-                                                .Include(mg => mg.Owner)
-                                                .AsEnumerable()
-                                                .Select(mg => MudApiModel.ConvertFromMudGame(mg)));
-                }
+                return Ok(_context.MudGames.Where(g => g.OwnerId == userid)
+                                            .Include(mg => mg.Owner)
+                                            .AsEnumerable()
+                                            .Select(mg => MudApiModel.ConvertFromMudGame(mg)));
             }
+
             throw new NotImplementedException();
         }
 

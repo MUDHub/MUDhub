@@ -6,6 +6,7 @@ using MUDhub.Core.Abstracts.Models.Connections;
 using MUDhub.Core.Abstracts.Models.Rooms;
 using MUDhub.Core.Models;
 using MUDhub.Core.Models.Connections;
+using MUDhub.Core.Models.Inventories;
 using MUDhub.Core.Models.Rooms;
 using MUDhub.Core.Models.Users;
 using System;
@@ -263,7 +264,11 @@ namespace MUDhub.Core.Services
                 X = args.X,
                 Y = args.Y,
                 IsDefaultRoom = args.IsDefaultRoom,
-                Game = area.Game
+                Game = area.Game,
+                Inventory = new Inventory()
+                {
+                    Capacity = int.MaxValue
+                }
             };
             _context.Rooms.Add(room);
             await _context.SaveChangesAsync()

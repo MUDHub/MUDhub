@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MUDhub.Core.Abstracts;
 using MUDhub.Core.Services;
 using MUDhub.Server.ApiModels.Areas;
+using MUDhub.Server.ApiModels.Items;
 using MUDhub.Server.ApiModels.Muds.Rooms;
 using MUDhub.Server.Helpers;
 using System;
@@ -18,11 +19,13 @@ namespace MUDhub.Server.Controllers
     {
         private readonly MudDbContext _context;
         private readonly IAreaManager _areaManager;
+        private readonly IInventoryService _inventoryService;
 
-        public RoomsController(MudDbContext context, IAreaManager areaManager)
+        public RoomsController(MudDbContext context, IAreaManager areaManager, IInventoryService inventoryService)
         {
             _context = context;
             _areaManager = areaManager;
+            _inventoryService = inventoryService;
         }
 
         [HttpGet("rooms")]
@@ -70,7 +73,27 @@ namespace MUDhub.Server.Controllers
             {
                 Succeeded = false,
                 Errormessage = result.Errormessage,
+                DisplayMessage = result.DisplayMessage,
                 IsDefaultRoom = result.IsDefaultRoom
+            });
+        }
+        [HttpDelete("rooms/{roomId}/iteminstances/{iteminstancesId}")]
+        [ProducesResponseType(typeof(RoomDeleteResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(RoomDeleteResponse), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> DeleteItemInstances([FromRoute] string roomId, [FromRoute] string iteminstancesId)
+        {
+            var result = await _inventoryService.RemoveItemInstance(HttpContext.GetUserId(), iteminstancesId)
+                .ConfigureAwait(false);
+            if (result.Success)
+            {
+                return Ok(new ItemInstanceResponse());
+            }
+
+            return BadRequest(new ItemInstanceResponse()
+            {
+                Succeeded = false,
+                Errormessage = result.Errormessage,
+                DisplayMessage = result.DisplayMessage
             });
         }
 
@@ -95,7 +118,34 @@ namespace MUDhub.Server.Controllers
             return BadRequest(new CreateAreaResponse()
             {
                 Succeeded = false,
-                Errormessage = "Cannot create the room."
+                Errormessage = createResult.Errormessage,
+                DisplayMessage = createResult.DisplayMessage
+            });
+        }
+        
+        [HttpPost("rooms/{roomId}/iteminstances")]
+        [ProducesResponseType(typeof(CreateRoomResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(CreateRoomResponse), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CreateItemInstance([FromRoute] string roomId, [FromBody] ItemInstanceRequest args)
+        {
+            if (args is null)
+                throw new ArgumentNullException(nameof(args));
+
+            var createResult = await _inventoryService.CreateItemInstance(HttpContext.GetUserId(), args.InventoryId,
+                args.ItemId).ConfigureAwait(false);
+
+            if (createResult.Success)
+            {
+                return Ok(new ItemInstanceResponse()
+                {
+                    ItemInstance = ItemInstanceApiModel.ConvertFromItemInstance(createResult.ItemInstance!)
+                });
+            }
+            return BadRequest(new ItemInstanceResponse()
+            {
+                Succeeded = false,
+                Errormessage = createResult.Errormessage,
+                DisplayMessage = createResult.DisplayMessage
             });
         }
 
@@ -120,9 +170,9 @@ namespace MUDhub.Server.Controllers
             return BadRequest(new UpdateRoomResponse()
             {
                 Succeeded = false,
-                Errormessage = $"Cannot update the room: '{roomId}'"
+                Errormessage = updateResult.Errormessage,
+                DisplayMessage = updateResult.DisplayMessage
             });
         }
-
     }
 }

@@ -2,6 +2,7 @@
 using MUDhub.Core.Abstracts;
 using MUDhub.Core.Abstracts.Models.Characters;
 using MUDhub.Core.Models.Characters;
+using MUDhub.Core.Models.Inventories;
 using MUDhub.Core.Models.Muds;
 using System.Linq;
 using System.Threading.Tasks;
@@ -103,7 +104,8 @@ namespace MUDhub.Core.Services
                     Class = characterclass,
                     Race = characterrace,
                     Name = args.Name,
-                    Health = DefaultHealth
+                    Health = DefaultHealth,
+                    Inventory = new Inventory()
                 };
                 _context.Characters.Add(character);
                 await _context.SaveChangesAsync().ConfigureAwait(false);

@@ -1,5 +1,6 @@
 using MUDhub.Core.Models.Characters;
 using MUDhub.Core.Models.Connections;
+using MUDhub.Core.Models.Inventories;
 using MUDhub.Core.Models.Muds;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,7 @@ namespace MUDhub.Core.Models.Rooms
         public string Description { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public virtual ICollection<RoomConnection> Connections { get; set; } = new Collection<RoomConnection>();
-        public string AreaId { get; set; }
+        public string AreaId { get; set; } = string.Empty;
         public virtual Area Area { get; set; } = null!;
         public virtual ICollection<RoomInteraction> Interactions { get; set; } = new Collection<RoomInteraction>();
         public string ImageKey { get; set; } = string.Empty;
@@ -34,5 +35,6 @@ namespace MUDhub.Core.Models.Rooms
         public virtual MudGame Game { get; set; } = null!;
         public bool IsDefaultRoom { get; set; } = false;
         public virtual ICollection<Character> Characters { get; set; } = new Collection<Character>();
+        public virtual Inventory Inventory { get; set; } = null!;
     }
 }
