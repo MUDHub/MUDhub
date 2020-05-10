@@ -64,7 +64,7 @@ namespace MUDhub.Server.Controllers
             return BadRequest();
         }
 
-        [HttpDelete("connections/{connectionId}")]
+        [HttpDelete("{areaId}/connections/{connectionId}")]
         [ProducesResponseType(typeof(ConnectionDeleteResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ConnectionDeleteResponse), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> DeleteConnection([FromRoute] string connectionId)
