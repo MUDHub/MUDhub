@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MUDhub.Server.Controllers
 {
-    [Route("api/mudgame/{mudid}/Races")]
+    [Route("api/mudgame/{mudid}/races")]
     [ApiController]
     public class RacesController : ControllerBase
     {
