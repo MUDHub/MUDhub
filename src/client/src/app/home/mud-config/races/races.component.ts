@@ -57,6 +57,7 @@ export class RacesComponent implements OnInit {
 
 		// Push races Object to the array
 		this.races.push({
+			raceId: (this.races.length - 1).toString(),
 			name: this.form.get('name').value,
 			description: this.form.get('description').value,
 			imagekey: imageKey,
