@@ -43,10 +43,12 @@ namespace MUDhub.Server.Controllers
             {
                 return BadRequest();
             }
-            return Ok(result.Connections1.Select(c => RoomConnectionApiModel.ConvertFromRoomConnection(c)));
+            return Ok(result.AllConnections.Select(c => RoomConnectionApiModel.ConvertFromRoomConnection(c)));
         }
 
         [HttpGet("connections/{connectionId}")]
+        [ProducesResponseType(typeof(RoomConnectionApiModel),StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(RoomConnectionApiModel),StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<RoomConnectionApiModel>> GetConnection([FromRoute] string mudId, [FromRoute] string connectionId)
         {
             var connection = await _context.RoomConnections.FindAsync(connectionId)
@@ -63,7 +65,9 @@ namespace MUDhub.Server.Controllers
         }
 
         [HttpDelete("connections/{connectionId}")]
-        public async Task<ActionResult<ConnectionDeleteResponse>> DeleteConnection([FromRoute] string connectionId)
+        [ProducesResponseType(typeof(ConnectionDeleteResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ConnectionDeleteResponse), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> DeleteConnection([FromRoute] string connectionId)
         {
 
             var result = await _areaManager.RemoveConnectionAsync(HttpContext.GetUserId(), connectionId)
@@ -76,11 +80,13 @@ namespace MUDhub.Server.Controllers
             return BadRequest(new ConnectionDeleteResponse()
             {
                 Succeeded = false,
-                Errormessage = $"Connection with the Id: {connectionId} does not exist!"
+                Errormessage = result.Errormessage
             });
         }
 
         [HttpPost("{areaId}/connections")]
+        [ProducesResponseType(typeof(CreateConnectionResponse),StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(CreateConnectionResponse),StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateConnection([FromRoute] string areaId, [FromBody] CreateConnectionRequest args)
         {
             if (args is null)
@@ -115,6 +121,8 @@ namespace MUDhub.Server.Controllers
         }
 
         [HttpPut("connections/{connectionId}")]
+        [ProducesResponseType(typeof(UpdateConnectionRequest), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(UpdateConnectionRequest), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateConnection([FromRoute] string connectionId, [FromBody] UpdateConnectionRequest args)
         {
             if (args is null)
