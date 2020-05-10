@@ -46,7 +46,7 @@ namespace MUDhub.Server.Controllers
             return Ok(result.AllConnections.Select(c => RoomConnectionApiModel.ConvertFromRoomConnection(c)));
         }
 
-        [HttpGet("connections/{connectionId}")]
+        [HttpGet("{areaId}/connections/{connectionId}")]
         [ProducesResponseType(typeof(RoomConnectionApiModel),StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(RoomConnectionApiModel),StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<RoomConnectionApiModel>> GetConnection([FromRoute] string mudId,[FromRoute]string areaId, [FromRoute] string connectionId)
