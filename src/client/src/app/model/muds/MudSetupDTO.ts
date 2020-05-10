@@ -1,4 +1,5 @@
 export interface IMudRace {
+	raceId: string;
 	name: string;
 	description: string;
 	imagekey: string;

@@ -76,15 +76,15 @@ export class MudService {
 	//SETUP Process
 	//SETUP - Race
 	async getMudRace(mudId: string):Promise<IMudRace[]>{
-		return null;
+		return await this.http.get<IMudRace[]>(`${env.api.url}/mudgame/${mudId}/Races`).toPromise();
 	}
 
 	async addMudRace(mudId: string, mudRace: IMudRace) {
-		//Function is not implemented on the api yet
+		//return await this.http.put();
 	}
 
 	async deleteMudRace(mudId: string, mudRace: IMudRace) {
-		//Function is not implemented on the api yet
+		return await this.http.delete(`${env.api.url}/mudgame/${mudId}/Races/${mudRace.raceId}`).toPromise();
 	}
 
 	// SETUP - Class
