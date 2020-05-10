@@ -39,7 +39,7 @@ namespace MUDhub.Server.ApiModels.Muds.Rooms
                 ImageKey = room.ImageKey,
                 IsDefaultRoom = room.IsDefaultRoom,
                 ItemInstances = room.Inventory.ItemInstances.Select(ii => ItemInstanceApiModel.ConvertFromItemInstance(ii)),
-                Connections = Connections.CreateFromList(room.AllConnections)
+                Connections = Connections.CreateFromList(room.AllConnections, room)
             };
         }
     }
@@ -52,13 +52,22 @@ namespace MUDhub.Server.ApiModels.Muds.Rooms
         public bool West { get; set; }
         public bool East { get; set; }
 
-        public static Connections CreateFromList(IEnumerable<RoomConnection> connections)
+        public static Connections CreateFromList(IEnumerable<RoomConnection> connections, Room actualRoom)
         {
             Connections c = new Connections();
             foreach (var connection in connections)
             {
-                var xDif = connection.Room1.X - connection.Room2.X;
-                var yDif = connection.Room1.Y - connection.Room2.Y;
+                int xDif, yDif;
+                if (actualRoom.Id == connection.Room1.Id)
+                {
+                    xDif = connection.Room1.X - connection.Room2.X;
+                    yDif = connection.Room1.Y - connection.Room2.Y;
+                }
+                else
+                {
+                    xDif = connection.Room2.X - connection.Room1.X;
+                    yDif = connection.Room2.Y - connection.Room1.Y;
+                }
 
                 switch ((xDif, yDif))
                 {
