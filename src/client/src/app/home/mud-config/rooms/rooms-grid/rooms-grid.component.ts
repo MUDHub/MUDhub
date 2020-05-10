@@ -4,7 +4,8 @@ import { VirtualTimeScheduler } from 'rxjs';
 import { AreaService } from 'src/app/services/area.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import swal from 'sweetalert2';
-import { switchMapTo } from 'rxjs/operators';
+import { IConnectionCreateRequest, LockType } from 'src/app/model/areas/ConnectionsDTO';
+import { IConnection } from 'src/app/model/areas/IConnection';
 
 @Component({
 	selector: 'mh-rooms-grid',
@@ -23,6 +24,7 @@ export class RoomsGridComponent implements OnInit {
 	mudid: string;
 	areaid: string;
 	rooms: IRoom[][] = [[]];
+	connections: IConnection[];
 
 	async ngOnInit() {
 		this.route.params.subscribe(async params => {
@@ -34,6 +36,7 @@ export class RoomsGridComponent implements OnInit {
 			);
 			if (rooms.length > 0) {
 				this.rooms = this.mapRooms(rooms);
+				console.log(this.rooms);
 			} else {
 				this.rooms = [
 					[undefined, undefined],
@@ -199,7 +202,21 @@ export class RoomsGridComponent implements OnInit {
 		}
 	}
 
-	public addConnection(room1: IRoom, room2: IRoom) {
+	public async addConnection(room1: IRoom, room2: IRoom) {
 		console.log('connecting', room1, 'and', room2);
+		const connection: IConnectionCreateRequest = {
+			roomId1: room1.roomId,
+			roomId2: room2.roomId,
+			lockType: LockType.NoLock,
+		};
+		try {
+			const response = await this.areaService.createConnection(this.mudid, this.areaid, connection);
+			
+			for (let i = 0; i < this.rooms.length; i++) {
+				
+			}
+		} catch (err) {
+			console.error('Error while creating connection', err);
+		}
 	}
 }
