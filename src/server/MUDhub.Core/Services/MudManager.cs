@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using MUDhub.Core.Abstracts;
 using MUDhub.Core.Abstracts.Models;
+using MUDhub.Core.Models;
 using MUDhub.Core.Models.Muds;
 using System;
 using System.Globalization;
@@ -206,6 +207,31 @@ namespace MUDhub.Core.Services
             return true;
         }
 
+        public async Task<bool> SetEditModeAsync(string mudId, string userid, bool isInEdit)
+        {
+            var user = await _context.GetUserByIdAsnyc(userid)
+                                      .ConfigureAwait(false);
+            if (user is null)
+            {
+                return false;
+            }
+            var mud = user.MudGames.FirstOrDefault(mg => mg.Id == mudId);
+            if (mud is null)
+            {
+                return false;
+            }
+            if (mud.State == MudGameState.InEdit && isInEdit)
+            {
+                return false;
+            }
+            if (mud.State != MudGameState.InEdit && !isInEdit)
+            {
+                return false;
+            }
+            mud.State = MudGameState.Active;
+            await _context.SaveChangesAsync().ConfigureAwait(false);
+            return true;
+        }
 
         private async Task<MudGame> GetMudGameByIdAsync(string id)
             => await _context.MudGames.FindAsync(id);

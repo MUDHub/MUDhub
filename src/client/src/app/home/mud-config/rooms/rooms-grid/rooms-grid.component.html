@@ -27,7 +27,8 @@
 				class="connection-add connection-vertical"
 				*ngIf="
 					y < height - 1 &&
-					rooms[y + 1][x] !== undefined && room !== undefined &&
+					rooms[y + 1][x] !== undefined &&
+					room !== undefined &&
 					!room.connections.south
 				"
 				(click)="addConnection(room, rooms[y + 1][x])"
@@ -36,8 +37,22 @@
 			>
 				+
 			</div>
-			<div class="connection connection-vertical" *ngIf="y < height - 1 && room?.connections.south"></div>
-			<div class="connection connection-horizontal" *ngIf="x < width - 1 && room?.connections.east"></div>
+			<div
+				class="connection connection-vertical"
+				*ngIf="y < height - 1 && room?.connections.south"
+			>
+				<div class="popup" (click)="deleteConnection(rooms[y][x], rooms[y + 1][x])">
+					<mat-icon>delete</mat-icon>
+				</div>
+			</div>
+			<div
+				class="connection connection-horizontal"
+				*ngIf="x < width - 1 && room?.connections.east"
+			>
+				<div class="popup" (click)="deleteConnection(rooms[y][x], rooms[y][x + 1])">
+					<mat-icon>delete</mat-icon>
+				</div>
+			</div>
 			<div class="room" *ngIf="room">
 				<div class="default-icon" *ngIf="room.isDefaultRoom">
 					<span>D</span>
