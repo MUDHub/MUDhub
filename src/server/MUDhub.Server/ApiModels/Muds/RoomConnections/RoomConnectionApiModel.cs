@@ -5,6 +5,8 @@ namespace MUDhub.Server.ApiModels.Muds.RoomConnections
 {
     public class RoomConnectionApiModel
     {
+        public string Id { get; set; }
+
         public string Description { get; set; } = string.Empty;
 
         public LockType LockType { get; set; } = LockType.NoLock;
@@ -22,6 +24,7 @@ namespace MUDhub.Server.ApiModels.Muds.RoomConnections
             }
             return new RoomConnectionApiModel()
             {
+                Id = connection.Id,
                 Description = connection.Description,
                 LockAssociatedId = connection.LockAssociatedId,
                 LockDescription = connection.LockDescription,
