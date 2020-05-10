@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MUDhub.Core.Abstracts;
 using MUDhub.Core.Models.Muds;
@@ -18,11 +19,13 @@ namespace MUDhub.Server.Controllers
     {
         private readonly MudDbContext _context;
         private readonly IMudManager _mudManager;
+        private readonly IGameService _gameService;
 
-        public MudsController(MudDbContext context, IMudManager mudManager)
+        public MudsController(MudDbContext context, IMudManager mudManager, IGameService gameService)
         {
             _context = context;
             _mudManager = mudManager;
+            _gameService = gameService;
         }
 
 
@@ -42,8 +45,6 @@ namespace MUDhub.Server.Controllers
                                             .AsEnumerable()
                                             .Select(mg => MudApiModel.ConvertFromMudGame(mg)));
             }
-
-            throw new NotImplementedException();
         }
 
         [HttpGet("{mudId}")]
@@ -129,31 +130,27 @@ namespace MUDhub.Server.Controllers
             switch ((MudJoinState)state)
             {
                 case MudJoinState.Accepted:
+                {
+                    var result = await _mudManager.ApproveUserToJoinAsync(userid, mudId)
+                                        .ConfigureAwait(false);
+                    if (result)
                     {
-                        var result = await _mudManager.ApproveUserToJoinAsync(userid, mudId)
-                                            .ConfigureAwait(false);
-                        if (result)
-                        {
-                            return Ok();
-                        }
-                        return BadRequest();
+                        return Ok();
                     }
+                }
+                break;
                 case MudJoinState.Rejected:
+                {
+                    var result = await _mudManager.RejectUserToJoinAsync(userid, mudId)
+                                        .ConfigureAwait(false);
+                    if (result)
                     {
-                        var result = await _mudManager.RejectUserToJoinAsync(userid, mudId)
-                                            .ConfigureAwait(false);
-                        if (result)
-                        {
-                            return Ok();
-                        }
-                        return BadRequest();
+                        return Ok();
                     }
-                default:
-                    {
-                        //todo: throw exception
-                        return BadRequest();
-                    }
+                }
+                break;
             }
+            return BadRequest();
         }
 
         [HttpPost("{mudId}/requestjoin")]
@@ -173,6 +170,41 @@ namespace MUDhub.Server.Controllers
             {
                 return Ok(new MudJoinsResponse());
             }
+        }
+
+        [HttpPost("{mudId}/start")]
+        public async Task<ActionResult> StartMudAsync([FromRoute] string mudId)
+        {
+            var result = await _gameService.StartMudAsync(mudId, HttpContext.GetUserId())
+                                            .ConfigureAwait(false);
+            if (result)
+                return Ok();
+            else
+                return BadRequest();
+
+        }
+
+        [HttpPost("{mudId}/stop")]
+        public async Task<ActionResult> StopMudAsync([FromRoute] string mudId)
+        {
+            var result = await _gameService.StopMudAsync(mudId, HttpContext.GetUserId())
+                                            .ConfigureAwait(false);
+            if (result)
+                return Ok();
+            else
+                return BadRequest();
+        }
+
+        [HttpPost("{mudId}/edit")]
+        public async Task<ActionResult> EditMudAsync([FromRoute] string mudId, [FromQuery] bool isInEdit)
+        {
+            var result = await _mudManager.SetEditModeAsync(mudId, HttpContext.GetUserId(), isInEdit)
+                                            .ConfigureAwait(false);
+            if (result)
+                return Ok();
+            else
+                return BadRequest();
+
         }
     }
 }

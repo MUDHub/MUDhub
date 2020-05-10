@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using MUDhub.Core.Abstracts;
 using MUDhub.Core.Models.Connections;
 using MUDhub.Core.Services;
@@ -6,6 +7,7 @@ using MUDhub.Server.ApiModels.Areas;
 using MUDhub.Server.ApiModels.Muds.RoomConnections;
 using MUDhub.Server.Helpers;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -25,6 +27,8 @@ namespace MUDhub.Server.Controllers
         }
 
         [HttpGet("{areaId}/connections")]
+        [ProducesResponseType(typeof(IEnumerable<RoomConnectionApiModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<RoomConnectionApiModel>), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetAllConnections([FromRoute] string mudId, [FromRoute] string areaId, [FromQuery] string? roomId = null)
         {
             if (roomId is null)
