@@ -9,19 +9,21 @@ namespace MUDhub.Server.ApiModels.Characters
     public class ClassApiModel
     {
         public string Description { get; set; } = string.Empty;
-        public string RaceId { get; set; } = string.Empty;
+        public string ClassId { get; set; } = string.Empty;
         public string MudGameId { get; set; } = string.Empty;
         public string ImageKey { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
 
 
-        public static ClassApiModel ConvertFromCharacterClass(CharacterClass race)
+        public static ClassApiModel ConvertFromCharacterClass(CharacterClass classes)
         {
             return new ClassApiModel
             {
-                MudGameId = race.GameId,
-                Description = race.Description,
-                RaceId = race.Id,
-                ImageKey = race.ImageKey
+                MudGameId = classes.GameId,
+                Description = classes.Description,
+                ClassId = classes.Id,
+                ImageKey = classes.ImageKey,
+                Name = classes.Name
             };
         }
 

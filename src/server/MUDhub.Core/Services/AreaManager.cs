@@ -44,7 +44,8 @@ namespace MUDhub.Core.Services
                 return new AreaResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    //DisplayMessage = 
                 };
             }
             var mud = await _context.MudGames.FindAsync(mudId)
@@ -105,7 +106,8 @@ namespace MUDhub.Core.Services
                 return new ConnectionResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"Kein Benutzer mit der Benutzer-Id: '{userId}' wurde gefunden."
                 };
             }
 
@@ -116,7 +118,8 @@ namespace MUDhub.Core.Services
                 return new ConnectionResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"Die beiden Räume haben die gleiche Id: '{room1Id}'. Eine Verbindung ist nicht möglich"
                 };
             }
 
@@ -129,7 +132,8 @@ namespace MUDhub.Core.Services
                 return new ConnectionResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"Kein Raum mit der Raum-Id: '{room1Id}' wurde gefunden."
                 };
             }
 
@@ -142,7 +146,8 @@ namespace MUDhub.Core.Services
                 return new ConnectionResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"Kein Raum mit der Raum-Id: '{room1Id}' wurde gefunden."
                 };
             }
             if (room1.GameId != room2.GameId)
@@ -152,7 +157,8 @@ namespace MUDhub.Core.Services
                 return new ConnectionResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"Der Raum: '{room1.Name}' und der Raum: '{room2.Name}' sind nicht im selben MudGame."
                 };
             }
 
@@ -163,7 +169,8 @@ namespace MUDhub.Core.Services
                 return new ConnectionResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = message,
+                    DisplayMessage = $"Der Benutzer: '{user.Lastname}' ist nicht der Besitzer des MudGames: '{room1.GameId}'."
                 };
             }
 
@@ -182,7 +189,7 @@ namespace MUDhub.Core.Services
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
 
-            //_logger?.LogInformation($"A connection: {connection.Id} was created between room: {room1.Name} and room: {room2.Name}");
+            _logger?.LogInformation($"A connection: {connection.Id} was created between room: {room1.Name} and room: {room2.Name}");
             return new ConnectionResult()
             {
                 RoomConnection = connection

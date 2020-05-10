@@ -12,6 +12,7 @@ namespace MUDhub.Server.ApiModels.Characters
         public string RaceId { get; set; } = string.Empty;
         public string MudGameId { get; set; } = string.Empty;
         public string ImageKey { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
 
 
         public static RaceApiModel ConvertFromCharacterRace(CharacterRace race)
@@ -21,7 +22,8 @@ namespace MUDhub.Server.ApiModels.Characters
                 MudGameId = race.GameId,
                 Description = race.Description,
                 RaceId = race.Id,
-                ImageKey = race.ImageKey
+                ImageKey = race.ImageKey,
+                Name = race.Name
             };
         }
 
