@@ -87,9 +87,10 @@ export class MudService {
 		mudId: string,
 		mudRace: IMudRace
 	): Promise<IMudRaceResponse> {
+		console.log(mudRace)
 		return await this.http
 			.post<IMudRaceResponse>(`${env.api.url}/mudgame/${mudId}/Races`, {
-				name: mudRace,
+				name: mudRace.name,
 				description: mudRace.description,
 				imageKey: mudRace.imageKey,
 			})
@@ -117,7 +118,7 @@ export class MudService {
 			.post<IMudClassResponse>(
 				`${env.api.url}/mudgame/${mudId}/classes`,
 				{
-					name: mudClass,
+					name: mudClass.name,
 					description: mudClass.description,
 					imageKey: mudClass.imageKey,
 				}

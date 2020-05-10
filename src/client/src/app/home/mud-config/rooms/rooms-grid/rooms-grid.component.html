@@ -10,6 +10,7 @@
 <table class="rooms-grid">
 	<tr class="room-row" *ngFor="let row of rooms; let y = index">
 		<td class="room-cell" *ngFor="let room of row; let x = index">
+			<!-- CONNECTION ADD -->
 			<div
 				class="connection-add connection-horizontal"
 				*ngIf="
@@ -37,11 +38,16 @@
 			>
 				+
 			</div>
+			<!-- CONNECTION ADD -->
+			<!-- CONNECTIONS -->
 			<div
 				class="connection connection-vertical"
 				*ngIf="y < height - 1 && room?.connections.south"
 			>
-				<div class="popup" (click)="deleteConnection(rooms[y][x], rooms[y + 1][x])">
+				<div
+					class="popup"
+					(click)="deleteConnection(rooms[y][x], rooms[y + 1][x])"
+				>
 					<mat-icon>delete</mat-icon>
 				</div>
 			</div>
@@ -49,10 +55,15 @@
 				class="connection connection-horizontal"
 				*ngIf="x < width - 1 && room?.connections.east"
 			>
-				<div class="popup" (click)="deleteConnection(rooms[y][x], rooms[y][x + 1])">
+				<div
+					class="popup"
+					(click)="deleteConnection(rooms[y][x], rooms[y][x + 1])"
+				>
 					<mat-icon>delete</mat-icon>
 				</div>
 			</div>
+			<!-- CONNECTIONS -->
+			<!-- ROOM -->
 			<div class="room" *ngIf="room">
 				<div class="default-icon" *ngIf="room.isDefaultRoom">
 					<span>D</span>
@@ -60,9 +71,10 @@
 				{{ room?.name }}
 				<div class="toolbar">
 					<div class="item" (click)="deleteRoom(room)">Löschen</div>
-					<div class="item">Bearbeiten</div>
+					<div class="item" [routerLink]="room.roomId + '/edit'">Bearbeiten</div>
 				</div>
 			</div>
+			<!-- ROOM -->
 			<div
 				class="room-add"
 				*ngIf="!room"

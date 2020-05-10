@@ -1,4 +1,5 @@
-<form class="container" [formGroup]="form" (ngSubmit)="onCreate()">
+<form class="container" [formGroup]="form" (ngSubmit)="onSubmit()">
+	{{ isInEditMode ? 'EDIT' : 'CREATE' }}
 	<mat-form-field class="form-row">
 		<mat-label>Name</mat-label>
 		<input matInput type="text" formControlName="name" />
@@ -15,8 +16,8 @@
 	</div>
 	<div class="actions">
 		<button mat-button type="submit" [disabled]="form.invalid">
-			Erstellen
+			{{ isInEditMode ? 'Speichern' : 'Erstellen'}}
 		</button>
-		<button mat-button type="button" routerLink="../">Abbrechen</button>
+		<button mat-button type="button" [routerLink]="this.isInEditMode ? '../../' : '../'">Abbrechen</button>
 	</div>
 </form>

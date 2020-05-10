@@ -26,33 +26,33 @@ export class FinishComponent implements OnInit {
 	races: IMudRace[] = [];
 
 	async getRaces() {
-		// Todo
+		this.races = await this.mudService.getMudRace(this.mudId);
 	}
 	/*Übersicht Klassen*/
 	classes: IMudClass[] = [];
 
 	async getClasses() {
-		// Todo
+		this.classes = await this.mudService.getMudClass(this.mudId);
 	}
 
 	/*Übersicht Items*/
 	items: IMudItem[] = [];
 
 	async getItems() {
-		// Todo
+		this.items = await this.mudService.getMudItem(this.mudId);
 	}
 
 	/*Übersicht Räume*/
-	rooms: IRoom[][] = [[]];
+	rooms: IRoom[] = [];
 	areas: IArea[] = [];
 
 	async getAreas() {
-		// this.areas = await this.areaService.getAreasForMUD(this.mudId);
+		this.areas = await this.areaService.getAreasForMUD(this.mudId);
 	}
 
 	async getRooms() {
 		for (let i = 0; i < this.areas.length; i++) {
-			// this.rooms = await this.areaService.getRooms(this.mudId, this.areas[i].areaId);
+			this.rooms = await this.areaService.getRooms(this.mudId, this.areas[i].areaId);
 		}
 	}
 

@@ -5,6 +5,7 @@ import { ImageService } from 'src/app/services/image.service';
 import { IMudClass } from 'src/app/model/muds/MudSetupDTO';
 import { MudService } from 'src/app/services/mud.service';
 import { IMudClassResponse } from 'src/app/model/muds/MudDTO';
+import { IImageUploadResponse } from 'src/app/model/FileUploadDTO';
 
 @Component({
 	selector: 'mh-classes',
@@ -46,7 +47,7 @@ export class ClassesComponent implements OnInit {
 
 	async addClass() {
 		// Get Imagekey from API if an Image was uploaded
-		let imageKey = null;
+		let imageKey: IImageUploadResponse = null;
 
 		try {
 			if (this.selectedFile != null) {
@@ -62,13 +63,13 @@ export class ClassesComponent implements OnInit {
 			classId: '',
 			name: this.form.get('name').value,
 			description: this.form.get('description').value,
-			imageKey: this.form.get('imagekey').value
+			imageKey: imageKey?.imageUrl
 		};
 
 		// Make API request
 		let obj: IMudClassResponse = await this.mudService.addMudClass(
 			this.mudId,
-			this.classes[this.classes.length - 1]
+			currentClass
 		);
 
 		currentClass = {
