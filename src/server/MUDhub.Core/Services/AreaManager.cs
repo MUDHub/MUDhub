@@ -83,7 +83,7 @@ namespace MUDhub.Core.Services
             _context.Areas.Add(area);
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
-            _logger?.LogInformation($"The area: '{area.Name}' with id '{area.Id}' was created in MudGame: '{mud.Name}'");
+            _logger?.LogInformation($"The area: '{area.Name}' with id '{area.Id}' was created in MudGame: '{mud.Name}' from '{user.Email}'");
             return new AreaResult()
             {
                 Area = area
@@ -191,7 +191,7 @@ namespace MUDhub.Core.Services
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
 
-            _logger?.LogInformation($"A connection: {connection.Id} was created between room: {room1.Name} and room: {room2.Name}");
+            _logger?.LogInformation($"A connection: {connection.Id} was created between room: {room1.Name} and room: {room2.Name} from '{user.Email}'");
             return new ConnectionResult()
             {
                 RoomConnection = connection
@@ -285,7 +285,7 @@ namespace MUDhub.Core.Services
             _context.Rooms.Add(room);
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
-            _logger?.LogInformation($"A room: '{room.Id}' was created in area: '{area.Name}'");
+            _logger?.LogInformation($"A room: '{room.Id}' was created in area: '{area.Name}' from '{user.Email}'");
             return new RoomResult()
             {
                 Room = room
@@ -362,7 +362,7 @@ namespace MUDhub.Core.Services
             _context.Areas.Remove(area);
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
-            _logger?.LogInformation($"The area: '{area.Name}' has been removed from the MudGame: '{area.Game.Name}'");
+            _logger?.LogInformation($"The area: '{area.Name}' has been removed from the MudGame: '{area.Game.Name}' from '{user.Email}'");
             return new AreaResult()
             {
                 Area = area
@@ -419,7 +419,7 @@ namespace MUDhub.Core.Services
             _context.RoomConnections.Remove(connection);
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
-            _logger?.LogInformation($"The room connection: '{connection.Id}' has been removed from the MudGame: '{connection.Room1.GameId}'");
+            _logger?.LogInformation($"The room connection: '{connection.Id}' has been removed from the MudGame: '{connection.Room1.GameId}' from '{user.Email}'");
             return new ConnectionResult()
             {
                 RoomConnection = connection
@@ -496,7 +496,7 @@ namespace MUDhub.Core.Services
             _context.Rooms.Remove(room);
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
-            _logger?.LogInformation($"The room: '{room.Name}' with the id: '{room.Id}' has been removed from the MudGame: '{room.Game.Name}' with the id '{room.GameId}'");
+            _logger?.LogInformation($"The room: '{room.Name}' with the id: '{room.Id}' has been removed from the MudGame: '{room.Game.Name}' with the id '{room.GameId}' from '{user.Email}'");
             return new RoomResult()
             {
                 Room = room
@@ -563,7 +563,7 @@ namespace MUDhub.Core.Services
 
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
-            _logger?.LogInformation($"The area: '{area.Name}' was updated {Environment.NewLine}" +
+            _logger?.LogInformation($"The area: '{area.Name}' was updated from '{user.Email}' {Environment.NewLine}" +
                 $"- Name: {args.Name} {Environment.NewLine}" +
                 $"- Description: {args.Description}");
             return new AreaResult()
@@ -621,7 +621,7 @@ namespace MUDhub.Core.Services
             connection.Description = args.Description;
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
-            _logger?.LogInformation($"The room connection: '{connection.Id}' was updated");
+            _logger?.LogInformation($"The room connection: '{connection.Id}' was updated from '{user.Email}'");
             return new ConnectionResult()
             {
                 RoomConnection = connection
@@ -702,7 +702,7 @@ namespace MUDhub.Core.Services
 
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
-            _logger?.LogInformation($"The room: '{room.Name}' was updated: {Environment.NewLine}" +
+            _logger?.LogInformation($"The room: '{room.Name}' was updated from '{user.Email}': {Environment.NewLine}" +
                 $"- Name: {args.Name ?? "<no modification>"} {Environment.NewLine}" +
                 $"- Description: {args.Description ?? "<no modification>"} {Environment.NewLine}" + 
                 $"- ImageKey: {args.ImageKey ?? "<no modification>"}");
@@ -771,7 +771,7 @@ namespace MUDhub.Core.Services
             _context.RoomInteractions.Add(roomInteraction);
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
-            _logger?.LogInformation($"A room interaction: '{roomInteraction.Description}' with Id: '{roomInteraction.Id}' was created in MudGame: '{room.Game.Name}'");
+            _logger?.LogInformation($"A room interaction: '{roomInteraction.Description}' with Id: '{roomInteraction.Id}' was created in MudGame: '{room.Game.Name}' from '{user.Email}'");
             return new RoomInteractionResult()
             {
                 RoomInteraction = roomInteraction
@@ -827,7 +827,7 @@ namespace MUDhub.Core.Services
             _context.RoomInteractions.Remove(roomInteraction);
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
-            _logger?.LogInformation($"The room interaction: '{roomInteraction.Description}' with Id: '{roomInteraction.Id}' has been removed in MudGame: '{roomInteraction.Game.Name}'");
+            _logger?.LogInformation($"The room interaction: '{roomInteraction.Description}' with Id: '{roomInteraction.Id}' has been removed in MudGame: '{roomInteraction.Game.Name}' from '{user.Email}'");
             return new RoomInteractionResult()
             {
                 RoomInteraction = roomInteraction

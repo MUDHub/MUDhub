@@ -78,7 +78,7 @@ namespace MUDhub.Core.Services
             _context.Items.Add(item);
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
-            _logger?.LogInformation($"A item: '{item.Id}' was created in MudGame: '{mud.Name}'");
+            _logger?.LogInformation($"A item: '{item.Id}' was created in MudGame: '{mud.Name}' from '{user.Email}'");
             return new ItemResult()
             {
                 Item = item
@@ -148,7 +148,7 @@ namespace MUDhub.Core.Services
 
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
-            _logger?.LogInformation($"The item: '{item.Name}' was updated: {Environment.NewLine}" +
+            _logger?.LogInformation($"The item: '{item.Name}' was updated from '{user.Email}': {Environment.NewLine}" +
                 $"- Name: {args.Name ?? "<no modification>"} {Environment.NewLine}" +
                 $"- Description: {args.Description ?? "<no modification>"} {Environment.NewLine}" +
                 $"- ImageKey: {args.ImageKey ?? "<no modification>"}");
@@ -207,7 +207,7 @@ namespace MUDhub.Core.Services
             _context.Items.Remove(item);
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
-            _logger?.LogInformation($"The item: '{item.Id}' has been removed from the MudGame: '{item.MudGameId}'");
+            _logger?.LogInformation($"The item: '{item.Id}' has been removed from the MudGame: '{item.MudGameId}' from '{user.Email}'");
             return new ItemResult()
             {
                 Item = item
