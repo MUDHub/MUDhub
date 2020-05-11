@@ -11,6 +11,7 @@ using MUDhub.Core.Models.Muds;
 using MUDhub.Core.Models.Rooms;
 using MUDhub.Core.Models.Users;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace MUDhub.Core.Services
@@ -193,6 +194,17 @@ namespace MUDhub.Core.Services
         {
             return await MudGames.FindAsync(mudId)
                 .ConfigureAwait(false);
+        }
+
+        public async Task<Room?> GetDefaultRoomAsync(string mudId)
+        {
+            var mud = await MudGames.FindAsync(mudId).ConfigureAwait(false);
+            if (mud is null)
+            {
+                return null;
+            }
+
+            return mud.Areas.SelectMany(a => a.Rooms).FirstOrDefault(r => r.IsDefaultRoom);
         }
     }
 }

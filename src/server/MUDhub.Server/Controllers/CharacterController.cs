@@ -73,9 +73,9 @@ namespace MUDhub.Server.Controllers
         [ProducesResponseType(typeof(IEnumerable<CharacterApiModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetCharacters([FromQuery] string gameId, [FromQuery] string userId = null)
+        public async Task<IActionResult> GetCharacters([FromRoute] string mudid, [FromQuery] string userId = null)
         {
-            if (gameId is null)
+            if (mudid is null)
             {
                 if (userId is null)
                 {
@@ -93,10 +93,10 @@ namespace MUDhub.Server.Controllers
                     return Ok(user.Characters.Select(c => CharacterApiModel.FromCharacter(c)));
                 }
             }
-            var game = await _context.MudGames.FindAsync(gameId).ConfigureAwait(false);
+            var game = await _context.MudGames.FindAsync(mudid).ConfigureAwait(false);
             if (game is null)
             {
-                return BadRequest($"No MudGame found with gameId: {gameId}");
+                return BadRequest($"No MudGame found with gameId: {mudid}");
             }
             else
             {
