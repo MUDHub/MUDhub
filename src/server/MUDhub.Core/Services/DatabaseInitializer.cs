@@ -7,6 +7,7 @@ using MUDhub.Core.Abstracts;
 using MUDhub.Core.Abstracts.Models;
 using MUDhub.Core.Abstracts.Models.Areas;
 using MUDhub.Core.Abstracts.Models.Connections;
+using MUDhub.Core.Abstracts.Models.Inventories;
 using MUDhub.Core.Abstracts.Models.Rooms;
 using MUDhub.Core.Configurations;
 using MUDhub.Core.Models.Connections;
@@ -40,6 +41,7 @@ namespace MUDhub.Core.Services
             var mudManager = serviceScope.ServiceProvider.GetRequiredService<IMudManager>();
             var userManager = serviceScope.ServiceProvider.GetRequiredService<IUserManager>();
             var areaManager = serviceScope.ServiceProvider.GetRequiredService<IAreaManager>();
+            var itemManager = serviceScope.ServiceProvider.GetRequiredService<IItemManager>();
 
             if (_options.DeleteDatabase)
             {
@@ -65,7 +67,7 @@ namespace MUDhub.Core.Services
                          .ConfigureAwait(false);
             }
 
-            if (_options.CreateDefaultMudData && userExists) 
+            if (_options.CreateDefaultMudData && userExists)
             {
                 var actualMud = await context.MudGames.FirstOrDefaultAsync(m => m.Name == "Thors World").ConfigureAwait(false);
                 if (actualMud is null)
@@ -83,7 +85,7 @@ namespace MUDhub.Core.Services
                 var actualMud = await context.MudGames.FirstOrDefaultAsync(m => m.Name == "DHBW Horb").ConfigureAwait(false);
                 if (actualMud is null)
                 {
-                    await CreateDefaultDhbwMudDataAsync(context, mudManager, areaManager)
+                    await CreateDefaultDhbwMudDataAsync(context, mudManager, areaManager, itemManager)
                     .ConfigureAwait(false);
                 }
                 else
@@ -93,11 +95,11 @@ namespace MUDhub.Core.Services
             }
         }
 
-        private async Task CreateDefaultDhbwMudDataAsync(MudDbContext context, IMudManager mudManager, IAreaManager areaManager)
+        private async Task CreateDefaultDhbwMudDataAsync(MudDbContext context, IMudManager mudManager, IAreaManager areaManager, IItemManager itemManager)
         {
             var user = await context.Users.FirstOrDefaultAsync(u => u.Email == _options.DefaultMudAdminEmail)
                                         .ConfigureAwait(false);
-            var resultGame = await mudManager.CreateMudAsync("DHBW Horb", new MudCreationArgs
+            var resultGame1 = await mudManager.CreateMudAsync("DHBW Horb", new MudCreationArgs
             {
                 AutoRestart = true,
                 Description = "Duale Hochschule Stuttgart Campus Horb!",
@@ -106,18 +108,18 @@ namespace MUDhub.Core.Services
                 OwnerId = user.Id
             }).ConfigureAwait(false);
 
-            var resultArea1 = await areaManager.CreateAreaAsync(user.Id, resultGame!.Id, new AreaArgs()
+            var resultArea1 = await areaManager.CreateAreaAsync(user.Id, resultGame1!.Id, new AreaArgs()
             {
                 Name = "Erdgeschoss",
                 Description = "Eintrittsebene mit Kantine, Außenbereich und Vorlesungsräumen."
             }).ConfigureAwait(false);
-            var resultArea2 = await areaManager.CreateAreaAsync(user.Id, resultGame!.Id, new AreaArgs()
+            var resultArea2 = await areaManager.CreateAreaAsync(user.Id, resultGame1!.Id, new AreaArgs()
             {
                 Name = "1. Stock",
                 Description = "Das Stockweg der Elektrotechniker."
             }).ConfigureAwait(false);
 
-            var resultRoom1 = await areaManager.CreateRoomAsync(user.Id, resultArea1.Area.Id, new RoomArgs()
+            var resultRoom1 = await areaManager.CreateRoomAsync(user.Id, resultArea1.Area!.Id, new RoomArgs()
             {
                 Name = "Flur",
                 Description = "Ende des Flurs. Hier gehts zum Raucherbereich.",
@@ -126,7 +128,7 @@ namespace MUDhub.Core.Services
                 Y = 0
             }).ConfigureAwait(false);
             var resultRoom2 = await areaManager.CreateRoomAsync(user.Id, resultArea1.Area.Id, new RoomArgs()
-            { 
+            {
                 Name = "Außenbereich",
                 Description = "Platz zum Sonnen. Ausgestattet mit einem Tischkicker und vielen Sonneliegen.",
                 IsDefaultRoom = false,
@@ -421,6 +423,67 @@ namespace MUDhub.Core.Services
                 {
                     LockType = LockType.NoLock
                 }
+            }).ConfigureAwait(false);
+
+            var item1 = await itemManager.CreateItemAsync(user.Id, resultGame1!.Id, new ItemArgs()
+            {
+                Name = "Apfel",
+                Description = "An Apple a keeps the doctor away.",
+                Weight = 5
+            }).ConfigureAwait(false);
+            var item2 = await itemManager.CreateItemAsync(user.Id, resultGame1!.Id, new ItemArgs()
+            {
+                Name = "Mathe-Buch",
+                Description = "Statitik 2",
+                Weight = 10
+            }).ConfigureAwait(false);
+            var item3 = await itemManager.CreateItemAsync(user.Id, resultGame1!.Id, new ItemArgs()
+            {
+                Name = "White-Board",
+                Description = "Des Dozenten größter Feind.",
+                Weight = 100
+            }).ConfigureAwait(false);
+            var item4 = await itemManager.CreateItemAsync(user.Id, resultGame1!.Id, new ItemArgs()
+            {
+                Name = "Kreide",
+                Description = "Weiß und farbig.",
+                Weight = 2
+            }).ConfigureAwait(false);
+            var item5 = await itemManager.CreateItemAsync(user.Id, resultGame1!.Id, new ItemArgs()
+            {
+                Name = "Wasserflasche",
+                Description = "Stay healthy",
+                Weight = 5
+            }).ConfigureAwait(false);
+            var item6 = await itemManager.CreateItemAsync(user.Id, resultGame1!.Id, new ItemArgs()
+            {
+                Name = "Exmatrikulation-Antrag",
+                Description = "Der Feind eines jeden Studenten.",
+                Weight = 20
+            }).ConfigureAwait(false);
+            var item7 = await itemManager.CreateItemAsync(user.Id, resultGame1!.Id, new ItemArgs()
+            {
+                Name = "Inmatrikulation-Antrag",
+                Description = "Der Freund eines jeden Studenten.",
+                Weight = 20
+            }).ConfigureAwait(false);
+            var item8 = await itemManager.CreateItemAsync(user.Id, resultGame1!.Id, new ItemArgs()
+            {
+                Name = "Mittagessen",
+                Description = "Vegetarisch",
+                Weight = 30
+            }).ConfigureAwait(false);
+            var item9 = await itemManager.CreateItemAsync(user.Id, resultGame1!.Id, new ItemArgs()
+            {
+                Name = "Overhead-Projektor",
+                Description = "Relikt aus der Steinzeit.",
+                Weight = 15
+            }).ConfigureAwait(false);
+            var item10 = await itemManager.CreateItemAsync(user.Id, resultGame1!.Id, new ItemArgs()
+            {
+                Name = "RedBull",
+                Description = "Belebt Körper und Geist.",
+                Weight = 4
             }).ConfigureAwait(false);
         }
 
