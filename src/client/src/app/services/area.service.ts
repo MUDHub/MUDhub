@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import {
 	IAreaCreateRequest,
 	IAreaCreateResponse,
+	IAreaUpdateRequest,
 } from '../model/areas/AreaDTO';
 import { IArea } from '../model/areas/IArea';
 import { IRoom } from '../model/areas/IRoom';
@@ -11,6 +12,7 @@ import {
 	IRoomDeleteResponse,
 	IRoomCreateRequest,
 	IRoomCreateResponse,
+	IRoomUpdateRequest,
 } from '../model/areas/RoomDTO';
 import { Subject } from 'rxjs';
 import {
@@ -32,56 +34,56 @@ export class AreaService {
 	public roomUpdated$ = this.roomUpdatedSubject.asObservable();
 
 	/* ##### AREAS ##### */
-	public async getAreasForMUD(mudid: string) {
+	public async getAreasForMud(mudId: string) {
 		return await this.http
-			.get<IArea[]>(`${env.api.url}/muds/${mudid}/areas`)
+			.get<IArea[]>(`${env.api.url}/areas`, {
+				params: {
+					mudId,
+				},
+			})
 			.toPromise();
 	}
 
-	public async getArea(mudid: string, areaid: string) {
+	public async getArea(areaid: string) {
 		return await this.http
-			.get(`${env.api.url}/muds/${mudid}/areas/${areaid}`)
+			.get(`${env.api.url}/areas/${areaid}`)
 			.toPromise();
 	}
 
-	public async createArea(mudid: string, area: IAreaCreateRequest) {
+	public async createArea(area: IAreaCreateRequest) {
 		return await this.http
-			.post<IAreaCreateResponse>(
-				`${env.api.url}/muds/${mudid}/areas`,
-				area
-			)
+			.post<IAreaCreateResponse>(`${env.api.url}/areas`, area)
 			.toPromise();
 	}
 
-	public async updateArea(
-		mudid: string,
-		areaid: string,
-		area: IAreaCreateRequest
-	) {
+	public async updateArea(areaid: string, area: IAreaUpdateRequest) {
 		return await this.http
-			.put<IAreaCreateResponse>(
-				`${env.api.url}/muds/${mudid}/areas/${areaid}`,
-				area
-			)
+			.put<IAreaCreateResponse>(`${env.api.url}/areas/${areaid}`, area)
 			.toPromise();
 	}
 
-	public async deleteArea(mudid: string, areaid: string) {
+	public async deleteArea(areaid: string) {
 		return await this.http
-			.delete(`${env.api.url}/muds/${mudid}/areas/${areaid}`)
+			.delete(`${env.api.url}/areas/${areaid}`)
 			.toPromise();
 	}
 
 	/* ##### ROOMS ##### */
-	public async getRooms(mudid: string, areaid: string) {
+	public async getRoomsForMud(mudId: string) {
 		return await this.http
-			.get<IRoom[]>(`${env.api.url}/muds/${mudid}/areas/${areaid}/rooms`)
+			.get<IRoom[]>(`${env.api.url}/rooms`, { params: { mudId } })
+			.toPromise();
+	}
+
+	public async getRoomsForArea(areaId: string) {
+		return await this.http
+			.get<IRoom[]>(`${env.api.url}/rooms`, { params: { areaId } })
 			.toPromise();
 	}
 
 	public async getRoom(mudid: string, areaid: string, roomid: string) {
 		return await this.http
-			.get<IRoom>(`${env.api.url}/muds/${mudid}/areas/${areaid}/rooms/${roomid}`)
+			.get<IRoom>(`${env.api.url}/rooms/${roomid}`)
 			.toPromise();
 	}
 
@@ -92,10 +94,7 @@ export class AreaService {
 	) {
 		try {
 			const response = await this.http
-				.post<IRoomCreateResponse>(
-					`${env.api.url}/muds/${mudid}/areas/${areaid}/rooms`,
-					room
-				)
+				.post<IRoomCreateResponse>(`${env.api.url}/rooms`, room)
 				.toPromise();
 			this.roomCreatedSubject.next(response.room);
 			return response;
@@ -104,11 +103,16 @@ export class AreaService {
 		}
 	}
 
-	public async updateRoom(mudid: string, areaid: string, roomid: string, room: IRoomCreateRequest) {
+	public async updateRoom(
+		mudid: string,
+		areaid: string,
+		roomid: string,
+		room: IRoomUpdateRequest
+	) {
 		try {
 			const response = await this.http
 				.put<IRoomCreateResponse>(
-					`${env.api.url}/muds/${mudid}/areas/${areaid}/rooms/${roomid}`,
+					`${env.api.url}/rooms/${roomid}`,
 					room
 				)
 				.toPromise();
@@ -121,32 +125,34 @@ export class AreaService {
 
 	public async deleteRoom(mudid: string, areaid: string, roomid: string) {
 		return await this.http
-			.delete<IRoomDeleteResponse>(
-				`${env.api.url}/muds/${mudid}/areas/${areaid}/rooms/${roomid}`
-			)
+			.delete<IRoomDeleteResponse>(`${env.api.url}/rooms/${roomid}`)
 			.toPromise();
 	}
 
 	/* ##### Connections ##### */
-	public async getConnections(
-		mudid: string,
-		areaid: string,
-		roomid?: string
-	) {
+	public async getConnectionsForArea(areaid: string) {
 		return await this.http
-			.get<IConnection[]>(
-				`${env.api.url}/muds/${mudid}/areas/${areaid}/connections${
-					roomid ? '?roomId=' + roomid : ''
-				}`
-			)
+			.get<IConnection[]>(`${env.api.url}/connections`, {
+				params: {
+					areaId: areaid,
+				},
+			})
+			.toPromise();
+	}
+
+	public async getConnectionsForRoom(roomid: string) {
+		return await this.http
+			.get<IConnection[]>(`${env.api.url}/connections`, {
+				params: {
+					roomId: roomid,
+				},
+			})
 			.toPromise();
 	}
 
 	public async getConnection(mudid: string, areaid: string, connid: string) {
 		return await this.http
-			.get<IConnection>(
-				`${env.api.url}/muds/${mudid}/areas/${areaid}/connections/${connid}`
-			)
+			.get<IConnection>(`${env.api.url}/connections/${connid}`)
 			.toPromise();
 	}
 
@@ -157,7 +163,7 @@ export class AreaService {
 	) {
 		return await this.http
 			.post<IConnectionCreateResponse>(
-				`${env.api.url}/muds/${mudid}/areas/${areaid}/connections`,
+				`${env.api.url}/connections`,
 				connection
 			)
 			.toPromise();
@@ -169,9 +175,7 @@ export class AreaService {
 		connid: string
 	) {
 		return await this.http
-			.delete<IBaseResponse>(
-				`${env.api.url}/muds/${mudid}/areas/${areaid}/connections/${connid}`
-			)
+			.delete<IBaseResponse>(`${env.api.url}/connections/${connid}`)
 			.toPromise();
 	}
 }

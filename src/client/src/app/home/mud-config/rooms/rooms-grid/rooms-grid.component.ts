@@ -34,10 +34,7 @@ export class RoomsGridComponent implements OnInit {
 		this.route.params.subscribe(async params => {
 			this.mudid = params.mudid;
 			this.areaid = params.areaid;
-			const rooms = await this.areaService.getRooms(
-				this.mudid,
-				this.areaid
-			);
+			const rooms = await this.areaService.getRoomsForArea(this.areaid);
 			if (rooms.length > 0) {
 				this.rooms = this.mapRooms(rooms);
 			} else {
@@ -290,9 +287,7 @@ export class RoomsGridComponent implements OnInit {
 	}
 
 	public async deleteConnection(room1: IRoom, room2: IRoom) {
-		const connectionsForRoom = await this.areaService.getConnections(
-			this.mudid,
-			this.areaid,
+		const connectionsForRoom = await this.areaService.getConnectionsForRoom(
 			room1.roomId
 		);
 		const connectionToDelete = connectionsForRoom.filter(

@@ -24,12 +24,12 @@ export class AreaListComponent implements OnInit {
 
 	async ngOnInit() {
 		this.mudid = this.route.snapshot.params.mudid;
-		this.areas = await this.areaService.getAreasForMUD(this.mudid);
+		this.areas = await this.areaService.getAreasForMud(this.mudid);
 	}
 
 	async deleteArea(area: IArea) {
 		try {
-			await this.areaService.deleteArea(this.mudid, area.areaId);
+			await this.areaService.deleteArea(area.areaId);
 			this.areas.splice(this.areas.indexOf(area), 1);
 			this.router.navigate(['../areas'], { relativeTo: this.route });
 		} catch (err) {
@@ -45,9 +45,9 @@ export class AreaListComponent implements OnInit {
 	async onAdd(input: HTMLInputElement) {
 		const name = input.value;
 		if (name) {
-			const area: IAreaCreateRequest = { name };
+			const area: IAreaCreateRequest = { name, mudId: this.mudid };
 			try {
-				const response = await this.areaService.createArea(this.mudid, area);
+				const response = await this.areaService.createArea(area);
 				this.areas.push(response.area);
 				input.value = '';
 				this.isFormActive = false;
@@ -64,6 +64,6 @@ export class AreaListComponent implements OnInit {
 
 	async updateName(area: IArea, newName: string) {
 		area.name = newName;
-		await this.areaService.updateArea(this.mudid, area.areaId, { name: newName });
+		await this.areaService.updateArea(area.areaId, { name: newName });
 	}
 }

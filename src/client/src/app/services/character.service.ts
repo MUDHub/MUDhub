@@ -16,7 +16,7 @@ export class CharacterService {
 	public async getCharacter(mudid: string, characterid: string) {
 		return await this.http
 			.get<ICharacter>(
-				`${env.api.url}/muds/${mudid}/characters/${characterid}`
+				`${env.api.url}/characters/${characterid}`
 			)
 			.toPromise();
 	}
@@ -24,7 +24,7 @@ export class CharacterService {
 	public async createCharacter(mudid: string, args: ICharacterCreateRequest) {
 		return await this.http
 			.post<ICharacterCreateResponse>(
-				`${env.api.url}/muds/${mudid}/characters`,
+				`${env.api.url}/characters`,
 				args
 			)
 			.toPromise();
@@ -32,7 +32,7 @@ export class CharacterService {
 
 	public async getCharactersForPlayer(mudid: string, playerid: string) {
 		return await this.http
-			.get<ICharacter[]>(`${env.api.url}/muds/${mudid}/characters`, {
+			.get<ICharacter[]>(`${env.api.url}/characters`, {
 				params: {
 					userId: playerid,
 				},

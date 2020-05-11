@@ -85,8 +85,8 @@ export class MudJoinComponent implements OnInit {
 	async loadData(mudid: string) {
 		if (mudid) {
 			this.mud = await this.mudService.getById(mudid);
-			this.classes = await this.mudService.getMudClass(this.mud.mudId);
-			this.races = await this.mudService.getMudRace(this.mud.mudId);
+			this.classes = await this.mudService.getClassForMud(this.mud.mudId);
+			this.races = await this.mudService.getRaceForMud(this.mud.mudId);
 		}
 
 		this.previousChars = await this.characterService.getCharactersForPlayer(this.mudid, this.auth.user.id);
@@ -99,6 +99,7 @@ export class MudJoinComponent implements OnInit {
 			name: this.character.get('name').value,
 			raceId: this.character.get('race').value,
 			classId: this.character.get('class').value,
+			mudId: this.mudid
 		};
 
 		try {

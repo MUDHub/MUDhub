@@ -71,12 +71,14 @@ export interface IMudRaceRequest {
 	name: string;
 	description: string;
 	imageKey: string;
+	mudId: string;
 }
 
 export interface IMudClassRequest {
 	name: string;
 	description: string;
 	imageKey: string;
+	mudId: string;
 }
 
 export interface IMudItemRequest {
@@ -84,4 +86,5 @@ export interface IMudItemRequest {
 	description: string;
 	weight: number;
 	imageKey: string;
+	mudId: string;
 }

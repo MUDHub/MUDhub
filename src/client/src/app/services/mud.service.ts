@@ -27,9 +27,9 @@ export class MudService {
 		return await this.http.get<IMud[]>(`${env.api.url}/muds`).toPromise();
 	}
 
-	async getById(id: string) {
+	async getById(mudid: string) {
 		return await this.http
-			.get<IMud>(`${env.api.url}/muds/${id}`)
+			.get<IMud>(`${env.api.url}/muds/${mudid}`)
 			.toPromise();
 	}
 
@@ -80,81 +80,72 @@ export class MudService {
 	}
 
 	//SETUP Process
-	//SETUP - Race
-	async getMudRace(mudId: string): Promise<IMudRace[]> {
+	//SETUP - Rac
+	async getRaceForMud(mudId: string) {
 		return await this.http
-			.get<IMudRace[]>(`${env.api.url}/muds/${mudId}/Races`)
+			.get<IMudRace[]>(`${env.api.url}/races`, {
+				params: {
+					mudId,
+				},
+			})
 			.toPromise();
 	}
 
-	async addMudRace(
-		mudId: string,
-		mudRace: IMudRaceRequest
-	): Promise<IMudRaceResponse> {
+	async addRace(mudId: string, mudRace: IMudRaceRequest) {
 		return await this.http
-			.post<IMudRaceResponse>(
-				`${env.api.url}/muds/${mudId}/Races`,
-				mudRace
-			)
+			.post<IMudRaceResponse>(`${env.api.url}/races`, mudRace)
 			.toPromise();
 	}
 
-	async deleteMudRace(mudId: string, mudRace: IMudRace) {
+	async deleteRace(mudId: string, raceid: string) {
 		return await this.http
-			.delete(`${env.api.url}/muds/${mudId}/Races/${mudRace.raceId}`)
+			.delete(`${env.api.url}/races/${raceid}`)
 			.toPromise();
 	}
 
 	// SETUP - Class
-	async getMudClass(mudId: string): Promise<IMudClass[]> {
+	async getClassForMud(mudId: string) {
 		return await this.http
-			.get<IMudClass[]>(`${env.api.url}/muds/${mudId}/classes`)
+			.get<IMudClass[]>(`${env.api.url}/classes`, {
+				params: {
+					mudId,
+				},
+			})
 			.toPromise();
 	}
 
-	async addMudClass(
-		mudId: string,
-		mudClass: IMudClassRequest
-	): Promise<IMudClassResponse> {
+	async addClass(mudId: string, mudClass: IMudClassRequest) {
 		return await this.http
-			.post<IMudClassResponse>(
-				`${env.api.url}/muds/${mudId}/classes`,
-				mudClass
-			)
+			.post<IMudClassResponse>(`${env.api.url}/classes`, mudClass)
 			.toPromise();
 	}
 
-	async deleteMudClass(mudId: string, mudClass: IMudClass) {
+	async deleteClass(mudId: string, classid: string) {
 		return await this.http
-			.delete(
-				`${env.api.url}/muds/${mudId}/classes/${mudClass.classId}`
-			)
+			.delete(`${env.api.url}/classes/${classid}`)
 			.toPromise();
 	}
 
 	// SETUP - Item
-	async getMudItem(mudId: string): Promise<IMudItem[]> {
+	async getItemsForMud(mudId: string) {
 		return await this.http
-			.get<IMudItem[]>(`${env.api.url}/muds/${mudId}/items`)
+			.get<IMudItem[]>(`${env.api.url}/items`, {
+				params: {
+					mudId,
+				},
+			})
 			.toPromise();
 	}
 
-	async addMudItem(
-		mudId: string,
-		mudItem: IMudItemRequest
-	): Promise<IMudItemResponse> {
-		console.log(mudItem);
+	async addItem(mudId: string, mudItem: IMudItemRequest) {
 		return await this.http
-			.post<IMudItemResponse>(
-				`${env.api.url}/muds/${mudId}/items`,
-				mudItem
-			)
+			.post<IMudItemResponse>(`${env.api.url}/items`, mudItem)
 			.toPromise();
 	}
 
-	async deleteMudItem(mudId: string, mudItem: IMudItem) {
+	async deleteItem(mudId: string, itemid: string) {
 		return await this.http
-			.delete(`${env.api.url}/muds/${mudId}/items/${mudItem.itemId}`)
+			.delete(`${env.api.url}/items/${itemid}`)
 			.toPromise();
 	}
 }

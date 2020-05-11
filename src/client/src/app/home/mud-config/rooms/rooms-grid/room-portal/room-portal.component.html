@@ -1,5 +1,17 @@
 <div class="container">
+	<mh-exit-button class="exit" routerLink="../../"></mh-exit-button>
 	<h2>Portale verwalten</h2>
+
+	<div class="portals">
+		<div class="portal" *ngFor="let portal of portals">
+			<div class="source">{{ portal.room1 }}</div>
+			<mat-icon class="arrow-icon">sync_alt</mat-icon>
+			<div class="destination">{{ portal.room2 }}</div>
+		</div>
+	</div>
+
+	<hr>
+
 	<div class="form-row">
 		<mat-form-field>
 			<mat-label>Ziel-Area</mat-label>
@@ -10,7 +22,7 @@
 		<mat-form-field>
 			<mat-label>Ziel-Raum</mat-label>
 			<mat-select [disabled]="selectedArea === undefined || rooms?.length === 0" [(value)]="selectedRoom">
-				<mat-option *ngFor="let room of rooms" [value]="rooms">{{ room.name }}</mat-option>
+				<mat-option *ngFor="let room of rooms" [value]="room">{{ room.name }}</mat-option>
 			</mat-select>
 		</mat-form-field>
 	</div>

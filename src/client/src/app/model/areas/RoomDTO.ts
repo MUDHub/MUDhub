@@ -11,6 +11,16 @@ export interface IRoomCreateRequest {
 	imageKey: string;
 	x: number;
 	y: number;
+	areaId: string;
+	isDefaultRoom: boolean;
+}
+
+export interface IRoomUpdateRequest {
+	name: string;
+	description: string;
+	imageKey: string;
+	x: number;
+	y: number;
 	isDefaultRoom: boolean;
 }
 

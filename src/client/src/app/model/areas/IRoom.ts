@@ -1,4 +1,5 @@
 import { IArea } from './IArea';
+import { IConnection } from './IConnection';
 
 export interface IRoom {
 	roomId?: string;
@@ -14,5 +15,6 @@ export interface IRoom {
 		south: boolean;
 		east: boolean;
 		west: boolean;
+		portals: IConnection[];
 	};
 }

@@ -35,7 +35,7 @@ export class RacesComponent implements OnInit {
 	async ngOnInit() {
 		/* Daten fetchen und in Array laden */
 		this.mudId = this.route.snapshot.params.mudid;
-		this.races = await this.mudService.getMudRace(this.mudId);
+		this.races = await this.mudService.getRaceForMud(this.mudId);
 	}
 
 	changeDialog() {
@@ -58,12 +58,13 @@ export class RacesComponent implements OnInit {
 		}
 
 		// Make API request
-		const response: IMudRaceResponse = await this.mudService.addMudRace(
+		const response: IMudRaceResponse = await this.mudService.addRace(
 			this.mudId,
 			{
 				name: this.form.get('name').value,
 				description: this.form.get('description').value,
 				imageKey: imageKey?.imageUrl,
+				mudId: this.mudId
 			}
 		);
 
@@ -84,8 +85,8 @@ export class RacesComponent implements OnInit {
 		this.selectedFile = event.target.files[0] as File;
 	}
 
-	deleteRow(index: number) {
-		this.mudService.deleteMudRace(this.mudId, this.races[index]);
+	async deleteRow(index: number) {
+		await this.mudService.deleteRace(this.mudId, this.races[index].raceId);
 		this.races.splice(index, 1);
 	}
 }

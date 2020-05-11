@@ -8,4 +8,10 @@ export interface IAreaCreateResponse extends IBaseResponse {
 export interface IAreaCreateRequest {
 	name: string;
 	description?: string;
+	mudId: string;
+}
+
+export interface IAreaUpdateRequest {
+	name: string;
+	description?: string;
 }

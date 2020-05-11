@@ -26,13 +26,13 @@ export class FinishComponent implements OnInit {
 	races: IMudRace[] = [];
 
 	async getRaces() {
-		this.races = await this.mudService.getMudRace(this.mudId);
+		this.races = await this.mudService.getRaceForMud(this.mudId);
 	}
 	/*Übersicht Klassen*/
 	classes: IMudClass[] = [];
 
 	async getClasses() {
-		this.classes = await this.mudService.getMudClass(this.mudId);
+		this.classes = await this.mudService.getClassForMud(this.mudId);
 		console.log(this.classes);
 	}
 
@@ -40,7 +40,7 @@ export class FinishComponent implements OnInit {
 	items: IMudItem[] = [];
 
 	async getItems() {
-		this.items = await this.mudService.getMudItem(this.mudId);
+		this.items = await this.mudService.getItemsForMud(this.mudId);
 	}
 
 	/*Übersicht Räume*/
@@ -48,12 +48,12 @@ export class FinishComponent implements OnInit {
 	areas: IArea[] = [];
 
 	async getAreas() {
-		this.areas = await this.areaService.getAreasForMUD(this.mudId);
+		this.areas = await this.areaService.getAreasForMud(this.mudId);
 	}
 
 	async getRooms() {
 		for (let i = 0; i < this.areas.length; i++) {
-			this.rooms = await this.areaService.getRooms(this.mudId, this.areas[i].areaId);
+			this.rooms = await this.areaService.getRoomsForMud(this.mudId);
 		}
 	}
 

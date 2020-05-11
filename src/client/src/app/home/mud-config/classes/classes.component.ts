@@ -37,7 +37,7 @@ export class ClassesComponent implements OnInit {
 	async ngOnInit() {
 		/* Daten fetchen und in Array laden */
 		this.mudId = this.route.snapshot.params.mudid;
-		this.classes = await this.mudService.getMudClass(this.mudId);
+		this.classes = await this.mudService.getClassForMud(this.mudId);
 	}
 
 	changeDialog() {
@@ -60,12 +60,13 @@ export class ClassesComponent implements OnInit {
 		}
 
 		// Make API request
-		const response: IMudClassResponse = await this.mudService.addMudClass(
+		const response: IMudClassResponse = await this.mudService.addClass(
 			this.mudId,
 			{
 				name: this.form.get('name').value,
 				description: this.form.get('description').value,
 				imageKey: imageKey?.imageUrl,
+				mudId: this.mudId
 			}
 		);
 
@@ -88,8 +89,8 @@ export class ClassesComponent implements OnInit {
 		this.selectedFile = event.target.files[0] as File;
 	}
 
-	deleteRow(index: number) {
-		this.mudService.deleteMudClass(this.mudId, this.classes[index]);
+	async deleteRow(index: number) {
+		await this.mudService.deleteClass(this.mudId, this.classes[index].classId);
 		this.classes.splice(index, 1);
 	}
 }

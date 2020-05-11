@@ -72,6 +72,7 @@ export class RoomCreateComponent implements OnInit {
 			description: this.form.get('description').value,
 			isDefaultRoom: this.form.get('isDefault').value,
 			imageKey,
+			areaId: this.areaid,
 			x: this.position.x,
 			y: this.position.y,
 		};

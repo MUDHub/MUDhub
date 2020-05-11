@@ -79,7 +79,7 @@ namespace MUDhub.Server.Controllers
             });
         }
 
-        [HttpPost("connections")]
+        [HttpPost()]
         [ProducesResponseType(typeof(CreateConnectionResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(CreateConnectionResponse), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateConnection([FromBody] CreateConnectionRequest args)

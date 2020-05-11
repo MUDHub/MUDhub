@@ -28,13 +28,13 @@ export class ItemsComponent implements OnInit {
 	dialog = false;
 	items: Array<IMudItem> = [];
 
-	deleteRow(index: number) {
-		this.mudService.deleteMudItem(this.mudId, this.items[index]);
+	async deleteRow(index: number) {
+		await this.mudService.deleteItem(this.mudId, this.items[index].itemId);
 		this.items.splice(index, 1);
 	}
 	async ngOnInit() {
 		this.mudId = this.route.snapshot.params.mudid;
-		this.items = await this.mudService.getMudItem(this.mudId);
+		this.items = await this.mudService.getItemsForMud(this.mudId);
 	}
 
 	changeDialog() {
@@ -45,13 +45,14 @@ export class ItemsComponent implements OnInit {
 	async addItem() {
 		const imageKey: IImageUploadResponse = null;
 
-		const response: IMudItemResponse = await this.mudService.addMudItem(
+		const response: IMudItemResponse = await this.mudService.addItem(
 			this.mudId,
 			{
 				name: this.form.get('name').value,
 				description: this.form.get('description').value,
 				weight: this.form.get('weight').value,
 				imageKey: imageKey?.imageUrl,
+				mudId: this.mudId
 			}
 		);
 
