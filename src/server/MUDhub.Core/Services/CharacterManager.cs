@@ -88,7 +88,20 @@ namespace MUDhub.Core.Services
                 }
                 if (characterrace.Game.Id != mudid)
                 {
-                    var errormessage = $"Class with the id: '{args.RaceId}' exists but the mudid is not the right expected: '{mudid}' actual: '{characterrace.Game.Id}'.";
+                    var errormessage = $"Race with the id: '{args.RaceId}' exists but the mudid is not the right expected: '{mudid}' actual: '{characterrace.Game.Id}'.";
+                    _logger?.LogInformation(errormessage);
+                    return new CharacterResult()
+                    {
+                        Success = false,
+                        Errormessage = errormessage
+                    };
+                }
+
+                var defaultRoom = await _context.GetDefaultRoomAsync(mudid).ConfigureAwait(false);
+
+                if (defaultRoom is null)
+                {
+                    var errormessage = $"No defaultRoom found for mudgame {mudid}";
                     _logger?.LogInformation(errormessage);
                     return new CharacterResult()
                     {
@@ -105,7 +118,8 @@ namespace MUDhub.Core.Services
                     Race = characterrace,
                     Name = args.Name,
                     Health = DefaultHealth,
-                    Inventory = new Inventory()
+                    Inventory = new Inventory(),
+                    ActualRoom = defaultRoom
                 };
                 _context.Characters.Add(character);
                 await _context.SaveChangesAsync().ConfigureAwait(false);
