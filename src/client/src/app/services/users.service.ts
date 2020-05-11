@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment as env } from 'src/environments/environment';
-import { UserRole } from '../model/UserRole';
-import { IUser } from '../model/IUser';
+import { UserRole } from '../model/auth/UserRole';
+import { IUser } from '../model/auth/IUser';
 
 @Injectable({
 	providedIn: 'root',

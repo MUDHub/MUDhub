@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
+import { ImageService } from 'src/app/services/image.service';
+import { IMudClass } from 'src/app/model/muds/MudSetupDTO';
+import { MudService } from 'src/app/services/mud.service';
+import { IMudClassResponse } from 'src/app/model/muds/MudDTO';
+import { IImageUploadResponse } from 'src/app/model/FileUploadDTO';
 
 @Component({
 	selector: 'mh-classes',
@@ -11,7 +16,9 @@ export class ClassesComponent implements OnInit {
 	constructor(
 		private fb: FormBuilder,
 		private route: ActivatedRoute,
-		private router: Router
+		private router: Router,
+		private imageService: ImageService,
+		private mudService: MudService
 	) {}
 
 	form = this.fb.group({
@@ -22,18 +29,15 @@ export class ClassesComponent implements OnInit {
 
 	dialog = false;
 	mudId: string;
+	selectedFile: File = null;
 
-	//Todo Interface muss implementiert werden
-	classes: Array<{
-		name: string;
-		description: string;
-		imagekey: string;
-	}> = [];
+	// Todo Interface muss implementiert werden
+	classes: Array<IMudClass> = [];
 
-	ngOnInit(): void {
+	async ngOnInit() {
 		/* Daten fetchen und in Array laden */
-
 		this.mudId = this.route.snapshot.params.mudid;
+		this.classes = await this.mudService.getClassForMud(this.mudId);
 	}
 
 	changeDialog() {
@@ -41,33 +45,52 @@ export class ClassesComponent implements OnInit {
 		this.dialog = !this.dialog;
 	}
 
-	onAbort() {
-		this.router.navigate(['/my-muds']);
-	}
+	async addClass() {
+		// Get Imagekey from API if an Image was uploaded
+		let imageKey: IImageUploadResponse = null;
 
-	addClass() {
-		this.classes.push({
-			name: this.form.get('name').value,
-			description: this.form.get('description').value,
-			imagekey: this.form.get('imagekey').value,
-		});
+		try {
+			if (this.selectedFile != null) {
+				imageKey = await this.imageService.uploadFile(
+					this.selectedFile
+				);
+			}
+		} catch (e) {
+			this.selectedFile = null;
+		}
 
+		// Make API request
+		const response: IMudClassResponse = await this.mudService.addClass(
+			this.mudId,
+			{
+				name: this.form.get('name').value,
+				description: this.form.get('description').value,
+				imageKey: imageKey?.imageUrl,
+				mudId: this.mudId
+			}
+		);
+
+		// Push races Object to the array
+		if (response.succeeded) {
+			this.classes.push({
+				description: response.class.description,
+				name: response.class.name,
+				classId: response.class.classId,
+				imageKey: response.class.imageKey,
+			});
+		}
+
+		// Reset File Buffer
+		this.selectedFile = null;
 		this.changeDialog();
 	}
 
-	deleteRow(index: number) {
+	onFileSelected(event) {
+		this.selectedFile = event.target.files[0] as File;
+	}
+
+	async deleteRow(index: number) {
+		await this.mudService.deleteClass(this.mudId, this.classes[index].classId);
 		this.classes.splice(index, 1);
-	}
-
-	onLast() {
-		this.router.navigate(['/my-muds/' + this.mudId + '/races']);
-	}
-
-	async onSubmit() {
-		/* Object erstellen */
-		/* Request zur API schicken */
-
-		//Redirect zur nächsten Konfigurationsseite
-		this.router.navigate(['/my-muds/' + this.mudId + '/items']);
 	}
 }

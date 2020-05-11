@@ -1,7 +1,7 @@
 import { Component, OnInit, HostBinding } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MudService } from 'src/app/services/mud.service';
-import { IMud } from 'src/app/model/IMud';
+import { IMud } from 'src/app/model/muds/IMud';
 import {
 	trigger,
 	state,
@@ -9,7 +9,12 @@ import {
 	transition,
 	animate,
 } from '@angular/animations';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, Validators, FormGroup } from '@angular/forms';
+import { CharacterService } from 'src/app/services/character.service';
+import { IMudRace, IMudClass } from 'src/app/model/muds/MudSetupDTO';
+import { AuthService } from 'src/app/services/auth.service';
+import { ICharacter } from 'src/app/model/character/ICharacter';
+import { ICharacterCreateRequest } from 'src/app/model/character/CharacterDTO';
 
 @Component({
 	templateUrl: './mud-join.component.html',
@@ -43,7 +48,10 @@ import { FormControl, Validators } from '@angular/forms';
 export class MudJoinComponent implements OnInit {
 	constructor(
 		private route: ActivatedRoute,
-		private mudService: MudService
+		private router: Router,
+		private mudService: MudService,
+		private characterService: CharacterService,
+		private auth: AuthService
 	) {}
 
 	@HostBinding('@slideInOutAnimation') get slideInOut() {
@@ -51,31 +59,59 @@ export class MudJoinComponent implements OnInit {
 	}
 
 	mud: IMud;
-	previousChars = [{}];
+	races: IMudRace[] = [];
+	classes: IMudClass[] = [];
 
-	characterName = new FormControl('', [
-		Validators.required,
-		Validators.minLength(3),
-	]);
+	mudid: string;
+
+	previousChars: ICharacter[] = [];
+
+	character = new FormGroup({
+		name: new FormControl('', [Validators.required, Validators.minLength(3)]),
+		race: new FormControl('', Validators.required),
+		class: new FormControl('', Validators.required)
+	});
 
 	async ngOnInit() {
 		this.route.queryParams.subscribe(
-			async query => await this.loadMudInfo(query.mudid)
+			async query => {
+				this.mudid = query.mudid;
+				this.loadData(this.mudid);
+
+			}
 		);
 	}
 
-	async loadMudInfo(id: string) {
-		if (id) {
-			this.mud = await this.mudService.getById(id);
+	async loadData(mudid: string) {
+		if (mudid) {
+			this.mud = await this.mudService.getById(mudid);
+			this.classes = await this.mudService.getClassForMud(this.mud.mudId);
+			this.races = await this.mudService.getRaceForMud(this.mud.mudId);
+		}
+
+		this.previousChars = await this.characterService.getCharactersForPlayer(this.mudid, this.auth.user.id);
+		console.log(this.previousChars);
+	}
+
+
+	async onSubmit() {
+		const args: ICharacterCreateRequest = {
+			name: this.character.get('name').value,
+			raceId: this.character.get('race').value,
+			classId: this.character.get('class').value,
+			mudId: this.mudid
+		};
+
+		try {
+			const response = await this.characterService.createCharacter(this.mudid, args);
+			await this.join(response.character.id);
+		} catch (err) {
+			console.error('Error while creating character', err);
 		}
 	}
 
-	async join() {
-		console.log(
-			'joining mud: ',
-			this.mud,
-			'with character-name:',
-			this.characterName.value
-		);
+
+	async join(characterid: string) {
+		await this.router.navigate(['/game', characterid]);
 	}
 }

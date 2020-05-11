@@ -13,7 +13,7 @@ export class GameComponent implements OnInit, OnDestroy {
 	private characterId: string;
 
 	ngOnInit() {
-		this.characterId = this.route.snapshot.params['char-id'];
+		this.characterId = this.route.snapshot.params.characterid;
 		console.log('character-id:', this.characterId);
 	}
 

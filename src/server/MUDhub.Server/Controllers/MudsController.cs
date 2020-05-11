@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MUDhub.Core.Abstracts;
 using MUDhub.Core.Models.Muds;
 using MUDhub.Core.Services;
 using MUDhub.Server.ApiModels.Muds;
-using MUDhub.Server.ApiModels.Muds.Areas;
-using MUDhub.Server.ApiModels.Muds.RoomConnections;
-using MUDhub.Server.ApiModels.Muds.Rooms;
 using MUDhub.Server.Helpers;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MUDhub.Server.Controllers
 {
@@ -21,44 +19,36 @@ namespace MUDhub.Server.Controllers
     {
         private readonly MudDbContext _context;
         private readonly IMudManager _mudManager;
-        private readonly IAreaManager _areaManager;
+        private readonly IGameService _gameService;
 
-        public MudsController(MudDbContext context, IMudManager mudManager)
+        public MudsController(MudDbContext context, IMudManager mudManager, IGameService gameService)
         {
             _context = context;
             _mudManager = mudManager;
+            _gameService = gameService;
         }
 
 
         [HttpGet()]
-        public ActionResult<IEnumerable<MudApiModel>> GetAllMuds([FromQuery] bool fullData = false, [FromQuery] string? userid = null)
+        public ActionResult<IEnumerable<MudApiModel>> GetAllMuds([FromQuery] string? userid = null)
         {
-
-            if (fullData)
+            if (userid is null)
             {
-                //Todo: add fulld data, later with references.
+                return Ok(_context.MudGames.Include(mg => mg.Owner)
+                                           .AsEnumerable()
+                                           .Select(mg => MudApiModel.ConvertFromMudGame(mg)));
             }
             else
             {
-                if (userid is null)
-                {
-                    return Ok(_context.MudGames.Include(mg => mg.Owner)
-                                               .AsEnumerable()
-                                               .Select(mg => MudApiModel.ConvertFromMudGame(mg)));
-                }
-                else
-                {
-                    return Ok(_context.MudGames.Where(g => g.OwnerId == userid)
-                                                .Include(mg => mg.Owner)
-                                                .AsEnumerable()
-                                                .Select(mg => MudApiModel.ConvertFromMudGame(mg)));
-                }
+                return Ok(_context.MudGames.Where(g => g.OwnerId == userid)
+                                            .Include(mg => mg.Owner)
+                                            .AsEnumerable()
+                                            .Select(mg => MudApiModel.ConvertFromMudGame(mg)));
             }
-            throw new NotImplementedException();
         }
 
         [HttpGet("{mudId}")]
-        public async Task<ActionResult<MudGetResponse>> GetMud([FromRoute] string mudId)
+        public async Task<IActionResult> GetMud([FromRoute] string mudId)
         {
             var mud = await _context.MudGames.FindAsync(mudId)
                                                 .ConfigureAwait(false);
@@ -128,6 +118,7 @@ namespace MUDhub.Server.Controllers
         public ActionResult<MudJoinsApiModel> GetMudRequests([FromRoute] string mudId)
         {
             return Ok(_context.MudJoinRequests
+                                .Include(mjr => mjr.User)
                                 .Where(mjr => mjr.MudId == mudId)
                                 .AsEnumerable()
                                 .Select(mjr => MudJoinsApiModel.CreateFromJoin(mjr)));
@@ -146,8 +137,8 @@ namespace MUDhub.Server.Controllers
                     {
                         return Ok();
                     }
-                    return BadRequest();
                 }
+                break;
                 case MudJoinState.Rejected:
                 {
                     var result = await _mudManager.RejectUserToJoinAsync(userid, mudId)
@@ -156,14 +147,10 @@ namespace MUDhub.Server.Controllers
                     {
                         return Ok();
                     }
-                    return BadRequest();
                 }
-                default:
-                {
-                    //todo: throw exception
-                    return BadRequest();
-                }
+                break;
             }
+            return BadRequest();
         }
 
         [HttpPost("{mudId}/requestjoin")]
@@ -183,6 +170,41 @@ namespace MUDhub.Server.Controllers
             {
                 return Ok(new MudJoinsResponse());
             }
+        }
+
+        [HttpPost("{mudId}/start")]
+        public async Task<ActionResult> StartMudAsync([FromRoute] string mudId)
+        {
+            var result = await _gameService.StartMudAsync(mudId, HttpContext.GetUserId())
+                                            .ConfigureAwait(false);
+            if (result)
+                return Ok();
+            else
+                return BadRequest();
+
+        }
+
+        [HttpPost("{mudId}/stop")]
+        public async Task<ActionResult> StopMudAsync([FromRoute] string mudId)
+        {
+            var result = await _gameService.StopMudAsync(mudId, HttpContext.GetUserId())
+                                            .ConfigureAwait(false);
+            if (result)
+                return Ok();
+            else
+                return BadRequest();
+        }
+
+        [HttpPost("{mudId}/edit")]
+        public async Task<ActionResult> EditMudAsync([FromRoute] string mudId, [FromQuery] bool isInEdit)
+        {
+            var result = await _mudManager.SetEditModeAsync(mudId, HttpContext.GetUserId(), isInEdit)
+                                            .ConfigureAwait(false);
+            if (result)
+                return Ok();
+            else
+                return BadRequest();
+
         }
     }
 }

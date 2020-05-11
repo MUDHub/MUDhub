@@ -1,5 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using MUDhub.Core.Models.Inventories;
 using MUDhub.Core.Models.Rooms;
+using MUDhub.Server.ApiModels.Items;
 using MUDhub.Server.ApiModels.Muds.Areas;
 
 namespace MUDhub.Server.ApiModels.Muds.Rooms
@@ -14,6 +19,8 @@ namespace MUDhub.Server.ApiModels.Muds.Rooms
         public int Y { get; set; } = 0;
         public AreaApiModel Area { get; set; } = new AreaApiModel();
         public bool IsDefaultRoom { get; set; } = false;
+        public IEnumerable<ItemInstanceApiModel> ItemInstances { get; set; }
+        public ConnectionsApiModel Connections { get; set; }
 
         public static RoomApiModel ConvertFromRoom(Room room)
         {
@@ -23,14 +30,16 @@ namespace MUDhub.Server.ApiModels.Muds.Rooms
             }
             return new RoomApiModel()
             {
-                //Area = AreaApiModel.ConvertFromArea(room.Area),
+                Area = AreaApiModel.ConvertFromArea(room.Area),
                 RoomId = room.Id,
                 Name = room.Name,
                 Description = room.Description,
                 X = room.X,
                 Y = room.Y,
                 ImageKey = room.ImageKey,
-                IsDefaultRoom = room.IsDefaultRoom
+                IsDefaultRoom = room.IsDefaultRoom,
+                ItemInstances = room.Inventory.ItemInstances.Select(ii => ItemInstanceApiModel.ConvertFromItemInstance(ii)),
+                Connections = ConnectionsApiModel.CreateFromList(room.AllConnections, room)
             };
         }
     }

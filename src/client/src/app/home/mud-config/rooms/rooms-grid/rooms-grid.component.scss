@@ -1,0 +1,231 @@
+@import "src/variables.scss";
+
+:host {
+	height: 100%;
+	width: 100%;
+
+	display: block;
+
+	position: relative;
+}
+
+.width-controls, .height-controls {
+	position: absolute;
+	display: flex;
+	justify-content: space-between;
+	button {
+		background-color: #fff;
+		border: 1px solid rgba(0, 0, 0, 0.2);
+	}
+}
+
+.width-controls {
+	height: 2rem;
+	top: 0;
+	left: 2rem;
+	flex-direction: row;
+	width: calc(100% - 2rem);
+
+	button {
+		padding: 0 1rem;
+	}
+}
+
+.height-controls {
+	width: 2rem;
+	top: 2rem;
+	left: 0;
+	flex-direction: column;
+	height: calc(100% - 2rem);
+
+	button {
+		padding: 0.5rem 0;
+	}
+}
+
+.rooms-grid-container {
+	width: 100%;
+	height: 100%;
+
+	padding-top: 2rem;
+	padding-left: 2rem;
+}
+
+.rooms-grid {
+	width: 100%;
+	height: 100%;
+	border-collapse: collapse;
+	table-layout: fixed;
+
+	text-align: center;
+
+	.room-cell {
+		border: 1px dashed rgba(0, 0, 0, 0.3);
+		padding: 1rem 1rem;
+
+		position: relative;
+	}
+}
+
+.connection-add {
+	position: absolute;
+	z-index: 99;
+	height: 1.5rem;
+	width: 1.5rem;
+	background-color: orange;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: #fff;
+	border-radius: 50%;
+	cursor: pointer;
+
+	&.connection-horizontal {
+		right: -0.75rem;
+		top: 50%;
+		transform: translateY(-50%);
+	}
+
+	&.connection-vertical {
+		bottom: -0.75rem;
+		left: 50%;
+		transform: translateX(-50%);
+	}
+}
+
+.room {
+	background-color: #fff;
+	border-radius: 4px;
+	width: 100%;
+	padding: 1rem;
+	position: relative;
+	min-height: 80px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	&:hover {
+		.toolbar {
+			display: flex;
+		}
+	}
+
+
+	.toolbar {
+		position: absolute;
+		top: -2.5rem;
+		height: 2.5rem;
+		background-color: rgba(0, 0, 0, 0.6);
+		color: #fff;
+		font-size: 90%;
+		padding: 0 0.5rem;
+		border-radius: 4px;
+
+		display: none;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+
+		z-index: 100;
+
+		.item {
+			cursor: pointer;
+			padding: 0.3rem;
+		}
+	}
+
+	.default-icon {
+		user-select: none;
+		position: absolute;
+		top: 0.2rem;
+		left: 50%;
+		transform: translateX(-50%);
+		border: 1px solid rgba(0, 0, 0, 0.3);
+		color:rgba(0, 0, 0, 0.3);
+		width: 20px;
+		height: 20px;
+		border-radius: 50%;
+		font-size: 12px;
+
+		span {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+	}
+}
+
+
+.connection {
+	position: absolute;
+	background-color: #aaa;
+	width: 0.5rem;
+	height: 0.5rem;
+	z-index: 20;
+
+	.popup {
+		display: none;
+		position: absolute;
+		cursor: pointer;
+	}
+
+	&.connection-vertical {
+		bottom: -1rem;
+		height: 2rem;
+		left: 50%;
+		transform: translateX(-50%);
+
+		.popup {
+			left: 100%;
+			top: 60%;
+			transform: translateY(-50%);
+			padding-left: 0.5rem;
+		}
+	}
+	&.connection-horizontal {
+		right: -1rem;
+		width: 2rem;
+		top: 50%;
+		transform: translateY(-50%);
+
+		.popup {
+			left: 50%;
+			top: 100%;
+			transform: translateX(-50%);
+			padding-top: 0.5rem;
+		}
+	}
+
+	&:hover .popup {
+		display: block;
+	}
+}
+
+.room-add {
+	width: 40px;
+	height: 40px;
+	background-color: rgba(0, 0, 0, 0.3);
+	color: #fff;
+	border-radius: 50%;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0 auto;
+
+	cursor: pointer;
+	user-select: none;
+}
+
+.popup ::ng-deep {
+	ng-component {
+		position: fixed;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		background-color: rgba(0, 0, 0, 0.2);
+		z-index: 100;
+	}
+}

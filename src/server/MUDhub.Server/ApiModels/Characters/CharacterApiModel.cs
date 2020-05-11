@@ -8,21 +8,27 @@ namespace MUDhub.Server.ApiModels.Characters
 {
     public class CharacterApiModel
     {
-        public string Id { get; set; }
-        public string Name { get; set; }
-        public string OwnerId { get; set; }
-        public string OwnerFullname { get; set; }
-        public string Race { get; set; }
-        public string Class { get; set; }
+        public string Id { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
+        public string OwnerId { get; set; } = string.Empty;
+        public string OwnerFullname { get; set; } = string.Empty;
+        public string RaceName { get; set; } = string.Empty;
+        public string ClassName { get; set; } = string.Empty;
+        public string RoomName { get; set; } = string.Empty;
 
 
         public static CharacterApiModel FromCharacter(Character character)
         {
+            if (character is null)
+                throw new ArgumentNullException(nameof(character));
+
             return new CharacterApiModel
             {
                 Id = character.Id,
                 Name = character.Name,
-                Class = character.Class.Name,
+                ClassName = character.Class.Name,
+                RaceName = character.Race.Name,
+                RoomName = character.ActualRoom.Name,
                 OwnerFullname = character.Owner.Name + " " +character.Owner.Lastname,
             };
         }

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, HostBinding } from '@angular/core';
-import { IMessage } from 'src/app/model/IMessage';
+import { IMessage } from 'src/app/model/chat/IMessage';
 
 @Component({
 	selector: 'mh-chat-message',

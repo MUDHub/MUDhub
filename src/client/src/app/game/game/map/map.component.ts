@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { IRoom } from 'src/app/model/IRoom';
-import { RoomsService } from 'src/app/services/rooms.service';
+import { IMapRoom } from 'src/app/model/game/IRoom';
+import { AreaService } from 'src/app/services/area.service';
 
 @Component({
 	selector: 'mh-map',
@@ -8,13 +8,13 @@ import { RoomsService } from 'src/app/services/rooms.service';
 	styleUrls: ['./map.component.scss'],
 })
 export class MapComponent implements OnInit {
-	constructor(private roomsService: RoomsService) {}
+	constructor(private roomsService: AreaService) {}
 
 	activeArea = 'Morgenland';
 
-	rooms: IRoom[] = [];
+	rooms: IMapRoom[] = [];
 
-	map: IRoom[][] = [[]];
+	map: IMapRoom[][] = [[]];
 
 
 	get width() {
@@ -31,12 +31,11 @@ export class MapComponent implements OnInit {
 
 	updateMap() {
 		// TODO: replace with correct implementation
-		this.rooms = this.roomsService.getRoomsForArea('');
 		this.renderMap(this.rooms);
 	}
 
 
-	renderMap(list: IRoom[]) {
+	renderMap(list: IMapRoom[]) {
 		for (const room of list) {
 			while (this.height - 1 < room.position.y) {
 				this.map.push(Array(this.width).fill(undefined));

@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace MUDhub.Server.ApiModels.Characters
+﻿namespace MUDhub.Server.ApiModels.Characters
 {
     public class CharacterResponse
     {
-        public CharacterApiModel Character { get; set; }
+        public CharacterApiModel? Character { get; set; }
 
     }
 }

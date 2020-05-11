@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IUser } from 'src/app/model/IUser';
+import { IUser } from 'src/app/model/auth/IUser';
 import { UsersService } from 'src/app/services/users.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
-import { UserRole } from 'src/app/model/UserRole';
+import { UserRole } from 'src/app/model/auth/UserRole';
 
 @Component({
 	templateUrl: './users.component.html',

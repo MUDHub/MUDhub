@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FormBuilder, Validators } from '@angular/forms';
+import { IMudItem } from 'src/app/model/muds/MudSetupDTO';
+import { MudService } from 'src/app/services/mud.service';
+import { IMudItemRequest, IMudItemResponse } from 'src/app/model/muds/MudDTO';
+import { IImageUploadResponse } from 'src/app/model/FileUploadDTO';
 
 @Component({
 	selector: 'mh-items',
@@ -7,27 +12,60 @@ import { ActivatedRoute, Router } from '@angular/router';
 	styleUrls: ['./items.component.scss'],
 })
 export class ItemsComponent implements OnInit {
-	constructor(private route: ActivatedRoute, private router: Router) {}
+	constructor(
+		private mudService: MudService,
+		private fb: FormBuilder,
+		private route: ActivatedRoute,
+		private router: Router
+	) {}
 
+	form = this.fb.group({
+		name: ['', Validators.required],
+		description: ['', Validators.required],
+		weight: ['', Validators.required],
+	});
 	mudId: string;
+	dialog = false;
+	items: Array<IMudItem> = [];
 
-	ngOnInit(): void {
+	async deleteRow(index: number) {
+		await this.mudService.deleteItem(this.mudId, this.items[index].itemId);
+		this.items.splice(index, 1);
+	}
+	async ngOnInit() {
 		this.mudId = this.route.snapshot.params.mudid;
+		this.items = await this.mudService.getItemsForMud(this.mudId);
 	}
 
-	onAbort() {
-		this.router.navigate(['/my-muds']);
+	changeDialog() {
+		this.form.reset();
+		this.dialog = !this.dialog;
 	}
 
-	onLast() {
-		this.router.navigate(['/my-muds/' + this.mudId + '/classes']);
-	}
+	async addItem() {
+		const imageKey: IImageUploadResponse = null;
 
-	async onSubmit() {
-		/* Object erstellen */
-		/* Request zur API schicken */
+		const response: IMudItemResponse = await this.mudService.addItem(
+			this.mudId,
+			{
+				name: this.form.get('name').value,
+				description: this.form.get('description').value,
+				weight: this.form.get('weight').value,
+				imageKey: imageKey?.imageUrl,
+				mudId: this.mudId
+			}
+		);
 
-		//Redirect zur nächsten Konfigurationsseite
-		this.router.navigate(['/my-muds/' + this.mudId + '/rooms']);
+		if (response.succeeded) {
+			this.items.push({
+				itemId: response.item.itemId,
+				name: response.item.name,
+				description: response.item.description,
+				weight: response.item.weight,
+				imageKey: response.item.imageKey,
+			});
+		}
+
+		this.changeDialog();
 	}
 }

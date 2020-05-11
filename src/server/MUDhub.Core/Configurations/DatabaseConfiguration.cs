@@ -8,6 +8,7 @@
         public string DefaultMudAdminPassword { get; set; } = string.Empty;
         public bool CreateDefaultUser { get; set; } = false;
         public bool CreateDefaultMudData { get; set; } = false;
+        public bool CreateDefaultDhbwMudData { get; set; } = false;
         public bool DeleteDatabase { get; set; } = false;
     }
 }

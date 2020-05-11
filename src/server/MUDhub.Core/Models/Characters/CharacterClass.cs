@@ -21,7 +21,9 @@ namespace MUDhub.Core.Models.Characters
         public string Id { get; }
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
-        public MudGame Game { get; set; } = new MudGame();
-        public ICollection<Character> Characters { get; set; } = new Collection<Character>();
+        public string GameId { get; set; } = string.Empty;
+        public virtual MudGame Game { get; set; } = null!;
+        public virtual ICollection<Character> Characters { get; set; } = new Collection<Character>();
+        public string ImageKey { get; set; } = string.Empty;
     }
 }

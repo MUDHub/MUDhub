@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MessageType } from 'src/app/model/MessageType';
+import { MessageType } from 'src/app/model/game/MessageType';
 
 @Component({
   selector: 'mh-game-chat',

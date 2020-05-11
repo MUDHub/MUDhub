@@ -1,0 +1,16 @@
+<ng-container *ngIf="!isEditable">
+	<div class="name">
+		{{ area.name }}
+	</div>
+	<mat-icon class="edit-icon" (click)="isEditable = true">edit</mat-icon>
+	<mat-icon class="delete-icon" (click)="delete.emit(area)">delete</mat-icon>
+</ng-container>
+<ng-container>
+	<input
+		type="text"
+		*ngIf="isEditable"
+		[value]="area.name"
+		#input
+		(keydown.enter)="onUpdate(input.value)"
+	/>
+</ng-container>

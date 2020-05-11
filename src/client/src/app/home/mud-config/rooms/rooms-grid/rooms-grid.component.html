@@ -1,0 +1,101 @@
+<div class="width-controls">
+	<button class="sub" (click)="removeColumn()">-</button>
+	<button class="add" (click)="addColumn()">+</button>
+</div>
+<div class="height-controls">
+	<button class="sub" (click)="removeRow()">-</button>
+	<button class="add" (click)="addRow()">+</button>
+</div>
+
+<div class="rooms-grid-container">
+	<table class="rooms-grid">
+		<tr class="room-row" *ngFor="let row of rooms; let y = index">
+			<td class="room-cell" *ngFor="let room of row; let x = index">
+				<!-- CONNECTION ADD -->
+				<div
+					class="connection-add connection-horizontal"
+					*ngIf="
+						x < width - 1 &&
+						row[x + 1] !== undefined &&
+						room !== undefined &&
+						!room.connections.east
+					"
+					(click)="addConnection(room, row[x + 1])"
+					matTooltip="Verbinden"
+				>
+					+
+				</div>
+				<div
+					class="connection-add connection-vertical"
+					*ngIf="
+						y < height - 1 &&
+						rooms[y + 1][x] !== undefined &&
+						room !== undefined &&
+						!room.connections.south
+					"
+					(click)="addConnection(room, rooms[y + 1][x])"
+					matTooltip="Verbinden"
+					[matTooltipPosition]="'after'"
+				>
+					+
+				</div>
+				<!-- CONNECTION ADD -->
+				<!-- CONNECTIONS -->
+				<div
+					class="connection connection-vertical"
+					*ngIf="y < height - 1 && room?.connections.south"
+				>
+					<div
+						class="popup"
+						(click)="deleteConnection(rooms[y][x], rooms[y + 1][x])"
+					>
+						<mat-icon>delete</mat-icon>
+					</div>
+				</div>
+				<div
+					class="connection connection-horizontal"
+					*ngIf="x < width - 1 && room?.connections.east"
+				>
+					<div
+						class="popup"
+						(click)="deleteConnection(rooms[y][x], rooms[y][x + 1])"
+					>
+						<mat-icon>delete</mat-icon>
+					</div>
+				</div>
+				<!-- CONNECTIONS -->
+				<!-- ROOM -->
+				<div class="room" *ngIf="room">
+					<div class="default-icon" *ngIf="room.isDefaultRoom">
+						<span>D</span>
+					</div>
+					{{ room?.name }}
+					<div class="toolbar">
+						<div class="item" (click)="deleteRoom(room)">
+							Löschen
+						</div>
+						<div class="item" [routerLink]="room.roomId + '/edit'">
+							Bearbeiten
+						</div>
+						<div class="item" [routerLink]="room.roomId + '/portals'">
+							Portal
+						</div>
+					</div>
+				</div>
+				<!-- ROOM -->
+				<div
+					class="room-add"
+					*ngIf="!room"
+					routerLink="create"
+					[queryParams]="{ x: x, y: y }"
+				>
+					+
+				</div>
+			</td>
+		</tr>
+	</table>
+</div>
+
+<div class="popup">
+	<router-outlet></router-outlet>
+</div>

@@ -1,0 +1,50 @@
+<div class="container">
+	<mh-exit-button class="exit" routerLink="../../"></mh-exit-button>
+	<h2>Portale verwalten</h2>
+
+	<div class="portals">
+		<div *ngIf="portals?.length === 0">Keine Portale für diesen Raum vorhanden</div>
+		<div class="portal" *ngFor="let portal of portals">
+			<mat-icon class="delete-icon" (click)="deletePortal(portal)">delete</mat-icon>
+			<div class="portal-room source">
+				<div class="room-name">{{ portal.room1.name }}</div>
+				<div class="area-name">{{ portal.room1.area.name }}</div>
+			</div>
+			<mat-icon class="arrow-icon">sync_alt</mat-icon>
+			<div class="portal-room destination">
+				<div class="room-name">{{ portal.room2.name }}</div>
+				<div class="area-name">{{ portal.room2.area.name }}</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="portal-form">
+		<div class="title">Neues Portal</div>
+		<div class="form-row">
+			<mat-form-field>
+				<mat-label>Ziel-Area</mat-label>
+				<mat-select [(value)]="selectedArea">
+					<mat-option *ngFor="let area of areas" [value]="area">{{
+						area.name
+					}}</mat-option>
+				</mat-select>
+			</mat-form-field>
+			<mat-form-field>
+				<mat-label>Ziel-Raum</mat-label>
+				<mat-select
+					[disabled]="
+						selectedArea === undefined || rooms?.length === 0
+					"
+					[(value)]="selectedRoom"
+				>
+					<mat-option *ngFor="let room of rooms" [value]="room">{{
+						room.name
+					}}</mat-option>
+				</mat-select>
+			</mat-form-field>
+		</div>
+		<button mat-button (click)="create(selectedArea, selectedRoom)">
+			Verbinden
+		</button>
+	</div>
+</div>

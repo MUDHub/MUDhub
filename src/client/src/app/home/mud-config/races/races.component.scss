@@ -4,6 +4,10 @@ h1 {
 	text-align: center;
 }
 
+mat-horizontal-stepper{
+	background-color: #eee;
+}
+
 .table-list {
 	border-radius: 5px;
 	width: 100%;
@@ -47,25 +51,49 @@ h1 {
 	}
 }
 
-.add-race {
-	/*Position*/
+.disable-background {
+	background-color: rgba(0, 0, 0, 0.5);
 	position: absolute;
-    bottom: 40%;
-    left: 43%;
-    z-index: 100;
-	/*Styling*/
-	background-color: white;
-	padding: 2rem 3rem 3rem 3rem;
-    border-radius: 5px;
-	box-shadow: rgba(0, 0, 0, 0.5) 10rem 10rem 100rem 100rem;
-	
-	button {
-		margin-top: 1rem;
+	top: 0px;
+	bottom: 0px;
+	right: 0px;
+	left: 0px;
+
+	.add-race {
+		/*Position*/
+		position: absolute;
+		top: 49%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		z-index: 100;
+		/*Styling*/
+		background-color: white;
+		padding: 2rem 3rem 3rem 3rem;
+		border-radius: 5px;
+
+		button {
+			margin-top: 1rem;
+		}
 	}
 }
 
-.exit-button{
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
+.custom-file-input::-webkit-file-upload-button {
+	content: 'Datei auswählen';
+	display: inline-block;
+	background-color: $color-primary;
+	color: white;
+	border: none;
+	border-radius: 3px;
+	padding: 5px 8px;
+	outline: none;
+	white-space: nowrap;
+	-webkit-user-select: none;
+	cursor: pointer;
+	width: 50%;
+}
+
+.exit-button {
+	width: 100%;
+	display: flex;
+	justify-content: flex-end;
 }

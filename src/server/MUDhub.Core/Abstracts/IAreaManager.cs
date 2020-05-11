@@ -1,6 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using MUDhub.Core.Abstracts.Models.Areas;
+using MUDhub.Core.Abstracts.Models.Connections;
 using MUDhub.Core.Abstracts.Models.Rooms;
-using MUDhub.Core.Models.Rooms;
+using System.Threading.Tasks;
 
 namespace MUDhub.Core.Abstracts
 {
@@ -12,6 +13,9 @@ namespace MUDhub.Core.Abstracts
         Task<RoomResult> CreateRoomAsync(string userId, string areaId, RoomArgs args);
         Task<RoomResult> UpdateRoomAsync(string userId, string roomId, UpdateRoomArgs args);
         Task<RoomResult> RemoveRoomAsync(string userId, string roomId);
+
+        Task<RoomInteractionResult> CreateRoomInteractionAsync(string userId, string roomId, RoomInteractionArgs args);
+        Task<RoomInteractionResult> RemoveRoomInteractionAsync(string userId, string roomInteractionId);
 
         Task<ConnectionResult> CreateConnectionAsync(string userId, string room1Id, string room2Id, RoomConnectionsArgs args);
         Task<ConnectionResult> UpdateConnectionAsync(string userId, string connectionId, UpdateRoomConnectionsArgs args);

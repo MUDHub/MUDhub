@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
+import { ImageService } from 'src/app/services/image.service';
+import { IMudRace } from 'src/app/model/muds/MudSetupDTO';
+import { MudService } from 'src/app/services/mud.service';
+import { IMudRaceResponse, IMudRaceRequest } from 'src/app/model/muds/MudDTO';
+import { IImageUploadResponse } from 'src/app/model/FileUploadDTO';
 
 @Component({
 	templateUrl: './races.component.html',
@@ -10,25 +15,27 @@ export class RacesComponent implements OnInit {
 	constructor(
 		private fb: FormBuilder,
 		private route: ActivatedRoute,
-		private router: Router
+		private router: Router,
+		private imageService: ImageService,
+		private mudService: MudService
 	) {}
 
 	form = this.fb.group({
 		name: ['', Validators.required],
 		description: ['', Validators.required],
-		imagekey: [''],
+		imageKey: [''],
 	});
 
 	dialog = false;
 	mudId: string;
+	selectedFile: File = null;
 
-	//Todo Interface muss implementiert werden
-	races: Array<{ name: string; description: string; imagekey: string }> = [];
+	races: Array<IMudRace> = [];
 
-	ngOnInit(): void {
+	async ngOnInit() {
 		/* Daten fetchen und in Array laden */
-
 		this.mudId = this.route.snapshot.params.mudid;
+		this.races = await this.mudService.getRaceForMud(this.mudId);
 	}
 
 	changeDialog() {
@@ -36,29 +43,50 @@ export class RacesComponent implements OnInit {
 		this.dialog = !this.dialog;
 	}
 
-	onAbort() {
-		this.router.navigate(['/my-muds']);
-	}
+	async addRace() {
+		// Get Imagekey from API if an Image was uploaded
+		let imageKey: IImageUploadResponse = null;
 
-	addRace() {
+		try {
+			if (this.selectedFile != null) {
+				imageKey = await this.imageService.uploadFile(
+					this.selectedFile
+				);
+			}
+		} catch (e) {
+			this.selectedFile = null;
+		}
+
+		// Make API request
+		const response: IMudRaceResponse = await this.mudService.addRace(
+			this.mudId,
+			{
+				name: this.form.get('name').value,
+				description: this.form.get('description').value,
+				imageKey: imageKey?.imageUrl,
+				mudId: this.mudId
+			}
+		);
+
+		// Push races Object to the array
 		this.races.push({
-			name: this.form.get('name').value,
-			description: this.form.get('description').value,
-			imagekey: this.form.get('imagekey').value,
+			description: response.race.description,
+			name: response.race.name,
+			raceId: response.race.raceId,
+			imageKey: response.race.imageKey,
 		});
 
+		// Reset File Buffer
+		this.selectedFile = null;
 		this.changeDialog();
 	}
 
-	deleteRow(index: number) {
-		this.races.splice(index, 1);
+	onFileSelected(event) {
+		this.selectedFile = event.target.files[0] as File;
 	}
 
-	async onSubmit() {
-		/* Object erstellen */
-		/* Request zur API schicken */
-
-		//Redirect zur nächsten Konfigurationsseite
-		this.router.navigate(['/my-muds/' + this.mudId + '/classes']);
+	async deleteRow(index: number) {
+		await this.mudService.deleteRace(this.mudId, this.races[index].raceId);
+		this.races.splice(index, 1);
 	}
 }

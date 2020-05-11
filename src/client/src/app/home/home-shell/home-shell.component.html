@@ -3,18 +3,18 @@
 	<button mat-button routerLinkActive="mat-accent" routerLink="/muds">
 		Übersicht
 	</button>
-	<button mat-button routerLinkActive="mat-accent" routerLink="/my-games">
+	<!-- <button mat-button routerLinkActive="mat-accent" routerLink="/my-games">
 		Meine Charaktere
-	</button>
+	</button> -->
 	<button
 		mat-button
 		routerLinkActive="mat-accent"
 		routerLink="/my-muds"
-		*ngIf="user.roles.includes('Master')"
+		*ngIf="user?.roles.includes('Master')"
 	>
 		Meine MUDs
 	</button>
-	<button mat-button [matMenuTriggerFor]="adminMenu" *ngIf="user.roles.includes('Admin')">
+	<button mat-button [matMenuTriggerFor]="adminMenu" *ngIf="user?.roles.includes('Admin')">
 		Admin
 	</button>
 	<mat-menu #adminMenu="matMenu">

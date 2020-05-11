@@ -9,6 +9,7 @@
 		<th>Name</th>
 		<th>Sichtbarkeit</th>
 		<th>Neustart</th>
+		<th>Anfragen</th>
 		<th>Bearbeiten</th>
 		<th>Löschen</th>
 	</tr>
@@ -31,6 +32,9 @@
 			</div>
 		</td>
 		<td>
+			<button mat-button *ngIf="!mud.isPublic" [routerLink]="mud.mudId + '/requests'" style="cursor: pointer;" [matTooltip]="'Anfragen'">Anfragen</button>
+		</td>
+		<td>
 			<button mat-button (click)="editMud(mud.mudId)">Bearbeiten</button>
 		</td>
 		<td>
@@ -38,5 +42,4 @@
 		</td>
 	</tr>
 </table>
-
 <button mat-fab routerLink="create" class="fab">+</button>

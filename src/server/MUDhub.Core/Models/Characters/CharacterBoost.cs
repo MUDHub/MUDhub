@@ -22,6 +22,6 @@ namespace MUDhub.Core.Models.Characters
         public int Value { get; set; }
 
         //Todo: maybe add time stamp or remove all boosts after restart.
-        public Character Character { get; set; } = new Character();
+        public virtual Character Character { get; set; } = new Character();
     }
 }

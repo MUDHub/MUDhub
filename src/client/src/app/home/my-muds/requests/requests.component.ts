@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { MudJoinState } from 'src/app/model/MudDTO';
+import { MudJoinState } from 'src/app/model/muds/MudDTO';
 import { MudService } from 'src/app/services/mud.service';
-import { IMudRequest } from 'src/app/model/IMudRequest';
+import { IMudRequest } from 'src/app/model/muds/IMudRequest';
 
 @Component({
 	templateUrl: './requests.component.html',

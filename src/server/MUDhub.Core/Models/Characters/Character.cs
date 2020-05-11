@@ -1,9 +1,10 @@
-﻿using MUDhub.Core.Models.Muds;
+﻿using MUDhub.Core.Models.Inventories;
+using MUDhub.Core.Models.Muds;
+using MUDhub.Core.Models.Rooms;
+using MUDhub.Core.Models.Users;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Reflection;
-using System.Text;
 
 namespace MUDhub.Core.Models.Characters
 {
@@ -20,16 +21,14 @@ namespace MUDhub.Core.Models.Characters
         }
 
         public string Id { get; }
-
         public string Name { get; set; } = string.Empty;
+        public virtual MudGame Game { get; set; } = null!;
+        public virtual User Owner { get; set; } = null!;
 
-        public MudGame Game { get; set; } = new MudGame();
-
-        public User Owner { get; set; } = new User();
-
-        public CharacterRace Race { get; set; } = new CharacterRace();
-
-        public CharacterClass Class { get; set; } = new CharacterClass();
+        public virtual CharacterRace Race { get; set; }  = null!;
+        public virtual CharacterClass Class { get; set; } = null!;
+        public virtual Room ActualRoom { get; set; } = null!;
+        public virtual Inventory Inventory { get; set; } = null!;
 
         //"LiveUpdates"
 
@@ -37,7 +36,7 @@ namespace MUDhub.Core.Models.Characters
         public int Starvation { get; set; }
 
 
-        public ICollection<CharacterBoost> ActiveBoosts { get; set; } = new Collection<CharacterBoost>();
+        public virtual ICollection<CharacterBoost> ActiveBoosts { get; set; } = new Collection<CharacterBoost>();
         //Todo: Later after room implementation
         //public string ActiveRoomId { get; set; }
     }

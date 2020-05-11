@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { IMessage } from '../model/IMessage';
+import { IMessage } from '../model/chat/IMessage';
 import { Subject } from 'rxjs';
 
 @Injectable({

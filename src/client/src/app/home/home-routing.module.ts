@@ -17,7 +17,11 @@ import { ClassesComponent } from './mud-config/classes/classes.component';
 import { ItemsComponent } from './mud-config/items/items.component';
 import { RoomsComponent } from './mud-config/rooms/rooms.component';
 import { FinishComponent } from './mud-config/finish/finish.component';
-
+import { RoomCreateComponent } from './mud-config/rooms/rooms-grid/room-create/room-create.component';
+import { componentFactoryName } from '@angular/compiler';
+import { RoomsGridComponent } from './mud-config/rooms/rooms-grid/rooms-grid.component';
+import { MudConfigShellComponent } from './mud-config/mud-config-shell.component';
+import { RoomPortalComponent } from './mud-config/rooms/rooms-grid/room-portal/room-portal.component';
 
 const routes: Routes = [
 	{
@@ -35,9 +39,9 @@ const routes: Routes = [
 				children: [
 					{
 						path: 'join',
-						component: MudJoinComponent
-					}
-				]
+						component: MudJoinComponent,
+					},
+				],
 			},
 			{
 				path: 'my-games',
@@ -51,36 +55,62 @@ const routes: Routes = [
 			{
 				path: 'my-muds/create',
 				canActivate: [MasterGuard],
-				component: MudCreateComponent
+				component: MudCreateComponent,
+			},
+			{
+				path: 'my-muds/:mudid/requests',
+				component: RequestsComponent,
 			},
 			{
 				path: 'my-muds/:mudid',
+				component: MudConfigShellComponent,
 				children: [
 					{
+						path: '',
+						pathMatch: 'full',
+						redirectTo: 'races',
+					},
+					{
 						path: 'races',
-						component: RacesComponent
+						component: RacesComponent,
 					},
 					{
 						path: 'classes',
-						component: ClassesComponent
+						component: ClassesComponent,
 					},
 					{
 						path: 'items',
-						component: ItemsComponent
+						component: ItemsComponent,
 					},
 					{
-						path: 'rooms',
-						component: RoomsComponent
+						path: 'areas',
+						component: RoomsComponent,
+						children: [
+							{
+								path: ':areaid/rooms',
+								component: RoomsGridComponent,
+								children: [
+									{
+										path: 'create',
+										component: RoomCreateComponent,
+									},
+									{
+										path: ':roomid/edit',
+										component: RoomCreateComponent,
+									},
+									{
+										path: ':roomid/portals',
+										component: RoomPortalComponent,
+									},
+								],
+							},
+						],
 					},
 					{
 						path: 'finish',
-						component: FinishComponent
+						component: FinishComponent,
 					},
-					{
-						path: 'requests',
-						component: RequestsComponent
-					}
-				]
+				],
 			},
 			{
 				path: 'profile',
@@ -112,4 +142,4 @@ const routes: Routes = [
 	imports: [RouterModule.forChild(routes)],
 	exports: [RouterModule],
 })
-export class HomeRoutingModule { }
+export class HomeRoutingModule {}

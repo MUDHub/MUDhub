@@ -1,14 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Moq;
 using MUDhub.Core.Abstracts;
-using MUDhub.Core.Helper;
-using MUDhub.Core.Models;
-using MUDhub.Core.Services;
 using MUDhub.Core.Abstracts.Models;
-using Xunit;
+using MUDhub.Core.Helper;
+using MUDhub.Core.Models.Users;
+using MUDhub.Core.Services;
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Xunit;
 
 namespace MUDhub.Core.Tests
 {
@@ -59,7 +59,7 @@ namespace MUDhub.Core.Tests
         public async Task IsUserInRoleAsync_ReturnTrue()
         {
             Assert.True(await _userManager.IsUserInRoleAsync(_user.Id, Roles.Master));
-            
+
         }
 
         [Fact]
@@ -249,7 +249,7 @@ namespace MUDhub.Core.Tests
 
 
             RegisterResult registerResult = await _userManager.RegisterUserAsync(RegistrationUserArgs);
-            Assert.False(registerResult.Succeeded);
+            Assert.False(registerResult.Success);
         }
         [Fact]
         public async Task RegisterUserAsync_ReturnFalseUserExist()
@@ -263,7 +263,7 @@ namespace MUDhub.Core.Tests
                 Password = "Test1234"
             };
             RegisterResult registerResult = await _userManager.RegisterUserAsync(regiArgs);
-            Assert.True(registerResult.Succeeded);
+            Assert.True(registerResult.Success);
         }
 
         [Fact]
@@ -278,7 +278,7 @@ namespace MUDhub.Core.Tests
                 Password = "Test1234"
             };
             RegisterResult registerResult = await _userManager.RegisterUserAsync(regiArgs);
-            Assert.True(registerResult.Succeeded);
+            Assert.True(registerResult.Success);
         }
 
         [Fact]

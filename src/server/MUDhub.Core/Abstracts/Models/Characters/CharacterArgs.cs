@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MUDhub.Core.Abstracts.Models.Characters
+﻿namespace MUDhub.Core.Abstracts.Models.Characters
 {
     public class CharacterArgs
     {

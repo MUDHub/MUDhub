@@ -7,7 +7,7 @@ env:
   SERVER_DIR: src/server/MUDhub.Server
   SOLUTION_DIR: src/server
   WORKDIR_CLIENT: src/client 
-  DOTNET_SDK_VERSION: 3.1.101 
+  DOTNET_SDK_VERSION: 3.1.103 
   WORKDIR_DEST: dest
 jobs:
   deploy_server:
