@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace MUDhub.Server.Controllers
 {
-    [Route("api/muds/{mudId}/areas")]
+    [Route("api/connections")]
     [ApiController]
     public class ConnectionsController : ControllerBase
     {
@@ -26,15 +26,14 @@ namespace MUDhub.Server.Controllers
             _areaManager = areaManager;
         }
 
-        [HttpGet("{areaId}/connections")]
+        [HttpGet()]
         [ProducesResponseType(typeof(IEnumerable<RoomConnectionApiModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(IEnumerable<RoomConnectionApiModel>), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetAllConnections([FromRoute] string mudId, [FromRoute] string areaId, [FromQuery] string? roomId = null)
+        public async Task<IActionResult> GetAllConnections([FromQuery] string? roomId = null, [FromQuery] string? areaId = null)
         {
             if (roomId is null)
             {
-                return Ok(_context.RoomConnections.Where(r => r.GameId == mudId
-                                                              && (r.Room1.Area.Id == areaId || r.Room2.Area.Id == areaId))
+                return Ok(_context.RoomConnections.Where(r => r.Room1.Area.Id == areaId || r.Room2.Area.Id == areaId)
                     .AsEnumerable()
                     .Select(r => RoomConnectionApiModel.ConvertFromRoomConnection(r)));
             }
@@ -46,10 +45,10 @@ namespace MUDhub.Server.Controllers
             return Ok(result.AllConnections.Select(c => RoomConnectionApiModel.ConvertFromRoomConnection(c)));
         }
 
-        [HttpGet("{areaId}/connections/{connectionId}")]
-        [ProducesResponseType(typeof(RoomConnectionApiModel),StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(RoomConnectionApiModel),StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<RoomConnectionApiModel>> GetConnection([FromRoute] string mudId,[FromRoute]string areaId, [FromRoute] string connectionId)
+        [HttpGet("{connectionId}")]
+        [ProducesResponseType(typeof(RoomConnectionApiModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(RoomConnectionApiModel), StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<RoomConnectionApiModel>> GetConnection([FromRoute] string connectionId)
         {
             var connection = await _context.RoomConnections.FindAsync(connectionId)
                 .ConfigureAwait(false);
@@ -57,14 +56,10 @@ namespace MUDhub.Server.Controllers
             {
                 return BadRequest();
             }
-            if (connection.GameId == mudId)
-            {
-                return Ok(RoomConnectionApiModel.ConvertFromRoomConnection(connection));
-            }
-            return BadRequest();
+            return Ok(RoomConnectionApiModel.ConvertFromRoomConnection(connection));
         }
 
-        [HttpDelete("{areaId}/connections/{connectionId}")]
+        [HttpDelete("{connectionId}")]
         [ProducesResponseType(typeof(ConnectionDeleteResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ConnectionDeleteResponse), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> DeleteConnection([FromRoute] string connectionId)
@@ -84,10 +79,10 @@ namespace MUDhub.Server.Controllers
             });
         }
 
-        [HttpPost("{areaId}/connections")]
-        [ProducesResponseType(typeof(CreateConnectionResponse),StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(CreateConnectionResponse),StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> CreateConnection([FromRoute] string areaId, [FromBody] CreateConnectionRequest args)
+        [HttpPost("connections")]
+        [ProducesResponseType(typeof(CreateConnectionResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(CreateConnectionResponse), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CreateConnection([FromBody] CreateConnectionRequest args)
         {
             if (args is null)
                 throw new ArgumentNullException(nameof(args));
@@ -120,7 +115,7 @@ namespace MUDhub.Server.Controllers
             });
         }
 
-        [HttpPut("{areaId}/connections/{connectionId}")]
+        [HttpPut("{connectionId}")]
         [ProducesResponseType(typeof(UpdateConnectionRequest), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(UpdateConnectionRequest), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateConnection([FromRoute] string connectionId, [FromBody] UpdateConnectionRequest args)

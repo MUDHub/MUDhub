@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MUDhub.Core.Abstracts;
+using MUDhub.Core.Models;
 using MUDhub.Core.Services;
 using MUDhub.Server.ApiModels.Areas;
 using MUDhub.Server.ApiModels.Items;
@@ -13,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace MUDhub.Server.Controllers
 {
-    [Route("api/muds/{mudId}/areas/{areaId}")]
+    [Route("api/rooms")]
     [ApiController]
     public class RoomsController : ControllerBase
     {
@@ -28,20 +29,22 @@ namespace MUDhub.Server.Controllers
             _inventoryService = inventoryService;
         }
 
-        [HttpGet("rooms")]
+        [HttpGet()]
         [ProducesResponseType(typeof(IEnumerable<RoomApiModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(IEnumerable<RoomApiModel>), StatusCodes.Status400BadRequest)]
-        public IActionResult GetAllRooms([FromRoute] string mudId, [FromRoute] string areaId)
+        public IActionResult GetAllRooms([FromQuery] string? mudId = null, [FromQuery] string? areaId = null)
         {
-            return Ok(_context.Rooms.Where(r => r.GameId == mudId && r.Area.Id == areaId)
+            return Ok(_context.Rooms.Where(r => (mudId == null && areaId == null)
+                                                || r.GameId == mudId
+                                                || r.Area.Id == areaId)
                 .AsEnumerable()
                 .Select(r => RoomApiModel.ConvertFromRoom(r)));
         }
 
-        [HttpGet("rooms/{roomId}")]
+        [HttpGet("{roomId}")]
         [ProducesResponseType(typeof(RoomApiModel), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(RoomApiModel), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetRoom([FromRoute] string mudId, [FromRoute] string areaId, [FromRoute] string roomId)
+        public async Task<IActionResult> GetRoom([FromRoute] string roomId)
         {
             var room = await _context.Rooms.FindAsync(roomId)
                 .ConfigureAwait(false);
@@ -49,14 +52,10 @@ namespace MUDhub.Server.Controllers
             {
                 return BadRequest();
             }
-            if (room.GameId == mudId && room.AreaId == areaId)
-            {
-                return Ok(RoomApiModel.ConvertFromRoom(room));
-            }
-            return BadRequest();
+            return Ok(RoomApiModel.ConvertFromRoom(room));
         }
 
-        [HttpDelete("rooms/{roomId}")]
+        [HttpDelete("{roomId}")]
         [ProducesResponseType(typeof(RoomDeleteResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(RoomDeleteResponse), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> DeleteRoom([FromRoute] string roomId)
@@ -77,7 +76,7 @@ namespace MUDhub.Server.Controllers
                 IsDefaultRoom = result.IsDefaultRoom
             });
         }
-        [HttpDelete("rooms/{roomId}/iteminstances/{iteminstancesId}")]
+        [HttpDelete("{roomId}/iteminstances/{iteminstancesId}")]
         [ProducesResponseType(typeof(RoomDeleteResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(RoomDeleteResponse), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> DeleteItemInstances([FromRoute] string roomId, [FromRoute] string iteminstancesId)
@@ -97,15 +96,15 @@ namespace MUDhub.Server.Controllers
             });
         }
 
-        [HttpPost("rooms")]
+        [HttpPost()]
         [ProducesResponseType(typeof(CreateRoomResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(CreateRoomResponse), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> CreateRoom([FromRoute] string areaId, [FromBody] CreateRoomRequest args)
+        public async Task<IActionResult> CreateRoom([FromBody] CreateRoomRequest args)
         {
             if (args is null)
                 throw new ArgumentNullException(nameof(args));
 
-            var createResult = await _areaManager.CreateRoomAsync(HttpContext.GetUserId(), areaId,
+            var createResult = await _areaManager.CreateRoomAsync(HttpContext.GetUserId(), args.AreaId,
                 CreateRoomRequest.ConvertFromRequest(args)).ConfigureAwait(false);
 
             if (createResult.Success)
@@ -122,8 +121,8 @@ namespace MUDhub.Server.Controllers
                 DisplayMessage = createResult.DisplayMessage
             });
         }
-        
-        [HttpPost("rooms/{roomId}/iteminstances")]
+
+        [HttpPost("{roomId}/iteminstances")]
         [ProducesResponseType(typeof(CreateRoomResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(CreateRoomResponse), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateItemInstance([FromRoute] string roomId, [FromBody] ItemInstanceRequest args)
@@ -131,6 +130,7 @@ namespace MUDhub.Server.Controllers
             if (args is null)
                 throw new ArgumentNullException(nameof(args));
 
+            //Todo: maybe refator for smarter using for the client=> get inventory id by roomid...
             var createResult = await _inventoryService.CreateItemInstance(HttpContext.GetUserId(), args.InventoryId,
                 args.ItemId).ConfigureAwait(false);
 
@@ -149,7 +149,7 @@ namespace MUDhub.Server.Controllers
             });
         }
 
-        [HttpPut("rooms/{roomId}")]
+        [HttpPut("{roomId}")]
         [ProducesResponseType(typeof(UpdateRoomResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(UpdateRoomResponse), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateRoom([FromRoute] string roomId, [FromBody] UpdateRoomRequest args)

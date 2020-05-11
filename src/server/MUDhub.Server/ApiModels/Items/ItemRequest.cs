@@ -11,6 +11,8 @@ namespace MUDhub.Server.ApiModels.Items
         public string Description { get; set; } = string.Empty;
         [Required]
         public int Weight { get; set; }
+        [Required]
+        public string MudId { get; set; } = string.Empty;
         public string ImageKey { get; set; } = string.Empty;
 
         public static ItemArgs CreateArgs(ItemRequest request)

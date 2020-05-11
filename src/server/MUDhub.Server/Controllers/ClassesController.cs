@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MUDhub.Server.Controllers
 {
-    [Route("api/muds/{mudid}/classes")]
+    [Route("api/classes")]
     [ApiController]
     public class ClassesController : ControllerBase
     {
@@ -26,9 +26,9 @@ namespace MUDhub.Server.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<ClassApiModel>), StatusCodes.Status202Accepted)]
-        public IActionResult GetAllClasses([FromRoute] string mudid)
+        public IActionResult GetAllClasses([FromQuery] string? mudid = null)
             => Ok(_context.Classes
-                            .Where(c => c.GameId == mudid)
+                            .Where(c => mudid == null || c.GameId == mudid)
                             .AsEnumerable()
                             .Select(c => ClassApiModel.ConvertFromCharacterClass(c)));
 
@@ -37,10 +37,15 @@ namespace MUDhub.Server.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(ClassCreateResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ClassCreateResponse), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> CreateClassAsync(string mudid, ClassCreateRequest request)
+        public async Task<IActionResult> CreateClassAsync(ClassCreateRequest request)
         {
+            if (request is null)
+            {
+                throw new System.ArgumentNullException(nameof(request));
+            }
+
             var result = await _characterManager
-                .CreateClassAsync(HttpContext.GetUserId(), mudid, ClassCreateRequest.ConvertToCharacterClassArgs(request))
+                .CreateClassAsync(HttpContext.GetUserId(), request.MudId, ClassCreateRequest.ConvertToCharacterClassArgs(request))
                 .ConfigureAwait(false);
             if (result.Success)
             {
@@ -62,7 +67,7 @@ namespace MUDhub.Server.Controllers
         [HttpPut("{classid}")]
         [ProducesResponseType(typeof(ClassCreateResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ClassCreateResponse), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> UpdateClassAsync(string mudid, string classid, ClassCreateRequest request)
+        public async Task<IActionResult> UpdateClassAsync([FromRoute]string classid, ClassCreateRequest request)
         {
             var result = await _characterManager
                 .UpdateClassAsync(HttpContext.GetUserId(), classid, ClassCreateRequest.ConvertToCharacterClassArgs(request))
@@ -87,7 +92,7 @@ namespace MUDhub.Server.Controllers
         [HttpDelete("{classid}")]
         [ProducesResponseType(typeof(ClassCreateResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ClassCreateResponse), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> RemoveClassAsync(string mudid, string classid)
+        public async Task<IActionResult> RemoveClassAsync([FromRoute] string classid)
         {
             var result = await _characterManager
                 .RemoveClassAsync(HttpContext.GetUserId(), classid)

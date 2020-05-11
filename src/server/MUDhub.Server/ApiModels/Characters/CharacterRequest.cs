@@ -11,6 +11,8 @@ namespace MUDhub.Server.ApiModels.Characters
         public string RaceId { get; set; } = string.Empty;
         [Required]
         public string ClassId { get; set; } = string.Empty;
+        [Required]
+        public string MudId { get; set; } = string.Empty;
 
 
         public static CharacterArgs CreateArgs(CharacterRequest request)

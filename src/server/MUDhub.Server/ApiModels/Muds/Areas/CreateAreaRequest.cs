@@ -7,6 +7,8 @@ namespace MUDhub.Server.ApiModels.Muds.Areas
     {
         [Required]
         public string Name { get; set; } = string.Empty;
+        [Required]
+        public string MudId { get; set; }
         //TODO: Soll die Description required sein?
         public string Description { get; set; } = string.Empty;
 

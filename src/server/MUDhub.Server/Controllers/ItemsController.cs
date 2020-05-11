@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace MUDhub.Server.Controllers
 {
-    [Route("api/muds/{mudId}")]
+    [Route("api/items")]
     [ApiController]
     public class ItemsController : ControllerBase
     {
@@ -24,25 +24,25 @@ namespace MUDhub.Server.Controllers
             _itemManager = itemManager;
         }
 
-        [HttpGet("items")]
+        [HttpGet()]
         [ProducesResponseType(typeof(IEnumerable<ItemApiModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(IEnumerable<ItemApiModel>), StatusCodes.Status400BadRequest)]
-        public IActionResult GetAllItems([FromRoute] string mudId)
+        public IActionResult GetAllItems([FromQuery] string mudId)
         {
-            return Ok(_context.Items.Where(i => i.MudGameId == mudId)
+            return Ok(_context.Items.Where(i => mudId == null || i.MudGameId == mudId)
                 .AsEnumerable()
                 .Select(i => ItemApiModel.ConvertFromItem(i)));
         }
 
-        [HttpPost("items")]
+        [HttpPost()]
         [ProducesResponseType(typeof(IEnumerable<ItemResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(IEnumerable<ItemResponse>), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> CreateItem([FromRoute] string mudId, [FromBody] ItemRequest args)
+        public async Task<IActionResult> CreateItem([FromBody] ItemRequest args)
         {
             if (args is null)
                 throw new ArgumentNullException(nameof(args));
 
-            var createResult = await _itemManager.CreateItemAsync(HttpContext.GetUserId(), mudId,
+            var createResult = await _itemManager.CreateItemAsync(HttpContext.GetUserId(), args.MudId,
                 ItemRequest.CreateArgs(args)).ConfigureAwait(false);
 
             if (createResult.Success)
@@ -60,11 +60,11 @@ namespace MUDhub.Server.Controllers
             });
         }
 
-        [HttpDelete("items/{itemsId}")]
+        [HttpDelete("{itemsId}")]
         [ProducesResponseType(typeof(ItemResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ItemResponse), StatusCodes.Status400BadRequest)]
 
-        public async Task<IActionResult> DeleteItem([FromRoute] string mudId, [FromRoute] string itemsId)
+        public async Task<IActionResult> DeleteItem([FromRoute] string itemsId)
         {
             var result = await _itemManager.DeleteItemAsync(HttpContext.GetUserId(), itemsId)
                 .ConfigureAwait(false);
@@ -82,10 +82,10 @@ namespace MUDhub.Server.Controllers
             });
         }
 
-        [HttpPut("items/{itemsId}")]
+        [HttpPut("{itemsId}")]
         [ProducesResponseType(typeof(ItemResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ItemResponse), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> UpdateItem([FromRoute] string mudId, [FromRoute] string itemsId, [FromBody] ItemRequest args)
+        public async Task<IActionResult> UpdateItem([FromRoute] string itemsId, [FromBody] ItemRequest args)
         {
             if (args is null)
                 throw new ArgumentNullException(nameof(args));

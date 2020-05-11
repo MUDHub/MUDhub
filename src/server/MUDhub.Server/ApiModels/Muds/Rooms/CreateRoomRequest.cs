@@ -15,6 +15,8 @@ namespace MUDhub.Server.ApiModels.Muds.Rooms
         public int X { get; set; } = 0;
         [Required]
         public int Y { get; set; } = 0;
+        [Required]
+        public string AreaId { get; set; }
         public bool IsDefaultRoom { get; set; } = false;
 
         public static RoomArgs ConvertFromRequest(CreateRoomRequest request)

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MUDhub.Server.Controllers
 {
-    [Route("api/muds/{mudid}/races")]
+    [Route("api/races")]
     [ApiController]
     public class RacesController : ControllerBase
     {
@@ -26,19 +26,24 @@ namespace MUDhub.Server.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<RaceApiModel>), StatusCodes.Status202Accepted)]
-        public IActionResult GetAllRaces([FromRoute] string mudid)
+        public IActionResult GetAllRaces([FromQuery] string? mudid = null)
            => Ok(_context.Races
-                           .Where(c => c.GameId == mudid)
+                           .Where(c => mudid == null || c.GameId == mudid)
                            .AsEnumerable()
                            .Select(c => RaceApiModel.ConvertFromCharacterRace(c)));
 
         [HttpPost]
         [ProducesResponseType(typeof(RaceCreateResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(RaceCreateResponse), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> CreateRaceAsync(string mudid, RaceCreateRequest request)
+        public async Task<IActionResult> CreateRaceAsync([FromBody]RaceCreateRequest request)
         {
+            if (request is null)
+            {
+                throw new System.ArgumentNullException(nameof(request));
+            }
+
             var result = await _characterManager
-                .CreateRaceAsync(HttpContext.GetUserId(), mudid, RaceCreateRequest.ConvertToCharacterRaceArgs(request))
+                .CreateRaceAsync(HttpContext.GetUserId(), request.MudId, RaceCreateRequest.ConvertToCharacterRaceArgs(request))
                 .ConfigureAwait(false);
             if (result.Success)
             {
@@ -57,13 +62,13 @@ namespace MUDhub.Server.Controllers
             }
         }
 
-        [HttpPut("{raceid}")]
+        [HttpPut("{raceId}")]
         [ProducesResponseType(typeof(RaceCreateResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(RaceCreateResponse), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> UpdateRaceAsync(string mudid, string raceid, RaceCreateRequest request)
+        public async Task<IActionResult> UpdateRaceAsync([FromRoute]string raceId,  [FromBody]RaceCreateRequest request)
         {
             var result = await _characterManager
-                .UpdateRaceAsync(HttpContext.GetUserId(), raceid, RaceCreateRequest.ConvertToCharacterRaceArgs(request))
+                .UpdateRaceAsync(HttpContext.GetUserId(), raceId, RaceCreateRequest.ConvertToCharacterRaceArgs(request))
                 .ConfigureAwait(false);
             if (result.Success)
             {
@@ -82,13 +87,13 @@ namespace MUDhub.Server.Controllers
             }
         }
 
-        [HttpDelete("{raceid}")]
+        [HttpDelete("{raceId}")]
         [ProducesResponseType(typeof(RaceCreateResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(RaceCreateResponse), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> RemoveRaceAsync(string mudid, string raceid)
+        public async Task<IActionResult> RemoveRaceAsync([FromRoute]string raceId)
         {
             var result = await _characterManager
-                .RemoveRaceAsync(HttpContext.GetUserId(), raceid)
+                .RemoveRaceAsync(HttpContext.GetUserId(), raceId)
                 .ConfigureAwait(false);
             if (result.Success)
             {

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace MUDhub.Server.Controllers
 {
-    [Route("api/muds/{mudid}/characters")]
+    [Route("api/characters")]
     [ApiController]
     public class CharacterController : ControllerBase
     {
@@ -29,9 +29,14 @@ namespace MUDhub.Server.Controllers
         [HttpPost()]
         [ProducesResponseType(typeof(CharacterResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(BaseResponse),StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> CreateCharacterAsync([FromRoute] string mudid, [FromBody] CharacterRequest request)
+        public async Task<IActionResult> CreateCharacterAsync([FromBody] CharacterRequest request)
         {
-            var result = await _manager.CreateCharacterAsync(HttpContext.GetUserId(), mudid, CharacterRequest.CreateArgs(request)).ConfigureAwait(false);
+            if (request is null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            var result = await _manager.CreateCharacterAsync(HttpContext.GetUserId(), request.MudId, CharacterRequest.CreateArgs(request)).ConfigureAwait(false);
             if (result.Success)
             {
                 return Ok(new CharacterResponse
@@ -45,7 +50,7 @@ namespace MUDhub.Server.Controllers
         [HttpDelete("{characterId}")]
         [ProducesResponseType(typeof(CharacterDeleteResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(CharacterDeleteResponse), StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<CharacterDeleteResponse>> DeleteCharacterAsync([FromRoute] string mudid, [FromRoute] string characterId)
+        public async Task<ActionResult<CharacterDeleteResponse>> DeleteCharacterAsync([FromRoute] string characterId)
         {
             var result = await _manager.RemoveCharacterAsync(HttpContext.GetUserId(), characterId)
                 .ConfigureAwait(false);
@@ -65,7 +70,7 @@ namespace MUDhub.Server.Controllers
         [ProducesResponseType(typeof(CharacterApiModel), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(CharacterApiModel), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetCharacter([FromQuery] string gameId, [FromQuery] string characterId)
+        public async Task<IActionResult> GetCharacter([FromQuery] string characterId)
         {
             var character = await _context.Characters.FindAsync(characterId).ConfigureAwait(false);
             if (character is null)
@@ -79,16 +84,16 @@ namespace MUDhub.Server.Controllers
         [ProducesResponseType(typeof(IEnumerable<CharacterApiModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetCharacters([FromRoute] string mudid, [FromQuery] string? userId = null)
+        public async Task<IActionResult> GetCharacters([FromQuery] string? mudId = null, [FromQuery] string? userId = null)
         {
-            if (mudid is null)
+            if (mudId is null && userId is null)
             {
-                if (userId is null)
-                {
-                    return Ok(_context.Characters
-                        .AsEnumerable()
-                        .Select(c => CharacterApiModel.FromCharacter(c)));
-                }
+                return Ok(_context.Characters
+                   .AsEnumerable()
+                   .Select(c => CharacterApiModel.FromCharacter(c)));
+            }
+            if (!(userId is null))
+            {
                 var user = await _context.Users.FindAsync(userId).ConfigureAwait(false);
                 if (user is null)
                 {
@@ -99,15 +104,21 @@ namespace MUDhub.Server.Controllers
                     return Ok(user.Characters.Select(c => CharacterApiModel.FromCharacter(c)));
                 }
             }
-            var game = await _context.MudGames.FindAsync(mudid).ConfigureAwait(false);
-            if (game is null)
+            if(!(mudId is null))
             {
-                return BadRequest($"No MudGame found with gameId: {mudid}");
+                var game = await _context.MudGames.FindAsync(mudId).ConfigureAwait(false);
+                if (game is null)
+                {
+                    return BadRequest($"No MudGame found with gameId: {mudId}");
+                }
+                else
+                {
+                    return Ok(game.Characters.Select(c => CharacterApiModel.FromCharacter(c)));
+                }
             }
-            else
-            {
-                return Ok(game.Characters.Select(c => CharacterApiModel.FromCharacter(c)));
-            }
+
+            //Note: should never append
+            return BadRequest();
         }
     }
 }
