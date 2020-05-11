@@ -68,7 +68,6 @@ namespace MUDhub.Server.Controllers
             }
         }
 
-
         [HttpPost("{userid}/roles")]
         public async Task<ActionResult<ChangeRoleResponse>> AddUserToRole([FromRoute] string userid, [FromQuery] string role)
         {
