@@ -110,10 +110,7 @@ namespace MUDhub.Core.Services
                     };
                 }
 
-                if ()
-                {
-
-                }
+                //todo: same name check
 
                 var character = new Character
                 {
