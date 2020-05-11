@@ -110,6 +110,11 @@ namespace MUDhub.Core.Services
                     };
                 }
 
+                if ()
+                {
+
+                }
+
                 var character = new Character
                 {
                     Owner = user,

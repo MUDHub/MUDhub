@@ -2,6 +2,7 @@
 {
     public class CharacterResponse
     {
-        public CharacterApiModel Character { get; set; }
+        public CharacterApiModel? Character { get; set; }
+
     }
 }

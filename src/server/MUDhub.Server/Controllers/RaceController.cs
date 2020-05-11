@@ -25,7 +25,7 @@ namespace MUDhub.Server.Controllers
 
 
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<ClassApiModel>), StatusCodes.Status202Accepted)]
+        [ProducesResponseType(typeof(IEnumerable<RaceApiModel>), StatusCodes.Status202Accepted)]
         public IActionResult GetAllRaces([FromRoute] string mudid)
            => Ok(_context.Races
                            .Where(c => c.GameId == mudid)
