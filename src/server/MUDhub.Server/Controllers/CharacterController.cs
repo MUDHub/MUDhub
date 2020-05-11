@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MUDhub.Core.Abstracts;
 using MUDhub.Core.Models.Characters;
 using MUDhub.Core.Services;
+using MUDhub.Server.ApiModels;
 using MUDhub.Server.ApiModels.Characters;
 using MUDhub.Server.Helpers;
 using System;
@@ -26,14 +27,19 @@ namespace MUDhub.Server.Controllers
         }
 
         [HttpPost()]
+        [ProducesResponseType(typeof(CharacterResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(BaseResponse),StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateCharacterAsync([FromRoute] string mudid, [FromBody] CharacterRequest request)
         {
             var result = await _manager.CreateCharacterAsync(HttpContext.GetUserId(), mudid, CharacterRequest.CreateArgs(request)).ConfigureAwait(false);
             if (result.Success)
             {
-                return Ok(new CharacterResponse());
+                return Ok(new CharacterResponse
+                {
+                    Character = CharacterApiModel.FromCharacter(result.Character!)
+                });
             }
-            return Ok();
+            return BadRequest();
         }
 
         [HttpDelete("{characterId}")]

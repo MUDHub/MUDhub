@@ -1,59 +1,80 @@
 <mh-exit-button class="exit-button" routerLink="/muds"></mh-exit-button>
 <div class="header">{{ mud?.name }}...</div>
+
 <div class="grid">
-	<div class="panel" *ngIf="previousChars.length > 0">
+	<div class="panel">
 		<div class="panel-header">
-			...mit einem bestehendem Charakter beitreten
+			...mit einem früheren Charakter betreten
 		</div>
-		<div class="panel-content"></div>
+		<div class="panel-content-container">
+			<div class="panel-content">
+				<div class="character" *ngFor="let character of previousChars">
+					<div class="name">
+						{{ character.name }}
+					</div>
+					<div class="infos">
+						<table>
+							<tr>
+								<td>Rasse:</td>
+								<td>{{ character.raceName }}</td>
+							</tr>
+							<tr>
+								<td>Klasse:</td>
+								<td>{{ character.className }}</td>
+							</tr>
+							<tr>
+								<td>In Raum:</td>
+								<td>{{ character.roomName }}</td>
+							</tr>
+						</table>
+					</div>
+					<button mat-button (click)="join(character.id)">Fortsetzen</button>
+				</div>
+			</div>
+		</div>
 	</div>
 	<div class="panel">
-		<div class="panel-header">...mit einem neuen Charakter erkunden</div>
-		<div class="panel-content">
-			<form class="form" [formGroup]="character">
-				<mat-form-field appearance="fill">
-					<mat-label>Rasse auswählen</mat-label>
-					<mat-select [disabled]="races?.length === 0" formControlName="race">
-						<mat-option
-							*ngFor="let race of races"
-							[value]="race.raceId"
+		<div class="panel-header">
+			...mit einem neuen Charakter betreten
+		</div>
+		<div class="panel-content-container">
+			<div class="panel-content">
+				<form [formGroup]="character" (ngSubmit)="onSubmit()">
+					<mat-form-field class="form-row">
+						<mat-label>Rasse auswählen</mat-label>
+						<mat-select formControlName="race">
+							<mat-option
+								*ngFor="let race of races"
+								[value]="race.raceId"
+								>{{ race.name }}</mat-option
+							>
+						</mat-select>
+					</mat-form-field>
+					<mat-form-field class="form-row">
+						<mat-label>Klasse auswählen</mat-label>
+						<mat-select formControlName="class">
+							<mat-option
+								*ngFor="let class of classes"
+								[value]="class.classId"
+								>{{ class.name }}</mat-option
+							>
+						</mat-select>
+					</mat-form-field>
+					<mat-form-field class="form-row">
+						<mat-label>Charakter-Name</mat-label>
+						<input matInput type="text" formControlName="name" />
+					</mat-form-field>
+					<div class="form-row">
+						<button
+							mat-stroked-button
+							color="primary"
+							[disabled]="character.invalid"
 						>
-							{{ race.name }}
-						</mat-option>
-					</mat-select>
-				</mat-form-field>
-				<mat-form-field appearance="fill">
-					<mat-label>Klasse auswählen</mat-label>
-					<mat-select [disabled]="classes?.length === 0" formControlName="class">
-						<mat-option
-							*ngFor="let class of classes"
-							[value]="class.classId"
-						>
-							{{ class.name }}
-						</mat-option>
-					</mat-select>
-				</mat-form-field>
-				<mat-form-field appearance="fill">
-					<mat-label>Charakter-Name</mat-label>
-					<input type="text" matInput formControlName="name" />
-					<mat-error *ngIf="character.get('name').hasError('required')"
-						>Der Charakter muss einen Namen haben</mat-error
-					>
-					<mat-error *ngIf="character.get('name').hasError('minlength')"
-						>Der Name muss länger als
-						{{ character.get('name').errors.minlength.requiredLength }}
-						sein</mat-error
-					>
-				</mat-form-field>
-				<button
-					mat-stroked-button
-					color="primary"
-					(click)="join()"
-					[disabled]="character.invalid"
-				>
-					Beitreten
-				</button>
-			</form>
+							Beitreten
+						</button>
+					</div>
+				</form>
+			</div>
 		</div>
 	</div>
 </div>
