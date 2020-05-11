@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace MUDhub.Core.Services
 {
-    public class DatabaseInitializer : IHostedService
+    internal class DatabaseInitializer : IHostedService
     {
         private readonly IServiceScopeFactory _scopeFactory;
         private readonly ILogger? _logger;

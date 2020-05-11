@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MUDhub.Core.Services
 {
-    public class ItemManager : IItemManager
+    internal class ItemManager : IItemManager
     {
         private readonly MudDbContext _context;
         private readonly ILogger? _logger;

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MUDhub.Core.Services
 {
-    public class EmailService : IEmailService, IDisposable
+    internal class EmailService : IEmailService, IDisposable
     {
         private readonly MailConfiguration _mailConfiguration;
         private readonly ILogger<EmailService>? _logger;

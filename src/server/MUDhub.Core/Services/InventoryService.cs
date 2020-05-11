@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MUDhub.Core.Services
 {
-    public class InventoryService : IInventoryService
+    internal class InventoryService : IInventoryService
     {
         private readonly MudDbContext _context;
         private readonly ILogger? _logger;

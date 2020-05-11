@@ -45,7 +45,7 @@ namespace MUDhub.Core.Services
                 {
                     Success = false,
                     Errormessage = message,
-                    DisplayMessage = $"Kein Benutzer mit der Benutzer-Id: '{userId}' wurde gefunden."
+                    DisplayMessage = $"Kein Benutzer mit der Benutzer Id: '{userId}' wurde gefunden."
                 };
             }
             var mud = await _context.MudGames.FindAsync(mudId)
@@ -58,7 +58,7 @@ namespace MUDhub.Core.Services
                 {
                     Success = false,
                     Errormessage = message,
-                    DisplayMessage = $"Kein MudGame mit der MudGame-Id: '{mudId}' wurde gefunden."
+                    DisplayMessage = $"Kein MudGame mit der MudGame Id: '{mudId}' wurde gefunden."
                 };
             }
 
@@ -109,7 +109,7 @@ namespace MUDhub.Core.Services
                 {
                     Success = false,
                     Errormessage = message,
-                    DisplayMessage = $"Kein Benutzer mit der Benutzer-Id: '{userId}' wurde gefunden."
+                    DisplayMessage = $"Kein Benutzer mit der Benutzer Id: '{userId}' wurde gefunden."
                 };
             }
 
@@ -149,7 +149,7 @@ namespace MUDhub.Core.Services
                 {
                     Success = false,
                     Errormessage = message,
-                    DisplayMessage = $"Kein Raum mit der Raum-Id: '{room1Id}' wurde gefunden."
+                    DisplayMessage = $"Kein Raum mit der Raum Id: '{room1Id}' wurde gefunden."
                 };
             }
             if (room1.GameId != room2.GameId)
@@ -216,7 +216,7 @@ namespace MUDhub.Core.Services
                 {
                     Success = false,
                     Errormessage = message,
-                    DisplayMessage = $"Kein Benutzer mit der Benutzer-Id: '{userId}' wurde gefunden."
+                    DisplayMessage = $"Kein Benutzer mit der Benutzer Id: '{userId}' wurde gefunden."
                 };
             }
             var area = await _context.Areas.FindAsync(areaId)
@@ -229,7 +229,7 @@ namespace MUDhub.Core.Services
                 {
                     Success = false,
                     Errormessage = message,
-                    DisplayMessage = $"Keine Area mit der Area-Id: '{areaId}' wurde gefunden."
+                    DisplayMessage = $"Keine Area mit der Area Id: '{areaId}' wurde gefunden."
                 };
             }
 
@@ -309,7 +309,7 @@ namespace MUDhub.Core.Services
                 {
                     Success = false,
                     Errormessage = message,
-                    DisplayMessage = $"Kein Benutzer mit der Benutzer-Id: '{userId}' wurde gefunden."
+                    DisplayMessage = $"Kein Benutzer mit der Benutzer Id: '{userId}' wurde gefunden."
                 };
             }
 
@@ -323,7 +323,7 @@ namespace MUDhub.Core.Services
                 {
                     Success = false,
                     Errormessage = message,
-                    DisplayMessage = $"Keine Area mit der Area-Id: '{areaId}' wurde gefunden."
+                    DisplayMessage = $"Keine Area mit der Area Id: '{areaId}' wurde gefunden."
                 };
             }
 
@@ -386,7 +386,7 @@ namespace MUDhub.Core.Services
                 {
                     Success = false,
                     Errormessage = message,
-                    DisplayMessage = $"Kein Benutzer mit der Benutzer-Id: '{userId}' wurde gefunden."
+                    DisplayMessage = $"Kein Benutzer mit der Benutzer Id: '{userId}' wurde gefunden."
                 };
             }
 
@@ -443,7 +443,7 @@ namespace MUDhub.Core.Services
                 {
                     Success = false,
                     Errormessage = message,
-                    DisplayMessage = $"Kein Benutzer mit der Benutzer-Id: '{userId}' wurde gefunden."
+                    DisplayMessage = $"Kein Benutzer mit der Benutzer Id: '{userId}' wurde gefunden."
                 };
             }
 
@@ -457,7 +457,7 @@ namespace MUDhub.Core.Services
                 {
                     Success = false,
                     Errormessage = message,
-                    DisplayMessage = $"Kein Raum mit der Raum-Id: '{roomId}' wurde gefunden."
+                    DisplayMessage = $"Kein Raum mit der Raum Id: '{roomId}' wurde gefunden."
                 };
             }
 
@@ -521,7 +521,7 @@ namespace MUDhub.Core.Services
                 {
                     Success = false,
                     Errormessage = message,
-                    DisplayMessage = $"Kein Benutzer mit der Benutzer-Id: '{userId}' wurde gefunden."
+                    DisplayMessage = $"Kein Benutzer mit der Benutzer Id: '{userId}' wurde gefunden."
                 };
             }
 
@@ -535,7 +535,7 @@ namespace MUDhub.Core.Services
                 {
                     Success = false,
                     Errormessage = message,
-                    DisplayMessage = $"Kein Bereih mit der Bereich-Id: '{areaId}' wurde gefunden."
+                    DisplayMessage = $"Kein Bereih mit der Bereich Id: '{areaId}' wurde gefunden."
                 };
             }
 
@@ -590,7 +590,7 @@ namespace MUDhub.Core.Services
                 {
                     Success = false,
                     Errormessage = message,
-                    DisplayMessage = $"Kein Benutzer mit der Benutzer-Id: '{userId}' wurde gefunden."
+                    DisplayMessage = $"Kein Benutzer mit der Benutzer Id: '{userId}' wurde gefunden."
                 };
             }
             var connection = await _context.RoomConnections.FindAsync(connectionId)
@@ -603,7 +603,7 @@ namespace MUDhub.Core.Services
                 {
                     Success = false,
                     Errormessage = message,
-                    DisplayMessage = $"Keine Raum-Verbindung mit der Verbindungs-Id: '{connectionId}' wurde gefunden."
+                    DisplayMessage = $"Keine Raum-Verbindung mit der Verbindungs Id: '{connectionId}' wurde gefunden."
                 };
             }
 
@@ -646,7 +646,7 @@ namespace MUDhub.Core.Services
                 {
                     Success = false,
                     Errormessage = message,
-                    DisplayMessage = $"Kein Benutzer mit der Benutzer-Id: '{userId}' wurde gefunden."
+                    DisplayMessage = $"Kein Benutzer mit der Benutzer Id: '{userId}' wurde gefunden."
                 };
             }
 
@@ -660,7 +660,7 @@ namespace MUDhub.Core.Services
                 {
                     Success = false,
                     Errormessage = message,
-                    DisplayMessage = $"Kein Raum mit der Raum-Id: '{roomId}' wurde gefunden."
+                    DisplayMessage = $"Kein Raum mit der Raum Id: '{roomId}' wurde gefunden."
                 };
             }
 
@@ -730,7 +730,7 @@ namespace MUDhub.Core.Services
                 {
                     Success = false,
                     Errormessage = message,
-                    DisplayMessage = $"Kein Benutzer mit der Benutzer-Id: '{userId}' wurde gefunden."
+                    DisplayMessage = $"Kein Benutzer mit der Benutzer Id: '{userId}' wurde gefunden."
                 };
             }
 
@@ -744,7 +744,7 @@ namespace MUDhub.Core.Services
                 {
                     Success = false,
                     Errormessage = message,
-                    DisplayMessage = $"Kein Raum mit der Raum-Id: '{roomId}' wurde gefunden."
+                    DisplayMessage = $"Kein Raum mit der Raum Id: '{roomId}' wurde gefunden."
                 };
             }
 
@@ -795,7 +795,7 @@ namespace MUDhub.Core.Services
                 {
                     Success = false,
                     Errormessage = message,
-                    DisplayMessage = $"Kein Benutzer mit der Benutzer-Id: '{userId}' wurde gefunden."
+                    DisplayMessage = $"Kein Benutzer mit der Benutzer Id: '{userId}' wurde gefunden."
                 };
             }
             var roomInteraction = await _context.RoomInteractions.FindAsync(roomInteractionId)
