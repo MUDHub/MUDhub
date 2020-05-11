@@ -18,6 +18,11 @@ namespace MUDhub.Server.ApiModels.Auth
 
         public static RegistrationUserArgs ConvertFromRequest(RegisterRequest request)
         {
+            if (request is null)
+            {
+                throw new System.ArgumentNullException(nameof(request));
+            }
+
             return new RegistrationUserArgs()
             {
                 Email = request.Email,

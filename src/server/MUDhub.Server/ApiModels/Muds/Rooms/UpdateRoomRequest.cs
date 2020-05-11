@@ -12,6 +12,11 @@ namespace MUDhub.Server.ApiModels.Muds.Rooms
 
         public static UpdateRoomArgs ConvertUpdatesArgs(UpdateRoomRequest requestRoom)
         {
+            if (requestRoom is null)
+            {
+                throw new System.ArgumentNullException(nameof(requestRoom));
+            }
+
             return new UpdateRoomArgs
             {
                 Description = requestRoom.Description,

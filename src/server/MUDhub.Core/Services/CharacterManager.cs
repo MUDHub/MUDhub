@@ -174,7 +174,7 @@ namespace MUDhub.Core.Services
 
                 var characterclass = new CharacterClass
                 {
-                    Game = mud,
+                    Game = mud!,
                     Description = args.Desctiption,
                     Name = args.Name
                 };

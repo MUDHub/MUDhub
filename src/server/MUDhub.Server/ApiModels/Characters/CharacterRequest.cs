@@ -15,6 +15,11 @@ namespace MUDhub.Server.ApiModels.Characters
 
         public static CharacterArgs CreateArgs(CharacterRequest request)
         {
+            if (request is null)
+            {
+                throw new System.ArgumentNullException(nameof(request));
+            }
+
             return new CharacterArgs
             {
                 Name = request.Name,

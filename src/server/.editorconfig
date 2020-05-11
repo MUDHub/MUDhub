@@ -2,3 +2,6 @@
 
 # Default severity for analyzer diagnostics with category 'Globalization'
 dotnet_analyzer_diagnostic.category-Globalization.severity = silent
+
+# CS8618: Non-nullable field is uninitialized. Consider declaring as nullable.
+dotnet_diagnostic.CS8618.severity = silent

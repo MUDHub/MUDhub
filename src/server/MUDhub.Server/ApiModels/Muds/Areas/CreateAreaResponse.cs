@@ -4,6 +4,6 @@ namespace MUDhub.Server.ApiModels.Areas
 {
     public class CreateAreaResponse : BaseResponse
     {
-        public AreaApiModel Area { get; set; }
+        public AreaApiModel? Area { get; set; }
     }
 }

@@ -11,6 +11,11 @@ namespace MUDhub.Server.ApiModels.Muds.Areas
 
         public static UpdateAreaArgs ConvertUpdatesArgs(UpdateAreaRequest requestArea)
         {
+            if (requestArea is null)
+            {
+                throw new System.ArgumentNullException(nameof(requestArea));
+            }
+
             return new UpdateAreaArgs
             {
                 Description = requestArea.Description,

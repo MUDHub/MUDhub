@@ -13,6 +13,11 @@ namespace MUDhub.Server.ApiModels.Users
 
         public static UpdateUserArgs ConvertToUserArgs(UserUpdateRequest request)
         {
+            if (request is null)
+            {
+                throw new System.ArgumentNullException(nameof(request));
+            }
+
             return new UpdateUserArgs
             {
                 Firstname = request.FirstName,

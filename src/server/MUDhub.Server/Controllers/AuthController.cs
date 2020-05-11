@@ -79,6 +79,11 @@ namespace MUDhub.Server.Controllers
         [HttpPost("reset")]
         public async Task<IActionResult> ResetPasswordAsync([FromBody] ResetPasswordRequest args)
         {
+            if (args is null)
+            {
+                throw new ArgumentNullException(nameof(args));
+            }
+
             var isResetSuccessful = await _userManager.UpdatePasswortFromResetAsync(args.PasswordResetKey, args.NewPasword)
                 .ConfigureAwait(false);
             if (isResetSuccessful)

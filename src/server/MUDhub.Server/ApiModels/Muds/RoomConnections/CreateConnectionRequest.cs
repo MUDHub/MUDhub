@@ -20,6 +20,11 @@ namespace MUDhub.Server.ApiModels.Muds.RoomConnections
 
         public static RoomConnectionsArgs ConvertFromRequest(CreateConnectionRequest request)
         {
+            if (request is null)
+            {
+                throw new System.ArgumentNullException(nameof(request));
+            }
+
             return new RoomConnectionsArgs()
             {
                 Description = request.Description,

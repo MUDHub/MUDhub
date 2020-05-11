@@ -194,13 +194,15 @@ namespace MUDhub.Core.Services
 
         public async Task<bool> RejectUserToJoinAsync(string userId, string mudId)
         {
-            var joinRequest = await _context.MudJoinRequests.FindAsync(mudId, userId);
+            var joinRequest = await _context.MudJoinRequests.FindAsync(mudId, userId)
+                                                                .ConfigureAwait(false);
             //Todo: Handle if the JoinState does not exists, 
             //      check if the Mud AND User exists and only then go further.
             if (joinRequest is null)
             {
                 joinRequest = new MudJoinRequest(mudId, userId);
-                await _context.MudJoinRequests.AddAsync(joinRequest);
+                await _context.MudJoinRequests.AddAsync(joinRequest)
+                                                .ConfigureAwait(false);
             }
             if (joinRequest.State == MudJoinState.Rejected)
             {
@@ -241,6 +243,6 @@ namespace MUDhub.Core.Services
         }
 
         private async Task<MudGame> GetMudGameByIdAsync(string id)
-            => await _context.MudGames.FindAsync(id);
+            => await _context.MudGames.FindAsync(id).ConfigureAwait(false);
     }
 }

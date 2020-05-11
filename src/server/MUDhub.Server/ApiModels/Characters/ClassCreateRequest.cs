@@ -18,6 +18,11 @@ namespace MUDhub.Server.ApiModels.Characters
 
         public static CharacterClassArgs ConvertToCharacterClassArgs(ClassCreateRequest request)
         {
+            if (request is null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
             return new CharacterClassArgs
             {
                 Desctiption = request.Description,

@@ -79,7 +79,7 @@ namespace MUDhub.Server.Controllers
         [ProducesResponseType(typeof(IEnumerable<CharacterApiModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetCharacters([FromRoute] string mudid, [FromQuery] string userId = null)
+        public async Task<IActionResult> GetCharacters([FromRoute] string mudid, [FromQuery] string? userId = null)
         {
             if (mudid is null)
             {

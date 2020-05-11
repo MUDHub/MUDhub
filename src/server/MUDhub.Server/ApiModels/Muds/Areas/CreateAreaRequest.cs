@@ -12,6 +12,11 @@ namespace MUDhub.Server.ApiModels.Muds.Areas
 
         public static AreaArgs ConvertFromRequest(CreateAreaRequest request)
         {
+            if (request is null)
+            {
+                throw new System.ArgumentNullException(nameof(request));
+            }
+
             return new AreaArgs()
             {
                 Name = request.Name,

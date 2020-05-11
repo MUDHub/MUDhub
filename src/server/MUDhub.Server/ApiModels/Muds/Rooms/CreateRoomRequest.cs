@@ -19,6 +19,11 @@ namespace MUDhub.Server.ApiModels.Muds.Rooms
 
         public static RoomArgs ConvertFromRequest(CreateRoomRequest request)
         {
+            if (request is null)
+            {
+                throw new System.ArgumentNullException(nameof(request));
+            }
+
             return new RoomArgs()
             {
                 Name = request.Name,

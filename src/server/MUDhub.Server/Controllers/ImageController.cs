@@ -43,7 +43,7 @@ namespace MUDhub.Server.Controllers
                     .ConfigureAwait(false);
                 _logger?.LogInformation("Uploaded file {0} {1}", imagekey, imagepath);
             }
-            catch (Exception e)
+            catch (IOException e)
             {
                 _logger?.LogWarning(e, "Can't save the image on the pyhsical drive.");
                 return BadRequest(new ImageUploadResponse

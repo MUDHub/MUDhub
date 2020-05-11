@@ -36,6 +36,11 @@ namespace MUDhub.Core.Services
         /// <returns></returns>
         public async Task<AreaResult> CreateAreaAsync(string userId, string mudId, AreaArgs args)
         {
+            if (args is null)
+            {
+                throw new ArgumentNullException(nameof(args));
+            }
+
             var user = await GetUserById(userId).ConfigureAwait(false);
             if (user is null)
             {
@@ -100,6 +105,11 @@ namespace MUDhub.Core.Services
         /// <returns></returns>
         public async Task<ConnectionResult> CreateConnectionAsync(string userId, string room1Id, string room2Id, RoomConnectionsArgs args)
         {
+            if (args is null)
+            {
+                throw new ArgumentNullException(nameof(args));
+            }
+
             var user = await GetUserById(userId).ConfigureAwait(false);
             if (user is null)
             {
@@ -207,6 +217,11 @@ namespace MUDhub.Core.Services
         /// <returns></returns>
         public async Task<RoomResult> CreateRoomAsync(string userId, string areaId, RoomArgs args)
         {
+            if (args is null)
+            {
+                throw new ArgumentNullException(nameof(args));
+            }
+
             var user = await GetUserById(userId).ConfigureAwait(false);
             if (user is null)
             {
@@ -512,6 +527,11 @@ namespace MUDhub.Core.Services
         /// <returns></returns>
         public async Task<AreaResult> UpdateAreaAsync(string userId, string areaId, UpdateAreaArgs args)
         {
+            if (args is null)
+            {
+                throw new ArgumentNullException(nameof(args));
+            }
+
             var user = await GetUserById(userId).ConfigureAwait(false);
             if (user is null)
             {
@@ -581,6 +601,11 @@ namespace MUDhub.Core.Services
         /// <returns></returns>
         public async Task<ConnectionResult> UpdateConnectionAsync(string userId, string connectionId, UpdateRoomConnectionsArgs args)
         {
+            if (args is null)
+            {
+                throw new ArgumentNullException(nameof(args));
+            }
+
             var user = await GetUserById(userId).ConfigureAwait(false);
             if (user is null)
             {
@@ -637,6 +662,11 @@ namespace MUDhub.Core.Services
         /// <returns></returns>
         public async Task<RoomResult> UpdateRoomAsync(string userId, string roomId, UpdateRoomArgs args)
         {
+            if (args is null)
+            {
+                throw new ArgumentNullException(nameof(args));
+            }
+
             var user = await GetUserById(userId).ConfigureAwait(false);
             if (user is null)
             {
@@ -721,6 +751,11 @@ namespace MUDhub.Core.Services
         /// <returns></returns>
         public async Task<RoomInteractionResult> CreateRoomInteractionAsync(string userId, string roomId, RoomInteractionArgs args)
         {
+            if (args is null)
+            {
+                throw new ArgumentNullException(nameof(args));
+            }
+
             var user = await GetUserById(userId).ConfigureAwait(false);
             if (user is null)
             {
@@ -835,12 +870,12 @@ namespace MUDhub.Core.Services
         }
 
         /// <summary>
-        /// Is the user really the owner of the MudGame?
+        /// Is the user really the owner of the MudGame.
         /// </summary>
         /// <param name="user"></param>
         /// <param name="gameId"></param>
         /// <returns></returns>
-        private bool IsUserOwner(User user, string gameId)
+        private static bool IsUserOwner(User user, string gameId)
         {
             var mudGameOwner = user.MudGames.FirstOrDefault(mg => mg.Id == gameId);
             return !(mudGameOwner is null);
