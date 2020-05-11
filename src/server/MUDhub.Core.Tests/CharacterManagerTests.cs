@@ -1,10 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MUDhub.Core.Abstracts.Models.Characters;
+using MUDhub.Core.Models;
 using MUDhub.Core.Models.Characters;
 using MUDhub.Core.Models.Muds;
+using MUDhub.Core.Models.Rooms;
 using MUDhub.Core.Models.Users;
 using MUDhub.Core.Services;
 using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -315,6 +318,51 @@ namespace MUDhub.Core.Tests
                 IsPublic = true,
                 Owner = _user1
             };
+            _mudGame1.Areas.Add(new Area()
+            {
+                Rooms = new Collection<Room>
+                {
+                    new Room()
+                    {
+                        Game = _mudGame1,
+                        Name = "Roomname",
+                        IsDefaultRoom = true,
+                        X = 1,
+                        Y = 1,
+                        Description = "test descrption"
+                    }
+                }
+            });
+            _mudGame3.Areas.Add(new Area()
+            {
+                Rooms = new Collection<Room>
+                {
+                    new Room()
+                    {
+                        Game = _mudGame1,
+                        Name = "Roomname",
+                        IsDefaultRoom = true,
+                        X = 1,
+                        Y = 1,
+                        Description = "test descrption"
+                    }
+                }
+            });
+            _mudGame2.Areas.Add(new Area()
+            {
+                Rooms = new Collection<Room>
+                {
+                    new Room()
+                    {
+                        Game = _mudGame1,
+                        Name = "Roomname",
+                        IsDefaultRoom = true,
+                        X = 1,
+                        Y = 1,
+                        Description = "test descrption"
+                    }
+                }
+            });
 
             _user1.MudGames.Add(_mudGame1);
             _user1.MudGames.Add(_mudGame2);
