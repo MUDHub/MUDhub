@@ -5,6 +5,8 @@ import { AreaService } from 'src/app/services/area.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { IRoomCreateRequest } from 'src/app/model/areas/RoomDTO';
 import { ImageService } from 'src/app/services/image.service';
+import { IArea } from 'src/app/model/areas/IArea';
+import { MatSelectChange } from '@angular/material/select';
 
 @Component({
 	templateUrl: './room-create.component.html',
@@ -46,6 +48,7 @@ export class RoomCreateComponent implements OnInit {
 		this.mudid = this.route.snapshot.params.mudid;
 		this.areaid = this.route.snapshot.params.areaid;
 		this.roomid = this.route.snapshot.params.roomid;
+
 
 		if (this.roomid) {
 			const room = await this.areaService.getRoom(
