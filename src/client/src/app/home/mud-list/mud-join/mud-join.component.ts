@@ -1,5 +1,5 @@
 import { Component, OnInit, HostBinding } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MudService } from 'src/app/services/mud.service';
 import { IMud } from 'src/app/model/muds/IMud';
 import {
@@ -48,6 +48,7 @@ import { ICharacterCreateRequest } from 'src/app/model/character/CharacterDTO';
 export class MudJoinComponent implements OnInit {
 	constructor(
 		private route: ActivatedRoute,
+		private router: Router,
 		private mudService: MudService,
 		private characterService: CharacterService,
 		private auth: AuthService
@@ -100,12 +101,16 @@ export class MudJoinComponent implements OnInit {
 			classId: this.character.get('class').value,
 		};
 
-		console.log(args);
-
 		try {
 			const response = await this.characterService.createCharacter(this.mudid, args);
+			await this.join(response.character.id);
 		} catch (err) {
 			console.error('Error while creating character', err);
 		}
+	}
+
+
+	async join(characterid: string) {
+		await this.router.navigate(['/game', characterid]);
 	}
 }

@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment as env } from 'src/environments/environment';
-import { ICharacterCreateRequest } from '../model/character/CharacterDTO';
-import { IBaseResponse } from '../model/BaseResponse';
+import { ICharacterCreateRequest, ICharacterCreateResponse } from '../model/character/CharacterDTO';
 import { ICharacter } from '../model/character/ICharacter';
 
 @Injectable({
@@ -15,7 +14,7 @@ export class CharacterService {
 
 	public async createCharacter(mudid: string, args: ICharacterCreateRequest) {
 		return await this.http
-			.post<IBaseResponse>(`${env.api.url}/muds/${mudid}/characters`, args)
+			.post<ICharacterCreateResponse>(`${env.api.url}/muds/${mudid}/characters`, args)
 			.toPromise();
 	}
 
