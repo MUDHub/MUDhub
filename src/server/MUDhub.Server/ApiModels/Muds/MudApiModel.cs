@@ -1,4 +1,5 @@
-﻿using MUDhub.Core.Models.Muds;
+﻿using MUDhub.Core.Models;
+using MUDhub.Core.Models.Muds;
 using MUDhub.Server.ApiModels.Auth;
 using System;
 
@@ -12,6 +13,7 @@ namespace MUDhub.Server.ApiModels.Muds
         public string Description { get; set; } = string.Empty;
         public bool IsPublic { get; set; } = false;
         public bool AutoRestart { get; set; } = false;
+        public bool IsRunning { get; set; } = false;
         public UserApiModel Owner { get; set; } = new UserApiModel();
 
         public static MudApiModel ConvertFromMudGame(MudGame game)
@@ -27,7 +29,8 @@ namespace MUDhub.Server.ApiModels.Muds
                 MudId = game.Id,
                 Name = game.Name,
                 Owner = UserApiModel.CreateFromUser(game.Owner),
-                AutoRestart = game.AutoRestart
+                AutoRestart = game.AutoRestart,
+                IsRunning = game.State == MudGameState.Active
             };
         }
         
