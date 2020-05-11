@@ -43,8 +43,7 @@ export class ItemsComponent implements OnInit {
 	}
 
 	async addItem() {
-
-		let imageKey: IImageUploadResponse = null;
+		const imageKey: IImageUploadResponse = null;
 
 		const response: IMudItemResponse = await this.mudService.addMudItem(
 			this.mudId,
@@ -56,13 +55,15 @@ export class ItemsComponent implements OnInit {
 			}
 		);
 
-		this.items.push({
-			itemId: response.itemId,
-			name: response.name,
-			description: response.description,
-			weight: response.weight,
-			imageKey: response.imageKey,
-		});
+		if (response.succeeded) {
+			this.items.push({
+				itemId: response.item.itemId,
+				name: response.item.name,
+				description: response.item.description,
+				weight: response.item.weight,
+				imageKey: response.item.imageKey,
+			});
+		}
 
 		this.changeDialog();
 	}

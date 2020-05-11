@@ -55,11 +55,16 @@ export interface IMudClassResponse {
 }
 
 export interface IMudItemResponse {
-	itemId: string;
-	name: string;
-	description: string;
-	weight: number;
-	imageKey: string;
+	item: {
+		itemId: string;
+		name: string;
+		description: string;
+		weight: number;
+		imageKey: string;
+	};
+	displayMessage: string;
+	errormessage: string;
+	succeeded: boolean;
 }
 
 export interface IMudRaceRequest {
