@@ -1,0 +1,18 @@
+<div class="container">
+	<h2>Portale verwalten</h2>
+	<div class="form-row">
+		<mat-form-field>
+			<mat-label>Ziel-Area</mat-label>
+			<mat-select [(value)]="selectedArea">
+				<mat-option *ngFor="let area of areas" [value]="area">{{ area.name }}</mat-option>
+			</mat-select>
+		</mat-form-field>
+		<mat-form-field>
+			<mat-label>Ziel-Raum</mat-label>
+			<mat-select [disabled]="selectedArea === undefined || rooms?.length === 0" [(value)]="selectedRoom">
+				<mat-option *ngFor="let room of rooms" [value]="rooms">{{ room.name }}</mat-option>
+			</mat-select>
+		</mat-form-field>
+	</div>
+	<button mat-button (click)="create(selectedArea, selectedRoom)">Verbinden</button>
+</div>

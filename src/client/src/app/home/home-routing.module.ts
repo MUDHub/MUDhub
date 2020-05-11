@@ -21,6 +21,7 @@ import { RoomCreateComponent } from './mud-config/rooms/rooms-grid/room-create/r
 import { componentFactoryName } from '@angular/compiler';
 import { RoomsGridComponent } from './mud-config/rooms/rooms-grid/rooms-grid.component';
 import { MudConfigShellComponent } from './mud-config/mud-config-shell.component';
+import { RoomPortalComponent } from './mud-config/rooms/rooms-grid/room-portal/room-portal.component';
 
 const routes: Routes = [
 	{
@@ -96,6 +97,10 @@ const routes: Routes = [
 									{
 										path: ':roomid/edit',
 										component: RoomCreateComponent,
+									},
+									{
+										path: ':roomid/portals',
+										component: RoomPortalComponent,
 									},
 								],
 							},
