@@ -6,6 +6,7 @@ using Microsoft.Extensions.Options;
 using MUDhub.Core.Abstracts;
 using MUDhub.Core.Abstracts.Models;
 using MUDhub.Core.Abstracts.Models.Areas;
+using MUDhub.Core.Abstracts.Models.Characters;
 using MUDhub.Core.Abstracts.Models.Connections;
 using MUDhub.Core.Abstracts.Models.Inventories;
 using MUDhub.Core.Abstracts.Models.Rooms;
@@ -42,6 +43,7 @@ namespace MUDhub.Core.Services
             var userManager = serviceScope.ServiceProvider.GetRequiredService<IUserManager>();
             var areaManager = serviceScope.ServiceProvider.GetRequiredService<IAreaManager>();
             var itemManager = serviceScope.ServiceProvider.GetRequiredService<IItemManager>();
+            var charcterManager = serviceScope.ServiceProvider.GetRequiredService<ICharacterManager>();
 
             if (_options.DeleteDatabase)
             {
@@ -85,7 +87,7 @@ namespace MUDhub.Core.Services
                 var actualMud = await context.MudGames.FirstOrDefaultAsync(m => m.Name == "DHBW Horb").ConfigureAwait(false);
                 if (actualMud is null)
                 {
-                    await CreateDefaultDhbwMudDataAsync(context, mudManager, areaManager, itemManager)
+                    await CreateDefaultDhbwMudDataAsync(context, mudManager, areaManager, itemManager, charcterManager)
                     .ConfigureAwait(false);
                 }
                 else
@@ -95,7 +97,7 @@ namespace MUDhub.Core.Services
             }
         }
 
-        private async Task CreateDefaultDhbwMudDataAsync(MudDbContext context, IMudManager mudManager, IAreaManager areaManager, IItemManager itemManager)
+        private async Task CreateDefaultDhbwMudDataAsync(MudDbContext context, IMudManager mudManager, IAreaManager areaManager, IItemManager itemManager, ICharacterManager characterManager)
         {
             var user = await context.Users.FirstOrDefaultAsync(u => u.Email == _options.DefaultMudAdminEmail)
                                         .ConfigureAwait(false);
@@ -434,7 +436,7 @@ namespace MUDhub.Core.Services
             var item2 = await itemManager.CreateItemAsync(user.Id, resultGame1!.Id, new ItemArgs()
             {
                 Name = "Mathe-Buch",
-                Description = "Statitik 2",
+                Description = "Statistik 2",
                 Weight = 10
             }).ConfigureAwait(false);
             var item3 = await itemManager.CreateItemAsync(user.Id, resultGame1!.Id, new ItemArgs()
@@ -484,6 +486,58 @@ namespace MUDhub.Core.Services
                 Name = "RedBull",
                 Description = "Belebt Körper und Geist.",
                 Weight = 4
+            }).ConfigureAwait(false);
+
+            var race1 = await characterManager.CreateRaceAsync(user.Id, resultGame1!.Id, new CharacterRaceArgs()
+            {
+                Name = "Holländer",
+                Desctiption = "Ganz komischer Dialekt. Und alle haben ein 'van' im Namen :D"
+            }).ConfigureAwait(false);
+            var race2 = await characterManager.CreateRaceAsync(user.Id, resultGame1!.Id, new CharacterRaceArgs()
+            {
+                Name = "Badenzer",
+                Desctiption = "Ein Volk für sich."
+            }).ConfigureAwait(false);
+            var race3 = await characterManager.CreateRaceAsync(user.Id, resultGame1!.Id, new CharacterRaceArgs()
+            {
+                Name = "Deutsche",
+                Desctiption = "Lieben Autos und Bier!!!"
+            }).ConfigureAwait(false);
+            var race4 = await characterManager.CreateRaceAsync(user.Id, resultGame1!.Id, new CharacterRaceArgs()
+            {
+                Name = "Engländer",
+                Desctiption = "Lustige Inselbewohner."
+            }).ConfigureAwait(false);
+            var race5 = await characterManager.CreateRaceAsync(user.Id, resultGame1!.Id, new CharacterRaceArgs()
+            {
+                Name = "Schwabe",
+                Desctiption = "Spare, spare, Häusle baue"
+            }).ConfigureAwait(false);
+
+            var class1 = await characterManager.CreateClassAsync(user.Id, resultGame1!.Id, new CharacterClassArgs()
+            {
+                Name = "Student",
+                Desctiption = "Lernwillig und verdammt gutaussehend."
+            }).ConfigureAwait(false);
+            var class2 = await characterManager.CreateClassAsync(user.Id, resultGame1!.Id, new CharacterClassArgs()
+            {
+                Name = "Dozent",
+                Desctiption = "Ärgern gerne Studenten."
+            }).ConfigureAwait(false);
+            var class3 = await characterManager.CreateClassAsync(user.Id, resultGame1!.Id, new CharacterClassArgs()
+            {
+                Name = "Campusleiter",
+                Desctiption = "Nicht zu verwechseln mit der Leiter aus dem Hausmeister-Raum."
+            }).ConfigureAwait(false);
+            var class4 = await characterManager.CreateClassAsync(user.Id, resultGame1!.Id, new CharacterClassArgs()
+            {
+                Name = "Kantinenpersonal",
+                Desctiption = "Wichtigste Personen im Campus."
+            }).ConfigureAwait(false);
+            var class5 = await characterManager.CreateClassAsync(user.Id, resultGame1!.Id, new CharacterClassArgs()
+            {
+                Name = "Prüfungsaufsichten",
+                Desctiption = "Wachsam und Aufmerksam."
             }).ConfigureAwait(false);
         }
 
