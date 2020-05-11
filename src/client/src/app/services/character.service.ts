@@ -14,7 +14,7 @@ export class CharacterService {
 
 	public async createCharacter(mudid: string, args: ICharacterCreateRequest) {
 		return await this.http
-			.post<IBaseResponse>(`${env.api.url}/mud/${mudid}/character`, args)
+			.post<IBaseResponse>(`${env.api.url}/muds/${mudid}/character`, args)
 			.toPromise();
 	}
 }

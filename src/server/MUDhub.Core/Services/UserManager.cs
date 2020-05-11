@@ -44,7 +44,7 @@ namespace MUDhub.Core.Services
                                     $"- Firstname: {model.Firstname} {Environment.NewLine}" +
                                     $"- Lastname: {model.Firstname} {Environment.NewLine}" +
                                     $"- Emailname: {model.Firstname} {Environment.NewLine}" +
-                                    $"- Password: {new string('*', model.Password.Length)}");
+                                    $"- Password: {new string('*', model.Password!.Length)}");
                 return new RegisterResult()
                 {
                     Success = false

@@ -17,6 +17,9 @@ namespace MUDhub.Server.ApiModels.Characters
 
         public static ClassApiModel ConvertFromCharacterClass(CharacterClass classes)
         {
+            if (classes is null)
+                throw new ArgumentNullException(nameof(classes));
+
             return new ClassApiModel
             {
                 MudGameId = classes.GameId,

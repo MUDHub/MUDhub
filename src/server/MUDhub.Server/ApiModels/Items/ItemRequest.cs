@@ -11,11 +11,13 @@ namespace MUDhub.Server.ApiModels.Items
         public string Description { get; set; } = string.Empty;
         [Required]
         public int Weight { get; set; }
-        [Required]
         public string ImageKey { get; set; } = string.Empty;
 
         public static ItemArgs CreateArgs(ItemRequest request)
         {
+            if (request is null)
+                throw new System.ArgumentNullException(nameof(request));
+
             return new ItemArgs
             {
                 Name = request.Name,

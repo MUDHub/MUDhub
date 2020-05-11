@@ -4,7 +4,10 @@ import { VirtualTimeScheduler } from 'rxjs';
 import { AreaService } from 'src/app/services/area.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import swal from 'sweetalert2';
-import { IConnectionCreateRequest, LockType } from 'src/app/model/areas/ConnectionsDTO';
+import {
+	IConnectionCreateRequest,
+	LockType,
+} from 'src/app/model/areas/ConnectionsDTO';
 import { IConnection } from 'src/app/model/areas/IConnection';
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -101,10 +104,11 @@ export class RoomsGridComponent implements OnInit {
 				const dialogResult = await swal.fire({
 					icon: 'warning',
 					title: 'Warnung',
-					text: 'Durch das Löschen einer Spalte würden Räume gelöscht werden! Fortfahren?',
+					text:
+						'Durch das Löschen einer Spalte würden Räume gelöscht werden! Fortfahren?',
 					showCancelButton: true,
 					cancelButtonText: 'Nein',
-					confirmButtonText: 'Ja'
+					confirmButtonText: 'Ja',
 				});
 				if (dialogResult.value) {
 					for (const row of this.rooms) {
@@ -143,10 +147,11 @@ export class RoomsGridComponent implements OnInit {
 				const dialogResult = await swal.fire({
 					icon: 'warning',
 					title: 'Warnung',
-					text: 'Durch das Löschen einer Reihe würden Räume gelöscht werden! Fortfahren?',
+					text:
+						'Durch das Löschen einer Reihe würden Räume gelöscht werden! Fortfahren?',
 					showCancelButton: true,
 					cancelButtonText: 'Nein',
-					confirmButtonText: 'Ja'
+					confirmButtonText: 'Ja',
 				});
 				if (dialogResult.value) {
 					const toDelete = this.rooms[this.rooms.length - 1].filter(
@@ -194,11 +199,23 @@ export class RoomsGridComponent implements OnInit {
 				room.roomId
 			);
 
-			// tslint:disable-next-line: prefer-for-of
 			for (let y = 0; y < this.rooms.length; y++) {
 				for (let x = 0; x < this.rooms[y].length; x++) {
 					if (this.rooms[y][x]?.roomId === room.roomId) {
 						this.rooms[y][x] = undefined;
+						if (this.rooms[y][x + 1]) {
+							this.rooms[y][x + 1].connections.west = false;
+						}
+						if (x - 1 > 0 && this.rooms[y][x - 1]) {
+							this.rooms[y][x - 1].connections.east = false;
+						}
+						if (this.rooms[y + 1] && this.rooms[y + 1][x]) {
+							this.rooms[y + 1][x].connections.north = false;
+						}
+						if (this.rooms[y - 1] && this.rooms[y - 1][x]) {
+							this.rooms[y - 1][x].connections.south = false;
+						}
+						return;
 					}
 				}
 			}
@@ -222,28 +239,44 @@ export class RoomsGridComponent implements OnInit {
 			lockType: LockType.NoLock,
 		};
 		try {
-			const response = await this.areaService.createConnection(this.mudid, this.areaid, connection);
+			const response = await this.areaService.createConnection(
+				this.mudid,
+				this.areaid,
+				connection
+			);
 
 			for (let y = 0; y < this.rooms.length; y++) {
 				for (let x = 0; x < this.rooms[y].length; x++) {
 					const room = this.rooms[y][x];
 					if (response.connection.room1Id === room?.roomId) {
-						if (this.rooms[y][x + 1]?.roomId === response.connection.room2Id) {
+						if (
+							this.rooms[y][x + 1]?.roomId ===
+							response.connection.room2Id
+						) {
 							room.connections.east = true;
 							this.rooms[y][x + 1].connections.west = true;
 							continue;
 						}
-						if (this.rooms[y][x - 1]?.roomId === response.connection.room2Id) {
+						if (
+							this.rooms[y][x - 1]?.roomId ===
+							response.connection.room2Id
+						) {
 							room.connections.west = true;
 							this.rooms[y][x - 1].connections.east = true;
 							continue;
 						}
-						if (this.rooms[y + 1][x]?.roomId === response.connection.room2Id) {
+						if (
+							this.rooms[y + 1][x]?.roomId ===
+							response.connection.room2Id
+						) {
 							room.connections.south = true;
 							this.rooms[y + 1][x].connections.north = true;
 							continue;
 						}
-						if (this.rooms[y - 1][x]?.roomId === response.connection.room2Id) {
+						if (
+							this.rooms[y - 1][x]?.roomId ===
+							response.connection.room2Id
+						) {
 							room.connections.north = true;
 							this.rooms[y - 1][x].connections.south = true;
 							continue;
@@ -257,31 +290,53 @@ export class RoomsGridComponent implements OnInit {
 	}
 
 	public async deleteConnection(room1: IRoom, room2: IRoom) {
-		const connectionsForRoom = await this.areaService.getConnections(this.mudid, this.areaid, room1.roomId);
-		const connectionToDelete = connectionsForRoom.filter(c => c.room1Id === room2.roomId || c.room2Id === room2.roomId)[0];
+		const connectionsForRoom = await this.areaService.getConnections(
+			this.mudid,
+			this.areaid,
+			room1.roomId
+		);
+		const connectionToDelete = connectionsForRoom.filter(
+			c => c.room1Id === room2.roomId || c.room2Id === room2.roomId
+		)[0];
 		if (connectionToDelete) {
 			try {
-				await this.areaService.deleteConnection(this.mudid, this.areaid, connectionToDelete.id);
+				await this.areaService.deleteConnection(
+					this.mudid,
+					this.areaid,
+					connectionToDelete.id
+				);
 				for (let y = 0; y < this.rooms.length; y++) {
 					for (let x = 0; x < this.rooms[y].length; x++) {
 						const room = this.rooms[y][x];
 						if (room?.roomId === connectionToDelete.room1Id) {
-							if (this.rooms[y][x + 1]?.roomId === connectionToDelete.room2Id) {
+							if (
+								this.rooms[y][x + 1]?.roomId ===
+								connectionToDelete.room2Id
+							) {
 								room.connections.east = false;
 								this.rooms[y][x + 1].connections.west = false;
 								continue;
 							}
-							if (this.rooms[y][x - 1]?.roomId === connectionToDelete.room2Id) {
+							if (
+								this.rooms[y][x - 1]?.roomId ===
+								connectionToDelete.room2Id
+							) {
 								room.connections.west = false;
 								this.rooms[y][x - 1].connections.east = false;
 								continue;
 							}
-							if (this.rooms[y + 1][x]?.roomId === connectionToDelete.room2Id) {
+							if (
+								this.rooms[y + 1][x]?.roomId ===
+								connectionToDelete.room2Id
+							) {
 								room.connections.south = false;
 								this.rooms[y + 1][x].connections.north = false;
 								continue;
 							}
-							if (this.rooms[y - 1][x]?.roomId === connectionToDelete.room2Id) {
+							if (
+								this.rooms[y - 1][x]?.roomId ===
+								connectionToDelete.room2Id
+							) {
 								room.connections.north = false;
 								this.rooms[y - 1][x].connections.south = false;
 								continue;
@@ -294,7 +349,10 @@ export class RoomsGridComponent implements OnInit {
 				swal.fire({
 					icon: 'error',
 					title: 'Fehler',
-					text: err.error?.displayMessage || err.error?.errormessage || 'Fehler beim Löschen der Verbindung'
+					text:
+						err.error?.displayMessage ||
+						err.error?.errormessage ||
+						'Fehler beim Löschen der Verbindung',
 				});
 			}
 		}

@@ -88,7 +88,20 @@ namespace MUDhub.Core.Services
                 }
                 if (characterrace.Game.Id != mudid)
                 {
-                    var errormessage = $"Class with the id: '{args.RaceId}' exists but the mudid is not the right expected: '{mudid}' actual: '{characterrace.Game.Id}'.";
+                    var errormessage = $"Race with the id: '{args.RaceId}' exists but the mudid is not the right expected: '{mudid}' actual: '{characterrace.Game.Id}'.";
+                    _logger?.LogInformation(errormessage);
+                    return new CharacterResult()
+                    {
+                        Success = false,
+                        Errormessage = errormessage
+                    };
+                }
+
+                var defaultRoom = await _context.GetDefaultRoomAsync(mudid).ConfigureAwait(false);
+
+                if (defaultRoom is null)
+                {
+                    var errormessage = $"No defaultRoom found for mudgame {mudid}";
                     _logger?.LogInformation(errormessage);
                     return new CharacterResult()
                     {
@@ -105,7 +118,8 @@ namespace MUDhub.Core.Services
                     Race = characterrace,
                     Name = args.Name,
                     Health = DefaultHealth,
-                    Inventory = new Inventory()
+                    Inventory = new Inventory(),
+                    ActualRoom = defaultRoom
                 };
                 _context.Characters.Add(character);
                 await _context.SaveChangesAsync().ConfigureAwait(false);
@@ -164,7 +178,7 @@ namespace MUDhub.Core.Services
                 };
                 _context.Classes.Add(characterclass);
                 await _context.SaveChangesAsync().ConfigureAwait(false);
-                _logger?.LogInformation($"Successfully created new CharacterClass '{characterclass.Name}' with id: '{characterclass.Id}' in mudgame '{mudid}'");
+                _logger?.LogInformation($"Successfully created new CharacterClass '{characterclass.Name}' with id: '{characterclass.Id}' in mudgame '{mudid}' from '{user.Email}'");
                 return new CharacterClassResult
                 {
                     Class = characterclass,
@@ -218,7 +232,7 @@ namespace MUDhub.Core.Services
                 };
                 _context.Races.Add(characterRace);
                 await _context.SaveChangesAsync().ConfigureAwait(false);
-                _logger?.LogInformation($"Successfully created new CharacterClass '{characterRace.Name}' with id: '{characterRace.Id}' in mudgame '{mudid}'");
+                _logger?.LogInformation($"Successfully created new CharacterRace '{characterRace.Name}' with id: '{characterRace.Id}' in mudgame '{mudid}' from '{user.Email}'");
                 return new CharacterRaceResult
                 {
                     Race = characterRace,
@@ -227,7 +241,7 @@ namespace MUDhub.Core.Services
             }
             else
             {
-                var errormessage = $"User with the Userid: '{userid}' is not the owner from the mudgame '{mudid}' and can't create a new class.";
+                var errormessage = $"User with the Userid: '{userid}' is not the owner from the mudgame '{mudid}' and can't create a new Race.";
                 _logger?.LogWarning(errormessage);
                 return new CharacterRaceResult
                 {
@@ -280,7 +294,7 @@ namespace MUDhub.Core.Services
                 characterclass.ImageKey = args.ImageKey;
                 _context.Classes.Update(characterclass);
                 await _context.SaveChangesAsync().ConfigureAwait(false);
-                _logger?.LogInformation($"Successfully updated new CharacterClass '{characterclass.Name}' with id: '{characterclass.Id}' in mudgame '{mudgame.Name}'");
+                _logger?.LogInformation($"Successfully updated new CharacterClass '{characterclass.Name}' with id: '{characterclass.Id}' in mudgame '{mudgame.Name}'  from '{user.Email}'");
                 return new CharacterClassResult
                 {
                     Class = characterclass,
@@ -316,7 +330,7 @@ namespace MUDhub.Core.Services
             var mudgame = user.MudGames.FirstOrDefault(mg => mg.Races.Any(c => c.Id == raceId));
             if (mudgame is null)
             {
-                var errormessage = $"Class with the id '{raceId}' user is not the owner.";
+                var errormessage = $"Race with the id '{raceId}' user is not the owner.";
                 _logger?.LogWarning(errormessage);
                 return new CharacterRaceResult
                 {
@@ -333,7 +347,7 @@ namespace MUDhub.Core.Services
                 characterrace.ImageKey = args.ImageKey;
                 _context.Races.Update(characterrace);
                 await _context.SaveChangesAsync().ConfigureAwait(false);
-                _logger?.LogInformation($"Successfully updated new CharacterRace '{characterrace.Name}' with id: '{characterrace.Id}' in mudgame '{mudgame.Name}'");
+                _logger?.LogInformation($"Successfully updated new CharacterRace '{characterrace.Name}' with id: '{characterrace.Id}' in mudgame '{mudgame.Name}' from '{user.Email}'");
                 return new CharacterRaceResult
                 {
                     Race = characterrace,
@@ -425,7 +439,7 @@ namespace MUDhub.Core.Services
             _context.Classes.Remove(characterClass);
             await _context.SaveChangesAsync()
                             .ConfigureAwait(false);
-            _logger?.LogInformation($"Successfully removed new characterclass '{characterClass.Name}' with id: '{characterClass.Id}' in mudgame '{mudgame.Name}'");
+            _logger?.LogInformation($"Successfully removed new characterclass '{characterClass.Name}' with id: '{characterClass.Id}' in mudgame '{mudgame!.Name}' from '{user.Email}'");
 
             return new CharacterClassResult()
             {
@@ -461,7 +475,7 @@ namespace MUDhub.Core.Services
             var characterRace = mudgame?.Races.FirstOrDefault(c => c.Id == raceid);
             if (characterRace is null)
             {
-                var errormessage = $"User '{user.Email}' is not the owner from CharacterClass with the id: '{raceid}'";
+                var errormessage = $"User '{user.Email}' is not the owner from CharacterRace with the id: '{raceid}'";
                 _logger?.LogWarning(errormessage);
                 return new CharacterRaceResult
                 {
@@ -473,7 +487,7 @@ namespace MUDhub.Core.Services
             _context.Races.Remove(characterRace);
             await _context.SaveChangesAsync()
                             .ConfigureAwait(false);
-            _logger?.LogInformation($"Successfully removed new CharacterClass '{characterRace.Name}' with id: '{characterRace.Id}' in mudgame '{mudgame.Name}'");
+            _logger?.LogInformation($"Successfully removed new CharacterRace '{characterRace.Name}' with id: '{characterRace.Id}' in mudgame '{mudgame!.Name}' from '{user.Email}'");
             return new CharacterRaceResult()
             {
                 Race = characterRace,

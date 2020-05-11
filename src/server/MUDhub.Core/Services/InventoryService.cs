@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MUDhub.Core.Services
 {
-    public class InventoryService : IInventoryService
+    internal class InventoryService : IInventoryService
     {
         private readonly MudDbContext _context;
         private readonly ILogger? _logger;
@@ -104,7 +104,7 @@ namespace MUDhub.Core.Services
             inventory.UsedCapacity += item.Weight;
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
-            _logger?.LogInformation($"A item instance: '{itemInstance.Id}' was created in inventory: '{inventory.Id}'");
+            _logger?.LogInformation($"A item instance: '{itemInstance.Id}' was created in inventory: '{inventory.Id}' from '{user.Email}'");
             return new ItemInstanceResult()
             {
                 ItemInstance = itemInstance,
@@ -149,7 +149,7 @@ namespace MUDhub.Core.Services
             itemInstance.Inventory.UsedCapacity -= itemInstance.Item.Weight;
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
-            _logger?.LogInformation($"The item instance: '{itemInstance.Id}' has been removed from the Inventory: '{itemInstance.InventoryId}'");
+            _logger?.LogInformation($"The item instance: '{itemInstance.Id}' has been removed from the Inventory: '{itemInstance.InventoryId}'  from '{user.Email}'");
             return new ItemInstanceResult()
             {
                 Inventory = itemInstance.Inventory,

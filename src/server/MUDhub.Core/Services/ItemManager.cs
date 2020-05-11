@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MUDhub.Core.Services
 {
-    public class ItemManager : IItemManager
+    internal class ItemManager : IItemManager
     {
         private readonly MudDbContext _context;
         private readonly ILogger? _logger;
@@ -73,12 +73,13 @@ namespace MUDhub.Core.Services
                 Description = args.Description,
                 ImageKey = args.ImageKey,
                 Name = args.Name,
-                Weight = args.Weight
+                Weight = args.Weight,
+                MudGame = mud
             };
             _context.Items.Add(item);
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
-            _logger?.LogInformation($"A item: '{item.Id}' was created in MudGame: '{mud.Name}'");
+            _logger?.LogInformation($"A item: '{item.Id}' was created in MudGame: '{mud.Name}' from '{user.Email}'");
             return new ItemResult()
             {
                 Item = item
@@ -148,7 +149,7 @@ namespace MUDhub.Core.Services
 
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
-            _logger?.LogInformation($"The item: '{item.Name}' was updated: {Environment.NewLine}" +
+            _logger?.LogInformation($"The item: '{item.Name}' was updated from '{user.Email}': {Environment.NewLine}" +
                 $"- Name: {args.Name ?? "<no modification>"} {Environment.NewLine}" +
                 $"- Description: {args.Description ?? "<no modification>"} {Environment.NewLine}" +
                 $"- ImageKey: {args.ImageKey ?? "<no modification>"}");
@@ -207,7 +208,7 @@ namespace MUDhub.Core.Services
             _context.Items.Remove(item);
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
-            _logger?.LogInformation($"The item: '{item.Id}' has been removed from the MudGame: '{item.MudGameId}'");
+            _logger?.LogInformation($"The item: '{item.Id}' has been removed from the MudGame: '{item.MudGameId}' from '{user.Email}'");
             return new ItemResult()
             {
                 Item = item
@@ -220,7 +221,7 @@ namespace MUDhub.Core.Services
         /// <param name="user"></param>
         /// <param name="gameId"></param>
         /// <returns></returns>
-        private bool IsUserOwner(User user, string gameId)
+        private static bool IsUserOwner(User user, string gameId)
         {
             var mudGameOwner = user.MudGames.FirstOrDefault(mg => mg.Id == gameId);
             return !(mudGameOwner is null);

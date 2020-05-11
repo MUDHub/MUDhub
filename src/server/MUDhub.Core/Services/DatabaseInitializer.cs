@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace MUDhub.Core.Services
 {
-    public class DatabaseInitializer : IHostedService
+    internal class DatabaseInitializer : IHostedService
     {
         private readonly IServiceScopeFactory _scopeFactory;
         private readonly ILogger? _logger;
@@ -443,7 +443,7 @@ namespace MUDhub.Core.Services
                 Description = "Nice View"
             }).ConfigureAwait(false);
 
-            var resultRoom1 = await areaManager.CreateRoomAsync(user.Id, resultArea.Area.Id, new RoomArgs()
+            var resultRoom1 = await areaManager.CreateRoomAsync(user.Id, resultArea.Area!.Id, new RoomArgs()
             {
                 Name = "Dinner Room",
                 Description = "Yummy Food",

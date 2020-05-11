@@ -9,7 +9,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MUDhub.Core", "MUDhub.Core\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MUDhub.Core.Tests", "MUDhub.Core.Tests\MUDhub.Core.Tests.csproj", "{AC1828B8-0245-45FC-94DF-B46B936825C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MUDhub.Server.Tests", "MUDhub.Server.Tests\MUDhub.Server.Tests.csproj", "{4CCEFB41-C73F-4B3D-8229-6C3329DC52FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MUDhub.Server.Tests", "MUDhub.Server.Tests\MUDhub.Server.Tests.csproj", "{4CCEFB41-C73F-4B3D-8229-6C3329DC52FF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{139F4D04-BB4E-47E1-84B7-7076A2AC411A}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

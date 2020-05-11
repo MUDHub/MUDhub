@@ -83,7 +83,7 @@ export class MudService {
 	//SETUP - Race
 	async getMudRace(mudId: string): Promise<IMudRace[]> {
 		return await this.http
-			.get<IMudRace[]>(`${env.api.url}/mudgame/${mudId}/Races`)
+			.get<IMudRace[]>(`${env.api.url}/muds/${mudId}/Races`)
 			.toPromise();
 	}
 
@@ -93,7 +93,7 @@ export class MudService {
 	): Promise<IMudRaceResponse> {
 		return await this.http
 			.post<IMudRaceResponse>(
-				`${env.api.url}/mudgame/${mudId}/Races`,
+				`${env.api.url}/muds/${mudId}/Races`,
 				mudRace
 			)
 			.toPromise();
@@ -101,14 +101,14 @@ export class MudService {
 
 	async deleteMudRace(mudId: string, mudRace: IMudRace) {
 		return await this.http
-			.delete(`${env.api.url}/mudgame/${mudId}/Races/${mudRace.raceId}`)
+			.delete(`${env.api.url}/muds/${mudId}/Races/${mudRace.raceId}`)
 			.toPromise();
 	}
 
 	// SETUP - Class
 	async getMudClass(mudId: string): Promise<IMudClass[]> {
 		return await this.http
-			.get<IMudClass[]>(`${env.api.url}/mudgame/${mudId}/classes`)
+			.get<IMudClass[]>(`${env.api.url}/muds/${mudId}/classes`)
 			.toPromise();
 	}
 
@@ -118,7 +118,7 @@ export class MudService {
 	): Promise<IMudClassResponse> {
 		return await this.http
 			.post<IMudClassResponse>(
-				`${env.api.url}/mudgame/${mudId}/classes`,
+				`${env.api.url}/muds/${mudId}/classes`,
 				mudClass
 			)
 			.toPromise();
@@ -127,7 +127,7 @@ export class MudService {
 	async deleteMudClass(mudId: string, mudClass: IMudClass) {
 		return await this.http
 			.delete(
-				`${env.api.url}/mudgame/${mudId}/classes/${mudClass.classId}`
+				`${env.api.url}/muds/${mudId}/classes/${mudClass.classId}`
 			)
 			.toPromise();
 	}
