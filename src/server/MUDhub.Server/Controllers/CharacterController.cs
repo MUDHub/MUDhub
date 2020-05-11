@@ -1,15 +1,18 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MUDhub.Core.Abstracts;
+using MUDhub.Core.Models.Characters;
 using MUDhub.Core.Services;
 using MUDhub.Server.ApiModels.Characters;
 using MUDhub.Server.Helpers;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace MUDhub.Server.Controllers
 {
-    [Route("api/muds/{mudid}/character")]
+    [Route("api/muds/{mudid}/characters")]
     [ApiController]
     public class CharacterController : ControllerBase
     {
@@ -52,10 +55,25 @@ namespace MUDhub.Server.Controllers
             });
         }
 
-        [HttpGet("")]
+        [HttpGet("{characterId}")]
         [ProducesResponseType(typeof(CharacterApiModel), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(CharacterApiModel), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetCharacter([FromQuery] string gameId, [FromQuery] string userId)
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetCharacter([FromQuery] string gameId, [FromQuery] string characterId)
+        {
+            var character = await _context.Characters.FindAsync(characterId).ConfigureAwait(false);
+            if (character is null)
+            {
+                return NotFound();
+            }
+            return Ok(CharacterApiModel.FromCharacter(character));
+        }
+
+        [HttpGet()]
+        [ProducesResponseType(typeof(IEnumerable<CharacterApiModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetCharacters([FromQuery] string gameId, [FromQuery] string userId = null)
         {
             if (gameId is null)
             {
