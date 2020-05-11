@@ -56,7 +56,7 @@ namespace MUDhub.Core.Services
             }
             else
             {
-                _logger?.LogWarning($"Mud with id: '{mud.Id}', was successfully created, but not correctly modified. This should never happen!");
+                _logger?.LogWarning($"Mud with id: '{mud!.Id}', was successfully created, but not correctly modified. This should never happen!");
             }
             return mud;
         }

@@ -54,6 +54,12 @@ namespace MUDhub.Server.ApiModels.Muds.Rooms
 
         public static Connections CreateFromList(IEnumerable<RoomConnection> connections, Room actualRoom)
         {
+            if (connections is null)
+                throw new ArgumentNullException(nameof(connections));
+
+            if (actualRoom is null)
+                throw new ArgumentNullException(nameof(actualRoom));
+
             Connections c = new Connections();
             foreach (var connection in connections)
             {

@@ -14,6 +14,9 @@ namespace MUDhub.Server.ApiModels.Items
 
         public static ItemInstanceArgs CreateArgs(ItemInstanceRequest request)
         {
+            if (request is null)
+                throw new System.ArgumentNullException(nameof(request));
+
             return new ItemInstanceArgs
             {
                 ItemId = request.ItemId,

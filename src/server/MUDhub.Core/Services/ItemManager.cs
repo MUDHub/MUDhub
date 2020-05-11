@@ -221,7 +221,7 @@ namespace MUDhub.Core.Services
         /// <param name="user"></param>
         /// <param name="gameId"></param>
         /// <returns></returns>
-        private bool IsUserOwner(User user, string gameId)
+        private static bool IsUserOwner(User user, string gameId)
         {
             var mudGameOwner = user.MudGames.FirstOrDefault(mg => mg.Id == gameId);
             return !(mudGameOwner is null);

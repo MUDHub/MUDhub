@@ -33,7 +33,7 @@ namespace MUDhub.Core.Tests
                 Lastname = "last",
                 Firstname = "first"
             }).Result;
-            _userManager.AddRoleToUserAsync(_user.User.Id, Models.Users.Roles.Master);
+            _userManager.AddRoleToUserAsync(_user.User!.Id, Models.Users.Roles.Master);
 
         }
 
@@ -47,7 +47,7 @@ namespace MUDhub.Core.Tests
         {
             var mudName = "MyMud1";
             var mud = await _mudManager.CreateMudAsync(mudName, new MudCreationArgs() { OwnerId = _user.User!.Id });
-            var mudgame = await _context.MudGames.FindAsync(mud.Id);
+            var mudgame = await _context.MudGames.FindAsync(mud!.Id);
             Assert.NotNull(mud);
             Assert.NotNull(mudgame);
             Assert.Equal(mudgame.Id, mud.Id);
@@ -61,7 +61,7 @@ namespace MUDhub.Core.Tests
             var mudDescrption = "TestDescription";
             var mud = await _mudManager.CreateMudAsync("", new MudCreationArgs() { Description = mudDescrption, OwnerId = _user.User!.Id });
             Assert.NotNull(mud);
-            var mudgame = await _context.MudGames.FindAsync(mud.Id);
+            var mudgame = await _context.MudGames.FindAsync(mud!.Id);
             Assert.Equal(mudDescrption, mudgame.Description);
         }
 
@@ -72,7 +72,7 @@ namespace MUDhub.Core.Tests
 
             var mud = await _mudManager.CreateMudAsync("", new MudCreationArgs() { ImageKey = imageKey, OwnerId = _user.User!.Id });
             Assert.NotNull(mud);
-            var mudgame = await _context.MudGames.FindAsync(mud.Id);
+            var mudgame = await _context.MudGames.FindAsync(mud!.Id);
             Assert.Equal(imageKey, mudgame.ImageKey);
         }
 
@@ -83,7 +83,7 @@ namespace MUDhub.Core.Tests
             var autoRestart = true;
 
             var mud = await _mudManager.CreateMudAsync("", new MudCreationArgs() { AutoRestart = autoRestart, OwnerId = _user.User!.Id });
-            var mudgame = await _context.MudGames.FindAsync(mud.Id);
+            var mudgame = await _context.MudGames.FindAsync(mud!.Id);
             Assert.NotNull(mud);
             Assert.Equal(autoRestart, mudgame.AutoRestart);
 
@@ -96,7 +96,7 @@ namespace MUDhub.Core.Tests
             var autoRestart = false;
 
             var mud = await _mudManager.CreateMudAsync("", new MudCreationArgs() { AutoRestart = autoRestart, OwnerId = _user.User!.Id });
-            var mudgame = await _context.MudGames.FindAsync(mud.Id);
+            var mudgame = await _context.MudGames.FindAsync(mud!.Id);
             Assert.NotNull(mud);
             Assert.Equal(autoRestart, mudgame.AutoRestart);
         }
@@ -108,7 +108,7 @@ namespace MUDhub.Core.Tests
             var isPublic = true;
 
             var mud = await _mudManager.CreateMudAsync("", new MudCreationArgs() { IsPublic = isPublic, OwnerId = _user.User!.Id });
-            var mudgame = await _context.MudGames.FindAsync(mud.Id);
+            var mudgame = await _context.MudGames.FindAsync(mud!.Id);
             Assert.NotNull(mud);
             Assert.Equal(isPublic, mudgame.IsPublic);
         }
@@ -121,7 +121,7 @@ namespace MUDhub.Core.Tests
 
             var mud = await _mudManager.CreateMudAsync("", new MudCreationArgs() { IsPublic = isPublic, OwnerId = _user.User!.Id });
             Assert.NotNull(mud);
-            var mudgame = await _context.MudGames.FindAsync(mud.Id);
+            var mudgame = await _context.MudGames.FindAsync(mud!.Id);
             Assert.Equal(isPublic, mudgame.IsPublic);
         }
 
@@ -131,8 +131,8 @@ namespace MUDhub.Core.Tests
             var newmudName = "MyMud9";
 
             var mud = await _mudManager.CreateMudAsync("", new MudCreationArgs() { OwnerId = _user.User!.Id });
-            var res2 = await _mudManager.UpdateMudAsync(mud.Id, new MudUpdateArgs { Name = newmudName, OwnerId = _user.User!.Id });
-            var mudgame = await _context.MudGames.FindAsync(mud.Id);
+            var res2 = await _mudManager.UpdateMudAsync(mud!.Id, new MudUpdateArgs { Name = newmudName, OwnerId = _user.User!.Id });
+            var mudgame = await _context.MudGames.FindAsync(mud!.Id);
             Assert.NotNull(res2);
             Assert.Equal(newmudName, mudgame.Name);
         }
@@ -150,7 +150,7 @@ namespace MUDhub.Core.Tests
         {
 
             var mud = await _mudManager.CreateMudAsync("", new MudCreationArgs() { OwnerId = _user.User!.Id });
-            var res2 = await _mudManager.RemoveMudAsync(mud.Id);
+            var res2 = await _mudManager.RemoveMudAsync(mud!.Id);
             var mudgame = await _context.MudGames.FindAsync(mud.Id);
             Assert.True(res2);
             Assert.Null(mudgame);
@@ -169,7 +169,7 @@ namespace MUDhub.Core.Tests
             var userid = Guid.NewGuid().ToString();
 
             var mud = await _mudManager.CreateMudAsync("", new MudCreationArgs() { OwnerId = _user.User!.Id });
-            var result = await _mudManager.RequestUserForJoinAsync(userid, mud.Id);
+            var result = await _mudManager.RequestUserForJoinAsync(userid, mud!.Id);
             var join = await _context.MudJoinRequests.FindAsync(mud.Id, userid);
             Assert.True(result);
             Assert.Equal(MudJoinState.Requested, join.State);
@@ -181,7 +181,7 @@ namespace MUDhub.Core.Tests
             var mud = await _mudManager.CreateMudAsync("", new MudCreationArgs() { OwnerId = _user.User!.Id });
             var userId = Guid.NewGuid().ToString();
 
-            var result = await _mudManager.RequestUserForJoinAsync(userId, mud.Id);
+            var result = await _mudManager.RequestUserForJoinAsync(userId, mud!.Id);
             Assert.True(result);
             result = await _mudManager.RequestUserForJoinAsync(userId, mud.Id);
             Assert.False(result);
@@ -194,7 +194,7 @@ namespace MUDhub.Core.Tests
             var mud = await _mudManager.CreateMudAsync("", new MudCreationArgs() { IsPublic = true, OwnerId = _user.User!.Id });
             var userId = Guid.NewGuid().ToString();
 
-            var result = await _mudManager.RequestUserForJoinAsync(userId, mud.Id);
+            var result = await _mudManager.RequestUserForJoinAsync(userId, mud!.Id);
             var join = await _context.MudJoinRequests.FindAsync(mud.Id, userId);
             Assert.False(result);
             Assert.Null(join);
@@ -214,7 +214,7 @@ namespace MUDhub.Core.Tests
             var userid = Guid.NewGuid().ToString();
 
             var mud = await _mudManager.CreateMudAsync("", new MudCreationArgs() { OwnerId = _user.User!.Id });
-            var result = await _mudManager.RequestUserForJoinAsync(userid, mud.Id);
+            var result = await _mudManager.RequestUserForJoinAsync(userid, mud!.Id);
             result = await _mudManager.ApproveUserToJoinAsync(userid, mud.Id);
             var join = await _context.MudJoinRequests.FindAsync(mud.Id, userid);
             Assert.True(result);
@@ -228,7 +228,7 @@ namespace MUDhub.Core.Tests
             var userid = Guid.NewGuid().ToString();
 
             var mud = await _mudManager.CreateMudAsync("", new MudCreationArgs() { OwnerId = _user.User!.Id });
-            _ = await _mudManager.RequestUserForJoinAsync(userid, mud.Id);
+            _ = await _mudManager.RequestUserForJoinAsync(userid, mud!.Id);
             _ = await _mudManager.ApproveUserToJoinAsync(userid, mud.Id);
             var result = await _mudManager.ApproveUserToJoinAsync(userid, mud.Id);
             var join = await _context.MudJoinRequests.FindAsync(mud.Id, userid);
@@ -243,7 +243,7 @@ namespace MUDhub.Core.Tests
             var userid = Guid.NewGuid().ToString();
 
             var mud = await _mudManager.CreateMudAsync("", new MudCreationArgs() { OwnerId = _user.User!.Id });
-            var result = await _mudManager.ApproveUserToJoinAsync(userid, mud.Id);
+            var result = await _mudManager.ApproveUserToJoinAsync(userid, mud!.Id);
             var join = await _context.MudJoinRequests.FindAsync(mud.Id, userid);
             Assert.False(result);
             Assert.Null(join);
@@ -268,7 +268,7 @@ namespace MUDhub.Core.Tests
             var userid = Guid.NewGuid().ToString();
 
             var mud = await _mudManager.CreateMudAsync("", new MudCreationArgs() { OwnerId = _user.User!.Id });
-            _ = await _mudManager.RequestUserForJoinAsync(userid, mud.Id);
+            _ = await _mudManager.RequestUserForJoinAsync(userid, mud!.Id);
             var result = await _mudManager.RejectUserToJoinAsync(userid, mud.Id);
             var join = await _context.MudJoinRequests.FindAsync(mud.Id, userid);
             Assert.True(result);
@@ -281,7 +281,7 @@ namespace MUDhub.Core.Tests
             var userid = Guid.NewGuid().ToString();
 
             var mud = await _mudManager.CreateMudAsync("", new MudCreationArgs() { OwnerId = _user.User!.Id });
-            var result = await _mudManager.RejectUserToJoinAsync(userid, mud.Id);
+            var result = await _mudManager.RejectUserToJoinAsync(userid, mud!.Id);
             var join = await _context.MudJoinRequests.FindAsync(mud.Id, userid);
             Assert.True(result);
             Assert.Equal(MudJoinState.Rejected, join.State);
@@ -293,7 +293,7 @@ namespace MUDhub.Core.Tests
             var userid = Guid.NewGuid().ToString();
 
             var mud = await _mudManager.CreateMudAsync("", new MudCreationArgs() { OwnerId = _user.User!.Id });
-            _ = await _mudManager.RejectUserToJoinAsync(userid, mud.Id);
+            _ = await _mudManager.RejectUserToJoinAsync(userid, mud!.Id);
             var result = await _mudManager.RejectUserToJoinAsync(userid, mud.Id);
             var join = await _context.MudJoinRequests.FindAsync(mud.Id, userid);
             Assert.False(result);

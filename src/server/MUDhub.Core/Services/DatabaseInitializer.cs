@@ -92,7 +92,7 @@ namespace MUDhub.Core.Services
                 Description = "Nice View"
             }).ConfigureAwait(false);
 
-            var resultRoom1 = await areaManager.CreateRoomAsync(user.Id, resultArea.Area.Id, new RoomArgs()
+            var resultRoom1 = await areaManager.CreateRoomAsync(user.Id, resultArea.Area!.Id, new RoomArgs()
             {
                 Name = "Dinner Room",
                 Description = "Yummy Food",
@@ -110,7 +110,7 @@ namespace MUDhub.Core.Services
                 Y = 1
             }).ConfigureAwait(false);
 
-            var resultConnection = await areaManager.CreateConnectionAsync(user.Id, resultRoom1.Room.Id, resultRoom2.Room.Id, new RoomConnectionsArgs()
+            var resultConnection = await areaManager.CreateConnectionAsync(user.Id, resultRoom1.Room!.Id, resultRoom2.Room!.Id, new RoomConnectionsArgs()
             {
                 Description = "From Dinner to Sleep",
                 LockArgs = new LockArgs()

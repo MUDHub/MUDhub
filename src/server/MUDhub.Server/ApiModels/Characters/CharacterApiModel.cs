@@ -18,6 +18,9 @@ namespace MUDhub.Server.ApiModels.Characters
 
         public static CharacterApiModel FromCharacter(Character character)
         {
+            if (character is null)
+                throw new ArgumentNullException(nameof(character));
+
             return new CharacterApiModel
             {
                 Id = character.Id,

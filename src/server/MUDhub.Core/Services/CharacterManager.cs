@@ -425,7 +425,7 @@ namespace MUDhub.Core.Services
             _context.Classes.Remove(characterClass);
             await _context.SaveChangesAsync()
                             .ConfigureAwait(false);
-            _logger?.LogInformation($"Successfully removed new characterclass '{characterClass.Name}' with id: '{characterClass.Id}' in mudgame '{mudgame.Name}' from '{user.Email}'");
+            _logger?.LogInformation($"Successfully removed new characterclass '{characterClass.Name}' with id: '{characterClass.Id}' in mudgame '{mudgame!.Name}' from '{user.Email}'");
 
             return new CharacterClassResult()
             {
@@ -473,7 +473,7 @@ namespace MUDhub.Core.Services
             _context.Races.Remove(characterRace);
             await _context.SaveChangesAsync()
                             .ConfigureAwait(false);
-            _logger?.LogInformation($"Successfully removed new CharacterRace '{characterRace.Name}' with id: '{characterRace.Id}' in mudgame '{mudgame.Name}' from '{user.Email}'");
+            _logger?.LogInformation($"Successfully removed new CharacterRace '{characterRace.Name}' with id: '{characterRace.Id}' in mudgame '{mudgame!.Name}' from '{user.Email}'");
             return new CharacterRaceResult()
             {
                 Race = characterRace,

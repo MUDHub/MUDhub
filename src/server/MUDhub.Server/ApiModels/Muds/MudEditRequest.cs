@@ -16,6 +16,9 @@ namespace MUDhub.Server.ApiModels.Muds
 
         public static MudCreationArgs ConvertCreationArgs(MudEditRequest mudEdit, string ownerId)
         {
+            if (mudEdit is null)
+                throw new System.ArgumentNullException(nameof(mudEdit));
+
             return new MudCreationArgs
             {
                 AutoRestart = mudEdit.AutoRestart,
@@ -28,6 +31,9 @@ namespace MUDhub.Server.ApiModels.Muds
 
         public static MudUpdateArgs ConvertUpdatesArgs(MudEditRequest mudEdit, string ownerId)
         {
+            if (mudEdit is null)
+                throw new System.ArgumentNullException(nameof(mudEdit));
+
             return new MudUpdateArgs
             {
                 AutoRestart = mudEdit.AutoRestart,

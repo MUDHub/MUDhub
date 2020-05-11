@@ -19,7 +19,7 @@ namespace MUDhub.Server.Controllers
 
         public ImageController(IOptions<ServerConfiguration> options, ILogger<ImageController>? logger = null)
         {
-            _options = options.Value;
+            _options = options?.Value ?? throw new ArgumentNullException(nameof(options)); ;
             _logger = logger;
         }
 

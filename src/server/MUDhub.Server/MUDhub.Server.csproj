@@ -31,4 +31,7 @@
     <Folder Include="Migrations\" />
    
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
 </Project>
