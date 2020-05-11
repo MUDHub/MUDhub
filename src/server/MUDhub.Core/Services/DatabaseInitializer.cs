@@ -560,6 +560,7 @@ namespace MUDhub.Core.Services
                 Description = "Nice View"
             }).ConfigureAwait(false);
 
+
             var resultRoom1 = await areaManager.CreateRoomAsync(user.Id, resultArea.Area!.Id, new RoomArgs()
             {
                 Name = "Dinner Room",
