@@ -5,6 +5,7 @@ namespace MUDhub.Server.ApiModels.Items
 {
     public class ItemApiModel
     {
+        public string Id { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public int Weight { get; set; }
@@ -21,7 +22,8 @@ namespace MUDhub.Server.ApiModels.Items
                 Description = item.Description,
                 ImageKey = item.ImageKey,
                 Name = item.Name,
-                Weight = item.Weight
+                Weight = item.Weight,
+                Id = item.Id
             };
         }
     }

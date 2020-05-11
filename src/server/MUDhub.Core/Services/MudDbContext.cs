@@ -79,6 +79,10 @@ namespace MUDhub.Core.Services
                 .HasMany(g => g.Races)
                 .WithOne(r => r.Game)
                 .HasForeignKey(r => r.GameId);
+            modelBuilder.Entity<MudGame>()
+                .HasMany(mg => mg.Items)
+                .WithOne(i => i.MudGame)
+                .HasForeignKey(i => i.MudGameId);
 
             //Configures Character
             modelBuilder.Entity<Character>()

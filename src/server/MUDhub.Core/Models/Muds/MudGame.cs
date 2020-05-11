@@ -1,4 +1,5 @@
 using MUDhub.Core.Models.Characters;
+using MUDhub.Core.Models.Inventories;
 using MUDhub.Core.Models.Users;
 using System;
 using System.Collections.Generic;
@@ -41,6 +42,7 @@ namespace MUDhub.Core.Models.Muds
         public virtual ICollection<MudJoinRequest> JoinRequests { get; set; } = new Collection<MudJoinRequest>();
 
         public virtual ICollection<Character> Characters { get; set; } = new Collection<Character>();
+        public virtual ICollection<Item> Items { get; set; } = new Collection<Item>();
 
         public virtual ICollection<Area> Areas { get; set; } = new Collection<Area>();
         public virtual ICollection<CharacterClass> Classes { get; set; } = new Collection<CharacterClass>();
