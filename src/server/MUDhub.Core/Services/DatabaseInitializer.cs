@@ -50,7 +50,7 @@ namespace MUDhub.Core.Services
                 _logger?.LogWarning("Database will be deleted.");
                 context.Database.EnsureDeleted();
             }
-            if (context.Database.IsSqlite())
+            if (context.Database.IsSqlite() || context.Database.IsInMemory())
             {
                 _logger?.LogWarning("The Server may has a new Data schema Version, sqlite don't support some Migration operations. " +
                                     "The old database must be deleted and a will be automatically created. " +
