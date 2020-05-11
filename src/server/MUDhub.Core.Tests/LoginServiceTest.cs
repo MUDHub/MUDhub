@@ -1,15 +1,10 @@
-﻿using MUDhub.Core.Configurations;
+﻿using Microsoft.EntityFrameworkCore;
+using MUDhub.Core.Configurations;
+using MUDhub.Core.Helper;
+using MUDhub.Core.Models.Users;
 using MUDhub.Core.Services;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Moq;
-using MUDhub.Core.Abstracts;
-using MUDhub.Core.Abstracts.Models;
-using MUDhub.Core.Helper;
-using MUDhub.Core.Models;
 using Xunit;
 
 namespace MUDhub.Core.Tests
@@ -25,7 +20,7 @@ namespace MUDhub.Core.Tests
             var options = new DbContextOptionsBuilder<MudDbContext>()
                 .UseInMemoryDatabase("Testdatabase_LoginService")
                 .Options;
-            _context = new MudDbContext(options,useNotInUnitests: false);
+            _context = new MudDbContext(options, useNotInUnitests: false);
 
             _loginService = new LoginService(_context, new ServerConfiguration() { TokenSecret = "sdsdfsdfn 3b4t 45 tb45k n45 ö- zh56 zn56 jb34 " });
             _user = new User("sdfsdf")
@@ -56,7 +51,7 @@ namespace MUDhub.Core.Tests
             var email = "Max@Mustermann.de";
             var password = "PW1234";
             var loginResult = await _loginService.LoginUserAsync(email, password);
-            Assert.True(loginResult.Succeeded);
+            Assert.True(loginResult.Success);
         }
 
         [Fact]
@@ -65,7 +60,7 @@ namespace MUDhub.Core.Tests
             var email = "Tobi@Wurst.de";
             var password = "PW1234";
             var loginResult = await _loginService.LoginUserAsync(email, password);
-            Assert.False(loginResult.Succeeded);
+            Assert.False(loginResult.Success);
         }
 
         [Fact]
@@ -74,7 +69,7 @@ namespace MUDhub.Core.Tests
             var email = "Max@Mustermann.de";
             var password = "1234PW";
             var loginResult = await _loginService.LoginUserAsync(email, password);
-            Assert.False(loginResult.Succeeded);
+            Assert.False(loginResult.Success);
         }
     }
 }

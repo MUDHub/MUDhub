@@ -1,13 +1,12 @@
-﻿using MUDhub.Server.ApiModels.Auth;
-using System.Threading.Tasks;
-using MUDhub.Server.Controllers;
-using Xunit;
-using MUDhub.Core.Abstracts;
-using MUDhub.Core.Services;
+﻿using Microsoft.AspNetCore.Mvc;
 using Moq;
-using MUDhub.Core.Models;
+using MUDhub.Core.Abstracts;
 using MUDhub.Core.Abstracts.Models;
-using Microsoft.AspNetCore.Mvc;
+using MUDhub.Core.Models.Users;
+using MUDhub.Server.ApiModels.Auth;
+using MUDhub.Server.Controllers;
+using System.Threading.Tasks;
+using Xunit;
 
 namespace MUDhub.Server.Tests
 {
@@ -21,7 +20,12 @@ namespace MUDhub.Server.Tests
             var loginServiceMock = new Mock<ILoginService>();
             loginServiceMock
                 .Setup(ls => ls.LoginUserAsync("Test", "test"))
-                .Returns(Task.FromResult(new LoginResult(true, "token", new User())));
+                .Returns(Task.FromResult(new LoginResult()
+                {
+                    Success = true,
+                    Token = "token",
+                    User = new User()
+                }));
             var ls = loginServiceMock.Object;
 
             var authController = new AuthController(ls, Mock.Of<IUserManager>());
@@ -44,7 +48,12 @@ namespace MUDhub.Server.Tests
             var ls = Mock.Of<ILoginService>();
             var umMock = new Mock<IUserManager>();
             umMock.Setup(um => um.RegisterUserAsync(RegisterRequest.ConvertFromRequest(args)))
-                            .Returns(Task.FromResult(new RegisterResult(true, false, new User())));
+                            .Returns(Task.FromResult(new RegisterResult()
+                            {
+                                Success = true,
+                                UsernameAlreadyExists = false,
+                                User = new User()
+                            }));
 
 
             var authController = new AuthController(ls, umMock.Object);

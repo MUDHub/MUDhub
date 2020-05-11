@@ -6,6 +6,7 @@ using MUDhub.Core.Abstracts;
 using MUDhub.Core.Helper;
 using MUDhub.Core.Services;
 using MUDhub.Server.ApiModels.Auth;
+using MUDhub.Server.ApiModels.Muds;
 using MUDhub.Server.ApiModels.Users;
 
 namespace MUDhub.Server.Controllers
@@ -14,19 +15,19 @@ namespace MUDhub.Server.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly MudDbContext _dbContext;
+        private readonly MudDbContext _context;
         private readonly IUserManager _userManager;
 
         public UsersController(MudDbContext dbContext, IUserManager userManager)
         {
-            _dbContext = dbContext;
+            _context = dbContext;
             _userManager = userManager;
         }
 
 
         [HttpGet()]
         public ActionResult<IEnumerable<UserApiModel>> GetAllUsers()
-            => Ok(_dbContext.Users.AsEnumerable().Select(u => UserApiModel.CreateFromUser(u)));
+            => Ok(_context.Users.AsEnumerable().Select(u => UserApiModel.CreateFromUser(u)));
 
 
 
@@ -66,7 +67,6 @@ namespace MUDhub.Server.Controllers
 
             }
         }
-
 
         [HttpPost("{userid}/roles")]
         public async Task<ActionResult<ChangeRoleResponse>> AddUserToRole([FromRoute] string userid, [FromQuery] string role)
@@ -119,6 +119,16 @@ namespace MUDhub.Server.Controllers
             }
 
             return Ok();
+        }
+
+
+        [HttpGet("{userid}/request")]
+        public ActionResult<MudJoinsApiModel> GetMudRequests([FromRoute] string userid)
+        {
+            return Ok(_context.MudJoinRequests
+                                .Where(mjr => mjr.UserId == userid)
+                                .AsEnumerable()
+                                .Select(mjr => MudJoinsApiModel.CreateFromJoin(mjr)));
         }
     }
 }

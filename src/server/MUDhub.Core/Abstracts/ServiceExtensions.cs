@@ -1,15 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using MUDhub.Core.Configurations;
 using MUDhub.Core.Services;
 using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace MUDhub.Core.Abstracts
 {
@@ -19,9 +14,11 @@ namespace MUDhub.Core.Abstracts
 
         public static IServiceCollection AddMudServices(this IServiceCollection services)
         {
-            //Todo: Later change this to scoped.
             services.AddUserManagment();
             services.AddMudGameManagment();
+            services.AddAreaManagment();
+            services.AddCharacterManagment();
+            services.AddItemsManagement();
             return services;
         }
 
@@ -33,10 +30,48 @@ namespace MUDhub.Core.Abstracts
         /// <returns>the given service collection</returns>
         public static IServiceCollection AddUserManagment(this IServiceCollection services)
         {
-            //Todo: Later change this to scoped.
-            services.TryAddSingleton<ILoginService, LoginService>();
-            services.TryAddSingleton<IUserManager, UserManager>();
-            services.TryAddSingleton<IEmailService, EmailService>();
+            services.TryAddScoped<ILoginService, LoginService>();
+            services.TryAddScoped<IUserManager, UserManager>();
+            services.TryAddScoped<IEmailService, EmailService>();
+            return services;
+        }
+
+
+        /// <summary>
+        /// Adds all Services they relate to the mudhub AreaManagement, e.g. 
+        /// </summary>
+        /// <param name="services"></param>
+        /// <returns></returns>
+        public static IServiceCollection AddItemsManagement(this IServiceCollection services)
+        {
+            services.TryAddScoped<IInventoryService, InventoryService>();
+            services.TryAddScoped<IItemManager, ItemManager>();
+            return services;
+        }
+
+
+        /// <summary>
+        /// Adds all Services they relate to the mudhub AreaManagement, e.g. 
+        /// </summary>
+        /// <param name="services"></param>
+        /// <returns></returns>
+        public static IServiceCollection AddAreaManagment(this IServiceCollection services)
+        {
+            services.TryAddScoped<IAreaManager, AreaManager>();
+            services.TryAddScoped<INavigationService, NavigationService>();
+            return services;
+        }
+
+
+
+        /// <summary>
+        /// Adds all Services they relate to the mudhub AreaManagement, e.g. 
+        /// </summary>
+        /// <param name="services"></param>
+        /// <returns></returns>
+        public static IServiceCollection AddCharacterManagment(this IServiceCollection services)
+        {
+            services.TryAddScoped<ICharacterManager, CharacterManager>();
             return services;
         }
 
@@ -48,61 +83,57 @@ namespace MUDhub.Core.Abstracts
         /// <returns>the given service collection</returns>
         public static IServiceCollection AddMudGameManagment(this IServiceCollection services)
         {
-            //Todo: Later change this to scoped.
-            services.TryAddSingleton<IMudManager, MudManager>();
-            services.TryAddSingleton<IGameService, GameService>();
-
-
+            services.TryAddScoped<IMudManager, MudManager>();
+            services.TryAddScoped<IGameService, GameService>();
             return services;
         }
 
 
-        public static IServiceCollection AddTargetDatabase(this IServiceCollection services,IConfiguration configuration, DatabaseConfiguration conf)
+        public static IServiceCollection AddTargetDatabase(this IServiceCollection services, IConfiguration configuration, DatabaseConfiguration conf)
         {
             if (services is null)
                 throw new ArgumentNullException(nameof(services));
             if (conf is null)
                 throw new ArgumentNullException(nameof(conf));
 
-            //Todo: Later change this to Scoped!
-            var lifetime = ServiceLifetime.Singleton;
+            var lifetime = ServiceLifetime.Scoped;
 
             switch (conf.Provider)
             {
                 case DatabaseProvider.Sqlite:
-                {
-                    services.AddDbContext<MudDbContext>(options =>
-                        options.UseSqlite(conf.ConnectionString, b =>
-                        {
-                            b.MigrationsAssembly("MUDhub.Server");
-                        }),lifetime);
-                    break;
-                }
+                    {
+                        services.AddDbContext<MudDbContext>(options =>
+                            options.UseSqlite(conf.ConnectionString, b =>
+                            {
+                                b.MigrationsAssembly("MUDhub.Server");
+                            }), lifetime);
+                        break;
+                    }
                 case DatabaseProvider.MySql:
                 case DatabaseProvider.MariaDB:
-                {
-                    var mysqlConString = configuration.GetValue<string>("MYSQLCONNSTR_localdb");
-                    if (!(mysqlConString is null))
                     {
-                        conf.ConnectionString = mysqlConString;
-                        Console.WriteLine($"MysqlConnectionstring:'{mysqlConString}'");
-                    }
-                    services.AddDbContext<MudDbContext>(options =>
-                        options.UseMySql(conf.ConnectionString, b =>
+                        var mysqlConString = configuration.GetValue<string>("MYSQLCONNSTR_localdb");
+                        if (!(mysqlConString is null))
                         {
-                            b.MigrationsAssembly("MUDhub.Server");
-                        }), lifetime);
-                    break;
-                }
+                            conf.ConnectionString = mysqlConString;
+                            Console.WriteLine($"MysqlConnectionstring:'{mysqlConString}'");
+                        }
+                        services.AddDbContext<MudDbContext>(options =>
+                            options.UseMySql(conf.ConnectionString, b =>
+                            {
+                                b.MigrationsAssembly("MUDhub.Server");
+                            }), lifetime);
+                        break;
+                    }
                 case DatabaseProvider.MsSql:
-                {
-                    services.AddDbContext<MudDbContext>(options =>
-                       options.UseSqlServer(conf.ConnectionString, b =>
-                       {
-                           b.MigrationsAssembly("MUDhub.Server");
-                       }), lifetime);
-                    break;
-                }
+                    {
+                        services.AddDbContext<MudDbContext>(options =>
+                           options.UseSqlServer(conf.ConnectionString, b =>
+                           {
+                               b.MigrationsAssembly("MUDhub.Server");
+                           }), lifetime);
+                        break;
+                    }
                 default:
                     throw new ArgumentException($"No Supported Database Provider is used.", nameof(conf));
             }

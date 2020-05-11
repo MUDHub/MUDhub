@@ -1,7 +1,9 @@
-﻿using System;
+using MUDhub.Core.Models.Characters;
+using MUDhub.Core.Models.Inventories;
+using MUDhub.Core.Models.Users;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
 
 namespace MUDhub.Core.Models.Muds
 {
@@ -9,7 +11,6 @@ namespace MUDhub.Core.Models.Muds
     {
         public MudGame()
         {
-            JoinRequests = new List<MudJoinRequest>();
         }
 
         public MudGame(string id)
@@ -36,8 +37,15 @@ namespace MUDhub.Core.Models.Muds
         //Todo: Add Navigation properties
 
         public string OwnerId { get; set; } = string.Empty;
-        public User Owner { get; set; }
+        public virtual User Owner { get; set; }
 
-        public ICollection<MudJoinRequest> JoinRequests { get; set; } = new Collection<MudJoinRequest>();
+        public virtual ICollection<MudJoinRequest> JoinRequests { get; set; } = new Collection<MudJoinRequest>();
+
+        public virtual ICollection<Character> Characters { get; set; } = new Collection<Character>();
+        public virtual ICollection<Item> Items { get; set; } = new Collection<Item>();
+
+        public virtual ICollection<Area> Areas { get; set; } = new Collection<Area>();
+        public virtual ICollection<CharacterClass> Classes { get; set; } = new Collection<CharacterClass>();
+        public virtual ICollection<CharacterRace> Races { get; set; } = new Collection<CharacterRace>();
     }
 }

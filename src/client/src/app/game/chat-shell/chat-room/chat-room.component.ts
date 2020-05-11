@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IMessage } from 'src/app/model/IMessage';
+import { IMessage } from 'src/app/model/chat/IMessage';
 import { ChatService } from 'src/app/services/chat.service';
 
 @Component({

@@ -1,14 +1,17 @@
 <h1>Passwort zurücksetzen</h1>
 
-<form class="general-form" [formGroup]="form">
+<mat-error *ngIf="resetKey === undefined">Kein Reset-Key in URL gefunden</mat-error>
+
+<form class="general-form" [formGroup]="form" (ngSubmit)="onSubmit()">
 	<div class="form-row">
 		<mat-form-field>
 			<input
 				type="password"
+				name="password"
 				matInput
 				formControlName="password"
 				placeholder="Neues Passwort"
-				[errorStateMatcher]="matcher"
+				autocomplete="new-password"
 			/>
 			<mat-error>Bitte gebe ein neues Passwort ein!</mat-error>
 		</mat-form-field>
@@ -17,9 +20,11 @@
 		<mat-form-field>
 			<input
 				type="password"
+				name="password-repeat"
 				matInput
 				formControlName="passwordRepeat"
 				placeholder="Passwort wiederholen"
+				autocomplete="new-password"
 				[errorStateMatcher]="matcher"
 			/>
 			<mat-error *ngIf="form.hasError('notSame')"
@@ -33,10 +38,9 @@
 			color="primary"
 			type="submit"
 			class="reset-button"
-			[disabled]="form.invalid"
+			[disabled]="form.invalid || !resetKey"
 		>
 			Zurücksetzen
 		</button>
 	</div>
 </form>
-

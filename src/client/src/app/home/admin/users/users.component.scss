@@ -1,7 +1,18 @@
+@import "src/variables.scss";
+
 .users {
 	width: 100%;
 
 	td.actions, th.actions {
 		text-align: right;
 	}
+
+	.delete:hover {
+		color: $color-danger;
+	}
+}
+
+.roles {
+	list-style: none;
+	padding: 0;
 }

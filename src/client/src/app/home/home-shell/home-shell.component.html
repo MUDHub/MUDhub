@@ -1,27 +1,30 @@
 <mat-toolbar class="navbar">
-	<div class="title">MUDhub</div>
+	<img src="/assets/img/mudhub_logo.svg" />
 	<button mat-button routerLinkActive="mat-accent" routerLink="/muds">
 		Übersicht
 	</button>
-	<button mat-button routerLinkActive="mat-accent" routerLink="/my-games">
+	<!-- <button mat-button routerLinkActive="mat-accent" routerLink="/my-games">
 		Meine Charaktere
-	</button>
+	</button> -->
 	<button
 		mat-button
 		routerLinkActive="mat-accent"
 		routerLink="/my-muds"
-		*ngIf="user.roles.includes('Master')"
+		*ngIf="user?.roles.includes('Master')"
 	>
 		Meine MUDs
 	</button>
-	<button
-		mat-button
-		routerLinkActive="mat-accent"
-		routerLink="/admin/users"
-		*ngIf="user.roles.includes('Admin')"
-	>
-		User-Management
+	<button mat-button [matMenuTriggerFor]="adminMenu" *ngIf="user?.roles.includes('Admin')">
+		Admin
 	</button>
+	<mat-menu #adminMenu="matMenu">
+		<button mat-menu-item routerLink="/admin/users">
+			User-Management
+		</button>
+		<button mat-menu-item routerLink="/admin/muds">
+			MUD-Management
+		</button>
+	</mat-menu>
 
 	<mat-menu #userMenu="matMenu" xPosition="before">
 		<button mat-menu-item routerLink="/profile">Mein Profil</button>

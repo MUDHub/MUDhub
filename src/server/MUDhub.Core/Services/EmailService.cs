@@ -2,19 +2,15 @@
 using Microsoft.Extensions.Options;
 using MUDhub.Core.Abstracts;
 using MUDhub.Core.Configurations;
-using MUDhub.Core.Abstracts.Models;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
 using System.Net.Mail;
-using System.Runtime.Serialization;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace MUDhub.Core.Services
 {
-    public class EmailService : IEmailService, IDisposable
+    internal class EmailService : IEmailService, IDisposable
     {
         private readonly MailConfiguration _mailConfiguration;
         private readonly ILogger<EmailService>? _logger;
@@ -36,6 +32,12 @@ namespace MUDhub.Core.Services
             };
         }
 
+        /// <summary>
+        /// An email with a reset key is sent.
+        /// </summary>
+        /// <param name="receiver"></param>
+        /// <param name="resetKey"></param>
+        /// <returns></returns>
         public async Task<bool> SendAsync(string receiver, string resetKey)
         {
             using MailMessage email = CreateResetMailMessage(receiver, resetKey);
@@ -49,9 +51,16 @@ namespace MUDhub.Core.Services
                 _logger?.LogError(e, $"Can't deliver Email to target email address: '{receiver}'.");
                 return false;
             }
+            _logger?.LogInformation($"Can deliver Email to target email address: '{receiver}'.");
             return true;
         }
 
+        /// <summary>
+        /// Builds the email with the ResetKey.
+        /// </summary>
+        /// <param name="receiver"></param>
+        /// <param name="resetKey"></param>
+        /// <returns></returns>
         private MailMessage CreateResetMailMessage(string receiver, string resetKey)
         {
             var sender = new MailAddress(_mailConfiguration.Sender);
@@ -66,6 +75,11 @@ namespace MUDhub.Core.Services
             return email;
         }
 
+        /// <summary>
+        /// Builds the body of the email with the ResetKey.
+        /// </summary>
+        /// <param name="resetKey"></param>
+        /// <returns></returns>
         private string CreateResetMessage(string resetKey)
         {
             var resetLink = $"http://game.mudhub.de/login/reset?key={resetKey}";

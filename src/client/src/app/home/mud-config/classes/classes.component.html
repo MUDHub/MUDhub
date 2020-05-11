@@ -1,0 +1,73 @@
+<div class="button-class">
+	<button mat-flat-button color="primary" (click)="changeDialog()">
+		Hinzufügen
+	</button>
+</div>
+
+<div class="disable-background" *ngIf="dialog">
+	<div class="add-class">
+		<div class="exit-button">
+			<mh-exit-button (click)="changeDialog()"></mh-exit-button>
+		</div>
+
+		<br />
+
+		<form class="general-form" [formGroup]="form" (ngSubmit)="addClass()">
+			<div class="form-row">
+				<mat-form-field>
+					<input matInput name="name" type="text" formControlName="name" placeholder="Name" />
+					<mat-error>Bitte gebe einen Klassennamen ein</mat-error>
+				</mat-form-field>
+			</div>
+			<div class="form-row">
+				<mat-form-field appearance="fill">
+					<mat-label>Beschreibung</mat-label>
+					<textarea matInput formControlName="description" placeholder="Beschreibung" rows="5"></textarea>
+					<mat-error>Eine kurze Beschreibung der Rasse ist
+						erforderlich</mat-error>
+				</mat-form-field>
+			</div>
+			<div class="form-row">
+				<input accept="image/*" ide="imagekey" type="file" class="custom-file-input"
+					(change)="onFileSelected($event)" />
+			</div>
+			<div class="form-row">
+				<button mat-flat-button type="submit" color="primary" [disabled]="form.invalid">
+					Klasse hinzufügen
+				</button>
+			</div>
+		</form>
+	</div>
+</div>
+
+<table class="table-list">
+	<tr class="table-item first">
+		<th>Name</th>
+		<th>Beschreibung</th>
+		<th>Bild</th>
+		<th>Löschen</th>
+	</tr>
+	<tr class="table-item" *ngFor="let class of classes; index as index">
+		<td>{{ class.name }}</td>
+		<td>{{ class.description }}</td>
+		<td>
+			<div *ngIf="class.imageKey.length > 3">
+				<mat-icon>check</mat-icon>
+			</div>
+			<div *ngIf="class.imageKey == ''">
+				<mat-icon>clear</mat-icon>
+			</div>
+		</td>
+		<td>
+			<button mat-flat-button color="primary" (click)="deleteRow(index)">
+				Löschen
+			</button>
+		</td>
+	</tr>
+</table>
+
+<div class="button-menu">
+	<button mat-flat-button color="warn" routerLink="../../">Abbrechen</button>
+	<button mat-flat-button color="basic" routerLink="../races">Zurück</button>
+	<button mat-flat-button color="primary" routerLink="../items">Weiter</button>
+</div>

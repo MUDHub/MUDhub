@@ -1,0 +1,18 @@
+@import "src/variables.scss";
+
+table {
+	width: 100%;
+
+	td.actions, th.actions {
+		text-align: right;
+		width: 1%;
+	}
+
+	.description {
+		font-size: 80%;
+	}
+
+	.delete:hover {
+		color: $color-danger;
+	}
+}

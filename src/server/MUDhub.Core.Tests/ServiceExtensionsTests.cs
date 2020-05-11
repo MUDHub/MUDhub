@@ -1,13 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore.Internal;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Text;
-using Xunit;
-using Microsoft.EntityFrameworkCore;
-using MUDhub.Core.Services;
+﻿using Microsoft.Extensions.DependencyInjection;
 using MUDhub.Core.Abstracts;
+using MUDhub.Core.Services;
+using Xunit;
 
 namespace MUDhub.Core.Tests
 {

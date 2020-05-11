@@ -1,0 +1,28 @@
+@import "src/variables.scss";
+
+.table {
+	margin-bottom: 1rem;
+}
+
+section {
+	padding: 1.5rem;
+	background-color: #fff;
+
+	&:not(:last-child) {
+		margin-bottom: 2rem;
+	}
+}
+
+.action {
+	width: 1%;
+	padding-left: 0.2rem;
+	padding-right: 0.2rem;
+
+	.accept {
+		color: $color-success;
+	}
+
+	.block {
+		color: $color-danger;
+	}
+}

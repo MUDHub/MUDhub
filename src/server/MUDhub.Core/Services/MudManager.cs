@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
 using MUDhub.Core.Abstracts;
 using MUDhub.Core.Abstracts.Models;
+using MUDhub.Core.Models;
 using MUDhub.Core.Models.Muds;
+using MUDhub.Core.Models.Users;
 using System;
 using System.Globalization;
 using System.Linq;
@@ -26,6 +28,11 @@ namespace MUDhub.Core.Services
             var owner = await _context.Users.FindAsync(args.OwnerId)
                                                 .ConfigureAwait(false);
 
+            if (!owner.IsInRole(Roles.Master))
+            {
+                //No rights..
+                return null;
+            }
             if (owner is null)
             {
                 //Todo: add logging Message
@@ -37,6 +44,7 @@ namespace MUDhub.Core.Services
                 OwnerId = args.OwnerId
             };
             _context.MudGames.Add(mud);
+            mud.State = MudGameState.InEdit;
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
             _logger?.LogInformation($"Mudgame with the id: '{mud.Id}' created, from User '{owner.Email}'.");
@@ -48,7 +56,7 @@ namespace MUDhub.Core.Services
             }
             else
             {
-                _logger?.LogWarning($"Mud with id: '{mud.Id}', was successfully created, but not correctly modified. This should never happen!");
+                _logger?.LogWarning($"Mud with id: '{mud!.Id}', was successfully created, but not correctly modified. This should never happen!");
             }
             return mud;
         }
@@ -186,13 +194,15 @@ namespace MUDhub.Core.Services
 
         public async Task<bool> RejectUserToJoinAsync(string userId, string mudId)
         {
-            var joinRequest = await _context.MudJoinRequests.FindAsync(mudId, userId);
+            var joinRequest = await _context.MudJoinRequests.FindAsync(mudId, userId)
+                                                                .ConfigureAwait(false);
             //Todo: Handle if the JoinState does not exists, 
             //      check if the Mud AND User exists and only then go further.
             if (joinRequest is null)
             {
                 joinRequest = new MudJoinRequest(mudId, userId);
-                await _context.MudJoinRequests.AddAsync(joinRequest);
+                await _context.MudJoinRequests.AddAsync(joinRequest)
+                                                .ConfigureAwait(false);
             }
             if (joinRequest.State == MudJoinState.Rejected)
             {
@@ -206,8 +216,33 @@ namespace MUDhub.Core.Services
             return true;
         }
 
+        public async Task<bool> SetEditModeAsync(string mudId, string userid, bool isInEdit)
+        {
+            var user = await _context.GetUserByIdAsnyc(userid)
+                                      .ConfigureAwait(false);
+            if (user is null)
+            {
+                return false;
+            }
+            var mud = user.MudGames.FirstOrDefault(mg => mg.Id == mudId);
+            if (mud is null)
+            {
+                return false;
+            }
+            if (mud.State == MudGameState.InEdit && isInEdit)
+            {
+                return false;
+            }
+            if (mud.State != MudGameState.InEdit && !isInEdit)
+            {
+                return false;
+            }
+            mud.State = MudGameState.Active;
+            await _context.SaveChangesAsync().ConfigureAwait(false);
+            return true;
+        }
 
         private async Task<MudGame> GetMudGameByIdAsync(string id)
-            => await _context.MudGames.FindAsync(id);
+            => await _context.MudGames.FindAsync(id).ConfigureAwait(false);
     }
 }

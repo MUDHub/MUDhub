@@ -1,9 +1,5 @@
 ﻿using MUDhub.Core.Abstracts.Models;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MUDhub.Server.ApiModels.Muds
 {
@@ -20,6 +16,9 @@ namespace MUDhub.Server.ApiModels.Muds
 
         public static MudCreationArgs ConvertCreationArgs(MudEditRequest mudEdit, string ownerId)
         {
+            if (mudEdit is null)
+                throw new System.ArgumentNullException(nameof(mudEdit));
+
             return new MudCreationArgs
             {
                 AutoRestart = mudEdit.AutoRestart,
@@ -32,6 +31,9 @@ namespace MUDhub.Server.ApiModels.Muds
 
         public static MudUpdateArgs ConvertUpdatesArgs(MudEditRequest mudEdit, string ownerId)
         {
+            if (mudEdit is null)
+                throw new System.ArgumentNullException(nameof(mudEdit));
+
             return new MudUpdateArgs
             {
                 AutoRestart = mudEdit.AutoRestart,

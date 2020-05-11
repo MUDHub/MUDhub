@@ -1,21 +1,14 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Runtime;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.Options;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MUDhub.Core.Abstracts;
@@ -63,7 +56,14 @@ namespace MUDhub.Server
             else
                 app.UseSpaStaticFiles();
 
-            app.UseFileServer(true);
+            var imagepath = Path.Combine(Directory.GetCurrentDirectory(), _serverConfiguration.ImageResourcePath);
+            Directory.CreateDirectory(imagepath);
+            app.UseFileServer(new FileServerOptions
+            {
+                FileProvider = new PhysicalFileProvider(imagepath),
+                RequestPath = "/resources/images",
+                EnableDirectoryBrowsing = true
+            });
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>

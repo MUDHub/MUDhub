@@ -1,0 +1,23 @@
+<form class="container" [formGroup]="form" (ngSubmit)="onSubmit()">
+	<h2>Raum {{ isInEditMode ? 'bearbeiten' : 'hinzufügen'}}</h2>
+	<mat-form-field class="form-row">
+		<mat-label>Name</mat-label>
+		<input matInput type="text" formControlName="name" autofocus/>
+	</mat-form-field>
+	<mat-form-field class="form-row">
+		<mat-label>Beschreibung</mat-label>
+		<textarea matInput type="text" formControlName="description" rows="5"></textarea>
+	</mat-form-field>
+	<div class="form-row">
+		<mat-checkbox formControlName="isDefault">Eintrittsraum</mat-checkbox>
+	</div>
+	<div class="form-row">
+		<input type="file" />
+	</div>
+	<div class="actions">
+		<button mat-button type="submit" [disabled]="form.invalid">
+			{{ isInEditMode ? 'Speichern' : 'Erstellen'}}
+		</button>
+		<button mat-button type="button" [routerLink]="this.isInEditMode ? '../../' : '../'">Abbrechen</button>
+	</div>
+</form>

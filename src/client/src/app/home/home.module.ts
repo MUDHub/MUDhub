@@ -12,7 +12,15 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatRippleModule } from '@angular/material/core';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSelectModule } from '@angular/material/select';
 
 import { MudListComponent } from './mud-list/mud-list.component';
 import { MyGamesComponent } from './my-games/my-games.component';
@@ -20,6 +28,22 @@ import { MyMudsComponent } from './my-muds/my-muds.component';
 import { ProfileComponent } from './profile/profile.component';
 import { UsersComponent } from './admin/users/users.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MudJoinComponent } from './mud-list/mud-join/mud-join.component';
+import { SharedModule } from '../shared/shared.module';
+import { MudCreateComponent } from './mud-create/mud-create.component';
+import { RacesComponent } from './mud-config/races/races.component';
+import { RequestsComponent } from './my-muds/requests/requests.component';
+import { MudsComponent } from './admin/muds/muds.component';
+import { ClassesComponent } from './mud-config/classes/classes.component';
+import { RoomsComponent } from './mud-config/rooms/rooms.component';
+import { ItemsComponent } from './mud-config/items/items.component';
+import { FinishComponent } from './mud-config/finish/finish.component';
+import { AreaListComponent } from './mud-config/rooms/area-list/area-list.component';
+import { RoomsGridComponent } from './mud-config/rooms/rooms-grid/rooms-grid.component';
+import { RoomCreateComponent } from './mud-config/rooms/rooms-grid/room-create/room-create.component';
+import { MudConfigShellComponent } from './mud-config/mud-config-shell.component';
+import { AreaElementComponent } from './mud-config/rooms/area-list/area-element/area-element.component';
+import { RoomPortalComponent } from './mud-config/rooms/rooms-grid/room-portal/room-portal.component';
 
 @NgModule({
 	declarations: [
@@ -29,6 +53,21 @@ import { ReactiveFormsModule } from '@angular/forms';
 		MyMudsComponent,
 		ProfileComponent,
 		UsersComponent,
+		MudJoinComponent,
+		MudCreateComponent,
+		RacesComponent,
+		RequestsComponent,
+		MudsComponent,
+		ClassesComponent,
+		RoomsComponent,
+		ItemsComponent,
+		FinishComponent,
+		AreaListComponent,
+		RoomsGridComponent,
+		RoomCreateComponent,
+		MudConfigShellComponent,
+		AreaElementComponent,
+		RoomPortalComponent,
 	],
 	imports: [
 		CommonModule,
@@ -43,6 +82,16 @@ import { ReactiveFormsModule } from '@angular/forms';
 		MatFormFieldModule,
 		MatInputModule,
 		MatProgressSpinnerModule,
+		SharedModule,
+		MatCheckboxModule,
+		MatIconModule,
+		SharedModule,
+		MatSnackBarModule,
+		MatExpansionModule,
+		MatStepperModule,
+		MatRippleModule,
+		MatTooltipModule,
+		MatSelectModule,
 	],
 })
 export class HomeModule {}

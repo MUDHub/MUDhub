@@ -1,13 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace MUDhub.Server.ApiModels
+﻿namespace MUDhub.Server.ApiModels
 {
     public class BaseResponse
     {
+        public string? DisplayMessage { get; set; } = string.Empty;
         public string Errormessage { get; set; } = string.Empty;
         public bool Succeeded { get; set; } = true;
     }

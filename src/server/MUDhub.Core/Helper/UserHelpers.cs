@@ -1,6 +1,5 @@
 ﻿using Microsoft.IdentityModel.Tokens;
-using MUDhub.Core.Configurations;
-using MUDhub.Core.Models;
+using MUDhub.Core.Models.Users;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -73,12 +72,12 @@ namespace MUDhub.Core.Helper
             return tokenHandler.WriteToken(token);
         }
 
-        public static IEnumerable<string> ConvertRoleToList(Roles role) 
+        public static IEnumerable<string> ConvertRoleToList(Roles role)
             => Enum.GetValues(typeof(Roles))
                        .Cast<Roles>()
                        .Where(r => (r & role) != 0)
                        .Select(r => r.ToString());
-    
+
         public static Roles? ConvertToRole(string role)
         {
             var success = Enum.TryParse<Roles>(role, out var result);

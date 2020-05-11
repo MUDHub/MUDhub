@@ -1,19 +1,13 @@
 ﻿using MUDhub.Core.Helper;
-using MUDhub.Core.Models;
+using MUDhub.Core.Models.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace MUDhub.Server.ApiModels.Auth
 {
     public class UserApiModel
     {
-        public UserApiModel(User user)
-        {
-            CreateFromUser(user, this);
-        }
-
         public UserApiModel()
         {
 
@@ -32,22 +26,14 @@ namespace MUDhub.Server.ApiModels.Auth
             {
                 throw new ArgumentNullException(nameof(user));
             }
-            return new UserApiModel(user);
-        }
-        private static void CreateFromUser(User user, UserApiModel model)
-        {
-            if (user is null)
-                throw new ArgumentNullException(nameof(user));
-
-            if (model is null)
-                throw new ArgumentNullException(nameof(model));
-
-            model.Id = user.Id;
-            model.Email = user.Email;
-            model.FirstName = user.Name;
-            model.LastName = user.Lastname;
-            model.Roles = UserHelpers.ConvertRoleToList(user.Role);
-
+            return new UserApiModel()
+            {
+                Id = user.Id,
+                Email = user.Email,
+                FirstName = user.Name,
+                LastName = user.Lastname,
+                Roles = UserHelpers.ConvertRoleToList(user.Role)
+            };
         }
     }
 }

@@ -1,21 +1,10 @@
-﻿using MUDhub.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using MUDhub.Core.Models.Users;
 
 namespace MUDhub.Core.Abstracts.Models
 {
-    public class LoginResult
+    public class LoginResult : BaseResult
     {
-        public LoginResult(bool succeeded, string? token = null, User? user = null)
-        {
-            Succeeded = succeeded;
-            Token = token;
-            User = user;
-        }
-
-        public bool Succeeded { get; }
-        public string? Token { get; }
-        public User? User { get; }
+        public string? Token { get; set; }
+        public User? User { get; set; }
     }
 }

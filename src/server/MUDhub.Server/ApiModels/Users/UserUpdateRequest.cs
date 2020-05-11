@@ -1,13 +1,9 @@
 ﻿using MUDhub.Core.Abstracts.Models;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MUDhub.Server.ApiModels.Users
 {
-    public class UserUpdateRequest 
+    public class UserUpdateRequest
     {
         [Required]
         public string FirstName { get; set; } = string.Empty;
@@ -17,6 +13,11 @@ namespace MUDhub.Server.ApiModels.Users
 
         public static UpdateUserArgs ConvertToUserArgs(UserUpdateRequest request)
         {
+            if (request is null)
+            {
+                throw new System.ArgumentNullException(nameof(request));
+            }
+
             return new UpdateUserArgs
             {
                 Firstname = request.FirstName,
