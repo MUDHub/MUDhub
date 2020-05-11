@@ -36,7 +36,6 @@ export class RacesComponent implements OnInit {
 		/* Daten fetchen und in Array laden */
 		this.mudId = this.route.snapshot.params.mudid;
 		this.races = await this.mudService.getMudRace(this.mudId);
-		console.log('Races von API: ' + this.races);
 	}
 
 	changeDialog() {

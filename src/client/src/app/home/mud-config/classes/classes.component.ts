@@ -34,10 +34,10 @@ export class ClassesComponent implements OnInit {
 	// Todo Interface muss implementiert werden
 	classes: Array<IMudClass> = [];
 
-	ngOnInit(): void {
+	async ngOnInit(){
 		/* Daten fetchen und in Array laden */
-
 		this.mudId = this.route.snapshot.params.mudid;
+		this.classes = await this.mudService.getMudClass(this.mudId);
 	}
 
 	changeDialog() {
@@ -59,8 +59,6 @@ export class ClassesComponent implements OnInit {
 			this.selectedFile = null;
 		}
 
-		console.log(imageKey);
-
 
 		// Make API request
 		const response: IMudClassResponse = await this.mudService.addMudClass(
@@ -72,7 +70,6 @@ export class ClassesComponent implements OnInit {
 			}
 		);
 
-		console.log(response);
 
 		// Push races Object to the array
 		this.classes.push({
@@ -81,8 +78,6 @@ export class ClassesComponent implements OnInit {
 			classId: response.class.classId,
 			imageKey: response.class.imageKey,
 		});
-
-		console.log(this.classes);
 
 		// Reset File Buffer
 		this.selectedFile = null;
