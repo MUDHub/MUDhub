@@ -1,4 +1,4 @@
-@import "variables.scss";
+@import 'variables.scss';
 
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
@@ -11,38 +11,37 @@
 @include mat-core();
 
 $md-mudhubpalette: (
-    50 : #fef3e4,
-    100 : #fde0bc,
-    200 : #fccc8f,
-    300 : #fab762,
-    400 : #f9a740,
-    500 : #f8981e,
-    600 : #f7901a,
-    700 : #f68516,
-    800 : #f57b12,
-    900 : #f36a0a,
-    A100 : #ffffff,
-    A200 : #fff1e9,
-    A400 : #ffd1b6,
-    A700 : #ffc09c,
-    contrast: (
-        50 : #ffffff,
-        100 : #ffffff,
-        200 : #ffffff,
-        300 : #ffffff,
-        400 : #ffffff,
-        500 : #ffffff,
-        600 : #ffffff,
-        700 : #ffffff,
-        800 : #ffffff,
-        900 : #ffffff,
-        A100 : #ffffff,
-        A200 : #ffffff,
-        A400 : #ffffff,
-        A700 : #ffffff,
-    )
+	50: #fef3e4,
+	100: #fde0bc,
+	200: #fccc8f,
+	300: #fab762,
+	400: #f9a740,
+	500: #f8981e,
+	600: #f7901a,
+	700: #f68516,
+	800: #f57b12,
+	900: #f36a0a,
+	A100: #ffffff,
+	A200: #fff1e9,
+	A400: #ffd1b6,
+	A700: #ffc09c,
+	contrast: (
+		50: #ffffff,
+		100: #ffffff,
+		200: #ffffff,
+		300: #ffffff,
+		400: #ffffff,
+		500: #ffffff,
+		600: #ffffff,
+		700: #ffffff,
+		800: #ffffff,
+		900: #ffffff,
+		A100: #ffffff,
+		A200: #ffffff,
+		A400: #ffffff,
+		A700: #ffffff,
+	),
 );
-
 
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
@@ -70,15 +69,19 @@ $client-theme: mat-light-theme($client-primary, $client-accent, $client-warn);
 	box-sizing: border-box;
 }
 
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
+html,
+body {
+	height: 100%;
+}
+body {
+	margin: 0;
+	font-family: Roboto, 'Helvetica Neue', sans-serif;
+	background-color: #eee;
+}
 
 img {
 	width: 100%;
 }
-
 
 .input {
 	width: 100%;
@@ -111,19 +114,18 @@ img {
 	}
 }
 
-
 .mat-progress-spinner circle,
 .mat-spinner circle {
 	stroke: #fff;
 }
-
 
 .table {
 	width: 100%;
 	border-collapse: collapse;
 	text-align: left;
 
-	td, th {
+	td,
+	th {
 		padding: 0.5rem 1rem;
 	}
 
@@ -137,7 +139,6 @@ img {
 		}
 	}
 }
-
 
 .row {
 	display: flex;

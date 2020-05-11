@@ -1,11 +1,12 @@
 @import '../../../variables.scss';
 
+
 :host {
-	height: 100%;
-	background-color: #eee;
+	height: 100vh;
+	width: 100%;
 	display: flex;
 	flex-direction: column;
-	overflow-y: auto;
+	overflow: auto;
 }
 
 .navbar {
