@@ -3,6 +3,7 @@ using MUDhub.Core.Abstracts;
 using MUDhub.Core.Abstracts.Models;
 using MUDhub.Core.Models;
 using MUDhub.Core.Models.Muds;
+using MUDhub.Core.Models.Users;
 using System;
 using System.Globalization;
 using System.Linq;
@@ -27,6 +28,11 @@ namespace MUDhub.Core.Services
             var owner = await _context.Users.FindAsync(args.OwnerId)
                                                 .ConfigureAwait(false);
 
+            if (!owner.IsInRole(Roles.Master))
+            {
+                //No rights..
+                return null;
+            }
             if (owner is null)
             {
                 //Todo: add logging Message

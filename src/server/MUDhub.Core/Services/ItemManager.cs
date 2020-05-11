@@ -73,7 +73,8 @@ namespace MUDhub.Core.Services
                 Description = args.Description,
                 ImageKey = args.ImageKey,
                 Name = args.Name,
-                Weight = args.Weight
+                Weight = args.Weight,
+                MudGame = mud
             };
             _context.Items.Add(item);
             await _context.SaveChangesAsync()

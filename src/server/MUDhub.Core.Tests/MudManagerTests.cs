@@ -33,6 +33,7 @@ namespace MUDhub.Core.Tests
                 Lastname = "last",
                 Firstname = "first"
             }).Result;
+            _userManager.AddRoleToUserAsync(_user.User.Id, Models.Users.Roles.Master);
 
         }
 
