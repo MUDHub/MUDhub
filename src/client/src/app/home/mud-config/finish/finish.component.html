@@ -9,7 +9,7 @@
         </mat-expansion-panel-header>
 
         <div *ngFor="let race of races; let i = index">
-            <p>Rasse {{i}}: Name: {{ race.name }}, Beschreibung: {{ race.description }}</p>
+            <p>Name: {{ race.name }}, Beschreibung: {{ race.description }}</p>
 		</div>
 
     </mat-expansion-panel>
@@ -25,7 +25,7 @@
 		</mat-expansion-panel-header>
 
 		<div *ngFor="let class of classes; let i = index">
-            <p>Klasse {{i}}: Name: {{ class.name }}, Beschreibung: {{ class.description }}</p>
+            <p>Name: {{ class.name }}, Beschreibung: {{ class.description }}</p>
 		</div>
 
     </mat-expansion-panel>
@@ -41,7 +41,7 @@
 		</mat-expansion-panel-header>
 
 		<div *ngFor="let item of items; let i = index">
-            <p>Gegenstand {{i}}: Name: {{ item.name }}, Beschreibung: {{ item.description }}</p>
+            <p>Name: {{ item.name }}, Beschreibung: {{ item.description }}</p>
 		</div>
 
     </mat-expansion-panel>
@@ -56,7 +56,7 @@
 		</mat-expansion-panel-header>
 
 		<div *ngFor="let room of rooms; let i = index">
-            <p>Raum {{i}}: Name: {{ room.name }}, Beschreibung: {{ room.description }}, in Area: {{ room.area.name}}</p>
+            <p>Name: {{ room.name }}, Beschreibung: {{ room.description }}, in Area: {{ room.area.name}}</p>
 		</div>
 
     </mat-expansion-panel>
