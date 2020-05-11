@@ -111,11 +111,7 @@ export class RoomsGridComponent implements OnInit {
 					for (const row of this.rooms) {
 						const room = row.pop();
 						if (room) {
-							this.areaService.deleteRoom(
-								this.mudid,
-								this.areaid,
-								room.roomId
-							);
+							this.areaService.deleteRoom(room.roomId);
 						}
 					}
 				}
@@ -156,11 +152,7 @@ export class RoomsGridComponent implements OnInit {
 					);
 
 					for (const room of toDelete) {
-						this.areaService.deleteRoom(
-							this.mudid,
-							this.areaid,
-							room.roomId
-						);
+						this.areaService.deleteRoom(room.roomId);
 					}
 
 					this.rooms.pop();
@@ -190,11 +182,7 @@ export class RoomsGridComponent implements OnInit {
 
 	public async deleteRoom(room: IRoom) {
 		try {
-			await this.areaService.deleteRoom(
-				this.mudid,
-				this.areaid,
-				room.roomId
-			);
+			await this.areaService.deleteRoom(room.roomId);
 
 			for (let y = 0; y < this.rooms.length; y++) {
 				for (let x = 0; x < this.rooms[y].length; x++) {
@@ -237,8 +225,6 @@ export class RoomsGridComponent implements OnInit {
 		};
 		try {
 			const response = await this.areaService.createConnection(
-				this.mudid,
-				this.areaid,
 				connection
 			);
 
@@ -295,11 +281,7 @@ export class RoomsGridComponent implements OnInit {
 		)[0];
 		if (connectionToDelete) {
 			try {
-				await this.areaService.deleteConnection(
-					this.mudid,
-					this.areaid,
-					connectionToDelete.id
-				);
+				await this.areaService.deleteConnection(connectionToDelete.id);
 				for (let y = 0; y < this.rooms.length; y++) {
 					for (let x = 0; x < this.rooms[y].length; x++) {
 						const room = this.rooms[y][x];

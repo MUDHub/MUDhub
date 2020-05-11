@@ -81,15 +81,13 @@ export class AreaService {
 			.toPromise();
 	}
 
-	public async getRoom(mudid: string, areaid: string, roomid: string) {
+	public async getRoom(roomid: string) {
 		return await this.http
 			.get<IRoom>(`${env.api.url}/rooms/${roomid}`)
 			.toPromise();
 	}
 
 	public async createRoom(
-		mudid: string,
-		areaid: string,
 		room: IRoomCreateRequest
 	) {
 		try {
@@ -104,8 +102,6 @@ export class AreaService {
 	}
 
 	public async updateRoom(
-		mudid: string,
-		areaid: string,
 		roomid: string,
 		room: IRoomUpdateRequest
 	) {
@@ -123,7 +119,7 @@ export class AreaService {
 		}
 	}
 
-	public async deleteRoom(mudid: string, areaid: string, roomid: string) {
+	public async deleteRoom(roomid: string) {
 		return await this.http
 			.delete<IRoomDeleteResponse>(`${env.api.url}/rooms/${roomid}`)
 			.toPromise();
@@ -150,15 +146,13 @@ export class AreaService {
 			.toPromise();
 	}
 
-	public async getConnection(mudid: string, areaid: string, connid: string) {
+	public async getConnection(connid: string) {
 		return await this.http
 			.get<IConnection>(`${env.api.url}/connections/${connid}`)
 			.toPromise();
 	}
 
 	public async createConnection(
-		mudid: string,
-		areaid: string,
 		connection: IConnectionCreateRequest
 	) {
 		return await this.http
@@ -170,8 +164,6 @@ export class AreaService {
 	}
 
 	public async deleteConnection(
-		mudid: string,
-		areaid: string,
 		connid: string
 	) {
 		return await this.http

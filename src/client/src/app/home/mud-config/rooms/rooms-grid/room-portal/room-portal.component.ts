@@ -44,14 +44,13 @@ export class RoomPortalComponent implements OnInit {
 		this.areaid = this.route.snapshot.params.areaid;
 		this.roomid = this.route.snapshot.params.roomid;
 
-		const portals = (
-			await this.areaService.getRoom(this.mudid, this.areaid, this.roomid)
-		).connections.portals;
+		const portals = (await this.areaService.getRoom(this.roomid))
+			.connections.portals;
 
 		portals.map<IPortal>(p => {
 			return {
 				room1: p.room1Id,
-				room2: p.room2Id
+				room2: p.room2Id,
 			};
 		});
 
@@ -81,7 +80,7 @@ export class RoomPortalComponent implements OnInit {
 
 		console.log(args);
 
-		await this.areaService.createConnection(this.mudid, this.areaid, args);
+		await this.areaService.createConnection(args);
 	}
 }
 

@@ -49,13 +49,8 @@ export class RoomCreateComponent implements OnInit {
 		this.areaid = this.route.snapshot.params.areaid;
 		this.roomid = this.route.snapshot.params.roomid;
 
-
 		if (this.roomid) {
-			const room = await this.areaService.getRoom(
-				this.mudid,
-				this.areaid,
-				this.roomid
-			);
+			const room = await this.areaService.getRoom(this.roomid);
 			this.form.get('name').setValue(room.name);
 			this.form.get('description').setValue(room.description);
 			this.form.get('isDefault').setValue(room.isDefaultRoom);
@@ -78,14 +73,9 @@ export class RoomCreateComponent implements OnInit {
 		};
 
 		if (!this.isInEditMode) {
-			this.areaService.createRoom(this.mudid, this.areaid, room);
+			this.areaService.createRoom(room);
 		} else {
-			this.areaService.updateRoom(
-				this.mudid,
-				this.areaid,
-				this.roomid,
-				room
-			);
+			this.areaService.updateRoom(this.roomid, room);
 		}
 
 		this.router.navigate([this.isInEditMode ? '../../' : '../'], {
