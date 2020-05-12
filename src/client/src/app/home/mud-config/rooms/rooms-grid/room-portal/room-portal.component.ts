@@ -92,7 +92,14 @@ export class RoomPortalComponent implements OnInit {
 				room2: await this.areaService.getRoom(connection.room2Id),
 				connectionId: connection.id,
 			});
-		} catch (err) {}
+		} catch (err) {
+			console.error('Error while creating portal', err);
+			await Swal.fire({
+				icon: 'error',
+				title: 'Fehler',
+				text: err.error?.displayMessage || err.error?.errormessage || 'Fehler beim Erstellen des Portals'
+			});
+		}
 	}
 
 	async deletePortal(portal: IPortal) {

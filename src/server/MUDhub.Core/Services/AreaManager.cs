@@ -186,6 +186,20 @@ namespace MUDhub.Core.Services
                 };
             }
 
+            if (await _context.RoomConnections.AnyAsync(rc => rc.Room1Id == room1Id && rc.Room2Id == room2Id 
+                                                           || rc.Room1Id == room2Id && rc.Room2Id == room1Id)
+                                                        .ConfigureAwait(false))
+            {
+                var message = $"The Connection between the two rooms 1.'{room1.Name}' and  2. '{room2.Name}' already exists.";
+                _logger?.LogWarning(message);
+                return new ConnectionResult()
+                {
+                    Success = false,
+                    Errormessage = message,
+                    DisplayMessage = $"Die Verbindung zwischen Raum 1.'{room1.Name}' und Raum 2. '{room2.Name}' existiert bereits."
+                };
+            }
+
             var connection = new RoomConnection()
             {
                 Room1 = room1,

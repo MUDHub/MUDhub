@@ -9,6 +9,7 @@ using MUDhub.Server.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace MUDhub.Server.Controllers
@@ -84,24 +85,26 @@ namespace MUDhub.Server.Controllers
         [ProducesResponseType(typeof(IEnumerable<CharacterApiModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetCharacters([FromQuery] string? mudId = null, [FromQuery] string? userId = null)
+        public async Task<IActionResult> GetCharacters([FromQuery] string? mudId = null, [FromQuery] bool getByUser = false)
         {
-            if (mudId is null && userId is null)
+            if (mudId is null && !getByUser)
             {
                 return Ok(_context.Characters
                    .AsEnumerable()
                    .Select(c => CharacterApiModel.FromCharacter(c)));
             }
-            if (!(userId is null))
+            if (getByUser)
             {
-                var user = await _context.Users.FindAsync(userId).ConfigureAwait(false);
+                var user = await _context.Users.FindAsync(HttpContext.GetUserId()).ConfigureAwait(false);
                 if (user is null)
                 {
-                    return BadRequest($"No User found with userId: {userId}");
+                    return BadRequest($"No User found with userId: {HttpContext.GetUserId()}, this should never happen!");
                 }
                 else
                 {
-                    return Ok(user.Characters.Select(c => CharacterApiModel.FromCharacter(c)));
+                    return Ok(user.Characters
+                                  .Where(c => mudId == null || c.Game.Id == mudId)
+                                  .Select(c => CharacterApiModel.FromCharacter(c)));
                 }
             }
             if(!(mudId is null))

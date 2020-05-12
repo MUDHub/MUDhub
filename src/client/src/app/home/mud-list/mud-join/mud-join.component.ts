@@ -4,7 +4,6 @@ import { MudService } from 'src/app/services/mud.service';
 import { IMud } from 'src/app/model/muds/IMud';
 import {
 	trigger,
-	state,
 	style,
 	transition,
 	animate,
@@ -15,6 +14,7 @@ import { IMudRace, IMudClass } from 'src/app/model/muds/MudSetupDTO';
 import { AuthService } from 'src/app/services/auth.service';
 import { ICharacter } from 'src/app/model/character/ICharacter';
 import { ICharacterCreateRequest } from 'src/app/model/character/CharacterDTO';
+import Swal from 'sweetalert2';
 
 @Component({
 	templateUrl: './mud-join.component.html',
@@ -89,8 +89,7 @@ export class MudJoinComponent implements OnInit {
 			this.races = await this.mudService.getRaceForMud(this.mud.mudId);
 		}
 
-		this.previousChars = await this.characterService.getCharactersForPlayer(this.mudid, this.auth.user.id);
-		console.log(this.previousChars);
+		this.previousChars = await this.characterService.getCharactersForPlayerForMud(this.auth.user.id, this.mudid);
 	}
 
 
@@ -107,6 +106,11 @@ export class MudJoinComponent implements OnInit {
 			await this.join(response.character.id);
 		} catch (err) {
 			console.error('Error while creating character', err);
+			await Swal.fire({
+				icon: 'error',
+				title: 'Fehler',
+				text: err.error?.displayMessage || err.error?.errormessage || 'Fehler beim Erstellen des Charakters'
+			});
 		}
 	}
 

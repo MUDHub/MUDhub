@@ -111,7 +111,8 @@ namespace MUDhub.Server.Controllers
             return BadRequest(new CreateConnectionResponse()
             {
                 Succeeded = false,
-                Errormessage = "Cannot create the connection."
+                Errormessage = createResult.Errormessage,
+                DisplayMessage = createResult.DisplayMessage
             });
         }
 
