@@ -1,44 +1,44 @@
 Race Status
-<div *ngIf="raceStatus">
+<div *ngIf="!raceStatus">
     <mat-icon>check</mat-icon>
 </div>
-<div *ngIf="!raceStatus">
+<div *ngIf="raceStatus">
     <mat-icon>clear</mat-icon>
 </div>
 <p>{{raceStatusMsg}}</p>
 
 Class Status
-<div *ngIf="classStatus">
+<div *ngIf="!classStatus">
     <mat-icon>check</mat-icon>
 </div>
-<div *ngIf="!classStatus">
+<div *ngIf="classStatus">
     <mat-icon>clear</mat-icon>
 </div>
 <p>{{classStatusMsg}}</p>
 
 Item Status
-<div *ngIf="itemStatus">
+<div *ngIf="!itemStatus">
     <mat-icon>check</mat-icon>
 </div>
-<div *ngIf="!itemStatus">
+<div *ngIf="itemStatus">
     <mat-icon>clear</mat-icon>
 </div>
 <p>{{itemStatusMsg}}</p>
 
 Area Status
-<div *ngIf="areaStatus">
+<div *ngIf="!areaStatus">
     <mat-icon>check</mat-icon>
 </div>
-<div *ngIf="!areaStatus">
+<div *ngIf="areaStatus">
     <mat-icon>clear</mat-icon>
 </div>
 <p>{{areaStatusMsg}}</p>
 
 General Status
-<div *ngIf="generalStatus">
+<div *ngIf="!generalStatus">
     <mat-icon>check</mat-icon>
 </div>
-<div *ngIf="!generalStatus">
+<div *ngIf="generalStatus">
     <mat-icon>clear</mat-icon>
 </div>
 <p>{{generalStatusMsg}}</p>
