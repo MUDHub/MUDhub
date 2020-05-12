@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IMudRace, IMudClass, IMudItem } from 'src/app/model/muds/MudSetupDTO';
-import { IRoom } from 'src/app/model/areas/IRoom';
-import { IArea } from 'src/app/model/areas/IArea';
+import { IValidationResult, IRegion } from 'src/app/model/muds/MudSetupDTO';
 import { MudService } from 'src/app/services/mud.service';
-import { AreaService } from 'src/app/services/area.service';
+import {MatCardModule} from '@angular/material/card';
 
 @Component({
 	selector: 'mh-finish',
@@ -15,59 +13,54 @@ export class FinishComponent implements OnInit {
 	constructor(
 		private route: ActivatedRoute,
 		private router: Router,
-		private mudService: MudService,
-		private areaService: AreaService
+		private mudService: MudService
 	) {}
 
 	panelOpenState: boolean = true;
 	mudId: string;
 
-	/*Übersicht Rassen*/
-	races: IMudRace[] = [];
+	validationResult: IValidationResult;
 
-	async getRaces() {
-		this.races = await this.mudService.getRaceForMud(this.mudId);
+	/* Handle Validation Result */
+	raceStatus: boolean = true;
+	raceStatusMsg: string = "";
+
+	classStatus: boolean = true;
+	classStatusMsg: string = "";
+
+	itemStatus: boolean = true;
+	itemStatusMsg: string = "";
+
+	areaStatus: boolean = true;
+	areaStatusMsg: string = "";
+	
+	generalStatus: boolean = true;
+	generalStatusMsg: string = "";
+
+	async handleValidation(){
+		this.validationResult = await this.mudService.validateMudGame(this.mudId);
+		//Validate Error Status
+		this.validationResult.validationErrors.forEach(error => {
+			(error.region == IRegion.General) ? this.generalStatus = true : this.generalStatus = false;
+			(error.region == IRegion.Races) ? this.raceStatus = true : this.raceStatus = false;
+			(error.region == IRegion.Classes) ? this.classStatus = true : this.classStatus = false;
+			(error.region == IRegion.Items) ? this.itemStatus = true : this.itemStatus = false;
+			(error.region == IRegion.Areas) ? this.areaStatus = true : this.areaStatus = false;
+		});
+		//Validate Error Status Message
+		this.validationResult.validationErrors.forEach(error => {
+			(error.region == IRegion.General) ? this.generalStatusMsg = error.message : this.generalStatusMsg = "";
+			(error.region == IRegion.Races) ? this.raceStatusMsg = error.message : this.raceStatusMsg = "";
+			(error.region == IRegion.Classes) ? this.classStatusMsg = error.message : this.classStatusMsg = "";
+			(error.region == IRegion.Items) ? this.itemStatusMsg = error.message : this.itemStatusMsg = "";
+			(error.region == IRegion.Areas) ? this.areaStatusMsg = error.message : this.areaStatusMsg = "";
+		});
 	}
-	/*Übersicht Klassen*/
-	classes: IMudClass[] = [];
-
-	async getClasses() {
-		this.classes = await this.mudService.getClassForMud(this.mudId);
-		console.log(this.classes);
-	}
-
-	/*Übersicht Items*/
-	items: IMudItem[] = [];
-
-	async getItems() {
-		this.items = await this.mudService.getItemsForMud(this.mudId);
-	}
-
-	/*Übersicht Räume*/
-	rooms: IRoom[] = [];
-	areas: IArea[] = [];
-
-	async getAreas() {
-		this.areas = await this.areaService.getAreasForMud(this.mudId);
-	}
-
-	async getRooms() {
-		for (let i = 0; i < this.areas.length; i++) {
-			this.rooms = await this.areaService.getRoomsForMud(this.mudId);
-		}
-	}
-
-	/*General*/
+	/* Handle Validation Result End */
 
 	async ngOnInit() {
 		this.mudId = this.route.snapshot.params.mudid;
-
-		// Fetch Ressources from Service
-		await this.getRaces();
-		await this.getClasses();
-		await this.getItems();
-		await this.getAreas();
-		await this.getRooms();
+		await this.handleValidation();
 	}
 
 	async onSubmit() {

@@ -15,7 +15,12 @@ import { HttpClient } from '@angular/common/http';
 import { environment as env } from 'src/environments/environment';
 import { IMud } from '../model/muds/IMud';
 import { IMudRequest } from '../model/muds/IMudRequest';
-import { IMudRace, IMudClass, IMudItem } from '../model/muds/MudSetupDTO';
+import {
+	IMudRace,
+	IMudClass,
+	IMudItem,
+	IValidationResult,
+} from '../model/muds/MudSetupDTO';
 
 @Injectable({
 	providedIn: 'root',
@@ -146,6 +151,12 @@ export class MudService {
 	async deleteItem(mudId: string, itemid: string) {
 		return await this.http
 			.delete(`${env.api.url}/items/${itemid}`)
+			.toPromise();
+	}
+
+	async validateMudGame(mudId: string): Promise<IValidationResult> {
+		return await this.http
+			.get<IValidationResult>(`${env.api.url}/muds/${mudId}/validate`)
 			.toPromise();
 	}
 }

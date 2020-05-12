@@ -1,66 +1,47 @@
-<mat-accordion multi="true">
-    <!--Übersicht Rassen-->
+Race Status
+<div *ngIf="!raceStatus">
+    <mat-icon>check</mat-icon>
+</div>
+<div *ngIf="raceStatus">
+    <mat-icon>clear</mat-icon>
+</div>
+<p>{{raceStatusMsg}}</p>
 
-    <mat-expansion-panel>
-        <mat-expansion-panel-header>
-            <mat-panel-title>
-                Rassen
-            </mat-panel-title>
-        </mat-expansion-panel-header>
+Class Status
+<div *ngIf="!classStatus">
+    <mat-icon>check</mat-icon>
+</div>
+<div *ngIf="classStatus">
+    <mat-icon>clear</mat-icon>
+</div>
+<p>{{classStatusMsg}}</p>
 
-        <div *ngFor="let race of races; let i = index">
-            <p>Name: {{ race.name }}, Beschreibung: {{ race.description }}</p>
-		</div>
+Item Status
+<div *ngIf="!itemStatus">
+    <mat-icon>check</mat-icon>
+</div>
+<div *ngIf="itemStatus">
+    <mat-icon>clear</mat-icon>
+</div>
+<p>{{itemStatusMsg}}</p>
 
-    </mat-expansion-panel>
+Area Status
+<div *ngIf="!areaStatus">
+    <mat-icon>check</mat-icon>
+</div>
+<div *ngIf="areaStatus">
+    <mat-icon>clear</mat-icon>
+</div>
+<p>{{areaStatusMsg}}</p>
 
-    <!--Übersicht Klassen-->
-
-    <mat-expansion-panel>
-        <mat-expansion-panel-header>
-            <mat-panel-title>
-                Klassen
-            </mat-panel-title>
-
-		</mat-expansion-panel-header>
-
-		<div *ngFor="let class of classes; let i = index">
-            <p>Name: {{ class.name }}, Beschreibung: {{ class.description }}</p>
-		</div>
-
-    </mat-expansion-panel>
-
-    <!--Übersicht Items-->
-
-    <mat-expansion-panel>
-        <mat-expansion-panel-header>
-            <mat-panel-title>
-                Gegenstände
-            </mat-panel-title>
-
-		</mat-expansion-panel-header>
-
-		<div *ngFor="let item of items; let i = index">
-            <p>Name: {{ item.name }}, Beschreibung: {{ item.description }}</p>
-		</div>
-
-    </mat-expansion-panel>
-
-    <!--Übersicht Räume-->
-    <mat-expansion-panel>
-        <mat-expansion-panel-header>
-            <mat-panel-title>
-                Räume
-            </mat-panel-title>
-
-		</mat-expansion-panel-header>
-
-		<div *ngFor="let room of rooms; let i = index">
-            <p>Name: {{ room.name }}, Beschreibung: {{ room.description }}, in Area: {{ room.area.name}}</p>
-		</div>
-
-    </mat-expansion-panel>
-</mat-accordion>
+General Status
+<div *ngIf="!generalStatus">
+    <mat-icon>check</mat-icon>
+</div>
+<div *ngIf="generalStatus">
+    <mat-icon>clear</mat-icon>
+</div>
+<p>{{generalStatusMsg}}</p>
 
 
 <div class="button-menu">

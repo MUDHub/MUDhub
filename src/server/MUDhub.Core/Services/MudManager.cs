@@ -295,7 +295,8 @@ namespace MUDhub.Core.Services
 
             return new MudValidateResult(errors)
             {
-                Valid = errors.Count == 0
+                Valid = errors.Count == 0,
+                Success = true
             };
         }
     }

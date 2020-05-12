@@ -29,7 +29,7 @@ export class ItemsComponent implements OnInit {
 	items: Array<IMudItem> = [];
 
 	async deleteRow(index: number) {
-		await this.mudService.deleteItem(this.mudId, this.items[index].itemId);
+		await this.mudService.deleteItem(this.mudId, this.items[index].id);
 		this.items.splice(index, 1);
 	}
 	async ngOnInit() {
@@ -58,7 +58,7 @@ export class ItemsComponent implements OnInit {
 
 		if (response.succeeded) {
 			this.items.push({
-				itemId: response.item.itemId,
+				id: response.item.itemId,
 				name: response.item.name,
 				description: response.item.description,
 				weight: response.item.weight,
