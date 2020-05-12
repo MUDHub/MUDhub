@@ -86,4 +86,20 @@ export class GameService {
 	public async exitGame() {
 		await this.connection.stop();
 	}
+
+
+	public async sendGlobalMessage(message: string) {
+		await this.connection.invoke('SendGlobalMessage', message);
+	}
+
+	public async sendRoomMessage(message: string) {
+		await this.connection.invoke('SendRoomMessage', message);
+	}
+
+	public async sendPrivateMessage(message: string, characterName: string) {
+		const response = await this.connection.invoke<ISignalRBaseResult>('SendPrivateMessage', message, characterName);
+		if (!response.success) {
+			throw new Error(response.errorMessage);
+		}
+	}
 }
