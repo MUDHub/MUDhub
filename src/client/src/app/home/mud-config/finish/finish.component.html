@@ -1,47 +1,73 @@
-Race Status
-<div *ngIf="!raceStatus">
-    <mat-icon>check</mat-icon>
-</div>
-<div *ngIf="raceStatus">
-    <mat-icon>clear</mat-icon>
-</div>
-<p>{{raceStatusMsg}}</p>
+<mat-card>
+    <div class="align-beside">
+        <p>General Status</p>
+        <div *ngIf="!generalStatus">
+            <mat-icon>check</mat-icon>
+        </div>
+        <div *ngIf="generalStatus">
+            <mat-icon>clear</mat-icon>
+        </div>
+    </div>
 
-Class Status
-<div *ngIf="!classStatus">
-    <mat-icon>check</mat-icon>
-</div>
-<div *ngIf="classStatus">
-    <mat-icon>clear</mat-icon>
-</div>
-<p>{{classStatusMsg}}</p>
+    <p>{{generalStatusMsg}}</p>
+</mat-card>
+<br/>
+<mat-card>
+    <div class="align-beside">
+        <p>Race Status</p>
+        <div *ngIf="!raceStatus">
+            <mat-icon>check</mat-icon>
+        </div>
+        <div *ngIf="raceStatus">
+            <mat-icon>clear</mat-icon>
+        </div>
+    </div>
 
-Item Status
-<div *ngIf="!itemStatus">
-    <mat-icon>check</mat-icon>
-</div>
-<div *ngIf="itemStatus">
-    <mat-icon>clear</mat-icon>
-</div>
-<p>{{itemStatusMsg}}</p>
+    <p>{{raceStatusMsg}}</p>
+</mat-card>
+<br/>
+<mat-card>
+    <div class="align-beside">
+        <p>Class Status</p>
+        <div *ngIf="!classStatus">
+            <mat-icon>check</mat-icon>
+        </div>
+        <div *ngIf="classStatus">
+            <mat-icon>clear</mat-icon>
+        </div>
+    </div>
 
-Area Status
-<div *ngIf="!areaStatus">
-    <mat-icon>check</mat-icon>
-</div>
-<div *ngIf="areaStatus">
-    <mat-icon>clear</mat-icon>
-</div>
-<p>{{areaStatusMsg}}</p>
+    <p>{{classStatusMsg}}</p>
+</mat-card>
+<br/>
+<mat-card>
+    <div class="align-beside">
+        <p>Item Status</p>
+        <div *ngIf="!itemStatus">
+            <mat-icon>check</mat-icon>
+        </div>
+        <div *ngIf="itemStatus">
+            <mat-icon>clear</mat-icon>
+        </div>
+    </div>
 
-General Status
-<div *ngIf="!generalStatus">
-    <mat-icon>check</mat-icon>
-</div>
-<div *ngIf="generalStatus">
-    <mat-icon>clear</mat-icon>
-</div>
-<p>{{generalStatusMsg}}</p>
+    <p>{{itemStatusMsg}}</p>
+</mat-card>
+<br/>
+<mat-card>
+    <div class="align-beside">
+        <p>Area Status</p>
+        <div *ngIf="!areaStatus">
+            <mat-icon>check</mat-icon>
+        </div>
+        <div *ngIf="areaStatus">
+            <mat-icon>clear</mat-icon>
+        </div>
+    </div>
+
+    <p>{{areaStatusMsg}}</p>
+</mat-card>
+
 
 
 <div class="button-menu">
