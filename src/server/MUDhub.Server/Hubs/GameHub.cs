@@ -117,7 +117,7 @@ namespace MUDhub.Server.Hubs
         {
             var result = await _navigationService.TryEnterRoomAsync(GetCharacterId(), roomid)
                                                     .ConfigureAwait(false);
-            var character = await _context.Characters.FindAsync(GetCharacterId()).ConfigureAwait(false);
+            //var character = await _context.Characters.FindAsync(GetCharacterId()).ConfigureAwait(false);
             //Todo: the rest, messaging, state management, etc..
 
             return JoinRoomResult.ConvertFromNavigationResult(result);
