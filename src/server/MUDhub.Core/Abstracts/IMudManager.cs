@@ -1,4 +1,5 @@
 ﻿using MUDhub.Core.Abstracts.Models;
+using MUDhub.Core.Abstracts.Models.Muds;
 using MUDhub.Core.Models;
 using MUDhub.Core.Models.Muds;
 using System;
@@ -13,6 +14,8 @@ namespace MUDhub.Core.Abstracts
         Task<MudGame?> CreateMudAsync(string name, MudCreationArgs args);
         Task<bool> RemoveMudAsync(string mudId);
         Task<MudGame?> UpdateMudAsync(string mudid, MudUpdateArgs args);
+
+        Task<MudValidateResult> ValidateMud(string mudid);
 
         Task<bool> SetEditModeAsync(string mudId, string userid, bool isInEdit);
 

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using MUDhub.Core.Abstracts;
 using MUDhub.Core.Abstracts.Models;
+using MUDhub.Core.Abstracts.Models.Muds;
 using MUDhub.Core.Models;
 using MUDhub.Core.Models.Muds;
 using MUDhub.Core.Models.Users;
@@ -244,5 +245,10 @@ namespace MUDhub.Core.Services
 
         private async Task<MudGame> GetMudGameByIdAsync(string id)
             => await _context.MudGames.FindAsync(id).ConfigureAwait(false);
+
+        public Task<MudValidateResult> ValidateMud(string mudid)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
