@@ -27,7 +27,7 @@ namespace MUDhub.Core.Services
         }
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            _lifetime.ApplicationStarted.Register(() =>
+            _lifetime.ApplicationStarted.Register(async () =>
             {
                 using var scopedServices = _scopeFactory.CreateScope();
                 var services = scopedServices.ServiceProvider;
@@ -39,6 +39,7 @@ namespace MUDhub.Core.Services
                         game.State = MudGameState.Active;
                     }
                 }
+                await context.SaveChangesAsync().ConfigureAwait(false);
             });
             return Task.CompletedTask;
         }

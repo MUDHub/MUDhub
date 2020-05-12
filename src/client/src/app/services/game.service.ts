@@ -5,7 +5,6 @@ import { IMessage } from '../model/chat/IMessage';
 import { HubConnection, HubConnectionBuilder, LogLevel, HubConnectionState } from '@microsoft/signalr';
 
 import { environment as env } from 'src/environments/environment';
-import Swal from 'sweetalert2';
 import { AuthService } from './auth.service';
 import { ISignalRBaseResult } from '../model/game/signalR/SignalRBaseResult';
 

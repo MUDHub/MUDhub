@@ -16,6 +16,14 @@
 		align-self: flex-end;
 		align-items: flex-end;
 	}
+
+	&.server-message {
+		max-width: 100%;
+		width: 100%;
+		text-align: center;
+		font-style: italic;
+		opacity: 0.75;
+	}
 }
 
 .message-sender {
@@ -26,4 +34,5 @@
 
 .message-content {
 	line-height: 100%;
+	width: 100%;
 }

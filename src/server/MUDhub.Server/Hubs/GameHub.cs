@@ -102,10 +102,10 @@ namespace MUDhub.Server.Hubs
             Context.Items["characterName"] = character.Name;
             Context.Items["currentRoomId"] = character.ActualRoom.Id;
             _connectionHandler.AddConnectionId(characterid, Context.ConnectionId);
-            await Clients.Group(character.Game.Id).ReceiveGlobalMessage($"Charakter: {character.Name} hat das Spiel betreten.", SERVERNAME, true)
-                                                  .ConfigureAwait(false);
             await Groups.AddToGroupAsync(Context.ConnectionId, character.Game.Id).ConfigureAwait(false);
             await Groups.AddToGroupAsync(Context.ConnectionId, character.ActualRoom.Id).ConfigureAwait(false);
+            await Clients.Group(character.Game.Id).ReceiveGlobalMessage($"Charakter: {character.Name} hat das Spiel betreten.", SERVERNAME, true)
+                                                  .ConfigureAwait(false);
 
             return new JoinMudGameResult
             {
@@ -131,6 +131,7 @@ namespace MUDhub.Server.Hubs
         public override async Task OnDisconnectedAsync(Exception exception)
         {
             var character = await _context.Characters.FindAsync(GetCharacterId()).ConfigureAwait(false);
+            _logger.LogInformation($"Character {character?.Name} ({character?.Id}) has left the game");
             if (!(character is null))
             {
                 await Clients.Group(character.Game.Id).ReceiveGlobalMessage($"Charakter: {character.Name} hat das Spiel verlassen.", SERVERNAME, true)
