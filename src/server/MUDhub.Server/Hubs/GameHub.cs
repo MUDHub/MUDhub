@@ -4,14 +4,20 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore.Update;
 using MUDhub.Core.Abstracts;
 using MUDhub.Core.Models;
+using MUDhub.Core.Services;
 using MUDhub.Server.Hubs.Models;
 
 namespace MUDhub.Server.Hubs
 {
     public class GameHub : Hub<IGameHubClient>, IGameHubServer
     {
-        public GameHub()
+        private readonly MudDbContext _context;
+        private readonly ICharacterManager _manager;
+
+        public GameHub(MudDbContext context, ICharacterManager manager)
         {
+            _context = context;
+            _manager = manager;
         }
 
         public Task SendGlobalMessage(string message)
