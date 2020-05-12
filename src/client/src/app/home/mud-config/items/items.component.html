@@ -33,11 +33,16 @@
                     <mat-error>Das Gewicht ist erforderlich</mat-error>
                 </mat-form-field>
             </div>
-            <div class="form-row">
+            <div class="form-row" *ngIf="!edit">
                 <button mat-flat-button type="submit" color="primary" [disabled]="form.invalid">
                     Gegenstand hinzufügen
                 </button>
-            </div>
+			</div>
+			<div class="form-row" *ngIf="edit">
+                <button mat-flat-button type="submit" color="primary" [disabled]="form.invalid">
+                    Gegenstand ändern
+                </button>
+			</div>
         </form>
     </div>
 </div>
@@ -54,9 +59,14 @@
 		<td>{{ item.description }}</td>
 		<td>{{ item.weight }}</td>
         <td>
-            <button mat-flat-button color="primary" (click)="deleteRow(index)">
-                Löschen
-            </button>
+            <div class="edits">
+				<button mat-flat-button color="primary" (click)="editRow(index)">
+					<mat-icon>edit</mat-icon>
+				</button>
+				<button mat-flat-button color="primary" (click)="deleteRow(index)">
+					<mat-icon>delete</mat-icon>
+				</button>
+			</div>
         </td>
     </tr>
 </table>

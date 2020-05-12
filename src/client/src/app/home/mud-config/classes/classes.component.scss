@@ -1,9 +1,9 @@
-@import '../../../../variables.scss';
+@import "../../../../variables.scss";
 
 h1 {
 	text-align: center;
 }
-mat-horizontal-stepper{
+mat-horizontal-stepper {
 	background-color: #eee;
 }
 
@@ -14,11 +14,17 @@ mat-horizontal-stepper{
 	.table-item {
 		height: 4rem;
 		box-shadow: rgba(0, 0, 0, 0.14) 0px 3px 5px 1px;
-
+		width:min-content;
 		background-color: white;
 
-		button {
-			background-color: $color-primary;
+		.edits {
+			width: 50%;
+			align-items: center;
+
+			button {
+				background-color: $color-primary;
+				margin: 1rem;
+			}
 		}
 
 		td {
@@ -32,6 +38,7 @@ mat-horizontal-stepper{
 	width: 100%;
 	display: flex;
 	justify-content: flex-end;
+	z-index: 50;
 
 	button {
 		width: 15%;
@@ -57,6 +64,7 @@ mat-horizontal-stepper{
 	bottom: 0px;
 	right: 0px;
 	left: 0px;
+	z-index: 99;
 
 	.add-class {
 		/*Position*/
@@ -77,7 +85,7 @@ mat-horizontal-stepper{
 }
 
 .custom-file-input::-webkit-file-upload-button {
-	content: 'Datei auswählen';
+	content: "Datei auswählen";
 	display: inline-block;
 	background-color: $color-primary;
 	color: white;

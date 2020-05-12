@@ -27,7 +27,10 @@ export class RacesComponent implements OnInit {
 	});
 
 	dialog = false;
+	edit = false;
 	mudId: string;
+	index: number;
+
 	selectedFile: File = null;
 
 	races: Array<IMudRace> = [];
@@ -40,6 +43,7 @@ export class RacesComponent implements OnInit {
 
 	changeDialog() {
 		this.form.reset();
+		this.edit = false;
 		this.dialog = !this.dialog;
 	}
 
@@ -57,24 +61,43 @@ export class RacesComponent implements OnInit {
 			this.selectedFile = null;
 		}
 
-		// Make API request
-		const response: IMudRaceResponse = await this.mudService.addRace(
-			this.mudId,
-			{
-				name: this.form.get('name').value,
-				description: this.form.get('description').value,
-				imageKey: imageKey?.imageUrl,
-				mudId: this.mudId
-			}
-		);
+		if (!this.edit) {
+			// Make API request
+			const response: IMudRaceResponse = await this.mudService.addRace(
+				this.mudId,
+				{
+					name: this.form.get('name').value,
+					description: this.form.get('description').value,
+					imageKey: imageKey?.imageUrl,
+					mudId: this.mudId,
+				}
+			);
 
-		// Push races Object to the array
-		this.races.push({
-			description: response.race.description,
-			name: response.race.name,
-			raceId: response.race.raceId,
-			imageKey: response.race.imageKey,
-		});
+			// Push races Object to the array
+			this.races.push({
+				description: response.race.description,
+				name: response.race.name,
+				raceId: response.race.raceId,
+				imageKey: response.race.imageKey,
+			});
+		} else {
+			const response: IMudRaceResponse = await this.mudService.editRace(
+				this.races[this.index].raceId,
+				{
+					name: this.form.get('name').value,
+					description: this.form.get('description').value,
+					imageKey: imageKey?.imageUrl,
+					mudId: this.mudId,
+				}
+			);
+
+			this.races[this.index] = {
+				description: response.race.description,
+				name: response.race.name,
+				raceId: response.race.raceId,
+				imageKey: response.race.imageKey,
+			};
+		}
 
 		// Reset File Buffer
 		this.selectedFile = null;
@@ -88,5 +111,14 @@ export class RacesComponent implements OnInit {
 	async deleteRow(index: number) {
 		await this.mudService.deleteRace(this.mudId, this.races[index].raceId);
 		this.races.splice(index, 1);
+	}
+
+	editRow(index: number) {
+		this.edit = true;
+		this.dialog = true;
+		this.index = index;
+		this.form.get('name').setValue(this.races[index].name);
+		this.form.get('description').setValue(this.races[index].description);
+		this.form.get('imageKey').setValue(this.races[index].imageKey);
 	}
 }

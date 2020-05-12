@@ -28,7 +28,9 @@ export class ClassesComponent implements OnInit {
 	});
 
 	dialog = false;
+	edit = false;
 	mudId: string;
+	index: number;
 	selectedFile: File = null;
 
 	// Todo Interface muss implementiert werden
@@ -43,6 +45,7 @@ export class ClassesComponent implements OnInit {
 	changeDialog() {
 		this.form.reset();
 		this.dialog = !this.dialog;
+		this.edit = false;
 	}
 
 	async addClass() {
@@ -59,29 +62,53 @@ export class ClassesComponent implements OnInit {
 			this.selectedFile = null;
 		}
 
-		// Make API request
-		const response: IMudClassResponse = await this.mudService.addClass(
-			this.mudId,
-			{
-				name: this.form.get('name').value,
-				description: this.form.get('description').value,
-				imageKey: imageKey?.imageUrl,
-				mudId: this.mudId
-			}
-		);
+		// Make API post request if its a new value
+		if (!this.edit) {
+			const response: IMudClassResponse = await this.mudService.addClass(
+				this.mudId,
+				{
+					name: this.form.get('name').value,
+					description: this.form.get('description').value,
+					imageKey: imageKey?.imageUrl,
+					mudId: this.mudId,
+				}
+			);
 
-		// Push races Object to the array
-		if (response.succeeded) {
-			this.classes.push({
-				description: response.class.description,
-				name: response.class.name,
-				classId: response.class.classId,
-				imageKey: response.class.imageKey,
-			});
+			// Push races Object to the array
+			if (response.succeeded) {
+				this.classes.push({
+					description: response.class.description,
+					name: response.class.name,
+					classId: response.class.classId,
+					imageKey: response.class.imageKey,
+				});
+			}
+		} else {
+			// Make API put request if its an edit
+			const response: IMudClassResponse = await this.mudService.editClass(
+				this.classes[this.index].classId,
+				{
+					name: this.form.get('name').value,
+					description: this.form.get('description').value,
+					imageKey: imageKey?.imageUrl,
+					mudId: this.mudId,
+				}
+			);
+
+			if (response.succeeded) {
+				this.classes[this.index] = {
+					description: response.class.description,
+					name: response.class.name,
+					classId: response.class.classId,
+					imageKey: response.class.imageKey,
+				};
+			}
 		}
 
 		// Reset File Buffer
 		this.selectedFile = null;
+
+		// Close Dialog
 		this.changeDialog();
 	}
 
@@ -90,7 +117,20 @@ export class ClassesComponent implements OnInit {
 	}
 
 	async deleteRow(index: number) {
-		await this.mudService.deleteClass(this.mudId, this.classes[index].classId);
+		await this.mudService.deleteClass(
+			this.mudId,
+			this.classes[index].classId
+		);
 		this.classes.splice(index, 1);
+	}
+
+	editRow(index: number) {
+		this.dialog = true;
+		this.edit = true;
+		this.form.get('name').setValue(this.classes[index].name);
+		this.form.get('description').setValue(this.classes[index].description);
+		this.form.get('imagekey').setValue(this.classes[index].imageKey);
+
+		this.index = index;
 	}
 }

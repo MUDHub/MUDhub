@@ -32,7 +32,12 @@
 				<input accept="image/*" ide="imagekey" type="file" class="custom-file-input"
 					(change)="onFileSelected($event)" />
 			</div>
-			<div class="form-row">
+			<div class="form-row" *ngIf="!edit">
+				<button mat-flat-button type="submit" color="primary" [disabled]="form.invalid">
+					Rasse hinzufügen
+				</button>
+			</div>
+			<div class="form-row" *ngIf="edit">
 				<button mat-flat-button type="submit" color="primary" [disabled]="form.invalid">
 					Rasse hinzufügen
 				</button>
@@ -60,9 +65,14 @@
 			</div>
 		</td>
 		<td>
-			<button mat-flat-button color="primary" (click)="deleteRow(index)">
-				Löschen
-			</button>
+			<div class="edits">
+				<button mat-flat-button color="primary" (click)="editRow(index)">
+					<mat-icon>edit</mat-icon>
+				</button>
+				<button mat-flat-button color="primary" (click)="deleteRow(index)">
+					<mat-icon>delete</mat-icon>
+				</button>
+			</div>
 		</td>
 	</tr>
 </table>
