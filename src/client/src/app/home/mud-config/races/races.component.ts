@@ -6,6 +6,7 @@ import { IMudRace } from 'src/app/model/muds/MudSetupDTO';
 import { MudService } from 'src/app/services/mud.service';
 import { IMudRaceResponse, IMudRaceRequest } from 'src/app/model/muds/MudDTO';
 import { IImageUploadResponse } from 'src/app/model/FileUploadDTO';
+import { ChatShellComponent } from 'src/app/game/chat-shell/chat-shell.component';
 
 @Component({
 	templateUrl: './races.component.html',
@@ -26,6 +27,7 @@ export class RacesComponent implements OnInit {
 		imageKey: [''],
 	});
 
+	error;
 	dialog = false;
 	edit = false;
 	mudId: string;
@@ -39,6 +41,9 @@ export class RacesComponent implements OnInit {
 		/* Daten fetchen und in Array laden */
 		this.mudId = this.route.snapshot.params.mudid;
 		this.races = await this.mudService.getRaceForMud(this.mudId);
+		this.form.valueChanges.subscribe(() => {
+			this.error = undefined;
+		});
 	}
 
 	changeDialog() {
@@ -48,6 +53,8 @@ export class RacesComponent implements OnInit {
 	}
 
 	async addRace() {
+		this.error = undefined;
+
 		// Get Imagekey from API if an Image was uploaded
 		let imageKey: IImageUploadResponse = null;
 
@@ -63,40 +70,50 @@ export class RacesComponent implements OnInit {
 
 		if (!this.edit) {
 			// Make API request
-			const response: IMudRaceResponse = await this.mudService.addRace(
-				this.mudId,
-				{
-					name: this.form.get('name').value,
-					description: this.form.get('description').value,
-					imageKey: imageKey?.imageUrl,
-					mudId: this.mudId,
-				}
-			);
+			try {
+				const response: IMudRaceResponse = await this.mudService.addRace(
+					this.mudId,
+					{
+						name: this.form.get('name').value,
+						description: this.form.get('description').value,
+						imageKey: imageKey?.imageUrl,
+						mudId: this.mudId,
+					}
+				);
 
-			// Push races Object to the array
-			this.races.push({
-				description: response.race.description,
-				name: response.race.name,
-				raceId: response.race.raceId,
-				imageKey: response.race.imageKey,
-			});
+				// Push races Object to the array
+				this.races.push({
+					description: response.race.description,
+					name: response.race.name,
+					raceId: response.race.raceId,
+					imageKey: response.race.imageKey,
+				});
+			} catch (err) {
+				console.error('Error while adding new race', err);
+				this.error = err;
+			}
 		} else {
-			const response: IMudRaceResponse = await this.mudService.editRace(
-				this.races[this.index].raceId,
-				{
-					name: this.form.get('name').value,
-					description: this.form.get('description').value,
-					imageKey: imageKey?.imageUrl,
-					mudId: this.mudId,
-				}
-			);
+			try {
+				const response: IMudRaceResponse = await this.mudService.editRace(
+					this.races[this.index].raceId,
+					{
+						name: this.form.get('name').value,
+						description: this.form.get('description').value,
+						imageKey: imageKey?.imageUrl,
+						mudId: this.mudId,
+					}
+				);
 
-			this.races[this.index] = {
-				description: response.race.description,
-				name: response.race.name,
-				raceId: response.race.raceId,
-				imageKey: response.race.imageKey,
-			};
+				this.races[this.index] = {
+					description: response.race.description,
+					name: response.race.name,
+					raceId: response.race.raceId,
+					imageKey: response.race.imageKey,
+				};
+			} catch (err) {
+				console.error('Error while editing class ', err);
+				this.error = err;
+			}
 		}
 
 		// Reset File Buffer

@@ -27,6 +27,7 @@ export class ClassesComponent implements OnInit {
 		imagekey: [''],
 	});
 
+	error;
 	dialog = false;
 	edit = false;
 	mudId: string;
@@ -40,6 +41,9 @@ export class ClassesComponent implements OnInit {
 		/* Daten fetchen und in Array laden */
 		this.mudId = this.route.snapshot.params.mudid;
 		this.classes = await this.mudService.getClassForMud(this.mudId);
+		this.form.valueChanges.subscribe(() => {
+			this.error = undefined;
+		});
 	}
 
 	changeDialog() {
@@ -49,6 +53,7 @@ export class ClassesComponent implements OnInit {
 	}
 
 	async addClass() {
+		this.error = undefined;
 		// Get Imagekey from API if an Image was uploaded
 		let imageKey: IImageUploadResponse = null;
 
@@ -64,44 +69,51 @@ export class ClassesComponent implements OnInit {
 
 		// Make API post request if its a new value
 		if (!this.edit) {
-			const response: IMudClassResponse = await this.mudService.addClass(
-				this.mudId,
-				{
-					name: this.form.get('name').value,
-					description: this.form.get('description').value,
-					imageKey: imageKey?.imageUrl,
-					mudId: this.mudId,
-				}
-			);
+			try {
+				const response: IMudClassResponse = await this.mudService.addClass(
+					this.mudId,
+					{
+						name: this.form.get('name').value,
+						description: this.form.get('description').value,
+						imageKey: imageKey?.imageUrl,
+						mudId: this.mudId,
+					}
+				);
 
-			// Push races Object to the array
-			if (response.succeeded) {
 				this.classes.push({
 					description: response.class.description,
 					name: response.class.name,
 					classId: response.class.classId,
 					imageKey: response.class.imageKey,
 				});
+			} catch (err) {
+				console.error('Error while adding new class', err);
+				this.error = err;
 			}
 		} else {
-			// Make API put request if its an edit
-			const response: IMudClassResponse = await this.mudService.editClass(
-				this.classes[this.index].classId,
-				{
-					name: this.form.get('name').value,
-					description: this.form.get('description').value,
-					imageKey: imageKey?.imageUrl,
-					mudId: this.mudId,
-				}
-			);
+			try {
+				// Make API put request if its an edit
+				const response: IMudClassResponse = await this.mudService.editClass(
+					this.classes[this.index].classId,
+					{
+						name: this.form.get('name').value,
+						description: this.form.get('description').value,
+						imageKey: imageKey?.imageUrl,
+						mudId: this.mudId,
+					}
+				);
 
-			if (response.succeeded) {
-				this.classes[this.index] = {
-					description: response.class.description,
-					name: response.class.name,
-					classId: response.class.classId,
-					imageKey: response.class.imageKey,
-				};
+				if (response.succeeded) {
+					this.classes[this.index] = {
+						description: response.class.description,
+						name: response.class.name,
+						classId: response.class.classId,
+						imageKey: response.class.imageKey,
+					};
+				}
+			} catch (err) {
+				console.error('Error while editing class', err);
+				this.error = err;
 			}
 		}
 

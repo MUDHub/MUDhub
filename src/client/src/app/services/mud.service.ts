@@ -105,7 +105,7 @@ export class MudService {
 
 	async editRace(raceid: string, mudRace: IMudRaceRequest) {
 		return await this.http
-			.put<IMudRaceResponse>(`${env.api.url}/classes/${raceid}`, mudRace)
+			.put<IMudRaceResponse>(`${env.api.url}/races/${raceid}`, mudRace)
 			.toPromise();
 	}
 

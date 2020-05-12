@@ -25,6 +25,7 @@ export class ItemsComponent implements OnInit {
 		weight: ['', Validators.required],
 	});
 	mudId: string;
+	error;
 	dialog = false;
 	edit = false;
 	index: number;
@@ -47,6 +48,9 @@ export class ItemsComponent implements OnInit {
 	async ngOnInit() {
 		this.mudId = this.route.snapshot.params.mudid;
 		this.items = await this.mudService.getItemsForMud(this.mudId);
+		this.form.valueChanges.subscribe(() => {
+			this.error = undefined;
+		});
 	}
 
 	changeDialog() {
@@ -56,21 +60,22 @@ export class ItemsComponent implements OnInit {
 	}
 
 	async addItem() {
+		this.error = undefined;
 		const imageKey: IImageUploadResponse = null;
 
 		if (!this.edit) {
-			const response: IMudItemResponse = await this.mudService.addItem(
-				this.mudId,
-				{
-					name: this.form.get('name').value,
-					description: this.form.get('description').value,
-					weight: this.form.get('weight').value,
-					imageKey: imageKey?.imageUrl,
-					mudId: this.mudId,
-				}
-			);
+			try {
+				const response: IMudItemResponse = await this.mudService.addItem(
+					this.mudId,
+					{
+						name: this.form.get('name').value,
+						description: this.form.get('description').value,
+						weight: this.form.get('weight').value,
+						imageKey: imageKey?.imageUrl,
+						mudId: this.mudId,
+					}
+				);
 
-			if (response.succeeded) {
 				this.items.push({
 					itemId: response.item.itemId,
 					name: response.item.name,
@@ -78,27 +83,35 @@ export class ItemsComponent implements OnInit {
 					weight: response.item.weight,
 					imageKey: response.item.imageKey,
 				});
+			} catch (err) {
+				console.error('Error while adding new item', err);
+				this.error = err;
 			}
 		} else {
-			const response: IMudItemResponse = await this.mudService.editItem(
-				this.items[this.index].itemId,
-				{
-					name: this.form.get('name').value,
-					description: this.form.get('description').value,
-					weight: this.form.get('weight').value,
-					imageKey: imageKey?.imageUrl,
-					mudId: this.mudId,
-				}
-			);
+			try {
+				const response: IMudItemResponse = await this.mudService.editItem(
+					this.items[this.index].itemId,
+					{
+						name: this.form.get('name').value,
+						description: this.form.get('description').value,
+						weight: this.form.get('weight').value,
+						imageKey: imageKey?.imageUrl,
+						mudId: this.mudId,
+					}
+				);
 
-			if (response.succeeded) {
-				this.items[this.index] = {
-					itemId: response.item.itemId,
-					name: response.item.name,
-					description: response.item.description,
-					weight: response.item.weight,
-					imageKey: response.item.imageKey,
-				};
+				if (response.succeeded) {
+					this.items[this.index] = {
+						itemId: response.item.itemId,
+						name: response.item.name,
+						description: response.item.description,
+						weight: response.item.weight,
+						imageKey: response.item.imageKey,
+					};
+				}
+			} catch (err) {
+				console.error('Error while editing class', err);
+				this.error = err;
 			}
 		}
 
