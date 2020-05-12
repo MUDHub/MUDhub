@@ -63,15 +63,13 @@
 				<mat-icon>clear</mat-icon>
 			</div>
 		</td>
-		<td>
-			<div class="edits">
-				<button mat-flat-button color="primary" (click)="editRow(index)">
-					<mat-icon>edit</mat-icon>
-				</button>
-				<button mat-flat-button color="primary" (click)="deleteRow(index)">
-					<mat-icon>delete</mat-icon>
-				</button>
-			</div>
+		<td class="edits">
+			<button mat-flat-button color="primary" (click)="editRow(index)">
+				<mat-icon>edit</mat-icon>
+			</button>
+			<button mat-flat-button color="primary" (click)="deleteRow(index)">
+				<mat-icon>delete</mat-icon>
+			</button>
 		</td>
 	</tr>
 </table>
