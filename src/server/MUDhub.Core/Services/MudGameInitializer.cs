@@ -13,26 +13,33 @@ namespace MUDhub.Core.Services
     public class MudGameInitializer : IHostedService
     {
         private readonly IServiceScopeFactory _scopeFactory;
+        private readonly IHostApplicationLifetime _lifetime;
         private readonly ILogger<MudGameInitializer>? _logger;
 
         public MudGameInitializer(IServiceScopeFactory scopeFactory,
+                                    IHostApplicationLifetime lifetime,
                                     ILogger<MudGameInitializer>? logger = null)
         {
             _scopeFactory = scopeFactory;
+            _lifetime = lifetime;
             _logger = logger;
+            
         }
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            using var scopedServices = _scopeFactory.CreateScope();
-            var services = scopedServices.ServiceProvider;
-            var context = services.GetRequiredService<MudDbContext>();
-            foreach (var game in context.MudGames)
+            _lifetime.ApplicationStarted.Register(() =>
             {
-                if (game.AutoRestart)
+                using var scopedServices = _scopeFactory.CreateScope();
+                var services = scopedServices.ServiceProvider;
+                var context = services.GetRequiredService<MudDbContext>();
+                foreach (var game in context.MudGames)
                 {
-                    game.State = MudGameState.Active;
+                    if (game.AutoRestart)
+                    {
+                        game.State = MudGameState.Active;
+                    }
                 }
-            }
+            });
             return Task.CompletedTask;
         }
 
