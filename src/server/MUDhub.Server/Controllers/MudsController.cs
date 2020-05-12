@@ -59,27 +59,26 @@ namespace MUDhub.Server.Controllers
             return Ok(MudApiModel.ConvertFromMudGame(mud));
         }
 
-        [HttpPost()]
-        public async Task<ActionResult<MudCreationResponse>> CreateMud([FromBody] MudEditRequest mudCreation)
+        [HttpGet("{mudId}/validate")]
+        [ProducesResponseType(typeof(MudValidateResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(MudValidateResponse), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> ValidateMud([FromRoute] string mudId)
         {
-            if (mudCreation is null)
-                throw new ArgumentNullException(nameof(mudCreation));
-
-            var mud = await _mudManager.CreateMudAsync(mudCreation.Name, MudEditRequest.ConvertCreationArgs(mudCreation, HttpContext.GetUserId()))
-                .ConfigureAwait(false);
-
-            if (mud is null)
+            var result = await _mudManager.ValidateMudAsync(mudId).ConfigureAwait(false);
+            if (!result.Success)
             {
-                //Todo: later add usefull message.
-                return BadRequest(new MudCreationResponse
+                return BadRequest(new MudValidateResponse
                 {
                     Succeeded = false,
-                    Errormessage = "Can' create mudgame, maybe user not found"
+                    DisplayMessage = "Mud wurde nicht gefunden",
+                    Errormessage = result.ExecutionError
                 });
             }
-            return Ok(new MudCreationResponse
+            return Ok(new MudValidateResponse
             {
-                Mud = MudApiModel.ConvertFromMudGame(mud)
+                Succeeded = true,
+                IsMudValid = result.Valid,
+                ValidationErrors = result.ErrorMessages,
             });
         }
 

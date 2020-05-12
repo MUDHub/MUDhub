@@ -139,6 +139,10 @@ namespace MUDhub.Core.Services
                 .WithMany()
                 .HasForeignKey(r => r.GameId);
             modelBuilder.Entity<Room>()
+                .HasOne(r => r.Inventory)
+                .WithOne()
+                .HasForeignKey<Room>(r => r.InventoryId);
+            modelBuilder.Entity<Room>()
                 .HasMany(r => r.Interactions)
                 .WithOne(i => i.Room);
 

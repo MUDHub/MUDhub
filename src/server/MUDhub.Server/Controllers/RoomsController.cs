@@ -123,15 +123,19 @@ namespace MUDhub.Server.Controllers
         }
 
         [HttpPost("{roomId}/iteminstances")]
-        [ProducesResponseType(typeof(CreateRoomResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(CreateRoomResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ItemInstanceResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ItemInstanceResponse), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateItemInstance([FromRoute] string roomId, [FromBody] ItemInstanceRequest args)
         {
             if (args is null)
                 throw new ArgumentNullException(nameof(args));
-
-            //Todo: maybe refator for smarter using for the client=> get inventory id by roomid...
-            var createResult = await _inventoryService.CreateItemInstance(HttpContext.GetUserId(), args.InventoryId,
+            var room = await _context.Rooms.FindAsync(roomId).ConfigureAwait(false);
+            if (room is null)
+            {
+                return BadRequest("Room does not exist.");
+            }
+            //Todo: maybe later add cound as args, need more work in InventoryService, update models for list aggregation..
+            var createResult = await _inventoryService.CreateItemInstance(HttpContext.GetUserId(), room.InventoryId,
                 args.ItemId).ConfigureAwait(false);
 
             if (createResult.Success)
