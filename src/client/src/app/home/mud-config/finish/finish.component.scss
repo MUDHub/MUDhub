@@ -14,3 +14,13 @@ mat-horizontal-stepper{
         margin-right: 1rem;
     }
 }
+
+.align-beside{
+    display: flex;
+    flex-direction: row;
+
+    p{
+        margin-right: 1rem;
+    }
+
+}

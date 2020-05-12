@@ -55,6 +55,10 @@ export class FinishComponent implements OnInit {
 			(error.region == IRegion.Items) ? this.itemStatusMsg = error.message : this.itemStatusMsg = "";
 			(error.region == IRegion.Areas) ? this.areaStatusMsg = error.message : this.areaStatusMsg = "";
 		});
+		//Get General Information
+		this.generalStatus = !this.validationResult.isMudValid;
+		this.generalStatusMsg = this.validationResult.errormessage;
+		console.log(this.validationResult);
 	}
 	/* Handle Validation Result End */
 
