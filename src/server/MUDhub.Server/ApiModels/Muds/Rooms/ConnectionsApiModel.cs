@@ -63,6 +63,11 @@ namespace MUDhub.Server.ApiModels.Muds.Rooms
                             c.West = true;
                         }
                         break;
+                        default:
+                        {
+                            c.Portals.Add(RoomConnectionApiModel.ConvertFromRoomConnection(connection));
+                        }
+                        break;
                     }
                 }
                 else
@@ -70,7 +75,6 @@ namespace MUDhub.Server.ApiModels.Muds.Rooms
                     c.Portals.Add(RoomConnectionApiModel.ConvertFromRoomConnection(connection));
                 }
             }
-
             return c;
         }
     }
