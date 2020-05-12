@@ -41,7 +41,7 @@ namespace MUDhub.Server.Hubs
         {
             var character = await _context.Characters.FindAsync(GetCharacterId())
                                                      .ConfigureAwait(false);
-            await Clients.Group(character.Game.Id).ReceiveGlobalMessage(message, character.Name)
+            await Clients.GroupExcept(character.Game.Id, Context.ConnectionId).ReceiveGlobalMessage(message, character.Name)
                                                   .ConfigureAwait(false);
         }
 
@@ -55,7 +55,7 @@ namespace MUDhub.Server.Hubs
                 return new SendPrivateMessageResult
                 {
                     Success = false,
-                    DisplayMessage = $"Character {targetCharacterName} is momentan nicht online."
+                    DisplayMessage = $"{targetCharacterName} is momentan nicht online."
                 };
             }
             await Clients.Client(targetConnid)
@@ -69,7 +69,7 @@ namespace MUDhub.Server.Hubs
 
         public async Task SendRoomMessage(string message)
         {    
-            await Clients.Group(GetCurrentRoomId())
+            await Clients.GroupExcept(GetCurrentRoomId(),Context.ConnectionId)
                             .ReceivePrivateMessage(message, GetCharacterName())
                             .ConfigureAwait(false);
         }
@@ -134,7 +134,7 @@ namespace MUDhub.Server.Hubs
             _logger.LogInformation($"Character {character?.Name} ({character?.Id}) has left the game");
             if (!(character is null))
             {
-                await Clients.Group(character.Game.Id).ReceiveGlobalMessage($"Charakter: {character.Name} hat das Spiel verlassen.", SERVERNAME, true)
+                await Clients.Group(character.Game.Id).ReceiveGlobalMessage($"{character.Name} hat das Spiel verlassen.", SERVERNAME, true)
                                                     .ConfigureAwait(false);
                 _connectionHandler.RemoveConnectionId(character.Id);
             }
