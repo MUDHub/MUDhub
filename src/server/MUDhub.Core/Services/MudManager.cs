@@ -218,7 +218,7 @@ namespace MUDhub.Core.Services
             return true;
         }
 
-        public async Task<bool> SetEditModeAsync(string mudId, string userid, bool isInEdit)
+        public async Task<bool> SetEditModeAsync(string mudId, string userid, bool setToInEdit)
         {
             var user = await _context.GetUserByIdAsnyc(userid)
                                       .ConfigureAwait(false);
@@ -231,15 +231,14 @@ namespace MUDhub.Core.Services
             {
                 return false;
             }
-            if (mud.State == MudGameState.InEdit && isInEdit)
+            var result = await ValidateMudAsync(mudId).ConfigureAwait(false);
+            if (   (mud.State == MudGameState.InEdit && setToInEdit) 
+                || (mud.State != MudGameState.InEdit && !setToInEdit)
+                || (mud.State != MudGameState.Active && !result.Valid))
             {
                 return false;
             }
-            if (mud.State != MudGameState.InEdit && !isInEdit)
-            {
-                return false;
-            }
-            mud.State = MudGameState.Active;
+            mud.State = setToInEdit ? MudGameState.InEdit : MudGameState.Active;
             await _context.SaveChangesAsync().ConfigureAwait(false);
             return true;
         }
