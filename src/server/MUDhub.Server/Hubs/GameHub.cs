@@ -10,9 +10,13 @@ using Microsoft.Extensions.Logging;
 using MUDhub.Core.Abstracts;
 using MUDhub.Core.Abstracts.Models.Characters;
 using MUDhub.Core.Models;
+using MUDhub.Core.Models.Characters;
+using MUDhub.Core.Models.Rooms;
 using MUDhub.Core.Models.Users;
 using MUDhub.Core.Services;
+using MUDhub.Server.Helpers;
 using MUDhub.Server.Hubs.Models;
+using MySql.Data.MySqlClient;
 
 namespace MUDhub.Server.Hubs
 {
@@ -21,29 +25,53 @@ namespace MUDhub.Server.Hubs
         private const string SERVERNAME = "Server";
 
         private readonly MudDbContext _context;
-        private readonly ICharacterManager _manager;
+        private readonly SignalRConnectionHandler _connectionHandler;
+        private readonly INavigationService _navigationService;
         private readonly ILogger<GameHub> _logger;
 
-        public GameHub(MudDbContext context, ICharacterManager manager, ILogger<GameHub> logger)
+        public GameHub(MudDbContext context,SignalRConnectionHandler connectionHandler,INavigationService navigationService, ILogger<GameHub> logger)
         {
             _context = context;
-            _manager = manager;
+            _connectionHandler = connectionHandler;
+            _navigationService = navigationService;
             _logger = logger;
         }
 
-        public Task SendGlobalMessage(string message)
+        public async Task SendGlobalMessage(string message)
         {
-            throw new NotImplementedException();
+            var character = await _context.Characters.FindAsync(GetCharacterId())
+                                                     .ConfigureAwait(false);
+            await Clients.Group(character.Game.Id).ReceiveGlobalMessage(message, character.Name)
+                                                  .ConfigureAwait(false);
         }
 
-        public Task<SendPrivateMessageResult> SendPrivateMesage(string message, string targetCharacterName)
+        public async Task<SendPrivateMessageResult> SendPrivateMesage(string message, string targetCharacterName)
         {
-            throw new NotImplementedException();
+            var targetCharacter = _context.Characters.FirstOrDefault(c => c.Name == targetCharacterName);
+
+            var targetConnid = _connectionHandler.GetConnectionId(targetCharacterName);
+            if (targetConnid is null)
+            {
+                return new SendPrivateMessageResult
+                {
+                    Success = false,
+                    DisplayMessage = $"Character {targetCharacterName} is momentan nicht online."
+                };
+            }
+            await Clients.Client(targetConnid)
+                            .ReceivePrivateMessage(message, GetCharacterName())
+                            .ConfigureAwait(false);
+            return new SendPrivateMessageResult
+            {
+                Success = true
+            };
         }
 
-        public Task SendRoomMessage(string message)
-        {
-            throw new NotImplementedException();
+        public async Task SendRoomMessage(string message)
+        {    
+            await Clients.Group(GetCurrentRoomId())
+                            .ReceivePrivateMessage(message, GetCharacterName())
+                            .ConfigureAwait(false);
         }
 
         public async Task<JoinMudGameResult> TryJoinMudGame(string characterid)
@@ -71,6 +99,9 @@ namespace MUDhub.Server.Hubs
 
             //Note: Join stuff
             Context.Items["characterId"] = characterid;
+            Context.Items["characterName"] = character.Name;
+            Context.Items["currentRoomId"] = character.ActualRoom.Id;
+            _connectionHandler.AddConnectionId(characterid, Context.ConnectionId);
             await Clients.Group(character.Game.Id).ReceiveGlobalMessage($"Charakter: {character.Name} hat das Spiel betreten.", SERVERNAME, true)
                                                   .ConfigureAwait(false);
             await Groups.AddToGroupAsync(Context.ConnectionId, character.Game.Id).ConfigureAwait(false);
@@ -84,8 +115,12 @@ namespace MUDhub.Server.Hubs
 
         public async Task<JoinRoomResult> TryJoinRoom(string roomid)
         {
+            var result = await _navigationService.TryEnterRoomAsync(GetCharacterId(), roomid)
+                                                    .ConfigureAwait(false);
+            var character = await _context.Characters.FindAsync(GetCharacterId()).ConfigureAwait(false);
+            //Todo: the rest, messaging, state management, etc..
 
-            throw new NotImplementedException();
+            return JoinRoomResult.ConvertFromNavigationResult(result);
         }
 
         public Task<TransferItemResult> TryTransferItem(string itemid, string targetid)
@@ -100,9 +135,12 @@ namespace MUDhub.Server.Hubs
             {
                 await Clients.Group(character.Game.Id).ReceiveGlobalMessage($"Charakter: {character.Name} hat das Spiel verlassen.", SERVERNAME, true)
                                                     .ConfigureAwait(false);
+                _connectionHandler.RemoveConnectionId(character.Id);
             }
         }
 
         private string GetCharacterId() => (Context.Items["characterId"] as string)!;
+        private string GetCharacterName() => (Context.Items["characterName"] as string)!;
+        private string GetCurrentRoomId() => (Context.Items["currentRoomId"] as string)!;
     }
 }

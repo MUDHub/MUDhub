@@ -67,7 +67,8 @@ namespace MUDhub.Core.Services
                 .HasKey(mg => mg.Id);
             modelBuilder.Entity<MudGame>()
                 .HasMany(mg => mg.Characters)
-                .WithOne(c => c.Game);
+                .WithOne(c => c.Game)
+                .HasForeignKey(c => c.GameId);
             modelBuilder.Entity<MudGame>()
                 .HasMany(g => g.Areas)
                 .WithOne(a => a.Game)
@@ -97,7 +98,8 @@ namespace MUDhub.Core.Services
 
             modelBuilder.Entity<Character>()
                 .HasOne(c => c.ActualRoom)
-                .WithMany(r => r.Characters);
+                .WithMany(r => r.Characters)
+                .HasForeignKey(c =>c.ActualRoomId);
 
             //Configures CharacterClass
             modelBuilder.Entity<CharacterClass>()
