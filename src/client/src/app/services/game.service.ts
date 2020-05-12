@@ -17,7 +17,7 @@ export class GameService {
 		this.connection = new HubConnectionBuilder()
 			.configureLogging(env.signalr.logLevel)
 			.withUrl(env.signalr.url, {
-				accessTokenFactory: () => this.auth.user.id,
+				accessTokenFactory: () => this.auth.token,
 			})
 			.withAutomaticReconnect()
 			.build();

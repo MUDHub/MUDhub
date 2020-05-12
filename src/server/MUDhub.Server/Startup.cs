@@ -90,7 +90,7 @@ namespace MUDhub.Server
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapHub<GameHub>("/game");
+                endpoints.MapHub<GameHub>("/hubs/game");
 
             });
 
