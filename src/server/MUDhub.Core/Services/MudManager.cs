@@ -6,6 +6,7 @@ using MUDhub.Core.Models;
 using MUDhub.Core.Models.Muds;
 using MUDhub.Core.Models.Users;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -246,9 +247,57 @@ namespace MUDhub.Core.Services
         private async Task<MudGame> GetMudGameByIdAsync(string id)
             => await _context.MudGames.FindAsync(id).ConfigureAwait(false);
 
-        public Task<MudValidateResult> ValidateMud(string mudid)
+        public async Task<MudValidateResult> ValidateMudAsync(string mudid)
         {
-            throw new NotImplementedException();
+            var mud = await _context.GetMudByIdAsnyc(mudid).ConfigureAwait(false);
+            var errors = new List<MudValidateErrorMessage>();
+            if (mud is null)
+            {
+                var message = $"Mudid: '{mudid}' didn't exists.";
+                _logger?.LogWarning(message);
+                return new MudValidateResult(Enumerable.Empty<MudValidateErrorMessage>())
+                {
+                    ExecutionError = message,
+                    Success = false
+                };
+            }
+
+            var hasdefaultRoom = mud.Areas.SelectMany(a => a.Rooms).Any(r => r.IsDefaultRoom);
+            if (!hasdefaultRoom)
+            {
+                _logger.LogWarning($"There is no default room in the mudgame '{mud.Name}'.");
+                errors.Add(new MudValidateErrorMessage()
+                {
+                    Region = ErrorRegion.Areas,
+                    Message = "Es existiert kein Eintrittsraum."
+                });
+            }
+            var hasRace = mud.Races.Any();
+            if (!hasRace)
+            {
+                _logger.LogWarning($"There is no race in the mudgame '{mud.Name}'.");
+                errors.Add(new MudValidateErrorMessage()
+                {
+                    Region = ErrorRegion.Races,
+                    Message = "Es existiert kein Rasse, die ein Charakter annehmen kann."
+                });
+            }
+
+            var hasClasses = mud.Classes.Any();
+            if (!hasClasses)
+            {
+                _logger.LogWarning($"There is no class in the mudgame '{mud.Name}'.");
+                errors.Add(new MudValidateErrorMessage()
+                {
+                    Region = ErrorRegion.Classes,
+                    Message = "Es existiert kein Klasse, die ein Charakter annehmen kann."
+                });
+            }
+
+            return new MudValidateResult(errors)
+            {
+                Valid = errors.Count == 0
+            };
         }
     }
 }
