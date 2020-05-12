@@ -14,7 +14,7 @@ export interface IMudClass {
 
 
 export interface IMudItem {
-	itemId: string;
+	id: string;
 	name: string;
 	description: string;
 	imageKey: string;
