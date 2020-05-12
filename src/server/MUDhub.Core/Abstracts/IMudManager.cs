@@ -15,7 +15,7 @@ namespace MUDhub.Core.Abstracts
         Task<bool> RemoveMudAsync(string mudId);
         Task<MudGame?> UpdateMudAsync(string mudid, MudUpdateArgs args);
 
-        Task<MudValidateResult> ValidateMud(string mudid);
+        Task<MudValidateResult> ValidateMudAsync(string mudid);
 
         Task<bool> SetEditModeAsync(string mudId, string userid, bool isInEdit);
 

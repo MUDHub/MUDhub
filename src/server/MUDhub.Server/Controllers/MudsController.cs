@@ -83,6 +83,30 @@ namespace MUDhub.Server.Controllers
             });
         }
 
+        [HttpPost()]
+        public async Task<ActionResult<MudCreationResponse>> CreateMud([FromBody] MudEditRequest mudCreation)
+        {
+            if (mudCreation is null)
+                throw new ArgumentNullException(nameof(mudCreation));
+
+            var mud = await _mudManager.CreateMudAsync(mudCreation.Name, MudEditRequest.ConvertCreationArgs(mudCreation, HttpContext.GetUserId()))
+                .ConfigureAwait(false);
+
+            if (mud is null)
+            {
+                //Todo: later add usefull message.
+                return BadRequest(new MudCreationResponse
+                {
+                    Succeeded = false,
+                    Errormessage = "Can' create mudgame, maybe user not found"
+                });
+            }
+            return Ok(new MudCreationResponse
+            {
+                Mud = MudApiModel.ConvertFromMudGame(mud)
+            });
+        }
+
         [HttpPut("{mudId}")]
         public async Task<ActionResult<MudUpdateResponse>> UpdateMud([FromRoute] string mudId, [FromBody] MudEditRequest mudUpdate)
         {
