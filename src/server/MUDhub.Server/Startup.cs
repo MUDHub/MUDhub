@@ -13,6 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MUDhub.Core.Abstracts;
 using MUDhub.Core.Configurations;
+using MUDhub.Server.Hubs;
 
 namespace MUDhub.Server
 {
@@ -87,6 +88,7 @@ namespace MUDhub.Server
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<GameHub>("/game");
 
             });
 

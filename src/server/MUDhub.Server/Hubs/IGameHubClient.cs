@@ -10,7 +10,7 @@ namespace MUDhub.Server.Hubs
         Task ReceiveMudMasterMessage(object o);
 
         Task ReceiveGameMessage(string message);
-        Task ReceiveGlobalMessage(string message, string caller);
+        Task ReceiveGlobalMessage(string message, string caller, bool serverMessage = false);
         Task ReceiveRoomMessage(string message, string caller);
         Task ReceivePrivateMessage(string mssage, string caller);
     }
