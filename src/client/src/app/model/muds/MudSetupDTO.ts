@@ -12,7 +12,6 @@ export interface IMudClass {
 	imageKey: string;
 }
 
-
 export interface IMudItem {
 	id: string;
 	name: string;
@@ -21,23 +20,23 @@ export interface IMudItem {
 	weight: number;
 }
 
-export interface IValidationResult{
+export interface IValidationResult {
 	validationErrors: [
-	  {
-		region: IRegion,
-		message: string
-	  }
-	],
-	isMudValid: boolean,
-	displayMessage: string,
-	errormessage: string,
-	succeeded: boolean
+		{
+			region: IRegion;
+			message: string;
+		}
+	];
+	isMudValid: boolean;
+	displayMessage: string;
+	errormessage: string;
+	succeeded: boolean;
 }
 
-export enum IRegion{
+export enum IRegion {
 	General = 0,
 	Races = 1,
 	Classes = 2,
 	Items = 3,
-	Areas = 4
+	Areas = 4,
 }

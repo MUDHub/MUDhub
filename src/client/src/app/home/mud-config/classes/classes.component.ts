@@ -6,6 +6,7 @@ import { IMudClass } from 'src/app/model/muds/MudSetupDTO';
 import { MudService } from 'src/app/services/mud.service';
 import { IMudClassResponse } from 'src/app/model/muds/MudDTO';
 import { IImageUploadResponse } from 'src/app/model/FileUploadDTO';
+import Swal from 'sweetalert2';
 
 @Component({
 	selector: 'mh-classes',
@@ -51,36 +52,30 @@ export class ClassesComponent implements OnInit {
 
 		try {
 			if (this.selectedFile != null) {
-				imageKey = await this.imageService.uploadFile(
-					this.selectedFile
-				);
+				imageKey = await this.imageService.uploadFile(this.selectedFile);
 			}
 		} catch (e) {
 			this.selectedFile = null;
 		}
 
-		// Make API request
-		const response: IMudClassResponse = await this.mudService.addClass(
-			this.mudId,
-			{
+		try {
+			const response: IMudClassResponse = await this.mudService.addClass(this.mudId, {
 				name: this.form.get('name').value,
 				description: this.form.get('description').value,
 				imageKey: imageKey?.imageUrl,
-				mudId: this.mudId
-			}
-		);
+				mudId: this.mudId,
+			});
 
-		// Push races Object to the array
-		if (response.succeeded) {
-			this.classes.push({
-				description: response.class.description,
-				name: response.class.name,
-				classId: response.class.classId,
-				imageKey: response.class.imageKey,
+			this.classes.push(response.class);
+		} catch (err) {
+			console.error('Error while adding class', err);
+			await Swal.fire({
+				icon: 'error',
+				title: 'Fehler',
+				text: err.error?.displayMessage || err.error?.errormessage || 'Fehler beim Hinzufügen der Klasse',
 			});
 		}
 
-		// Reset File Buffer
 		this.selectedFile = null;
 		this.changeDialog();
 	}

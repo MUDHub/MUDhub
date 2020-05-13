@@ -6,6 +6,7 @@ import { IMudRace } from 'src/app/model/muds/MudSetupDTO';
 import { MudService } from 'src/app/services/mud.service';
 import { IMudRaceResponse, IMudRaceRequest } from 'src/app/model/muds/MudDTO';
 import { IImageUploadResponse } from 'src/app/model/FileUploadDTO';
+import Swal from 'sweetalert2';
 
 @Component({
 	templateUrl: './races.component.html',
@@ -49,34 +50,30 @@ export class RacesComponent implements OnInit {
 
 		try {
 			if (this.selectedFile != null) {
-				imageKey = await this.imageService.uploadFile(
-					this.selectedFile
-				);
+				imageKey = await this.imageService.uploadFile(this.selectedFile);
 			}
 		} catch (e) {
 			this.selectedFile = null;
 		}
 
-		// Make API request
-		const response: IMudRaceResponse = await this.mudService.addRace(
-			this.mudId,
-			{
+		try {
+			const response: IMudRaceResponse = await this.mudService.addRace(this.mudId, {
 				name: this.form.get('name').value,
 				description: this.form.get('description').value,
 				imageKey: imageKey?.imageUrl,
-				mudId: this.mudId
-			}
-		);
+				mudId: this.mudId,
+			});
 
-		// Push races Object to the array
-		this.races.push({
-			description: response.race.description,
-			name: response.race.name,
-			raceId: response.race.raceId,
-			imageKey: response.race.imageKey,
-		});
+			this.races.push(response.race);
+		} catch (err) {
+			console.error('Error while adding race', err);
+			await Swal.fire({
+				icon: 'error',
+				title: 'Fehler',
+				text: err.error?.displayMessage || err.error?.errormessage || 'Fehler beim Hinzufügen der Rasse'
+			});
+		}
 
-		// Reset File Buffer
 		this.selectedFile = null;
 		this.changeDialog();
 	}
