@@ -12,7 +12,6 @@ export class GameShellComponent implements OnInit {
 	constructor(private route: ActivatedRoute, private router: Router, private game: GameService) {}
 
 	characterid: string;
-	showChat = true;
 
 	async ngOnInit() {
 		this.characterid = this.route.snapshot.params.characterid;

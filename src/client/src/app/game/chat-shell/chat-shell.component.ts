@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
 	selector: 'mh-chat-shell',
@@ -8,7 +8,11 @@ import { Component, OnInit } from '@angular/core';
 export class ChatShellComponent implements OnInit {
 	constructor() {}
 
+	isOpened = false;
+
 	activeChat = 'global';
+
+	@Output() close = new EventEmitter();
 
 	ngOnInit(): void {}
 }

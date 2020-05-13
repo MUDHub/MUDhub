@@ -1,12 +1,27 @@
 <div class="info-bar">
-	<span class="toggler"></span>
+	<div class="toggler">
+		<mat-icon *ngIf="!isOpened" (click)="isOpened = true">keyboard_arrow_right</mat-icon>
+		<mat-icon *ngIf="isOpened" (click)="isOpened = false">keyboard_arrow_left</mat-icon>
+	</div>
+	<div class="actions">
+		<div class="chat-icon">
+			<mat-icon class="icon" [class.active]="activeChat === 'global' && isOpened" (click)="activeChat = 'global'; isOpened = true">public</mat-icon>
+		</div>
+		<div class="chat-icon">
+			<mat-icon class="icon" [class.active]="activeChat === 'room' && isOpened" (click)="activeChat = 'room'; isOpened = true">meeting_room</mat-icon>
+		</div>
+
+	</div>
+	<div class="exit-icon">
+		<mat-icon class="icon" (click)="close.emit()">close</mat-icon>
+	</div>
 </div>
-<div class="chat">
-	<ul class="nav">
+<div class="chat" *ngIf="isOpened">
+	<!-- <ul class="nav">
 		<li class="nav-item" (click)="activeChat = 'global'" [class.active]="activeChat == 'global'">Global</li>
 		<li class="nav-item" (click)="activeChat = 'room'" [class.active]="activeChat == 'room'">Raum</li>
-		<!-- <li class="nav-item" (click)="activeChat = 'private'" [class.active]="activeChat == 'private'">Privat</li> -->
-	</ul>
+		<li class="nav-item" (click)="activeChat = 'private'" [class.active]="activeChat == 'private'">Privat</li>
+	</ul> -->
 
 	<div class="shell" [ngSwitch]="activeChat">
 		<mh-chat-global *ngSwitchCase="'global'"></mh-chat-global>
