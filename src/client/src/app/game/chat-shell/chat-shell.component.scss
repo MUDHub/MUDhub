@@ -1,10 +1,23 @@
 @import "src/variables.scss";
 
 :host {
-	display: flex;
-	flex-direction: column;
 	max-height: 100%;
 	position: relative;
+	display: flex;
+}
+
+.info-bar {
+	width: 55px;
+	border: 1px solid red;
+	height: 100%;
+}
+
+.chat {
+	border: 1px solid green;
+	flex-grow: 1;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
 }
 
 .nav {
@@ -25,6 +38,13 @@
 		&.active {
 			border-bottom-color: $color-primary;
 		}
+	}
+}
+
+
+.toggler {
+	::before {
+		width: 100%;
 	}
 }
 

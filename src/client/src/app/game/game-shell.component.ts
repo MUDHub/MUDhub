@@ -33,6 +33,7 @@ export class GameShellComponent implements OnInit {
 	async exit() {
 		await this.game.exitGame();
 		// TODO: handle exit
+		this.game.exitGame();
 		this.router.navigate(['/']);
 	}
 }

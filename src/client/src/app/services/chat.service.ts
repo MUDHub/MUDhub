@@ -9,7 +9,7 @@ import { GameService } from './game.service';
 export class ChatService {
 	constructor(private game: GameService) {
 		game.NewGlobalMessage$.subscribe(m => {
-			const message: IGlobalMessage = {
+			const message: IMessage = {
 				content: m.message,
 				sender: m.caller,
 				isServerMessage: m.serverMessage,
@@ -25,6 +25,11 @@ export class ChatService {
 			};
 			this._roomHistory.push(message);
 			this.NewRoomMessageSubject.next(message);
+		});
+
+		game.OnExit$.subscribe(() => {
+			this._roomHistory = [];
+			this._globalHistory = [];
 		});
 	}
 

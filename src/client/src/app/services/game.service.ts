@@ -7,6 +7,7 @@ import { HubConnection, HubConnectionBuilder, LogLevel, HubConnectionState } fro
 import { environment as env } from 'src/environments/environment';
 import { AuthService } from './auth.service';
 import { ISignalRBaseResult } from '../model/game/signalR/SignalRBaseResult';
+import { ChatService } from './chat.service';
 
 @Injectable({
 	providedIn: 'root',
@@ -41,6 +42,9 @@ export class GameService {
 	}
 
 	connection: HubConnection;
+
+	private OnExitSubject = new Subject();
+	public OnExit$ = this.OnExitSubject.asObservable();
 
 	private NewGameMessageSubject = new Subject<string>();
 	public NewGameMessage$ = this.NewGameMessageSubject.asObservable();
@@ -83,6 +87,7 @@ export class GameService {
 	}
 
 	public async exitGame() {
+		this.OnExitSubject.next();
 		await this.connection.stop();
 	}
 

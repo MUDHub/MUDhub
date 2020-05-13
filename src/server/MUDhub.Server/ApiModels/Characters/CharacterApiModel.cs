@@ -1,4 +1,5 @@
 ﻿using MUDhub.Core.Models.Characters;
+using MUDhub.Server.ApiModels.Muds;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace MUDhub.Server.ApiModels.Characters
         public string RaceName { get; set; } = string.Empty;
         public string ClassName { get; set; } = string.Empty;
         public string RoomName { get; set; } = string.Empty;
+        public MudApiModel Mud { get; set; }
 
 
         public static CharacterApiModel FromCharacter(Character character)
@@ -29,7 +31,8 @@ namespace MUDhub.Server.ApiModels.Characters
                 ClassName = character.Class.Name,
                 RaceName = character.Race.Name,
                 RoomName = character.ActualRoom.Name,
-                OwnerFullname = character.Owner.Name + " " +character.Owner.Lastname,
+                OwnerFullname = character.Owner.Name + " " + character.Owner.Lastname,
+                Mud = MudApiModel.ConvertFromMudGame(character.Game)
             };
         }
     }
