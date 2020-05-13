@@ -1,22 +1,13 @@
-﻿using System;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Castle.Core.Logging;
-using Castle.DynamicProxy.Generators.Emitters;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.EntityFrameworkCore.Update;
+﻿using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using MUDhub.Core.Abstracts;
-using MUDhub.Core.Abstracts.Models.Characters;
 using MUDhub.Core.Models;
-using MUDhub.Core.Models.Characters;
-using MUDhub.Core.Models.Rooms;
-using MUDhub.Core.Models.Users;
 using MUDhub.Core.Services;
 using MUDhub.Server.Helpers;
 using MUDhub.Server.Hubs.Models;
-using MySql.Data.MySqlClient;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MUDhub.Server.Hubs
 {
@@ -29,7 +20,7 @@ namespace MUDhub.Server.Hubs
         private readonly INavigationService _navigationService;
         private readonly ILogger<GameHub> _logger;
 
-        public GameHub(MudDbContext context,SignalRConnectionHandler connectionHandler,INavigationService navigationService, ILogger<GameHub> logger)
+        public GameHub(MudDbContext context, SignalRConnectionHandler connectionHandler, INavigationService navigationService, ILogger<GameHub> logger)
         {
             _context = context;
             _connectionHandler = connectionHandler;
@@ -68,8 +59,8 @@ namespace MUDhub.Server.Hubs
         }
 
         public async Task SendRoomMessage(string message)
-        {    
-            await Clients.GroupExcept(GetCurrentRoomId(),Context.ConnectionId)
+        {
+            await Clients.GroupExcept(GetCurrentRoomId(), Context.ConnectionId)
                             .ReceivePrivateMessage(message, GetCharacterName())
                             .ConfigureAwait(false);
         }

@@ -26,7 +26,7 @@ namespace MUDhub.Core.Tests
             collection.AddMudGameManagment();
             Assert.Contains(collection, s => s.ImplementationType == typeof(MudManager) && s.ServiceType == typeof(IMudManager));
             Assert.Contains(collection, s => s.ImplementationType == typeof(GameService) && s.ServiceType == typeof(IGameService));
-            Assert.Equal(2, collection.Count); //Checking for new Services
+            Assert.Equal(3, collection.Count); //Checking for new Services
         }
 
     }
