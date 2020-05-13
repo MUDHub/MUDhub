@@ -225,12 +225,12 @@ export class RoomsGridComponent implements OnInit {
 							this.rooms[y][x - 1].connections.east = true;
 							continue;
 						}
-						if (this.rooms[y + 1][x]?.roomId === response.connection.room2Id) {
+						if (this.rooms[y + 1] && this.rooms[y + 1][x]?.roomId === response.connection.room2Id) {
 							room.connections.south = true;
 							this.rooms[y + 1][x].connections.north = true;
 							continue;
 						}
-						if (this.rooms[y - 1][x]?.roomId === response.connection.room2Id) {
+						if (this.rooms[y - 1] && this.rooms[y - 1][x]?.roomId === response.connection.room2Id) {
 							room.connections.north = true;
 							this.rooms[y - 1][x].connections.south = true;
 							continue;
