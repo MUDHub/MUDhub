@@ -5,6 +5,7 @@ import { IMudItem } from 'src/app/model/muds/MudSetupDTO';
 import { MudService } from 'src/app/services/mud.service';
 import { IMudItemRequest, IMudItemResponse } from 'src/app/model/muds/MudDTO';
 import { IImageUploadResponse } from 'src/app/model/FileUploadDTO';
+import Swal from 'sweetalert2';
 
 @Component({
 	selector: 'mh-items',
@@ -32,7 +33,7 @@ export class ItemsComponent implements OnInit {
 	items: Array<IMudItem> = [];
 
 	async deleteRow(index: number) {
-		await this.mudService.deleteItem(this.mudId, this.items[index].itemId);
+		await this.mudService.deleteItem(this.mudId, this.items[index].id);
 		this.items.splice(index, 1);
 	}
 
@@ -114,7 +115,5 @@ export class ItemsComponent implements OnInit {
 				this.error = err;
 			}
 		}
-
-		this.changeDialog();
 	}
 }

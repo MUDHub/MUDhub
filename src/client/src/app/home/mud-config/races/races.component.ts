@@ -6,7 +6,7 @@ import { IMudRace } from 'src/app/model/muds/MudSetupDTO';
 import { MudService } from 'src/app/services/mud.service';
 import { IMudRaceResponse, IMudRaceRequest } from 'src/app/model/muds/MudDTO';
 import { IImageUploadResponse } from 'src/app/model/FileUploadDTO';
-import { ChatShellComponent } from 'src/app/game/chat-shell/chat-shell.component';
+import Swal from 'sweetalert2';
 
 @Component({
 	templateUrl: './races.component.html',
@@ -60,9 +60,7 @@ export class RacesComponent implements OnInit {
 
 		try {
 			if (this.selectedFile != null) {
-				imageKey = await this.imageService.uploadFile(
-					this.selectedFile
-				);
+				imageKey = await this.imageService.uploadFile(this.selectedFile);
 			}
 		} catch (e) {
 			this.selectedFile = null;
@@ -116,7 +114,6 @@ export class RacesComponent implements OnInit {
 			}
 		}
 
-		// Reset File Buffer
 		this.selectedFile = null;
 		this.changeDialog();
 	}

@@ -4,10 +4,7 @@
 }
 
 .chat {
-	width: 25%;
 	height: 100%;
-	min-width: 300px;
-	max-width: 450px;
 }
 
 .game {
@@ -26,16 +23,4 @@
 	&:hover {
 		opacity: 1;
 	}
-}
-
-.exit {
-	position: absolute;
-	top: 0;
-	right: 0;
-	z-index: 99;
-	background: none;
-	border: none;
-	cursor: pointer;
-	padding: 0.5rem;
-	color: #fff;
 }

@@ -6,6 +6,7 @@ import { IMudClass } from 'src/app/model/muds/MudSetupDTO';
 import { MudService } from 'src/app/services/mud.service';
 import { IMudClassResponse } from 'src/app/model/muds/MudDTO';
 import { IImageUploadResponse } from 'src/app/model/FileUploadDTO';
+import Swal from 'sweetalert2';
 
 @Component({
 	selector: 'mh-classes',
@@ -59,14 +60,11 @@ export class ClassesComponent implements OnInit {
 
 		try {
 			if (this.selectedFile != null) {
-				imageKey = await this.imageService.uploadFile(
-					this.selectedFile
-				);
+				imageKey = await this.imageService.uploadFile(this.selectedFile);
 			}
 		} catch (e) {
 			this.selectedFile = null;
 		}
-
 		// Make API post request if its a new value
 		if (!this.edit) {
 			try {
@@ -117,7 +115,6 @@ export class ClassesComponent implements OnInit {
 			}
 		}
 
-		// Reset File Buffer
 		this.selectedFile = null;
 
 		// Close Dialog

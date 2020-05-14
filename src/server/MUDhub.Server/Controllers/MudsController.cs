@@ -59,6 +59,29 @@ namespace MUDhub.Server.Controllers
             return Ok(MudApiModel.ConvertFromMudGame(mud));
         }
 
+        [HttpGet("{mudId}/validate")]
+        [ProducesResponseType(typeof(MudValidateResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(MudValidateResponse), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> ValidateMud([FromRoute] string mudId)
+        {
+            var result = await _mudManager.ValidateMudAsync(mudId).ConfigureAwait(false);
+            if (!result.Success)
+            {
+                return BadRequest(new MudValidateResponse
+                {
+                    Succeeded = false,
+                    DisplayMessage = "Mud wurde nicht gefunden",
+                    Errormessage = result.ExecutionError
+                });
+            }
+            return Ok(new MudValidateResponse
+            {
+                Succeeded = true,
+                IsMudValid = result.Valid,
+                ValidationErrors = result.ErrorMessages,
+            });
+        }
+
         [HttpPost()]
         public async Task<ActionResult<MudCreationResponse>> CreateMud([FromBody] MudEditRequest mudCreation)
         {

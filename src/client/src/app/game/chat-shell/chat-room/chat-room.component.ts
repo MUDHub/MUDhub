@@ -12,10 +12,12 @@ export class ChatRoomComponent {
 
 	messages: IMessage[] = this.chat.roomHistory;
 
-	onChatMessage(message: string) {
-		// TODO: add chat service logic
-		this.messages.push({
-			content: message
-		});
+	async onChatMessage(message: string) {
+
+		try {
+			await this.chat.sendRoomMessage(message);
+		} catch (err) {
+			console.error('Error while sending room message', err);
+		}
 	}
 }

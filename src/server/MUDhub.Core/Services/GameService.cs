@@ -10,10 +10,12 @@ namespace MUDhub.Core.Services
     internal class GameService : IGameService
     {
         private readonly MudDbContext _context;
+        private readonly IMudManager _mudManager;
 
-        public GameService(MudDbContext context)
+        public GameService(MudDbContext context, IMudManager mudManager)
         {
             _context = context;
+            _mudManager = mudManager;
         }
 
         public async Task<bool> StartMudAsync(string mudId, string userid)
@@ -21,6 +23,11 @@ namespace MUDhub.Core.Services
             var user = await _context.GetUserByIdAsnyc(userid)
                                          .ConfigureAwait(false);
             if (user is null)
+            {
+                return false;
+            }
+            var result = await _mudManager.ValidateMudAsync(mudId).ConfigureAwait(false);
+            if (!result.Valid)
             {
                 return false;
             }

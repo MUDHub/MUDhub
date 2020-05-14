@@ -44,6 +44,7 @@ import { RoomCreateComponent } from './mud-config/rooms/rooms-grid/room-create/r
 import { MudConfigShellComponent } from './mud-config/mud-config-shell.component';
 import { AreaElementComponent } from './mud-config/rooms/area-list/area-element/area-element.component';
 import { RoomPortalComponent } from './mud-config/rooms/rooms-grid/room-portal/room-portal.component';
+import { RoomItemsComponent } from './mud-config/rooms/rooms-grid/room-items/room-items.component';
 
 @NgModule({
 	declarations: [
@@ -68,6 +69,7 @@ import { RoomPortalComponent } from './mud-config/rooms/rooms-grid/room-portal/r
 		MudConfigShellComponent,
 		AreaElementComponent,
 		RoomPortalComponent,
+		RoomItemsComponent,
 	],
 	imports: [
 		CommonModule,

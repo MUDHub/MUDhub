@@ -22,11 +22,13 @@ namespace MUDhub.Core.Models.Characters
 
         public string Id { get; }
         public string Name { get; set; } = string.Empty;
+        public string GameId { get; set; }
         public virtual MudGame Game { get; set; } = null!;
         public virtual User Owner { get; set; } = null!;
 
         public virtual CharacterRace Race { get; set; }  = null!;
         public virtual CharacterClass Class { get; set; } = null!;
+        public string ActualRoomId { get; set; } = string.Empty;
         public virtual Room ActualRoom { get; set; } = null!;
         public virtual Inventory Inventory { get; set; } = null!;
 
