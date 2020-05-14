@@ -84,7 +84,7 @@ namespace MUDhub.Server.Controllers
                 throw new ArgumentNullException(nameof(args));
             }
 
-            var isResetSuccessful = await _userManager.UpdatePasswortFromResetAsync(args.PasswordResetKey, args.NewPasword)
+            var isResetSuccessful = await _userManager.UpdatePasswortFromResetAsync(args.PasswordResetKey, args.NewPassword)
                 .ConfigureAwait(false);
             if (isResetSuccessful)
             {

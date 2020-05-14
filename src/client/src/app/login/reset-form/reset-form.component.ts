@@ -45,8 +45,14 @@ export class ResetFormComponent implements OnInit {
 		if (newPassword && this.resetKey) {
 			try {
 				await this.auth.resetPassword(this.resetKey, newPassword);
+				this.router.navigate(['/login']);
 			} catch (err) {
 				console.error('Error while resetting password', err);
+				await Swal.fire({
+					icon: 'error',
+					title: 'Fehler',
+					text: 'Fehler beim Zurücksetzen des Passwortes'
+				});
 			}
 		} else {
 			await Swal.fire({

@@ -8,6 +8,6 @@ namespace MUDhub.Server.ApiModels.Auth
         public string PasswordResetKey { get; set; } = string.Empty;
 
         [Required]
-        public string NewPasword { get; set; } = string.Empty;
+        public string NewPassword { get; set; } = string.Empty;
     }
 }
