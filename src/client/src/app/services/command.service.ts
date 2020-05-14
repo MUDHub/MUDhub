@@ -39,7 +39,7 @@ export class CommandService {
 
 		const direction = this.getDirectionFromString(dir);
 		if (direction) {
-			// Room in adjacent
+			this.game.tryEnterRoom(direction);
 		} else {
 			// Room is portal
 		}

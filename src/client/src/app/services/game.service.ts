@@ -120,6 +120,7 @@ export class GameService {
 	}
 
 	public async tryEnterRoom(direction: Direction) {
-
+		console.log('trying to enter room in ' + direction);
+		this.connection.invoke('tryEnterRoom', direction);
 	}
 }
