@@ -9,6 +9,7 @@ import { AuthService } from './auth.service';
 import { ISignalRBaseResult } from '../model/game/signalR/SignalRBaseResult';
 import { ChatService } from './chat.service';
 import { IJoinMudGameResult } from '../model/game/signalR/JoinMudGameResult';
+import { Direction } from '../model/game/Direction';
 
 @Injectable({
 	providedIn: 'root',
@@ -23,10 +24,17 @@ export class GameService {
 			.withAutomaticReconnect()
 			.build();
 
-		this.connection.onreconnecting(err => console.log(err));
+		this.connection.onreconnecting(err => {
+			console.log('reconnection...');
+			if (err) {
+				console.error('Error while reconnection', err);
+			}
+		});
+
 		this.connection.on('receiveGameMessage', (message: string) => {
 			this.NewGameMessageSubject.next(message);
 		});
+
 		this.connection.on('receiveGlobalMessage', (message: string, caller: string, serverMessage: boolean) => {
 			this.NewGlobalMessageSubject.next({
 				message,
@@ -34,9 +42,11 @@ export class GameService {
 				serverMessage,
 			});
 		});
+
 		this.connection.on('receiveRoomMessage', (message: string, caller: string) => {
 			this.NewRoomMessageSubject.next({ message, caller });
 		});
+
 		this.connection.on('receivePrivateMessage', (message: string, caller: string) => {
 			this.NewPrivateMessageSubject.next({ message, caller });
 		});
@@ -107,5 +117,9 @@ export class GameService {
 		if (!response.success) {
 			throw new Error(response.errorMessage);
 		}
+	}
+
+	public async tryEnterRoom(direction: Direction) {
+
 	}
 }
