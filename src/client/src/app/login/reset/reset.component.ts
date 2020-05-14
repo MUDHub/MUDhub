@@ -13,7 +13,14 @@ export class ResetComponent {
 
 	mail = new FormControl('', [ Validators.required, Validators.email ]);
 
+	wasSent = false;
+
 	async reset() {
-		await this.authService.requestReset(this.mail.value);
+		try {
+			await this.authService.requestReset(this.mail.value);
+			this.wasSent = true;
+		} catch (err) {
+			console.error('Error while sending password reset request', err);
+		}
 	}
 }
