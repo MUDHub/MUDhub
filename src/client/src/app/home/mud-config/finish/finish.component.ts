@@ -22,19 +22,19 @@ export class FinishComponent implements OnInit {
 	validationResult: IValidationResult;
 
 	/* Handle Validation Result */
-	raceStatus: boolean = true;
+	raceStatus: boolean = false;
 	raceStatusMsg: string = "";
 
-	classStatus: boolean = true;
+	classStatus: boolean = false;
 	classStatusMsg: string = "";
 
-	itemStatus: boolean = true;
+	itemStatus: boolean = false;
 	itemStatusMsg: string = "";
 
-	areaStatus: boolean = true;
+	areaStatus: boolean = false;
 	areaStatusMsg: string = "";
 	
-	generalStatus: boolean = true;
+	generalStatus: boolean = false;
 	generalStatusMsg: string = "";
 
 	async handleValidation(){
@@ -58,7 +58,6 @@ export class FinishComponent implements OnInit {
 		//Get General Information
 		this.generalStatus = !this.validationResult.isMudValid;
 		this.generalStatusMsg = this.validationResult.errormessage;
-		console.log(this.validationResult);
 	}
 	/* Handle Validation Result End */
 

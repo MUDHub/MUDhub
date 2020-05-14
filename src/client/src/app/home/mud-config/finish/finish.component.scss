@@ -15,12 +15,29 @@ mat-horizontal-stepper{
     }
 }
 
-.align-beside{
-    display: flex;
-    flex-direction: row;
 
-    p{
-        margin-right: 1rem;
+.mat-card{
+    width: 50%;
+    margin-left: 25%;
+    margin-right: 25%;
+}
+
+.center-content{
+
+    display: flex;
+    justify-content: center;
+
+    .content{
+        display: flex;
+        flex-direction: column;
+        margin-top: 1rem;
+
+        img{
+            margin-left: 1rem;
+            width: 5rem;
+            height: auto;
+        }
     }
+
 
 }
