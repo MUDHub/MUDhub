@@ -17,4 +17,14 @@ export interface IRoom {
 		west: boolean;
 		portals: IConnection[];
 	};
+	itemInstances: IItemInstance[];
+}
+
+export interface IItemInstance {
+	itemInstanceId: string;
+	inventoryId: string;
+	itemId: string;
+	weight: number;
+	imageKey: string;
+	itemName: string;
 }

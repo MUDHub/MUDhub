@@ -1,4 +1,5 @@
 import { IMud } from './IMud';
+import { IMudItem, IMudClass, IMudRace } from './MudSetupDTO';
 
 export interface IMudCreateRequest {
 	name: string;
@@ -29,39 +30,21 @@ export enum MudJoinState {
 }
 
 export interface IMudRaceResponse {
-	race: {
-		description: string;
-		raceId: string;
-		mudGameId: string;
-		imageKey: string;
-		name: string;
-	};
+	race: IMudRace;
 	displayMessage: string;
 	errormessage: string;
 	succeeded: boolean;
 }
 
 export interface IMudClassResponse {
-	class: {
-		description: string;
-		classId: string;
-		mudGameId: string;
-		imageKey: string;
-		name: string;
-	};
+	class: IMudClass;
 	displayMessage: string;
 	errormessage: string;
 	succeeded: boolean;
 }
 
 export interface IMudItemResponse {
-	item: {
-		itemId: string;
-		name: string;
-		description: string;
-		weight: number;
-		imageKey: string;
-	};
+	item: IMudItem;
 	displayMessage: string;
 	errormessage: string;
 	succeeded: boolean;

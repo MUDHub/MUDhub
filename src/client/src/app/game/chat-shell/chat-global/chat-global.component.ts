@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IMessage } from 'src/app/model/chat/IMessage';
+import { GameService } from 'src/app/services/game.service';
 import { ChatService } from 'src/app/services/chat.service';
 
 @Component({
@@ -12,10 +13,11 @@ export class ChatGlobalComponent {
 
 	messages: IMessage[] = this.chat.globalHistory;
 
-	onChatMessage(message: string) {
-		// TODO: add chat service logic
-		this.messages.push({
-			content: message,
-		});
+	async onChatMessage(message: string) {
+		try {
+			await this.chat.sendGlobalMessage(message);
+		} catch (err) {
+			console.error('Error while sending global message', err);
+		}
 	}
 }

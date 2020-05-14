@@ -1,70 +1,69 @@
-<mat-accordion multi="true">
-    <!--Übersicht Rassen-->
+<mat-card>
+    <div class="align-beside">
+        <p>General Status</p>
+        <div *ngIf="!generalStatus">
+            <mat-icon>check</mat-icon>
+        </div>
+        <div *ngIf="generalStatus">
+            <mat-icon>clear</mat-icon>
+        </div>
+    </div>
 
-    <mat-expansion-panel>
-        <mat-expansion-panel-header>
-            <mat-panel-title>
-                Rassen
-            </mat-panel-title>
-        </mat-expansion-panel-header>
+    <p>{{generalStatusMsg}}</p>
+</mat-card>
+<br/>
+<mat-card>
+    <div class="align-beside">
+        <p>Race Status</p>
+        <div *ngIf="!raceStatus">
+            <mat-icon>check</mat-icon>
+        </div>
+        <div *ngIf="raceStatus">
+            <mat-icon>clear</mat-icon>
+        </div>
+    </div>
 
-        <div *ngFor="let race of races; let i = index">
-            <p>Name: {{ race.name }}, Beschreibung: {{ race.description }}</p>
-		</div>
+    <p>{{raceStatusMsg}}</p>
+</mat-card>
+<br/>
+<mat-card>
+    <div class="align-beside">
+        <p>Class Status</p>
+        <div *ngIf="!classStatus">
+            <mat-icon>check</mat-icon>
+        </div>
+        <div *ngIf="classStatus">
+            <mat-icon>clear</mat-icon>
+        </div>
+    </div>
 
-    </mat-expansion-panel>
+    <p>{{classStatusMsg}}</p>
+</mat-card>
+<br/>
+<mat-card>
+    <div class="align-beside">
+        <p>Item Status</p>
+        <div *ngIf="!itemStatus">
+            <mat-icon>check</mat-icon>
+        </div>
+        <div *ngIf="itemStatus">
+            <mat-icon>clear</mat-icon>
+        </div>
+    </div>
 
-    <!--Übersicht Klassen-->
+    <p>{{itemStatusMsg}}</p>
+</mat-card>
+<br/>
+<mat-card>
+    <div class="align-beside">
+        <p>Area Status</p>
+        <div *ngIf="!areaStatus">
+            <mat-icon>check</mat-icon>
+        </div>
+        <div *ngIf="areaStatus">
+            <mat-icon>clear</mat-icon>
+        </div>
+    </div>
 
-    <mat-expansion-panel>
-        <mat-expansion-panel-header>
-            <mat-panel-title>
-                Klassen
-            </mat-panel-title>
-
-		</mat-expansion-panel-header>
-
-		<div *ngFor="let class of classes; let i = index">
-            <p>Name: {{ class.name }}, Beschreibung: {{ class.description }}</p>
-		</div>
-
-    </mat-expansion-panel>
-
-    <!--Übersicht Items-->
-
-    <mat-expansion-panel>
-        <mat-expansion-panel-header>
-            <mat-panel-title>
-                Gegenstände
-            </mat-panel-title>
-
-		</mat-expansion-panel-header>
-
-		<div *ngFor="let item of items; let i = index">
-            <p>Name: {{ item.name }}, Beschreibung: {{ item.description }}</p>
-		</div>
-
-    </mat-expansion-panel>
-
-    <!--Übersicht Räume-->
-    <mat-expansion-panel>
-        <mat-expansion-panel-header>
-            <mat-panel-title>
-                Räume
-            </mat-panel-title>
-
-		</mat-expansion-panel-header>
-
-		<div *ngFor="let room of rooms; let i = index">
-            <p>Name: {{ room.name }}, Beschreibung: {{ room.description }}, in Area: {{ room.area.name}}</p>
-		</div>
-
-    </mat-expansion-panel>
-</mat-accordion>
-
-
-<div class="button-menu">
-    <button mat-flat-button color="warn" routerLink="../../">Abbrechen</button>
-    <button mat-flat-button color="basic" routerLink="../areas">Zurück</button>
-    <button mat-flat-button color="primary" (click)="onSubmit()">Fertigstellen</button>
-</div>
+    <p>{{areaStatusMsg}}</p>
+</mat-card>

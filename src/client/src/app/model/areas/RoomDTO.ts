@@ -27,3 +27,7 @@ export interface IRoomUpdateRequest {
 export interface IRoomCreateResponse extends IBaseResponse {
 	room: IRoom;
 }
+
+export interface IRoomCreateItemRequest {
+	itemId: string;
+}

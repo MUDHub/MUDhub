@@ -14,6 +14,9 @@ export class ChatMessageComponent {
 	@HostBinding('class.self')
 	get self() { return this.message.sender === undefined; }
 
+	@HostBinding('class.server-message')
+	get serverMessage() { return this.message.isServerMessage; }
+
 }
 
 

@@ -5,6 +5,7 @@ import { IMudItem } from 'src/app/model/muds/MudSetupDTO';
 import { MudService } from 'src/app/services/mud.service';
 import { IMudItemRequest, IMudItemResponse } from 'src/app/model/muds/MudDTO';
 import { IImageUploadResponse } from 'src/app/model/FileUploadDTO';
+import Swal from 'sweetalert2';
 
 @Component({
 	selector: 'mh-items',
@@ -29,7 +30,7 @@ export class ItemsComponent implements OnInit {
 	items: Array<IMudItem> = [];
 
 	async deleteRow(index: number) {
-		await this.mudService.deleteItem(this.mudId, this.items[index].itemId);
+		await this.mudService.deleteItem(this.mudId, this.items[index].id);
 		this.items.splice(index, 1);
 	}
 	async ngOnInit() {
@@ -43,29 +44,27 @@ export class ItemsComponent implements OnInit {
 	}
 
 	async addItem() {
-		const imageKey: IImageUploadResponse = null;
+		try {
+			const imageKey: IImageUploadResponse = null;
 
-		const response: IMudItemResponse = await this.mudService.addItem(
-			this.mudId,
-			{
+			const response: IMudItemResponse = await this.mudService.addItem(this.mudId, {
 				name: this.form.get('name').value,
 				description: this.form.get('description').value,
 				weight: this.form.get('weight').value,
 				imageKey: imageKey?.imageUrl,
-				mudId: this.mudId
-			}
-		);
+				mudId: this.mudId,
+			});
 
-		if (response.succeeded) {
-			this.items.push({
-				itemId: response.item.itemId,
-				name: response.item.name,
-				description: response.item.description,
-				weight: response.item.weight,
-				imageKey: response.item.imageKey,
+			this.items.push(response.item);
+
+			this.changeDialog();
+		} catch (err) {
+			console.error('Error while adding item', err);
+			await Swal.fire({
+				icon: 'error',
+				title: 'Fehler',
+				text: err.error?.displayMessage || err.error?.errormessage || 'Fehler beim Hinzufügen des Items'
 			});
 		}
-
-		this.changeDialog();
 	}
 }

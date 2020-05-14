@@ -39,6 +39,7 @@ namespace MUDhub.Core.Models.Rooms
         public virtual MudGame Game { get; set; } = null!;
         public bool IsDefaultRoom { get; set; } = false;
         public virtual ICollection<Character> Characters { get; set; } = new Collection<Character>();
+        public string InventoryId { get; set; } = string.Empty;
         public virtual Inventory Inventory { get; set; } = null!;
     }
 }

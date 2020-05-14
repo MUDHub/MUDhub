@@ -22,16 +22,6 @@ namespace MUDhub.Core.Services
             _logger = logger;
         }
 
-        public Task<bool> JoinWorldAsync(string mudId, string characterId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> LeaveWorldAsync(string characterId)
-        {
-            throw new NotImplementedException();
-        }
-
         /// <summary>
         /// The character can change the room.
         /// </summary>
@@ -89,6 +79,9 @@ namespace MUDhub.Core.Services
             {
                 //TODO: Prüfe Bedingungen für andere LockTypes
             }
+
+            character.ActualRoom = targetRoom;
+            await _dbContext.SaveChangesAsync().ConfigureAwait(false);
 
             _logger?.LogInformation($"The character changed from room: {roomId} to room: {targetRoom.Id}");
             return new NavigationResult()
