@@ -198,6 +198,10 @@ namespace MUDhub.Server.Hubs
                         (1, 0, Direction.West) => currentRoom.Id == connection.Room1Id ? connection.Room2Id : connection.Room1Id,
                         _ => null
                     };
+                    if (!(id is null))
+                    {
+                        return id;
+                    }
                 }
             }
             return null;

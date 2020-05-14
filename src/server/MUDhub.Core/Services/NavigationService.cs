@@ -79,11 +79,11 @@ namespace MUDhub.Core.Services
             {
                 //TODO: Prüfe Bedingungen für andere LockTypes
             }
-
+            var oldroom = character.ActualRoom;
             character.ActualRoom = targetRoom;
             await _dbContext.SaveChangesAsync().ConfigureAwait(false);
 
-            _logger?.LogInformation($"The character changed from room: {roomId} to room: {targetRoom.Id}");
+            _logger?.LogInformation($"The character '{character.Name}' changed from room: '{oldroom.Name}' to room: '{targetRoom.Name}'");
             return new NavigationResult()
             {
                 ActiveRoom = targetRoom
