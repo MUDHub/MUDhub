@@ -82,7 +82,7 @@ namespace MUDhub.Core.Services
         /// <returns></returns>
         private string CreateResetMessage(string resetKey)
         {
-            var resetLink = $"http://game.mudhub.de/login/reset?key={resetKey}";
+            var resetLink = $"{_mailConfiguration.HostingUrl}/login/reset-form?key={resetKey}";
             var message = string.Format(CultureInfo.InvariantCulture, _mailConfiguration.MessageReset, resetLink);
             return message;
         }

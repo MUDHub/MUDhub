@@ -203,7 +203,10 @@ namespace MUDhub.Core.Services
             var normelized = UserHelpers.ToNormelizedEmail(email);
             var user = await _context.Users.FirstOrDefaultAsync(u => u.NormalizedEmail == normelized)
                                                 .ConfigureAwait(false);
-
+            if(user is null)
+            {
+                return false;
+            }
             user.PasswordResetKey = Guid.NewGuid().ToString();
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
