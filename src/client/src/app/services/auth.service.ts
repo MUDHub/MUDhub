@@ -9,6 +9,7 @@ import {
 } from 'src/app/model/auth/AuthDTO';
 
 import { environment as env } from 'src/environments/environment';
+import { IBaseResponse } from '../model/BaseResponse';
 
 @Injectable({
 	providedIn: 'root',
@@ -63,14 +64,23 @@ export class AuthService {
 		return response.user;
 	}
 
-	public async reset(mail: string) {
+	public async requestReset(mail: string) {
 		const response = await this.http
 			.get<IPasswordResetResponse>(`${env.api.url}/auth/reset`, {
-				params: { mail },
+				params: {
+					email: mail
+				}
 			})
 			.toPromise();
 
 		console.log(response);
+	}
+
+	public async resetPassword(resetKey: string, newPassword: string) {
+		return await this.http.post<IBaseResponse>(`${env.api.url}/auth/reset`, {
+			passwordResetKey: resetKey,
+			newPassword
+		}).toPromise();
 	}
 
 	private setToken(token: string) {

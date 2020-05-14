@@ -14,7 +14,6 @@ export class ResetComponent {
 	mail = new FormControl('', [ Validators.required, Validators.email ]);
 
 	async reset() {
-		await this.authService.reset(this.mail.value);
-		this.router.navigate(['/login']);
+		await this.authService.requestReset(this.mail.value);
 	}
 }
