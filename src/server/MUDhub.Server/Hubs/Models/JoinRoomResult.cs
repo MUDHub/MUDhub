@@ -7,6 +7,7 @@ namespace MUDhub.Server.Hubs.Models
     {
         public NavigationErrorType ErrorType { get; set; }
         public string? ActiveRoomId { get; set; }
+        public string? ActiveAreaId { get; set; }
 
         public static JoinRoomResult ConvertFromNavigationResult(NavigationResult result)
         {
@@ -21,7 +22,8 @@ namespace MUDhub.Server.Hubs.Models
                 DisplayMessage = result.DisplayMessage,
                 ErrorMessage = result.Errormessage,
                 ErrorType = result.ErrorType,
-                ActiveRoomId = result.ActiveRoom?.Id
+                ActiveRoomId = result.ActiveRoom?.Id,
+                ActiveAreaId = result.ActiveRoom?.AreaId
             };
         }
     }

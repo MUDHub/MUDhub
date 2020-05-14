@@ -1,11 +1,15 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using MUDhub.Core.Abstracts;
+using MUDhub.Core.Abstracts.Models.Rooms;
 using MUDhub.Core.Models;
+using MUDhub.Core.Models.Connections;
+using MUDhub.Core.Models.Rooms;
 using MUDhub.Core.Services;
 using MUDhub.Server.Helpers;
 using MUDhub.Server.Hubs.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -106,12 +110,41 @@ namespace MUDhub.Server.Hubs
             };
         }
 
-        public async Task<JoinRoomResult> TryJoinRoom(string roomid)
+        public async Task<JoinRoomResult> TryJoinRoom(Direction direction, string? portalArg = null)
         {
-            var result = await _navigationService.TryEnterRoomAsync(GetCharacterId(), roomid)
+            //Map to roomid
+            var character = await _context.Characters.FindAsync(GetCharacterId()).ConfigureAwait(false);
+            string? targetroomid;
+            if (direction== Direction.Portal)
+            {
+                targetroomid = GetRoomIdByPortalName(character.ActualRoom.AllConnections, character.ActualRoom, portalArg!);
+            }
+            else
+            {
+                targetroomid = GetRoomIdByDirection(character.ActualRoom.AllConnections, character.ActualRoom, direction);
+            }
+            if (targetroomid is null)
+            {
+                return new JoinRoomResult
+                {
+                    Success = false,
+                    ErrorType = NavigationErrorType.RoomsAreNotConnected
+                };
+            }
+
+            var result = await _navigationService.TryEnterRoomAsync(GetCharacterId(), targetroomid)
                                                     .ConfigureAwait(false);
-            //var character = await _context.Characters.FindAsync(GetCharacterId()).ConfigureAwait(false);
-            //Todo: the rest, messaging, state management, etc..
+            if (result.Success)
+            {
+                await Groups.RemoveFromGroupAsync(Context.ConnectionId, GetCurrentRoomId())
+                            .ConfigureAwait(false);
+
+                Context.Items["currentRoomId"] = result.ActiveRoom?.Id;
+                
+                await Groups.RemoveFromGroupAsync(Context.ConnectionId, GetCurrentRoomId())
+                            .ConfigureAwait(false);
+
+            }
 
             return JoinRoomResult.ConvertFromNavigationResult(result);
         }
@@ -136,5 +169,54 @@ namespace MUDhub.Server.Hubs
         private string GetCharacterId() => (Context.Items["characterId"] as string)!;
         private string GetCharacterName() => (Context.Items["characterName"] as string)!;
         private string GetCurrentRoomId() => (Context.Items["currentRoomId"] as string)!;
+
+        private static string? GetRoomIdByDirection(IEnumerable<RoomConnection> connections, Room currentRoom, Direction direction)
+        {
+            foreach (var connection in connections)
+            {
+                if (connection.Room1.AreaId == connection.Room2.AreaId)
+                {
+                    int xDif, yDif;
+                    if (currentRoom.Id == connection.Room1.Id)
+                    {
+                        xDif = connection.Room1.X - connection.Room2.X;
+                        yDif = connection.Room1.Y - connection.Room2.Y;
+                    }
+                    else
+                    {
+                        xDif = connection.Room2.X - connection.Room1.X;
+                        yDif = connection.Room2.Y - connection.Room1.Y;
+                    }
+
+                    return (xDif, yDif, direction) switch
+                    {
+                        (0, -1, Direction.South) => currentRoom.Id == connection.Room1Id ? connection.Room2Id : connection.Room1Id,
+                        (0, 1, Direction.North) => currentRoom.Id == connection.Room1Id ? connection.Room2Id : connection.Room1Id,
+                        (-1, 0, Direction.East) => currentRoom.Id == connection.Room1Id ? connection.Room2Id : connection.Room1Id,
+                        (1, 0, Direction.West) => currentRoom.Id == connection.Room1Id ? connection.Room2Id : connection.Room1Id,
+                    };
+                }
+            }
+            return null;
+        }
+
+        private static string? GetRoomIdByPortalName(IEnumerable<RoomConnection> connections, Room currentRoom, string portalname)
+        {
+            foreach (var connection in connections)
+            {
+                if (connection.Room1.AreaId != connection.Room2.AreaId)
+                {
+                    if (connection.Room1Id == currentRoom.Id && connection.Room2.Name == portalname)
+                    {
+                        return connection.Room2Id;
+                    }
+                    if (connection.Room2Id == currentRoom.Id && connection.Room1.Name == portalname)
+                    {
+                        return connection.Room1Id;
+                    }
+                }
+            }
+            return null;
+        }
     }
 }
