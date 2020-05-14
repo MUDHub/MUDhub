@@ -58,29 +58,30 @@ export class AuthService {
 	}
 
 	public async register(user: IRegistrationRequest): Promise<IUser> {
-		const response = await this.http
-			.post<IRegisterResponse>(`${env.api.url}/auth/register`, user)
-			.toPromise();
+		const response = await this.http.post<IRegisterResponse>(`${env.api.url}/auth/register`, user).toPromise();
 		return response.user;
 	}
 
 	public async requestReset(mail: string) {
+		console.log('Reset Password Call');
 		const response = await this.http
 			.get<IPasswordResetResponse>(`${env.api.url}/auth/reset`, {
 				params: {
-					email: mail
-				}
+					email: mail,
+				},
 			})
 			.toPromise();
 
-		console.log(response);
+		console.log('Called Server with response:', response);
 	}
 
 	public async resetPassword(resetKey: string, newPassword: string) {
-		return await this.http.post<IBaseResponse>(`${env.api.url}/auth/reset`, {
-			passwordResetKey: resetKey,
-			newPassword
-		}).toPromise();
+		return await this.http
+			.post<IBaseResponse>(`${env.api.url}/auth/reset`, {
+				passwordResetKey: resetKey,
+				newPassword,
+			})
+			.toPromise();
 	}
 
 	private setToken(token: string) {
