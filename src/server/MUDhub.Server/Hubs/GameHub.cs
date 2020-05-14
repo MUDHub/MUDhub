@@ -112,7 +112,7 @@ namespace MUDhub.Server.Hubs
             };
         }
 
-        public async Task<JoinRoomResult> TryJoinRoom(Direction direction, string? portalArg = null)
+        public async Task<EnterRoomResult> TryEnterRoom(Direction direction, string? portalArg = null)
         {
             //Map to roomid
             var character = await _context.Characters.FindAsync(GetCharacterId()).ConfigureAwait(false);
@@ -127,7 +127,7 @@ namespace MUDhub.Server.Hubs
             }
             if (targetroomid is null)
             {
-                return new JoinRoomResult
+                return new EnterRoomResult
                 {
                     Success = false,
                     ErrorType = NavigationErrorType.RoomsAreNotConnected
@@ -148,7 +148,7 @@ namespace MUDhub.Server.Hubs
 
             }
 
-            return JoinRoomResult.ConvertFromNavigationResult(result);
+            return EnterRoomResult.ConvertFromNavigationResult(result);
         }
 
         public Task<TransferItemResult> TryTransferItem(string itemid, string targetid)
@@ -190,12 +190,13 @@ namespace MUDhub.Server.Hubs
                         yDif = connection.Room2.Y - connection.Room1.Y;
                     }
 
-                    return (xDif, yDif, direction) switch
+                    var id = (xDif, yDif, direction) switch
                     {
                         (0, -1, Direction.South) => currentRoom.Id == connection.Room1Id ? connection.Room2Id : connection.Room1Id,
                         (0, 1, Direction.North) => currentRoom.Id == connection.Room1Id ? connection.Room2Id : connection.Room1Id,
                         (-1, 0, Direction.East) => currentRoom.Id == connection.Room1Id ? connection.Room2Id : connection.Room1Id,
                         (1, 0, Direction.West) => currentRoom.Id == connection.Room1Id ? connection.Room2Id : connection.Room1Id,
+                        _ => null
                     };
                 }
             }

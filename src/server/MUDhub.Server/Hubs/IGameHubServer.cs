@@ -6,7 +6,7 @@ namespace MUDhub.Server.Hubs
     public interface IGameHubServer
     {
         Task<JoinMudGameResult> TryJoinMudGame(string characterid);
-        Task<JoinRoomResult> TryJoinRoom(Direction direction, string? portalArg = null);
+        Task<EnterRoomResult> TryEnterRoom(Direction direction, string? portalArg = null);
         Task<TransferItemResult> TryTransferItem(string itemid, string targetid);
 
 

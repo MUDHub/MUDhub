@@ -38,10 +38,11 @@ export class CommandService {
 		}
 
 		const direction = this.getDirectionFromString(dir);
-		if (direction) {
+		if (direction !== Direction.PORTAL) {
 			this.game.tryEnterRoom(direction);
 		} else {
 			// Room is portal
+			console.log('handle portal navigation');
 		}
 
 	}
@@ -63,7 +64,7 @@ export class CommandService {
 			case 'westen':
 				return Direction.WEST;
 			default:
-				return undefined;
+				return Direction.PORTAL;
 		}
 	}
 }

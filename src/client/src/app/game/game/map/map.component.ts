@@ -28,6 +28,7 @@ export class MapComponent implements OnInit {
 
 	ngOnInit() {
 		this.game.ChangeRoom$.subscribe(async newRoom => {
+			console.log('map: room-change: ', newRoom);
 			this.activeArea = await this.roomsService.getArea(newRoom.areaId);
 			this.rooms = await this.roomsService.getRoomsForArea(this.activeArea.areaId);
 			this.activeRoom = this.rooms.find(r => r.roomId === newRoom.roomId);

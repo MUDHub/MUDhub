@@ -10,6 +10,7 @@ import { ISignalRBaseResult } from '../model/game/signalR/SignalRBaseResult';
 import { ChatService } from './chat.service';
 import { IJoinMudGameResult } from '../model/game/signalR/JoinMudGameResult';
 import { Direction } from '../model/game/Direction';
+import { IEnterRoomResult } from '../model/game/signalR/EnterRoomResult';
 
 @Injectable({
 	providedIn: 'root',
@@ -119,8 +120,17 @@ export class GameService {
 		}
 	}
 
-	public async tryEnterRoom(direction: Direction) {
+	public async tryEnterRoom(direction: Direction, portalName?: string) {
 		console.log('trying to enter room in ' + direction);
-		this.connection.invoke('tryEnterRoom', direction);
+		const result = await this.connection.invoke<IEnterRoomResult>('tryEnterRoom', direction, portalName);
+		console.log(result);
+		if (result.success) {
+			this.ChangeRoomSubject.next({
+				areaId: result.activeAreaId,
+				roomId: result.activeRoomId
+			});
+		} else {
+			console.log('Error while entering room', result);
+		}
 	}
 }
