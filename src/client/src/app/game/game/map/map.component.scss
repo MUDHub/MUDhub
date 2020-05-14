@@ -1,3 +1,5 @@
+@import "src/variables.scss";
+
 $cell-size: 1.5rem;
 $connector-size: 4px;
 
@@ -9,6 +11,10 @@ $connector-size: 4px;
 
 .room{
 	background-color: grey;
+
+	&.active {
+		background-color: $color-primary;
+	}
 }
 
 .map-container {

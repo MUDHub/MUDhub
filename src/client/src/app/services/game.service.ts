@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, BehaviorSubject } from 'rxjs';
 import { IMessage } from '../model/chat/IMessage';
 
 import { HubConnection, HubConnectionBuilder, LogLevel, HubConnectionState } from '@microsoft/signalr';
@@ -8,6 +8,7 @@ import { environment as env } from 'src/environments/environment';
 import { AuthService } from './auth.service';
 import { ISignalRBaseResult } from '../model/game/signalR/SignalRBaseResult';
 import { ChatService } from './chat.service';
+import { IJoinMudGameResult } from '../model/game/signalR/JoinMudGameResult';
 
 @Injectable({
 	providedIn: 'root',
@@ -68,14 +69,16 @@ export class GameService {
 	}>();
 	public NewPrivateMessage$ = this.NewPrivateMessageSubject.asObservable();
 
+	private ChangeRoomSubject = new Subject<{ roomId: string; areaId: string }>();
+	public ChangeRoom$ = this.ChangeRoomSubject.asObservable();
+
 	public async joinGame(characterid: string) {
 		if (this.connection.state === HubConnectionState.Disconnected) {
 			await this.connection.start();
-			console.log('SignalR connected');
 
-			const joinResult = await this.connection.invoke<ISignalRBaseResult>('tryJoinMudGame', characterid);
+			const joinResult = await this.connection.invoke<IJoinMudGameResult>('tryJoinMudGame', characterid);
 			if (joinResult.success) {
-				console.log('joined mud');
+				this.ChangeRoomSubject.next({ roomId: joinResult.roomId, areaId: joinResult.areaId });
 			} else {
 				throw new Error(`Could not join: ${joinResult.errorMessage}`);
 			}
@@ -90,7 +93,6 @@ export class GameService {
 		this.OnExitSubject.next();
 		await this.connection.stop();
 	}
-
 
 	public async sendGlobalMessage(message: string) {
 		await this.connection.invoke('SendGlobalMessage', message);

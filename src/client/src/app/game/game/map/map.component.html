@@ -1,20 +1,20 @@
-<div class="area-name">{{ activeArea }}</div>
+<div class="area-name">{{ activeArea?.name }}</div>
 <div class="map-container">
 
 	<table class="map">
 		<ng-container *ngFor="let row of map; let y = index">
 			<tr>
 				<ng-container *ngFor="let room of row; let x = index">
-					<td [class.room]="room"></td>
+					<td [class.room]="room" [class.active]="room?.roomId === activeRoom?.roomId"></td>
 					<td *ngIf="x < row.length - 1">
-						<div *ngIf="room?.connections.e || row[x + 1]?.connections.w" class="connector horizontal"></div>
+						<div *ngIf="room?.connections.east" class="connector horizontal"></div>
 					</td>
 				</ng-container>
 			</tr>
 			<tr *ngIf="y < map.length - 1">
 				<ng-container *ngFor="let room of row; let x = index">
 					<td>
-						<div *ngIf="room?.connections.n || map[y + 1][x]?.connections.s" class="connector vertical"></div>
+						<div *ngIf="room?.connections.south" class="connector vertical"></div>
 					</td>
 					<td *ngIf="x < row.length - 1"></td>
 				</ng-container>

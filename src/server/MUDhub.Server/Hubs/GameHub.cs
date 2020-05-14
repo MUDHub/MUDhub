@@ -61,7 +61,7 @@ namespace MUDhub.Server.Hubs
         public async Task SendRoomMessage(string message)
         {
             await Clients.GroupExcept(GetCurrentRoomId(), Context.ConnectionId)
-                            .ReceivePrivateMessage(message, GetCharacterName())
+                            .ReceiveRoomMessage(message, GetCharacterName())
                             .ConfigureAwait(false);
         }
 
@@ -97,6 +97,8 @@ namespace MUDhub.Server.Hubs
             await Groups.AddToGroupAsync(Context.ConnectionId, character.ActualRoom.Id).ConfigureAwait(false);
             await Clients.Group(character.Game.Id).ReceiveGlobalMessage($"{character.Name} hat das Spiel betreten.", SERVERNAME, true)
                                                   .ConfigureAwait(false);
+
+            Console.WriteLine(character.ActualRoom.Id);
 
             return new JoinMudGameResult
             {
