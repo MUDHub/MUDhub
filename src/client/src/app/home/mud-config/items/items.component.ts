@@ -77,13 +77,7 @@ export class ItemsComponent implements OnInit {
 					}
 				);
 
-				this.items.push({
-					itemId: response.item.itemId,
-					name: response.item.name,
-					description: response.item.description,
-					weight: response.item.weight,
-					imageKey: response.item.imageKey,
-				});
+				this.items.push(response.item);
 			} catch (err) {
 				console.error('Error while adding new item', err);
 				this.error = err;
@@ -91,7 +85,7 @@ export class ItemsComponent implements OnInit {
 		} else {
 			try {
 				const response: IMudItemResponse = await this.mudService.editItem(
-					this.items[this.index].itemId,
+					this.items[this.index].id,
 					{
 						name: this.form.get('name').value,
 						description: this.form.get('description').value,
@@ -102,13 +96,7 @@ export class ItemsComponent implements OnInit {
 				);
 
 				if (response.succeeded) {
-					this.items[this.index] = {
-						itemId: response.item.itemId,
-						name: response.item.name,
-						description: response.item.description,
-						weight: response.item.weight,
-						imageKey: response.item.imageKey,
-					};
+					this.items[this.index] = response.item;
 				}
 			} catch (err) {
 				console.error('Error while editing class', err);

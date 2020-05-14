@@ -80,12 +80,7 @@ export class RacesComponent implements OnInit {
 				);
 
 				// Push races Object to the array
-				this.races.push({
-					description: response.race.description,
-					name: response.race.name,
-					raceId: response.race.raceId,
-					imageKey: response.race.imageKey,
-				});
+				this.races.push(response.race);
 			} catch (err) {
 				console.error('Error while adding new race', err);
 				this.error = err;
@@ -102,12 +97,7 @@ export class RacesComponent implements OnInit {
 					}
 				);
 
-				this.races[this.index] = {
-					description: response.race.description,
-					name: response.race.name,
-					raceId: response.race.raceId,
-					imageKey: response.race.imageKey,
-				};
+				this.races[this.index] = response.race;
 			} catch (err) {
 				console.error('Error while editing class ', err);
 				this.error = err;

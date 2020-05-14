@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { PasswordErrorStateMatcher } from '../_helper/PasswordErrorStateMatcher';
 import { ActivatedRoute } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
 	selector: 'mh-reset-form',
@@ -9,7 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 	styleUrls: ['./reset-form.component.scss'],
 })
 export class ResetFormComponent implements OnInit {
-	constructor(private fb: FormBuilder, private route: ActivatedRoute) {}
+	constructor(private fb: FormBuilder, private route: ActivatedRoute, private auth: AuthService) {}
 
 	matcher = new PasswordErrorStateMatcher();
 
@@ -27,7 +28,6 @@ export class ResetFormComponent implements OnInit {
 		this.resetKey =
 			this.route.snapshot.queryParams.key ||
 			this.route.snapshot.queryParams.resetkey;
-		console.log(this.resetKey);
 	}
 
 	checkPasswords(group: FormGroup) {
@@ -37,8 +37,15 @@ export class ResetFormComponent implements OnInit {
 		return pass === confirmPass ? null : { notSame: true };
 	}
 
-	onSubmit() {
+	async onSubmit() {
 		const newPassword = this.form.get('password').value;
-		console.log('setting new password:', newPassword);
+		const key = this.resetKey;
+		if (newPassword && key) {
+			try {
+				await this.auth.resetPassword(key, newPassword);
+			} catch (err) {
+				console.error('Error while resetting password', err);
+			}
+		}
 	}
 }

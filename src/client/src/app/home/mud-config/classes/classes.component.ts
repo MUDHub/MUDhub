@@ -78,12 +78,7 @@ export class ClassesComponent implements OnInit {
 					}
 				);
 
-				this.classes.push({
-					description: response.class.description,
-					name: response.class.name,
-					classId: response.class.classId,
-					imageKey: response.class.imageKey,
-				});
+				this.classes.push(response.class);
 			} catch (err) {
 				console.error('Error while adding new class', err);
 				this.error = err;
@@ -102,12 +97,7 @@ export class ClassesComponent implements OnInit {
 				);
 
 				if (response.succeeded) {
-					this.classes[this.index] = {
-						description: response.class.description,
-						name: response.class.name,
-						classId: response.class.classId,
-						imageKey: response.class.imageKey,
-					};
+					this.classes[this.index] = response.class;
 				}
 			} catch (err) {
 				console.error('Error while editing class', err);

@@ -20,6 +20,8 @@
 <div class="form-row">
 	<button (click)="reset()" class="reset-button" mat-flat-button color="primary" [disabled]="mail.invalid">Zurücksetzen</button>
 </div>
+
+<div class="hint">Die Email wurde versendet, bitte schauen Sie in ihrem Posteingang nach</div>
 <small class="hint">Es wird eine Email mit einem Rücksetzungslink an die angegebene Addresse geschickt</small>
 <a routerLink="/login">Anmelden</a>
 
