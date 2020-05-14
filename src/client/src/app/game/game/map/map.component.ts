@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { IMapRoom } from 'src/app/model/game/IRoom';
 import { AreaService } from 'src/app/services/area.service';
+import { GameService } from 'src/app/services/game.service';
+import { IArea } from 'src/app/model/areas/IArea';
+import { IRoom } from 'src/app/model/areas/IRoom';
 
 @Component({
 	selector: 'mh-map',
@@ -8,14 +11,13 @@ import { AreaService } from 'src/app/services/area.service';
 	styleUrls: ['./map.component.scss'],
 })
 export class MapComponent implements OnInit {
-	constructor(private roomsService: AreaService) {}
+	constructor(private roomsService: AreaService, private game: GameService) {}
 
-	activeArea = 'Morgenland';
+	rooms: IRoom[] = [];
 
-	rooms: IMapRoom[] = [];
-
-	map: IMapRoom[][] = [[]];
-
+	map: IRoom[][] = [[]];
+	activeArea: IArea;
+	activeRoom: IRoom;
 
 	get width() {
 		return this.map[0]?.length;
@@ -24,30 +26,29 @@ export class MapComponent implements OnInit {
 		return this.map.length;
 	}
 
-
-	ngOnInit(): void {
-		this.updateMap();
+	ngOnInit() {
+		this.game.ChangeRoom$.subscribe(async newRoom => {
+			this.activeArea = await this.roomsService.getArea(newRoom.areaId);
+			this.rooms = await this.roomsService.getRoomsForArea(this.activeArea.areaId);
+			this.activeRoom = this.rooms.find(r => r.roomId === newRoom.roomId);
+			this.renderMap(this.rooms);
+		});
 	}
 
-	updateMap() {
-		// TODO: replace with correct implementation
-		this.renderMap(this.rooms);
-	}
 
-
-	renderMap(list: IMapRoom[]) {
+	renderMap(list: IRoom[]) {
 		for (const room of list) {
-			while (this.height - 1 < room.position.y) {
+			while (this.height - 1 < room.y) {
 				this.map.push(Array(this.width).fill(undefined));
 			}
 
-			while (this.width - 1 < room.position.x) {
-				this.map.forEach((row) => {
+			while (this.width - 1 < room.x) {
+				this.map.forEach(row => {
 					row.push(undefined);
 				});
 			}
 
-			this.map[room.position.y][room.position.x] = room;
+			this.map[room.y][room.x] = room;
 		}
 	}
 }

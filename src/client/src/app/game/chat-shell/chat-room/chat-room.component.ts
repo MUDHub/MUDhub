@@ -13,7 +13,6 @@ export class ChatRoomComponent {
 	messages: IMessage[] = this.chat.roomHistory;
 
 	async onChatMessage(message: string) {
-
 		try {
 			await this.chat.sendRoomMessage(message);
 		} catch (err) {
