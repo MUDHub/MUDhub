@@ -95,12 +95,14 @@ namespace MUDhub.Server.Hubs
             _connectionHandler.AddConnectionId(characterid, Context.ConnectionId);
             await Groups.AddToGroupAsync(Context.ConnectionId, character.Game.Id).ConfigureAwait(false);
             await Groups.AddToGroupAsync(Context.ConnectionId, character.ActualRoom.Id).ConfigureAwait(false);
-            await Clients.Group(character.Game.Id).ReceiveGlobalMessage($"Charakter: {character.Name} hat das Spiel betreten.", SERVERNAME, true)
+            await Clients.Group(character.Game.Id).ReceiveGlobalMessage($"{character.Name} hat das Spiel betreten.", SERVERNAME, true)
                                                   .ConfigureAwait(false);
 
             return new JoinMudGameResult
             {
-                Success = true
+                Success = true,
+                AreaId = character.ActualRoom.AreaId,
+                RoomId = character.ActualRoomId
             };
         }
 
