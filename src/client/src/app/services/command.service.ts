@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { GameService } from './game.service';
 import { Direction } from '../model/game/Direction';
+import { ItemTransferMethod } from '../model/game/signalR/ItemTransferMethod';
 
 @Injectable({
 	providedIn: 'root',
@@ -12,42 +13,97 @@ export class CommandService {
 		{
 			keyword: 'gehe',
 			shorthand: 'g',
+			description: 'Bewegt den Charakter in die angegebene Richtung oder durch ein Portal',
 			arguments: [
 				{
-					name: 'Richtung / Portal'
-				}
-			]
-		}
+					name: 'Richtung / Portal-Name',
+				},
+			],
+			handler: args => this.handleMovement(args),
+		},
+		{
+			keyword: 'untersuche',
+			shorthand: 'u',
+			description: 'Untersucht ein bestimmtes Objekt und gibt Informationen darüber aus',
+			arguments: [
+				{
+					name: 'Objekt / Gegenstand',
+				},
+			],
+			handler: args => this.handleExamine(args)
+		},
+		{
+			keyword: 'zeige',
+			shorthand: 'z',
+			description: 'Zeigt Informationen zu einem bestimmten Thema an',
+			arguments: [
+				{
+					name: `'Befehle' | 'Inventar'`,
+				},
+			],
+			handler: args => this.handleShow(args),
+		},
+		{
+			keyword: 'aufheben',
+			description: 'Hebt einen Gegenstand auf',
+			arguments: [
+				{
+					name: 'Name des Gegenstandes',
+				},
+			],
+			handler: args => this.handlePickup(args),
+		},
+		{
+			keyword: 'fallenlassen',
+			description: 'Lässt einen Gegenstand in den Raum fallen',
+			arguments: [
+				{
+					name: 'Name des Gegenstandes',
+				},
+			],
+			handler: args => this.handleDrop(args),
+		},
 	];
 
-	handleInput(input: string) {
-		const [command, ...args] = input.split(' ');
+	async handleInput(input: string) {
+		const [name, ...args] = input.split(' ');
 
-		switch (command) {
-			case 'g':
-			case 'gehe':
-				this.handleMovement(args);
+		const command = this.registeredCommands.find(c => c.keyword === name || c.shorthand === name);
+		if (command) {
+			try {
+				if (!command.handler) {
+					throw new HandlerUndefinedException(command.keyword);
+				}
+
+				command.handler(args);
+			} catch (err) {
+				console.error('Error while invoking signalR handler on the server', err);
+			}
 		}
 	}
 
-
-	private handleMovement(args: string[]) {
+	/**
+	 * Handle movement commands
+	 * @param args Command arguments
+	 */
+	private async handleMovement(args: string[]) {
 		const dir = args[0];
+		const portalName = args[1];
 		if (!dir) {
-			throw new Error('invalid command structure');
+			throw new InvalidCommandException();
 		}
 
 		const direction = this.getDirectionFromString(dir);
 		if (direction !== Direction.PORTAL) {
-			this.game.tryEnterRoom(direction);
+			await this.game.tryEnterRoom(direction);
 		} else {
-			// Room is portal
-			console.log('handle portal navigation');
+			if (portalName) {
+				this.game.tryEnterRoom(direction, portalName);
+			} else {
+				throw new PortalNameUndefinedException();
+			}
 		}
-
 	}
-
-
 
 	private getDirectionFromString(dir: string): Direction {
 		switch (dir) {
@@ -67,14 +123,76 @@ export class CommandService {
 				return Direction.PORTAL;
 		}
 	}
+
+	private async handleExamine(args: string[]) {
+		const [subject] = args;
+
+		switch (subject) {
+			case 'Ausgänge':
+				break;
+			case 'Boden':
+				await this.game.showRoomInventory();
+				break;
+		}
+	}
+
+	private async handleShow(args: string[]) {
+		const [subject] = args;
+
+		switch (subject) {
+			case 'Inventar':
+				await this.game.showPlayerInventory();
+				break;
+			case 'Befehle':
+				await this.game.showCommands(this.registeredCommands);
+		}
+	}
+
+	/**
+	 * Handler method for picking up items
+	 * @param args Command arguments
+	 */
+	private async handlePickup(args: string[]) {
+		const [itemName] = args;
+
+		if (itemName) {
+			await this.game.transferItem(itemName, ItemTransferMethod.PICKUP);
+		}
+	}
+
+	/**
+	 * Handler method for dropping items
+	 * @param args Command arguments
+	 */
+	private async handleDrop(args: string[]) {
+		const [itemName] = args;
+
+		if (itemName) {
+			await this.game.transferItem(itemName, ItemTransferMethod.DROP);
+		}
+	}
 }
 
 export interface ICommand {
 	keyword: string;
 	shorthand?: string;
+	description: string;
 	arguments?: [
 		{
 			name: string;
 		}
 	];
+	handler?: (args?: string[]) => Promise<void> | void;
+}
+
+export class PortalNameUndefinedException extends Error {
+	constructor() {
+		super('The Name of the command cannot be undefined');
+	}
+}
+export class InvalidCommandException extends Error {}
+export class HandlerUndefinedException extends Error {
+	constructor(commandName: string) {
+		super(`No handler for the command '${commandName}' specified`);
+	}
 }

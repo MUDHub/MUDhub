@@ -10,7 +10,10 @@ import { ISignalRBaseResult } from '../model/game/signalR/SignalRBaseResult';
 import { ChatService } from './chat.service';
 import { IJoinMudGameResult } from '../model/game/signalR/JoinMudGameResult';
 import { Direction } from '../model/game/Direction';
-import { IEnterRoomResult } from '../model/game/signalR/EnterRoomResult';
+import { IEnterRoomResult, NavigationErrorType } from '../model/game/signalR/EnterRoomResult';
+import { ItemTransferMethod } from '../model/game/signalR/ItemTransferMethod';
+import { ICommand } from './command.service';
+import { IInventoryResult } from '../model/game/signalR/InventoryResult';
 
 @Injectable({
 	providedIn: 'root',
@@ -121,16 +124,74 @@ export class GameService {
 	}
 
 	public async tryEnterRoom(direction: Direction, portalName?: string) {
-		console.log('trying to enter room in ' + direction);
+		// TODO: get not only ids from server but actual objects
 		const result = await this.connection.invoke<IEnterRoomResult>('tryEnterRoom', direction, portalName);
-		console.log(result);
-		if (result.success) {
+		if (!result.success) {
+			switch (result.errorType) {
+				case NavigationErrorType.RoomsAreNotConnected:
+					this.NewGameMessageSubject.next('Es gibt keine Verbindung im ' + Direction[direction]);
+					break;
+				case NavigationErrorType.NoTargetRoomFound:
+					this.NewGameMessageSubject.next('Es existiert kein Raum im ' + Direction[direction]);
+					break;
+				case NavigationErrorType.LockedByInteraction:
+				case NavigationErrorType.LockedByRessource:
+					this.NewGameMessageSubject.next('Der Raum ist verschlossen...');
+					break;
+			}
+		} else {
 			this.ChangeRoomSubject.next({
 				areaId: result.activeAreaId,
-				roomId: result.activeRoomId
+				roomId: result.activeRoomId,
 			});
+		}
+	}
+
+	public async transferItem(itemName: string, method: ItemTransferMethod) {
+		const result = await this.connection.invoke<ISignalRBaseResult>('tryTransferItem', itemName, method);
+		this.NewGameMessageSubject.next(result.displayMessage);
+	}
+
+	public async showPlayerInventory() {
+		const result = await this.connection.invoke<IInventoryResult>('getInventory', false);
+		if (result.success) {
+			if (result.items.length > 0) {
+				let text = 'Im Inventar befinden sich:<br>';
+				text += result.items.map(item => item.itemName).join(', ');
+				this.NewGameMessageSubject.next(text);
+			} else {
+				this.NewGameMessageSubject.next('Du hast keine Gegenstände im Inventar...');
+			}
 		} else {
-			console.log('Error while entering room', result);
+
+		}
+	}
+
+	public async showCommands(commands: ICommand[]) {
+		let text = 'Folgende Befehle können ausgeführt werden:<br>';
+		for (const command of commands) {
+			text += ' - ' + command.keyword + (command.shorthand ? ' (' + command.shorthand + ')' : '');
+			text += ' ' + command.arguments.map(a => a.name).join(' ');
+			text += '<br>';
+			text += '<span style="margin-left: 1rem">' + command.description + '</span>';
+			text += '<br>';
+		}
+
+		this.NewGameMessageSubject.next(text);
+	}
+
+	public async showRoomInventory() {
+		const result = await this.connection.invoke<IInventoryResult>('getInventory', true);
+		if (result.success) {
+			if (result.items.length > 0) {
+				let text = 'Im Raum befinden sich:<br>';
+				text += result.items.map(item => item.itemName).join(', ');
+				this.NewGameMessageSubject.next(text);
+			} else {
+				this.NewGameMessageSubject.next('Im Raum befinden sich keine Gegenstände...');
+			}
+		} else {
+
 		}
 	}
 }

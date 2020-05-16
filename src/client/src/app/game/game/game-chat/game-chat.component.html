@@ -1,3 +1,2 @@
-<div class="message" *ngFor="let m of chat" [class.user-input]="m.type === MessageType.Client">
-	{{ m.message }}
+<div class="message" *ngFor="let m of chat" [class.user-input]="m.type === MessageType.Client" [innerHTML]="m.message">
 </div>
