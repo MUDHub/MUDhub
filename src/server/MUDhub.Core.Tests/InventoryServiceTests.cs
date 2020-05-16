@@ -102,37 +102,37 @@ namespace MUDhub.Core.Tests
         [Fact]
         public async Task TransferItem_ReturnFalse_ItemInstanceNull()
         {
-            var result = await _inventoryService.TransferItem("99", "1", "2");
+            var result = await _inventoryService.TransferItemAsync("99", "1", "2");
             Assert.False(result.Success);
         }
         [Fact]
         public async Task TransferItem_ReturnFalse_TargetInventoryNull()
         {
-            var result = await _inventoryService.TransferItem("1", "99", "2");
+            var result = await _inventoryService.TransferItemAsync("1", "99", "2");
             Assert.False(result.Success);
         }
         [Fact]
         public async Task TransferItem_ReturnFalse_SourceInventoryNull()
         {
-            var result = await _inventoryService.TransferItem("1", "1", "99");
+            var result = await _inventoryService.TransferItemAsync("1", "1", "99");
             Assert.False(result.Success);
         }
         [Fact]
         public async Task TransferItem_ReturnFalse_NoItemInstanceInSourceInventory()
         {
-            var result = await _inventoryService.TransferItem("1", "1", "2");
+            var result = await _inventoryService.TransferItemAsync("1", "1", "2");
             Assert.False(result.Success);
         }
         [Fact]
         public async Task TransferItem_ReturnFalse_TargetInventoryToLittle()
         {
-            var result = await _inventoryService.TransferItem("1", "2", "1");
+            var result = await _inventoryService.TransferItemAsync("1", "2", "1");
             Assert.False(result.Success);
         }
         [Fact]
         public async Task TransferItem_ReturnTrue()
         {
-            var result = await _inventoryService.TransferItem("2", "1", "2");
+            var result = await _inventoryService.TransferItemAsync("2", "1", "2");
             Assert.True(result.Success);
         }
 

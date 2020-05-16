@@ -13,13 +13,11 @@ namespace MUDhub.Server.Controllers
     {
         private readonly ILoginService _loginService;
         private readonly IUserManager _userManager;
-        private readonly ILogger<AuthController>? _logger;
 
-        public AuthController(ILoginService loginService, IUserManager userManager, ILogger<AuthController>? logger = null)
+        public AuthController(ILoginService loginService, IUserManager userManager)
         {
             _loginService = loginService;
             _userManager = userManager;
-            _logger = logger;
         }
 
         [HttpPost("login")]

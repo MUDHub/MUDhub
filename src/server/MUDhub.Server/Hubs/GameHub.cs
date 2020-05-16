@@ -1,11 +1,15 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.Mvc.Formatters.Xml;
+using Microsoft.AspNetCore.Razor.Hosting;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using MUDhub.Core.Abstracts;
 using MUDhub.Core.Abstracts.Models.Rooms;
 using MUDhub.Core.Models;
 using MUDhub.Core.Models.Connections;
+using MUDhub.Core.Models.Inventories;
 using MUDhub.Core.Models.Rooms;
 using MUDhub.Core.Services;
+using MUDhub.Server.ApiModels.Items;
 using MUDhub.Server.Helpers;
 using MUDhub.Server.Hubs.Models;
 using System;
@@ -22,13 +26,19 @@ namespace MUDhub.Server.Hubs
         private readonly MudDbContext _context;
         private readonly SignalRConnectionHandler _connectionHandler;
         private readonly INavigationService _navigationService;
+        private readonly IInventoryService _inventoryService;
         private readonly ILogger<GameHub> _logger;
 
-        public GameHub(MudDbContext context, SignalRConnectionHandler connectionHandler, INavigationService navigationService, ILogger<GameHub> logger)
+        public GameHub(MudDbContext context, 
+                       SignalRConnectionHandler connectionHandler, 
+                       INavigationService navigationService, 
+                       IInventoryService inventoryService,
+                       ILogger<GameHub> logger)
         {
             _context = context;
             _connectionHandler = connectionHandler;
             _navigationService = navigationService;
+            _inventoryService = inventoryService;
             _logger = logger;
         }
 
@@ -114,10 +124,9 @@ namespace MUDhub.Server.Hubs
 
         public async Task<EnterRoomResult> TryEnterRoom(Direction direction, string? portalArg = null)
         {
-            //Map to roomid
             var character = await _context.Characters.FindAsync(GetCharacterId()).ConfigureAwait(false);
             string? targetroomid;
-            if (direction== Direction.Portal)
+            if (direction == Direction.Portal)
             {
                 targetroomid = GetRoomIdByPortalName(character.ActualRoom.AllConnections, character.ActualRoom, portalArg!);
             }
@@ -142,7 +151,7 @@ namespace MUDhub.Server.Hubs
                             .ConfigureAwait(false);
 
                 Context.Items["currentRoomId"] = result.ActiveRoom?.Id;
-                
+
                 await Groups.RemoveFromGroupAsync(Context.ConnectionId, GetCurrentRoomId())
                             .ConfigureAwait(false);
 
@@ -151,9 +160,110 @@ namespace MUDhub.Server.Hubs
             return EnterRoomResult.ConvertFromNavigationResult(result);
         }
 
-        public Task<TransferItemResult> TryTransferItem(string itemid, string targetid)
+        public async Task<TransferItemResult> TryTransferItem(string itemName, ItemTransferMethode reason)
         {
-            throw new NotImplementedException();
+            var targetinventoryId = reason switch
+            {
+                ItemTransferMethode.Drop => (await _context.Rooms.FindAsync(GetCurrentRoomId())
+                                                                     .ConfigureAwait(false))?
+                                                                        .Inventory.Id,
+                ItemTransferMethode.Pickup => (await _context.Characters.FindAsync(GetCharacterId())
+                                                                     .ConfigureAwait(false))?
+                                                                        .Inventory.Id,
+                _ => throw new NotSupportedException()
+            };
+
+            if (targetinventoryId is null)
+            {
+                return new TransferItemResult
+                {
+                    Success = false,
+                    ErrorMessage = "No inventoryId found, this should never happen! It's a critical bug on the server."
+                };
+            }
+
+            var soruceinventoryId = reason switch
+            {
+                ItemTransferMethode.Drop => (await _context.Characters.FindAsync(GetCharacterId())
+                                                                     .ConfigureAwait(false))?
+                                                                        .Inventory.Id,
+                ItemTransferMethode.Pickup => (await _context.Rooms.FindAsync(GetCurrentRoomId())
+                                                                     .ConfigureAwait(false))?
+                                                                        .Inventory.Id,
+                _ => throw new NotSupportedException()
+            };
+
+            if (soruceinventoryId is null)
+            {
+                return new TransferItemResult
+                {
+                    Success = false,
+                    ErrorMessage = "No inventoryId found, this should never happen! It's a critical bug on the server."
+                };
+            }
+            var itemId = reason switch
+            {
+                ItemTransferMethode.Drop => (await _context.Characters.FindAsync(GetCharacterId())
+                                                                     .ConfigureAwait(false))?
+                                                                        .Inventory.ItemInstances.FirstOrDefault(i => i.Item.Name == itemName)?.Id,
+                ItemTransferMethode.Pickup => (await _context.Rooms.FindAsync(GetCurrentRoomId())
+                                                                     .ConfigureAwait(false))?
+                                                                        .Inventory.ItemInstances.FirstOrDefault(i => i.Item.Name == itemName)?.Id,
+                _ => throw new NotSupportedException()
+            };
+
+            if (itemId is null)
+            {
+                return new TransferItemResult
+                {
+                    Success = false,
+                    ErrorMessage = $"No Item found in the inventory '{targetinventoryId}'",
+                    DisplayMessage = reason switch
+                    {
+                        ItemTransferMethode.Drop => $"Es gibt kein Gegenstand '{itemName}' in deinem Inventar.",
+                        ItemTransferMethode.Pickup => $"Es gibt kein Gegenstand '{itemName}' im aktuellen Raum.",
+                        _ => throw new NotSupportedException()
+                    }
+                };
+            }
+
+            var result = await _inventoryService.TransferItemAsync(itemId, targetinventoryId, soruceinventoryId).ConfigureAwait(false);
+            if (result.Success)
+            {
+                return new TransferItemResult
+                {
+                    Success = true,
+                    DisplayMessage = reason switch
+                    {
+                        ItemTransferMethode.Drop => $"Gegenstand '{itemName}' weggeworfen.",
+                        ItemTransferMethode.Pickup => $"Gegenstand '{itemName}' aufgeoben und in das Inventar gepackt.",
+                        _ => throw new NotSupportedException()
+                    }
+                };
+            }
+            else
+            {
+                return new TransferItemResult
+                {
+                    Success = false,
+                    DisplayMessage = result.DisplayMessage,
+                    ErrorMessage = result.Errormessage
+                };
+            }
+
+        }
+        public async Task<InventoryResult> GetInventory()
+        {
+            return new InventoryResult
+            {
+                Success = true,
+                Items = (await _context.Characters.FindAsync(GetCharacterId())
+                                                  .ConfigureAwait(false))?
+                                                    .Inventory
+                                                    .ItemInstances
+                                                    .Select(ii => ItemInstanceApiModel.ConvertFromItemInstance(ii)) 
+                                                    ?? Enumerable.Empty<ItemInstanceApiModel>()
+            };
         }
 
         public override async Task OnDisconnectedAsync(Exception exception)
@@ -225,5 +335,6 @@ namespace MUDhub.Server.Hubs
             }
             return null;
         }
+
     }
 }
