@@ -9,7 +9,7 @@ namespace MUDhub.Server.Hubs
         Task<EnterRoomResult> TryEnterRoom(Direction direction, string? portalArg = null);
         Task<TransferItemResult> TryTransferItem(string ItemName, ItemTransferMethode reason);
 
-        Task<InventoryResult> GetInventory();
+        Task<InventoryResult> GetInventory(bool getActualRoomInventory);
 
         Task SendGlobalMessage(string message);
         //Todo: after navigation

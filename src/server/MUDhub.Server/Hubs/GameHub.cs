@@ -252,18 +252,36 @@ namespace MUDhub.Server.Hubs
             }
 
         }
-        public async Task<InventoryResult> GetInventory()
+        public async Task<InventoryResult> GetInventory(bool getActualRoomInventory)
         {
-            return new InventoryResult
+
+            if (getActualRoomInventory)
             {
-                Success = true,
-                Items = (await _context.Characters.FindAsync(GetCharacterId())
-                                                  .ConfigureAwait(false))?
-                                                    .Inventory
-                                                    .ItemInstances
-                                                    .Select(ii => ItemInstanceApiModel.ConvertFromItemInstance(ii)) 
-                                                    ?? Enumerable.Empty<ItemInstanceApiModel>()
-            };
+                return new InventoryResult
+                {
+                    Success = true,
+                    Items = (await _context.Rooms.FindAsync(GetCurrentRoomId())
+                                                .ConfigureAwait(false))?
+                                                  .Inventory
+                                                  .ItemInstances
+                                                  .Select(ii => ItemInstanceApiModel.ConvertFromItemInstance(ii))
+                                                  ?? Enumerable.Empty<ItemInstanceApiModel>()
+                };
+            }
+            else
+            {
+                return new InventoryResult
+                {
+                    Success = true,
+                    Items = (await _context.Characters.FindAsync(GetCharacterId())
+                                                 .ConfigureAwait(false))?
+                                                   .Inventory
+                                                   .ItemInstances
+                                                   .Select(ii => ItemInstanceApiModel.ConvertFromItemInstance(ii))
+                                                   ?? Enumerable.Empty<ItemInstanceApiModel>()
+                };
+            }
+           
         }
 
         public override async Task OnDisconnectedAsync(Exception exception)
