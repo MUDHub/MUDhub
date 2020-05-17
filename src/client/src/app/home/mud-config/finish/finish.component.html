@@ -1,69 +1,19 @@
 <mat-card>
-    <div class="align-beside">
-        <p>General Status</p>
-        <div *ngIf="!generalStatus">
-            <mat-icon>check</mat-icon>
-        </div>
-        <div *ngIf="generalStatus">
-            <mat-icon>clear</mat-icon>
-        </div>
-    </div>
-
-    <p>{{generalStatusMsg}}</p>
-</mat-card>
-<br/>
-<mat-card>
-    <div class="align-beside">
-        <p>Race Status</p>
-        <div *ngIf="!raceStatus">
-            <mat-icon>check</mat-icon>
-        </div>
-        <div *ngIf="raceStatus">
-            <mat-icon>clear</mat-icon>
+    <div class="center-content">
+        <div class="content">
+            <div *ngIf="validationResult.isMudValid">
+                <img src="assets/img/1486564411-checkmark_81522.png"/> 
+            </div>
+            <div *ngIf="!validationResult.isMudValid">
+                <img src="assets/img/1486564399-close_81512.png"/>
+            </div>
+    
+            <h2>Konfiguration</h2>
         </div>
     </div>
-
-    <p>{{raceStatusMsg}}</p>
-</mat-card>
-<br/>
-<mat-card>
-    <div class="align-beside">
-        <p>Class Status</p>
-        <div *ngIf="!classStatus">
-            <mat-icon>check</mat-icon>
-        </div>
-        <div *ngIf="classStatus">
-            <mat-icon>clear</mat-icon>
+    <div class="center-content">
+        <div class="error-message">
+            <p *ngFor="let error of validationResult.validationErrors">{{error.message}}</p>
         </div>
     </div>
-
-    <p>{{classStatusMsg}}</p>
-</mat-card>
-<br/>
-<mat-card>
-    <div class="align-beside">
-        <p>Item Status</p>
-        <div *ngIf="!itemStatus">
-            <mat-icon>check</mat-icon>
-        </div>
-        <div *ngIf="itemStatus">
-            <mat-icon>clear</mat-icon>
-        </div>
-    </div>
-
-    <p>{{itemStatusMsg}}</p>
-</mat-card>
-<br/>
-<mat-card>
-    <div class="align-beside">
-        <p>Area Status</p>
-        <div *ngIf="!areaStatus">
-            <mat-icon>check</mat-icon>
-        </div>
-        <div *ngIf="areaStatus">
-            <mat-icon>clear</mat-icon>
-        </div>
-    </div>
-
-    <p>{{areaStatusMsg}}</p>
 </mat-card>

@@ -108,6 +108,12 @@ export class MudService {
 			.toPromise();
 	}
 
+	async editRace(raceid: string, mudRace: IMudRaceRequest) {
+		return await this.http
+			.put<IMudRaceResponse>(`${env.api.url}/races/${raceid}`, mudRace)
+			.toPromise();
+	}
+
 	// SETUP - Class
 	async getClassForMud(mudId: string) {
 		return await this.http
@@ -128,6 +134,15 @@ export class MudService {
 	async deleteClass(mudId: string, classid: string) {
 		return await this.http
 			.delete(`${env.api.url}/classes/${classid}`)
+			.toPromise();
+	}
+
+	async editClass(classid: string, mudClass: IMudClassRequest) {
+		return await this.http
+			.put<IMudClassResponse>(
+				`${env.api.url}/classes/${classid}`,
+				mudClass
+			)
 			.toPromise();
 	}
 
@@ -153,6 +168,13 @@ export class MudService {
 			.delete(`${env.api.url}/items/${itemid}`)
 			.toPromise();
 	}
+
+
+	async editItem(itemid: string, mudItem: IMudItemRequest) {
+		return await this.http
+			.put<IMudItemResponse>(`${env.api.url}/items/${itemid}`, mudItem)
+      .toPromise();
+  }
 
 	async validateMudGame(mudId: string): Promise<IValidationResult> {
 		return await this.http

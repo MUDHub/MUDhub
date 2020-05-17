@@ -31,9 +31,14 @@
 				<input accept="image/*" ide="imagekey" type="file" class="custom-file-input"
 					(change)="onFileSelected($event)" />
 			</div>
-			<div class="form-row">
+			<div class="form-row" *ngIf="!edit">
 				<button mat-flat-button type="submit" color="primary" [disabled]="form.invalid">
 					Klasse hinzufügen
+				</button>
+			</div>
+			<div class="form-row" *ngIf="edit">
+				<button mat-flat-button type="submit" color="primary" [disabled]="form.invalid">
+					Klasse ändern
 				</button>
 			</div>
 		</form>
@@ -45,22 +50,25 @@
 		<th>Name</th>
 		<th>Beschreibung</th>
 		<th>Bild</th>
-		<th>Löschen</th>
+		<th>Bearbeiten</th>
 	</tr>
 	<tr class="table-item" *ngFor="let class of classes; index as index">
 		<td>{{ class.name }}</td>
 		<td>{{ class.description }}</td>
 		<td>
-			<div *ngIf="class.imageKey.length > 3">
+			<div *ngIf="class.imageKey != ''">
 				<mat-icon>check</mat-icon>
 			</div>
 			<div *ngIf="class.imageKey == ''">
 				<mat-icon>clear</mat-icon>
 			</div>
 		</td>
-		<td>
+		<td class="edits">
+			<button mat-flat-button color="primary" (click)="editRow(index)">
+				<mat-icon>edit</mat-icon>
+			</button>
 			<button mat-flat-button color="primary" (click)="deleteRow(index)">
-				Löschen
+				<mat-icon>delete</mat-icon>
 			</button>
 		</td>
 	</tr>

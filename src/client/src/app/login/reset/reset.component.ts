@@ -12,9 +12,10 @@ export class ResetComponent {
 	constructor(private authService: AuthService, private router: Router) {}
 
 	mail = new FormControl('', [ Validators.required, Validators.email ]);
+	showSuccess = false;
 
 	async reset() {
-		await this.authService.reset(this.mail.value);
+		await this.authService.requestReset(this.mail.value);
 		this.router.navigate(['/login']);
 	}
 }
