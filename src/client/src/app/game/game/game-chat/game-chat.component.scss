@@ -24,4 +24,9 @@ $scrollbar-thumb-color: lighten($scrollbar-track-color, 10%);
 	&:not(:last-child) {
 		margin-bottom: 0.5rem;
 	}
+
+	&.error {
+		color: rgb(192, 53, 53);
+		font-weight: bold;
+	}
 }

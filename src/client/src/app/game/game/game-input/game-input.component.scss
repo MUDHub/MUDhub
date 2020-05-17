@@ -15,7 +15,13 @@ input {
 	font-size: 120%;
 	outline: none;
 
-	background-color: rgba(255, 255, 255, 0.1);
+
+	background-color: rgba(255, 255, 255, 0.02);
+	transition: background-color 0.1s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+
+	&:focus {
+		background-color: rgba(255, 255, 255, 0.05);
+	}
 	border: 1px solid rgba(0, 0, 0, 0.5);
 
 }

@@ -13,7 +13,7 @@ export class GameChatComponent implements OnInit {
 
 	chat: { message: string, type: MessageType }[] = [
 		{
-			message: 'Gebe "hilfe" für eine Übersicht aller Befehle ein',
+			message: 'Gebe "zeige Befehle" für eine Übersicht aller Befehle ein',
 			type: MessageType.Server
 		}
 	];
@@ -25,6 +25,13 @@ export class GameChatComponent implements OnInit {
 			this.chat.push({
 				message,
 				type: MessageType.Server
+			});
+		});
+
+		this.game.Error$.subscribe(error => {
+			this.chat.push({
+				message: error,
+				type: MessageType.Error
 			});
 		});
 	}
