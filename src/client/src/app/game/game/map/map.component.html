@@ -1,4 +1,4 @@
-<div class="map-background" [style.background-image]="activeRoom?.imageKey ? 'url(' + activeRoom?.imageKey + ')' : ''"></div>
+<div class="map-background" [style.background-image]="activeRoom?.imageKey ? 'url(' + resourceBase + activeRoom?.imageKey + ')' : ''"></div>
 <div class="loader" *ngIf="isLoading">Loading...</div>
 <div class="map-container">
 	<table class="map">

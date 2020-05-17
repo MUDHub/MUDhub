@@ -7,6 +7,7 @@ import { IRoomCreateRequest } from 'src/app/model/areas/RoomDTO';
 import { ImageService } from 'src/app/services/image.service';
 import { IArea } from 'src/app/model/areas/IArea';
 import { MatSelectChange } from '@angular/material/select';
+import { IImageUploadResponse } from 'src/app/model/FileUploadDTO';
 
 @Component({
 	templateUrl: './room-create.component.html',
@@ -57,16 +58,25 @@ export class RoomCreateComponent implements OnInit {
 		}
 	}
 
+	fileSelectionChanged(files: FileList) {
+		this.selectedImage = files.item(0);
+	}
+
+
 	async onSubmit() {
-		let imageKey;
+		let image: IImageUploadResponse;
 		if (this.selectedImage) {
-			imageKey = this.imageService.uploadFile(this.selectedImage);
+			try {
+				image = await this.imageService.uploadFile(this.selectedImage);
+			} catch (err) {
+				console.error('Error while uploading image', err);
+			}
 		}
 		const room: IRoomCreateRequest = {
 			name: this.form.get('name').value,
 			description: this.form.get('description').value,
 			isDefaultRoom: this.form.get('isDefault').value,
-			imageKey,
+			imageKey: image?.imageUrl,
 			areaId: this.areaid,
 			x: this.position.x,
 			y: this.position.y,

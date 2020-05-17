@@ -1,9 +1,9 @@
 import { Component, OnInit, HostBinding } from '@angular/core';
-import { IMapRoom } from 'src/app/model/game/IRoom';
 import { AreaService } from 'src/app/services/area.service';
 import { GameService } from 'src/app/services/game.service';
 import { IArea } from 'src/app/model/areas/IArea';
 import { IRoom } from 'src/app/model/areas/IRoom';
+import { environment as env } from 'src/environments/environment';
 
 @Component({
 	selector: 'mh-map',
@@ -12,6 +12,8 @@ import { IRoom } from 'src/app/model/areas/IRoom';
 })
 export class MapComponent implements OnInit {
 	constructor(private roomsService: AreaService, private game: GameService) {}
+
+	resourceBase = env.resources.base;
 
 	isLoading = false;
 
