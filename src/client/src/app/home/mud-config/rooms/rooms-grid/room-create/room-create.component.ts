@@ -1,12 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { IRoom } from 'src/app/model/areas/IRoom';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AreaService } from 'src/app/services/area.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { IRoomCreateRequest } from 'src/app/model/areas/RoomDTO';
 import { ImageService } from 'src/app/services/image.service';
-import { IArea } from 'src/app/model/areas/IArea';
-import { MatSelectChange } from '@angular/material/select';
 import { IImageUploadResponse } from 'src/app/model/FileUploadDTO';
 
 @Component({
@@ -55,6 +52,7 @@ export class RoomCreateComponent implements OnInit {
 			this.form.get('name').setValue(room.name);
 			this.form.get('description').setValue(room.description);
 			this.form.get('isDefault').setValue(room.isDefaultRoom);
+			this.form.get('imageKey').setValue(room.imageKey);
 		}
 	}
 
@@ -64,10 +62,10 @@ export class RoomCreateComponent implements OnInit {
 
 
 	async onSubmit() {
-		let image: IImageUploadResponse;
 		if (this.selectedImage) {
 			try {
-				image = await this.imageService.uploadFile(this.selectedImage);
+				const response = await this.imageService.uploadFile(this.selectedImage);
+				this.form.get('imageKey').setValue(response.imageUrl);
 			} catch (err) {
 				console.error('Error while uploading image', err);
 			}
@@ -76,7 +74,7 @@ export class RoomCreateComponent implements OnInit {
 			name: this.form.get('name').value,
 			description: this.form.get('description').value,
 			isDefaultRoom: this.form.get('isDefault').value,
-			imageKey: image?.imageUrl,
+			imageKey: this.form.get('imageKey').value,
 			areaId: this.areaid,
 			x: this.position.x,
 			y: this.position.y,
