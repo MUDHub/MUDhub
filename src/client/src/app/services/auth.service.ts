@@ -83,13 +83,6 @@ export class AuthService {
 			.toPromise();
 	}
 
-	public async resetPassword(resetKey: string, newPassword: string) {
-		return await this.http.post<IBaseResponse>(`${env.api.url}/auth/reset`, {
-			passwordResetKey: resetKey,
-			newPassword
-		}).toPromise();
-	}
-
 	private setToken(token: string) {
 		this._token = token;
 		sessionStorage.setItem('token', token);
