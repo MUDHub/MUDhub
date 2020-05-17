@@ -26,7 +26,7 @@
 
 	.race, .class {
 		height: 3rem;
-		background: darken($color-primary, 7%);
+		background: darken($color-primary, 15%);
 		flex: 1;
 	}
 
@@ -43,7 +43,7 @@
 		flex: 2;
 		font-size: 150%;
 		height: 5.5rem;
-		background-color: $color-primary;
+		background-color: darken($color-primary, 8%);
 		border-radius: 1rem;
 		box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
 		z-index: 10;
