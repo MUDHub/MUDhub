@@ -1,7 +1,9 @@
 @import 'src/variables.scss';
 
 $cell-size: 1.5rem;
-$connector-size: 4px;
+$connector-size: 3px;
+$room-color: #777;
+$connector-color: #ccc;
 
 :host {
 	display: flex;
@@ -9,21 +11,38 @@ $connector-size: 4px;
 	align-items: center;
 	position: relative;
 	padding: 0.5rem;
+	overflow-y: none;
+	height: 100%;
 }
 
 .room {
-	background-color: grey;
+	background-color: $room-color;
 
 	&.active {
 		background-color: $color-primary;
 	}
 }
 
+.map-background {
+	position: absolute;
+	top: 0;
+	z-index: 0;
+	opacity: 0.2;
+	width: 100%;
+	height: 100%;
+
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+
 .map-container {
 	flex-grow: 1;
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	z-index: 2;
 }
 
 .map {
@@ -36,13 +55,12 @@ $connector-size: 4px;
 
 
 .area-name {
-	letter-spacing: 2px;
-	opacity: 0.5;
+	letter-spacing: 3px;
 }
 
 .connector {
 	display: block;
-	background-color: #fff;
+	background-color: $connector-color;
 	margin: 0 auto;
 	width: 100%;
 	height: 100%;

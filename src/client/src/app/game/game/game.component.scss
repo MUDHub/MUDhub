@@ -30,8 +30,8 @@
 
 	.map {
 		height: 250px;
-		width: 350px;
-
-		border-left: 2px solid rgba(255, 255, 255, 0.2);
+		width: 30%;
+		max-width: 500px;
+		min-width: 300px;
 	}
 }

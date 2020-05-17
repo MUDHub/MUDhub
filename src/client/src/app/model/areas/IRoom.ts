@@ -10,6 +10,7 @@ export interface IRoom {
 	y: number;
 	isDefaultRoom: boolean;
 	area?: IArea;
+	imageKey: string;
 	connections: {
 		north: boolean;
 		south: boolean;
