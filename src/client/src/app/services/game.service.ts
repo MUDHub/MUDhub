@@ -25,14 +25,16 @@ export class GameService {
 			.withUrl(env.signalr.url, {
 				accessTokenFactory: () => this.auth.token,
 			})
-			.withAutomaticReconnect()
+			.withAutomaticReconnect([0, 1000, 2000, 3000, 5000, 10000, null])
 			.build();
 
 		this.connection.onreconnecting(err => {
-			console.log('reconnection...');
-			if (err) {
-				console.error('Error while reconnection', err);
-			}
+			console.warn('Lost connection to server, reconnection...');
+			this.ErrorSubject.next('Die Verbindung zum Server wurde unterbrochen, versuche neu zu verbinden...');
+		});
+
+		this.connection.onreconnected(() => {
+			this.NewGameMessageSubject.next('Verbindung wiederhergestellt!');
 		});
 
 		this.connection.on('receiveGameMessage', (message: string) => {
@@ -63,6 +65,9 @@ export class GameService {
 
 	private NewGameMessageSubject = new Subject<string>();
 	public NewGameMessage$ = this.NewGameMessageSubject.asObservable();
+
+	private ErrorSubject = new Subject<string>();
+	public Error$ = this.ErrorSubject.asObservable();
 
 	private NewGlobalMessageSubject = new Subject<{
 		message: string;
@@ -124,15 +129,22 @@ export class GameService {
 	}
 
 	public async tryEnterRoom(direction: Direction, portalName?: string) {
+		const getDirection = (dir: Direction) => {
+			switch (dir) {
+				case Direction.NORTH: return 'Norden';
+				case Direction.SOUTH: return 'Süden';
+				case Direction.EAST: return 'Osten';
+				case Direction.WEST: return 'Westen';
+				case Direction.PORTAL: return 'Portal';
+			}
+		};
 		// TODO: get not only ids from server but actual objects
 		const result = await this.connection.invoke<IEnterRoomResult>('tryEnterRoom', direction, portalName);
 		if (!result.success) {
 			switch (result.errorType) {
 				case NavigationErrorType.RoomsAreNotConnected:
-					this.NewGameMessageSubject.next('Es gibt keine Verbindung im ' + Direction[direction]);
-					break;
 				case NavigationErrorType.NoTargetRoomFound:
-					this.NewGameMessageSubject.next('Es existiert kein Raum im ' + Direction[direction]);
+					this.NewGameMessageSubject.next(`Kann nicht nach ${getDirection(direction)} gehen`);
 					break;
 				case NavigationErrorType.LockedByInteraction:
 				case NavigationErrorType.LockedByRessource:
@@ -146,6 +158,7 @@ export class GameService {
 			});
 		}
 	}
+
 
 	public async transferItem(itemName: string, method: ItemTransferMethod) {
 		const result = await this.connection.invoke<ISignalRBaseResult>('tryTransferItem', itemName, method);
@@ -163,7 +176,6 @@ export class GameService {
 				this.NewGameMessageSubject.next('Du hast keine Gegenstände im Inventar...');
 			}
 		} else {
-
 		}
 	}
 
@@ -171,7 +183,7 @@ export class GameService {
 		let text = 'Folgende Befehle können ausgeführt werden:<br>';
 		for (const command of commands) {
 			text += ' - ' + command.keyword + (command.shorthand ? ' (' + command.shorthand + ')' : '');
-			text += ' ' + command.arguments.map(a => a.name).join(' ');
+			text += ' ' + command.arguments.map(a => '&lt;' + a.name + '&gt;').join(' ');
 			text += '<br>';
 			text += '<span style="margin-left: 1rem">' + command.description + '</span>';
 			text += '<br>';
@@ -191,7 +203,7 @@ export class GameService {
 				this.NewGameMessageSubject.next('Im Raum befinden sich keine Gegenstände...');
 			}
 		} else {
-
+			console.warn(result);
 		}
 	}
 }

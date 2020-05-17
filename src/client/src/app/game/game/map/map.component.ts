@@ -38,7 +38,6 @@ export class MapComponent implements OnInit {
 				this.rooms = await this.roomsService.getRoomsForArea(this.activeArea.areaId);
 				this.activeRoom = this.rooms.find(r => r.roomId === newRoom.roomId);
 				this.renderMap(this.rooms);
-				console.log(this.activeRoom);
 			} catch (err) {
 				console.error('Error while updating map', err);
 			} finally {
