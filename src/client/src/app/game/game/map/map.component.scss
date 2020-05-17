@@ -8,6 +8,7 @@ $connector-size: 4px;
 	flex-direction: column;
 	align-items: center;
 	position: relative;
+	padding: 0.5rem;
 }
 
 .room {
@@ -31,6 +32,12 @@ $connector-size: 4px;
 		width: $cell-size;
 		height: $cell-size;
 	}
+}
+
+
+.area-name {
+	letter-spacing: 2px;
+	opacity: 0.5;
 }
 
 .connector {
