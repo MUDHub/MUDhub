@@ -57,10 +57,10 @@
 		<td>{{ race.name }}</td>
 		<td>{{ race.description }}</td>
 		<td>
-			<div *ngIf="race.imageKey != null">
+			<div *ngIf="race.imageKey != ''">
 				<mat-icon>check</mat-icon>
 			</div>
-			<div *ngIf="race.imageKey == null">
+			<div *ngIf="race.imageKey == ''">
 				<mat-icon>clear</mat-icon>
 			</div>
 		</td>

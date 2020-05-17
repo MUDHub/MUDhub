@@ -103,5 +103,7 @@ export class ItemsComponent implements OnInit {
 				this.error = err;
 			}
 		}
+
+		this.changeDialog();
 	}
 }
