@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import Swal from 'sweetalert2';
 
+
 @Component({
 	selector: 'mh-reset-form',
 	templateUrl: './reset-form.component.html',
@@ -12,6 +13,7 @@ import Swal from 'sweetalert2';
 })
 export class ResetFormComponent implements OnInit {
 	constructor(private fb: FormBuilder, private route: ActivatedRoute, private auth: AuthService, private router: Router) {}
+
 
 	matcher = new PasswordErrorStateMatcher();
 
@@ -29,7 +31,6 @@ export class ResetFormComponent implements OnInit {
 		this.resetKey =
 			this.route.snapshot.queryParams.key ||
 			this.route.snapshot.queryParams.resetkey;
-		console.log(this.resetKey);
 	}
 
 	checkPasswords(group: FormGroup) {
@@ -42,7 +43,7 @@ export class ResetFormComponent implements OnInit {
 	async onSubmit() {
 		const newPassword = this.form.get('password').value;
 
-		if (newPassword && this.resetKey) {
+    if (newPassword && this.resetKey) {
 			try {
 				await this.auth.resetPassword(this.resetKey, newPassword);
 				this.router.navigate(['/login']);

@@ -63,7 +63,6 @@ export class AuthService {
 	}
 
 	public async requestReset(mail: string) {
-		console.log('Reset Password Call');
 		const response = await this.http
 			.get<IPasswordResetResponse>(`${env.api.url}/auth/reset`, {
 				params: {
@@ -82,6 +81,13 @@ export class AuthService {
 				newPassword,
 			})
 			.toPromise();
+	}
+
+	public async resetPassword(resetKey: string, newPassword: string) {
+		return await this.http.post<IBaseResponse>(`${env.api.url}/auth/reset`, {
+			passwordResetKey: resetKey,
+			newPassword
+		}).toPromise();
 	}
 
 	private setToken(token: string) {

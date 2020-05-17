@@ -12,6 +12,7 @@ export class ResetComponent {
 	constructor(private authService: AuthService, private router: Router) {}
 
 	mail = new FormControl('', [ Validators.required, Validators.email ]);
+	showSuccess = false;
 
 	wasSent = false;
 

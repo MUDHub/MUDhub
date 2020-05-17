@@ -27,8 +27,12 @@ export class RacesComponent implements OnInit {
 		imageKey: [''],
 	});
 
+	error;
 	dialog = false;
+	edit = false;
 	mudId: string;
+	index: number;
+
 	selectedFile: File = null;
 
 	races: Array<IMudRace> = [];
@@ -37,14 +41,20 @@ export class RacesComponent implements OnInit {
 		/* Daten fetchen und in Array laden */
 		this.mudId = this.route.snapshot.params.mudid;
 		this.races = await this.mudService.getRaceForMud(this.mudId);
+		this.form.valueChanges.subscribe(() => {
+			this.error = undefined;
+		});
 	}
 
 	changeDialog() {
 		this.form.reset();
+		this.edit = false;
 		this.dialog = !this.dialog;
 	}
 
 	async addRace() {
+		this.error = undefined;
+
 		// Get Imagekey from API if an Image was uploaded
 		let imageKey: IImageUploadResponse = null;
 
@@ -56,22 +66,42 @@ export class RacesComponent implements OnInit {
 			this.selectedFile = null;
 		}
 
-		try {
-			const response: IMudRaceResponse = await this.mudService.addRace(this.mudId, {
-				name: this.form.get('name').value,
-				description: this.form.get('description').value,
-				imageKey: imageKey?.imageUrl,
-				mudId: this.mudId,
-			});
+		if (!this.edit) {
+			// Make API request
+			try {
+				const response: IMudRaceResponse = await this.mudService.addRace(
+					this.mudId,
+					{
+						name: this.form.get('name').value,
+						description: this.form.get('description').value,
+						imageKey: imageKey?.imageUrl,
+						mudId: this.mudId,
+					}
+				);
 
-			this.races.push(response.race);
-		} catch (err) {
-			console.error('Error while adding race', err);
-			await Swal.fire({
-				icon: 'error',
-				title: 'Fehler',
-				text: err.error?.displayMessage || err.error?.errormessage || 'Fehler beim Hinzufügen der Rasse'
-			});
+				// Push races Object to the array
+				this.races.push(response.race);
+			} catch (err) {
+				console.error('Error while adding new race', err);
+				this.error = err;
+			}
+		} else {
+			try {
+				const response: IMudRaceResponse = await this.mudService.editRace(
+					this.races[this.index].raceId,
+					{
+						name: this.form.get('name').value,
+						description: this.form.get('description').value,
+						imageKey: imageKey.imageUrl,
+						mudId: this.mudId,
+					}
+				);
+
+				this.races[this.index] = response.race;
+			} catch (err) {
+				console.error('Error while editing class ', err);
+				this.error = err;
+			}
 		}
 
 		this.selectedFile = null;
@@ -85,5 +115,14 @@ export class RacesComponent implements OnInit {
 	async deleteRow(index: number) {
 		await this.mudService.deleteRace(this.mudId, this.races[index].raceId);
 		this.races.splice(index, 1);
+	}
+
+	editRow(index: number) {
+		this.edit = true;
+		this.dialog = true;
+		this.index = index;
+		this.form.get('name').setValue(this.races[index].name);
+		this.form.get('description').setValue(this.races[index].description);
+		// this.form.get('imageKey').setValue(this.races[index].imageKey);
 	}
 }
