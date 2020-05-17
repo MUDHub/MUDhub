@@ -1,4 +1,4 @@
-@import "src/variables.scss";
+@import 'src/variables.scss';
 
 $cell-size: 1.5rem;
 $connector-size: 4px;
@@ -7,9 +7,10 @@ $connector-size: 4px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	position: relative;
 }
 
-.room{
+.room {
 	background-color: grey;
 
 	&.active {
@@ -32,7 +33,6 @@ $connector-size: 4px;
 	}
 }
 
-
 .connector {
 	display: block;
 	background-color: #fff;
@@ -46,5 +46,65 @@ $connector-size: 4px;
 
 	&.vertical {
 		width: $connector-size;
+	}
+}
+
+// Loader
+.loader,
+.loader:before,
+.loader:after {
+	background: #ffffff;
+	-webkit-animation: load1 1s infinite ease-in-out;
+	animation: load1 1s infinite ease-in-out;
+	width: 1em;
+	height: 4em;
+}
+.loader {
+	color: #ffffff;
+	text-indent: -9999em;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	z-index: 100;
+	font-size: 11px;
+	transform: translate(-50%, -50%);
+	animation-delay: -0.16s;
+}
+.loader:before,
+.loader:after {
+	position: absolute;
+	top: 0;
+	content: '';
+}
+.loader:before {
+	left: -1.5em;
+	-webkit-animation-delay: -0.32s;
+	animation-delay: -0.32s;
+}
+.loader:after {
+	left: 1.5em;
+}
+@-webkit-keyframes load1 {
+	0%,
+	80%,
+	100% {
+		box-shadow: 0 0;
+		height: 4em;
+	}
+	40% {
+		box-shadow: 0 -2em;
+		height: 5em;
+	}
+}
+@keyframes load1 {
+	0%,
+	80%,
+	100% {
+		box-shadow: 0 0;
+		height: 4em;
+	}
+	40% {
+		box-shadow: 0 -2em;
+		height: 5em;
 	}
 }

@@ -13,6 +13,8 @@ import { IRoom } from 'src/app/model/areas/IRoom';
 export class MapComponent implements OnInit {
 	constructor(private roomsService: AreaService, private game: GameService) {}
 
+	isLoading = false;
+
 	rooms: IRoom[] = [];
 
 	map: IRoom[][] = [[]];
@@ -28,14 +30,21 @@ export class MapComponent implements OnInit {
 
 	ngOnInit() {
 		this.game.ChangeRoom$.subscribe(async newRoom => {
-			console.log('map: room-change: ', newRoom);
-			this.activeArea = await this.roomsService.getArea(newRoom.areaId);
-			this.rooms = await this.roomsService.getRoomsForArea(this.activeArea.areaId);
-			this.activeRoom = this.rooms.find(r => r.roomId === newRoom.roomId);
-			this.renderMap(this.rooms);
+			try {
+				if (newRoom.areaId !== this.activeArea?.areaId) {
+					this.isLoading = true;
+					this.activeArea = await this.roomsService.getArea(newRoom.areaId);
+				}
+				this.rooms = await this.roomsService.getRoomsForArea(this.activeArea.areaId);
+				this.activeRoom = this.rooms.find(r => r.roomId === newRoom.roomId);
+				this.renderMap(this.rooms);
+			} catch (err) {
+				console.error('Error while updating map', err);
+			} finally {
+				this.isLoading = false;
+			}
 		});
 	}
-
 
 	renderMap(list: IRoom[]) {
 		for (const room of list) {

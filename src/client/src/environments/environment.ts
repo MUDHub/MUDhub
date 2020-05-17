@@ -12,7 +12,7 @@ export const environment: IEnviromnent = {
 	},
 	signalr: {
 		url: 'http://localhost:5000/hubs/game',
-		logLevel: LogLevel.Debug
+		logLevel: LogLevel.Information
 	}
 };
 
