@@ -18,12 +18,12 @@
       [opened]="(isHandset$ | async) === false">
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list>
-      <a mat-list-item [routerLink]="['/help']" routerLinkActive="router-link-active" >Home</a>
-      <a mat-list-item [routerLink]="['/help/help-login']" routerLinkActive="router-link-active" >Login</a>
+      <a mat-list-item [routerLink]="['/help/introduction']" routerLinkActive="router-link-active" >Einführung</a>
+      <a mat-list-item [routerLink]="['/help/help-login']" routerLinkActive="router-link-active" >Anmelden / Registrieren</a>
       <a mat-list-item [routerLink]="['/help/faq']" routerLinkActive="router-link-active" >FAQ</a>
     </mat-nav-list>
   </mat-sidenav>
-  <mat-sidenav-content>
-    <router-outlet></router-outlet>
+  <mat-sidenav-content class="container">
+      <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>

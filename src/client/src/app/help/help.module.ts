@@ -11,12 +11,14 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { HelpComponent } from './help.component';
+import { IntroductionComponent } from './introduction/introduction.component';
 
 @NgModule({
   declarations: [
     HelpLoginComponent,
     FaqComponent,
-    HelpComponent
+    HelpComponent,
+    IntroductionComponent
   ],
   imports: [
     CommonModule,
