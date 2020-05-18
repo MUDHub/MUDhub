@@ -14,7 +14,6 @@ export class GameComponent implements OnInit, OnDestroy {
 
 	ngOnInit() {
 		this.characterId = this.route.snapshot.params.characterid;
-		console.log('character-id:', this.characterId);
 	}
 
 	async ngOnDestroy() {
