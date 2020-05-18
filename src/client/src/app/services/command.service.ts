@@ -68,7 +68,7 @@ export class CommandService {
 	async handleInput(input: string) {
 		const [name, ...args] = input.split(' ');
 
-		const command = this.registeredCommands.find(c => c.keyword === name || c.shorthand === name);
+		const command = this.registeredCommands.find(c => c.keyword === name.toLowerCase() || c.shorthand === name.toLowerCase());
 		if (command) {
 			try {
 				if (!command.handler) {
@@ -101,7 +101,7 @@ export class CommandService {
 	}
 
 	private getDirectionFromString(dir: string): Direction {
-		switch (dir) {
+		switch (dir.toLowerCase()) {
 			case 'n':
 			case 'norden':
 				return Direction.NORTH;
@@ -122,11 +122,11 @@ export class CommandService {
 	private async handleExamine(args: string[]) {
 		const [subject] = args;
 
-		switch (subject) {
-			case 'Ausgänge':
+		switch (subject.toLowerCase()) {
+			case 'ausgänge':
 				await this.game.showExits();
 				break;
-			case 'Boden':
+			case 'boden':
 				await this.game.showRoomInventory();
 				break;
 		}
@@ -135,11 +135,11 @@ export class CommandService {
 	private async handleShow(args: string[]) {
 		const [subject] = args;
 
-		switch (subject) {
-			case 'Inventar':
+		switch (subject.toLowerCase()) {
+			case 'inventar':
 				await this.game.showPlayerInventory();
 				break;
-			case 'Befehle':
+			case 'befehle':
 				await this.game.showCommands(this.registeredCommands);
 		}
 	}

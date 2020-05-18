@@ -189,6 +189,7 @@ export class GameService {
 				this.NewGameMessageSubject.next('Du hast keine Gegenstände im Inventar...');
 			}
 		} else {
+			console.error('Error while fetching players inventory', result);
 		}
 	}
 
