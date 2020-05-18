@@ -49,7 +49,6 @@ export class MudCreateComponent {
 		}
 
 		try {
-			console.log('sending:', mud);
 			const res = await this.mud.create(mud);
 			this.router.navigate(['/my-muds', res.mudId, 'races']);
 		} catch (err) {

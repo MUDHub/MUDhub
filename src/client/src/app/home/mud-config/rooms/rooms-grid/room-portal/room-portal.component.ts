@@ -63,9 +63,6 @@ export class RoomPortalComponent implements OnInit {
 
 
 	async create(area: IArea, room: IRoom) {
-		console.log('area', area);
-		console.log('room', room);
-
 		const args: IConnectionCreateRequest = {
 			roomId1: this.roomid,
 			roomId2: room.roomId,

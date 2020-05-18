@@ -52,11 +52,6 @@ export class RoomItemsComponent implements OnInit {
 		const item = this.itemAdd.get('item').value as IMudItem;
 		const count = this.itemAdd.get('count').value as number;
 
-		console.log({
-			item,
-			count
-		});
-
 		try {
 			for (let i = 0; i < count; i++) {
 				await this.areaService.addItemToRoom(this.roomid, { itemId: item.id });

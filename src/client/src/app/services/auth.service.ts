@@ -70,8 +70,6 @@ export class AuthService {
 				},
 			})
 			.toPromise();
-
-		console.log('Called Server with response:', response);
 	}
 
 	public async resetPassword(resetKey: string, newPassword: string) {
