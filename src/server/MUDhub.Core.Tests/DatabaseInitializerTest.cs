@@ -36,7 +36,6 @@ namespace MUDhub.Core.Tests
                 c.CreateDefaultDhbwMudData = true;
                 c.DeleteDatabase = true;
                 c.CreateDefaultAdminUser = true;
-                c.CreateDefaultMasterUser = true;
                 c.DefaultMudAdminEmail = "test@test.de";
                 c.DefaultMudAdminPassword = "test";
             });
