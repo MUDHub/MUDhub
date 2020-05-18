@@ -1,18 +1,20 @@
 <div class="info-bar">
-	<div class="toggler">
-		<mat-icon *ngIf="!isOpened" (click)="isOpened = true">keyboard_arrow_right</mat-icon>
-		<mat-icon *ngIf="isOpened" (click)="isOpened = false">keyboard_arrow_left</mat-icon>
+	<div class="icon-container toggler">
+		<mat-icon class="icon" *ngIf="!isOpened" (click)="isOpened = true">keyboard_arrow_right</mat-icon>
+		<mat-icon class="icon" *ngIf="isOpened" (click)="isOpened = false">keyboard_arrow_left</mat-icon>
 	</div>
 	<div class="actions">
-		<div class="chat-icon">
-			<mat-icon class="icon" [class.active]="activeChat === 'global' && isOpened" (click)="activeChat = 'global'; isOpened = true">public</mat-icon>
+		<div class="icon-container global">
+			<div class="dot" *ngIf="chat.unreadGlobalMessages"></div>
+			<mat-icon class="icon" [class.active]="activeChat === 'global' && isOpened" (click)="activeChat = 'global'; isOpened = true; chat.unreadGlobalMessages = false;">public</mat-icon>
 		</div>
-		<div class="chat-icon">
-			<mat-icon class="icon" [class.active]="activeChat === 'room' && isOpened" (click)="activeChat = 'room'; isOpened = true">meeting_room</mat-icon>
+		<div class="icon-container room">
+			<div class="dot" *ngIf="chat.unreadRoomMessages"></div>
+			<mat-icon class="icon" [class.active]="activeChat === 'room' && isOpened" (click)="activeChat = 'room'; isOpened = true; chat.unreadRoomMessages = false;">meeting_room</mat-icon>
 		</div>
 
 	</div>
-	<div class="exit-icon" matTooltip="MUD verlassen" matTooltipPosition="after">
+	<div class="icon-container exit-icon" matTooltip="MUD verlassen" matTooltipPosition="after">
 		<mat-icon class="icon" (click)="close.emit()">close</mat-icon>
 	</div>
 </div>
