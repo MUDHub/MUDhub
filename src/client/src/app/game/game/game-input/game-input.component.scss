@@ -1,4 +1,27 @@
+@import "src/variables.scss";
+
+:host {
+	padding: 1rem;
+}
+
 input {
 	width: 100%;
-	padding: 0.5rem;
+	padding: 1rem;
+	border-radius: 0.5rem;
+	color: #eee;
+
+	font-family: 'Consolas';
+
+	font-size: 120%;
+	outline: none;
+
+
+	background-color: rgba(255, 255, 255, 0.02);
+	transition: background-color 0.1s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+
+	&:focus {
+		background-color: rgba(255, 255, 255, 0.05);
+	}
+	border: 1px solid rgba(0, 0, 0, 0.5);
+
 }

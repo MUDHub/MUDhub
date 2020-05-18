@@ -8,15 +8,19 @@
 		<mat-label>Beschreibung</mat-label>
 		<textarea matInput type="text" formControlName="description" rows="5"></textarea>
 	</mat-form-field>
+	<mat-form-field class="form-row">
+		<mat-label>Eintritts-Nachricht</mat-label>
+		<textarea matInput type="text" formControlName="enterMessage" rows="5"></textarea>
+	</mat-form-field>
 	<div class="form-row">
 		<mat-checkbox formControlName="isDefault">Eintrittsraum</mat-checkbox>
 	</div>
 	<div class="form-row">
-		<input type="file" />
+		<input type="file" (change)="fileSelectionChanged($event.target.files)"/>
 	</div>
 	<div class="actions">
 		<button mat-button type="submit" [disabled]="form.invalid">
-			{{ isInEditMode ? 'Speichern' : 'Erstellen'}}
+			{{ isInEditMode ? 'Speichern' : 'Erstellen' }}
 		</button>
 		<button mat-button type="button" [routerLink]="this.isInEditMode ? '../../' : '../'">Abbrechen</button>
 	</div>

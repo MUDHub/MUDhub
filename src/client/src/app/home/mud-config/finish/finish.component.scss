@@ -14,3 +14,35 @@ mat-horizontal-stepper{
         margin-right: 1rem;
     }
 }
+
+
+.mat-card{
+    width: 50%;
+    margin-left: 25%;
+    margin-right: 25%;
+}
+
+.center-content{
+
+    display: flex;
+    justify-content: center;
+
+    .content{
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+        margin-top: 1rem;
+
+        img{
+            width: 5rem;
+			height: auto;
+			margin-bottom: 1rem;
+        }
+	}
+}
+
+
+mat-card-actions {
+	display: flex;
+	justify-content: center;
+}

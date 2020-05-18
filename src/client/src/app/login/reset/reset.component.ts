@@ -12,9 +12,16 @@ export class ResetComponent {
 	constructor(private authService: AuthService, private router: Router) {}
 
 	mail = new FormControl('', [ Validators.required, Validators.email ]);
+	showSuccess = false;
+
+	wasSent = false;
 
 	async reset() {
-		await this.authService.reset(this.mail.value);
-		this.router.navigate(['/login']);
+		try {
+			await this.authService.requestReset(this.mail.value);
+			this.wasSent = true;
+		} catch (err) {
+			console.error('Error while sending password reset request', err);
+		}
 	}
 }

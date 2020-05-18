@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import { GameService } from '../services/game.service';
+import Swal from 'sweetalert2';
 
 @Component({
 	selector: 'mh-game-shell',
@@ -7,16 +9,28 @@ import { Router } from '@angular/router';
 	styleUrls: ['./game-shell.component.scss'],
 })
 export class GameShellComponent implements OnInit {
-	constructor(private router: Router) {}
+	constructor(private route: ActivatedRoute, private router: Router, private game: GameService) {}
 
-	showChat = true;
+	characterid: string;
 
-	ngOnInit(): void {}
+	async ngOnInit() {
+		this.characterid = this.route.snapshot.params.characterid;
+		try {
+			await this.game.joinGame(this.characterid);
+		} catch (err) {
+			console.error('Error while trying to connect to signalR', err);
+			await Swal.fire({
+				icon: 'error',
+				title: 'Verbindungsfehler',
+				text: 'Keine Verbindung zum Echtzeit-Server möglich'
+			});
+		}
+	}
 
 
 
-	exit() {
-		// TODO: handle exit
+	async exit() {
+		await this.game.exitGame();
 		this.router.navigate(['/']);
 	}
 }

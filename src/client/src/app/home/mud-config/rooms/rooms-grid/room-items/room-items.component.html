@@ -1,0 +1,29 @@
+<div class="container">
+	<mh-exit-button class="exit" routerLink="../../"></mh-exit-button>
+	<h2>Items im Raum</h2>
+	<div class="items">
+		<div class="item" *ngFor="let item of roomItems">
+			{{ item.itemName }}
+			<div class="overlay">
+				<mat-icon (click)="deleteItem(item)">delete</mat-icon>
+			</div>
+		</div>
+	</div>
+	<hr />
+	<div class="title">Item hinzufügen</div>
+	<form class="add-item" [formGroup]="itemAdd" (ngSubmit)="onSubmit()">
+		<mat-form-field class="item">
+			<mat-label>Item</mat-label>
+			<mat-select formControlName="item">
+				<mat-option *ngFor="let item of availableItems" [value]="item" [matTooltip]="item.description" matTooltipPosition="after">
+					{{ item.name }}
+				</mat-option>
+			</mat-select>
+		</mat-form-field>
+		<mat-form-field class="count">
+			<mat-label>Anzahl</mat-label>
+			<input matInput type="number" formControlName="count"/>
+		</mat-form-field>
+		<button mat-flat-button color="primary" class="add" [disabled]="itemAdd.invalid">+</button>
+	</form>
+</div>

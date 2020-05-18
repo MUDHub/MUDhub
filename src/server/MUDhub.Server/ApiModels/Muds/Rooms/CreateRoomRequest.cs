@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore.Query;
 using MUDhub.Core.Abstracts.Models.Rooms;
 
 namespace MUDhub.Server.ApiModels.Muds.Rooms
@@ -9,7 +10,8 @@ namespace MUDhub.Server.ApiModels.Muds.Rooms
         public string Name { get; set; } = string.Empty;
        
         public string Description { get; set; } = string.Empty;
-        
+        public string EnterMessage { get; set; } = string.Empty;
+
         public string ImageKey { get; set; } = string.Empty;
         [Required]
         public int X { get; set; } = 0;
@@ -30,6 +32,7 @@ namespace MUDhub.Server.ApiModels.Muds.Rooms
             {
                 Name = request.Name,
                 IsDefaultRoom = request.IsDefaultRoom,
+                EnterMessage = request.EnterMessage,
                 ImageKey = request.ImageKey,
                 X = request.X,
                 Y = request.Y,

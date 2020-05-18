@@ -7,6 +7,7 @@
         RoomsAreNotConnected,
         IdenticalRooms,
         NoCharacterFound,
-        NoTargetRoomFound
+        NoTargetRoomFound,
+        NoPortalFound
     }
 }

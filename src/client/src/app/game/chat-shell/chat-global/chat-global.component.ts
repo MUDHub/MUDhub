@@ -12,10 +12,11 @@ export class ChatGlobalComponent {
 
 	messages: IMessage[] = this.chat.globalHistory;
 
-	onChatMessage(message: string) {
-		// TODO: add chat service logic
-		this.messages.push({
-			content: message,
-		});
+	async onChatMessage(message: string) {
+		try {
+			await this.chat.sendGlobalMessage(message);
+		} catch (err) {
+			console.error('Error while sending global message', err);
+		}
 	}
 }

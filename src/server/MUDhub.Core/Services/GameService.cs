@@ -10,10 +10,12 @@ namespace MUDhub.Core.Services
     internal class GameService : IGameService
     {
         private readonly MudDbContext _context;
+        private readonly IMudManager _mudManager;
 
-        public GameService(MudDbContext context)
+        public GameService(MudDbContext context, IMudManager mudManager)
         {
             _context = context;
+            _mudManager = mudManager;
         }
 
         public async Task<bool> StartMudAsync(string mudId, string userid)
@@ -24,8 +26,13 @@ namespace MUDhub.Core.Services
             {
                 return false;
             }
+            var result = await _mudManager.ValidateMudAsync(mudId).ConfigureAwait(false);
+            if (!result.Valid)
+            {
+                return false;
+            }
             var mud = user.MudGames.FirstOrDefault(mg => mg.Id == mudId);
-            if (mud.State != MudGameState.InActive)
+            if (mud.State == MudGameState.InEdit)
                 return false;
             mud.State = MudGameState.Active;
             await _context.SaveChangesAsync().ConfigureAwait(false);

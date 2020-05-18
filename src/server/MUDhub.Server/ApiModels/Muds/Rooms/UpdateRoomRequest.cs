@@ -5,6 +5,7 @@ namespace MUDhub.Server.ApiModels.Muds.Rooms
     public class UpdateRoomRequest
     {
         public string? Description { get; set; } = null;
+        public string? EnterMessage { get; set; } = null;
         public string? Name { get; set; } = null;
         public string? ImageKey { get; set; } = null;
         public bool IsDefaultRoom { get; set; } = false;
@@ -22,6 +23,7 @@ namespace MUDhub.Server.ApiModels.Muds.Rooms
                 Description = requestRoom.Description,
                 Name = requestRoom.Name,
                 ImageKey = requestRoom.ImageKey,
+                EnterMesage = requestRoom.EnterMessage,
                 IsDefaultRoom = requestRoom.IsDefaultRoom
             };
         }

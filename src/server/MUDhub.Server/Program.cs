@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace MUDhub.Server
 {
@@ -7,7 +8,14 @@ namespace MUDhub.Server
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            try
+            {
+                CreateHostBuilder(args).Build().Run();
+            }
+            catch
+            {
+                Console.ReadKey();
+            }
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
