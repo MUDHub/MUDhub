@@ -17,12 +17,12 @@ namespace MUDhub.Server.ApiModels.Muds.Rooms
         public string ImageKey { get; set; } = string.Empty;
         public int X { get; set; } = 0;
         public int Y { get; set; } = 0;
-        public AreaApiModel Area { get; set; } = new AreaApiModel();
+        public AreaApiModel? Area { get; set; }
         public bool IsDefaultRoom { get; set; } = false;
-        public IEnumerable<ItemInstanceApiModel> ItemInstances { get; set; }
-        public ConnectionsApiModel Connections { get; set; }
+        public IEnumerable<ItemInstanceApiModel>? ItemInstances { get; set; }
+        public ConnectionsApiModel? Connections { get; set; }
 
-        public static RoomApiModel ConvertFromRoom(Room room)
+        public static RoomApiModel ConvertFromRoom(Room room, bool depth = true)
         {
             if (room is null)
             {
@@ -30,7 +30,7 @@ namespace MUDhub.Server.ApiModels.Muds.Rooms
             }
             return new RoomApiModel()
             {
-                Area = AreaApiModel.ConvertFromArea(room.Area),
+                Area = depth ? AreaApiModel.ConvertFromArea(room.Area) : null,
                 RoomId = room.Id,
                 Name = room.Name,
                 Description = room.Description,
@@ -38,8 +38,8 @@ namespace MUDhub.Server.ApiModels.Muds.Rooms
                 Y = room.Y,
                 ImageKey = room.ImageKey,
                 IsDefaultRoom = room.IsDefaultRoom,
-                ItemInstances = room.Inventory.ItemInstances.Select(ii => ItemInstanceApiModel.ConvertFromItemInstance(ii)),
-                Connections = ConnectionsApiModel.CreateFromList(room.AllConnections, room)
+                ItemInstances = depth ? room.Inventory.ItemInstances.Select(ii => ItemInstanceApiModel.ConvertFromItemInstance(ii)) : null,
+                Connections = depth ? ConnectionsApiModel.CreateFromList(room.AllConnections, room) : null
             };
         }
     }

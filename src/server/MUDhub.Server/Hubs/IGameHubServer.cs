@@ -1,4 +1,7 @@
-﻿using MUDhub.Server.Hubs.Models;
+﻿using MUDhub.Server.ApiModels.Muds.RoomConnections;
+using MUDhub.Server.Hubs.Models;
+using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace MUDhub.Server.Hubs
@@ -10,6 +13,7 @@ namespace MUDhub.Server.Hubs
         Task<TransferItemResult> TryTransferItem(string ItemName, ItemTransferMethode reason);
 
         Task<InventoryResult> GetInventory(bool getActualRoomInventory);
+        Task<IEnumerable<RoomConnectionApiModel>> GetRoomConnections();
 
         Task SendGlobalMessage(string message);
         //Todo: after navigation

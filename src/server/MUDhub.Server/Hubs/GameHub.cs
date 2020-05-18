@@ -5,11 +5,13 @@ using Microsoft.Extensions.Logging;
 using MUDhub.Core.Abstracts;
 using MUDhub.Core.Abstracts.Models.Rooms;
 using MUDhub.Core.Models;
+using MUDhub.Core.Models.Characters;
 using MUDhub.Core.Models.Connections;
 using MUDhub.Core.Models.Inventories;
 using MUDhub.Core.Models.Rooms;
 using MUDhub.Core.Services;
 using MUDhub.Server.ApiModels.Items;
+using MUDhub.Server.ApiModels.Muds.RoomConnections;
 using MUDhub.Server.Helpers;
 using MUDhub.Server.Hubs.Models;
 using System;
@@ -29,9 +31,9 @@ namespace MUDhub.Server.Hubs
         private readonly IInventoryService _inventoryService;
         private readonly ILogger<GameHub> _logger;
 
-        public GameHub(MudDbContext context, 
-                       SignalRConnectionHandler connectionHandler, 
-                       INavigationService navigationService, 
+        public GameHub(MudDbContext context,
+                       SignalRConnectionHandler connectionHandler,
+                       INavigationService navigationService,
                        IInventoryService inventoryService,
                        ILogger<GameHub> logger)
         {
@@ -252,6 +254,18 @@ namespace MUDhub.Server.Hubs
             }
 
         }
+
+        public async Task<IEnumerable<RoomConnectionApiModel>> GetRoomConnections()
+        {
+            var character = await _context.Characters.FindAsync(GetCharacterId()).ConfigureAwait(false);
+            if (character is null)
+            {
+                //Note: Should never happen
+                throw new ArgumentException();
+            }
+            return character.ActualRoom.AllConnections.Select(rc => RoomConnectionApiModel.ConvertFromRoomConnection(rc));
+        }
+
         public async Task<InventoryResult> GetInventory(bool getActualRoomInventory)
         {
 
@@ -281,7 +295,7 @@ namespace MUDhub.Server.Hubs
                                                    ?? Enumerable.Empty<ItemInstanceApiModel>()
                 };
             }
-           
+
         }
 
         public override async Task OnDisconnectedAsync(Exception exception)
