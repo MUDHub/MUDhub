@@ -14,6 +14,7 @@ import { IEnterRoomResult, NavigationErrorType } from '../model/game/signalR/Ent
 import { ItemTransferMethod } from '../model/game/signalR/ItemTransferMethod';
 import { ICommand } from './command.service';
 import { IInventoryResult } from '../model/game/signalR/InventoryResult';
+import { IRoom } from '../model/areas/IRoom';
 
 @Injectable({
 	providedIn: 'root',
@@ -88,7 +89,7 @@ export class GameService {
 	}>();
 	public NewPrivateMessage$ = this.NewPrivateMessageSubject.asObservable();
 
-	private ChangeRoomSubject = new Subject<{ roomId: string; areaId: string }>();
+	private ChangeRoomSubject = new Subject<{ room: IRoom; areaId: string }>();
 	public ChangeRoom$ = this.ChangeRoomSubject.asObservable();
 
 	public async joinGame(characterid: string) {
@@ -97,7 +98,8 @@ export class GameService {
 
 			const joinResult = await this.connection.invoke<IJoinMudGameResult>('tryJoinMudGame', characterid);
 			if (joinResult.success) {
-				this.ChangeRoomSubject.next({ roomId: joinResult.roomId, areaId: joinResult.areaId });
+				this.ChangeRoomSubject.next({ room: joinResult.room, areaId: joinResult.areaId });
+				this.NewGameMessageSubject.next(joinResult.room.enterMessage);
 			} else {
 				throw new Error(`Could not join: ${joinResult.errorMessage}`);
 			}
@@ -161,8 +163,9 @@ export class GameService {
 		} else {
 			this.ChangeRoomSubject.next({
 				areaId: result.activeAreaId,
-				roomId: result.activeRoomId,
+				room: result.activeRoom,
 			});
+			this.NewGameMessageSubject.next(result.activeRoom.enterMessage);
 		}
 	}
 

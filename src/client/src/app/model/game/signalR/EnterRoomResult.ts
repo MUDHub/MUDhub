@@ -1,7 +1,8 @@
 import { ISignalRBaseResult } from './SignalRBaseResult';
+import { IRoom } from '../../areas/IRoom';
 
 export interface IEnterRoomResult extends ISignalRBaseResult {
-	activeRoomId: string;
+	activeRoom: IRoom;
 	activeAreaId: string;
 	errorType: NavigationErrorType;
 }

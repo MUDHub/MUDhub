@@ -1,6 +1,7 @@
 import { ISignalRBaseResult } from './SignalRBaseResult';
+import { IRoom } from '../../areas/IRoom';
 
 export interface IJoinMudGameResult extends ISignalRBaseResult {
-	roomId: string;
+	room: IRoom;
 	areaId: string;
 }

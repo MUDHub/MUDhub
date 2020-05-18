@@ -39,7 +39,7 @@ export class MapComponent implements OnInit {
 					this.map = [[]];
 				}
 				this.rooms = await this.roomsService.getRoomsForArea(this.activeArea.areaId);
-				this.activeRoom = this.rooms.find(r => r.roomId === newRoom.roomId);
+				this.activeRoom = this.rooms.find(r => r.roomId === newRoom.room.roomId);
 				this.renderMap(this.rooms);
 			} catch (err) {
 				console.error('Error while updating map', err);
