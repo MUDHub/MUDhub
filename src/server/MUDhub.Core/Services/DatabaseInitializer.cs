@@ -63,25 +63,17 @@ namespace MUDhub.Core.Services
             }
 
             var userExists = true;
-            if (_options.CreateDefaultUser)
+            if (_options.CreateDefaultAdminUser)
             {
-                userExists = await CreateDefaultUserAsnyc(context, userManager)
+                userExists = await CreateDefaultAdminUserAsnyc(context, userManager)
+                         .ConfigureAwait(false);
+            }
+            if (_options.CreateDefaultMasterUser)
+            {
+                userExists = await CreateDefaultMasterUserAsnyc(context, userManager)
                          .ConfigureAwait(false);
             }
 
-            if (_options.CreateDefaultMudData && userExists)
-            {
-                var actualMud = await context.MudGames.FirstOrDefaultAsync(m => m.Name == "Thors World").ConfigureAwait(false);
-                if (actualMud is null)
-                {
-                    await CreateDefaultMudDataAsync(context, mudManager, areaManager)
-                        .ConfigureAwait(false);
-                }
-                else
-                {
-                    _logger?.LogWarning($"DefaultMud: {actualMud.Name} already exists!");
-                }
-            }
             if (_options.CreateDefaultDhbwMudData && userExists)
             {
                 var actualMud = await context.MudGames.FirstOrDefaultAsync(m => m.Name == "DHBW Horb").ConfigureAwait(false);
@@ -266,6 +258,135 @@ namespace MUDhub.Core.Services
                 Y = 3
             }).ConfigureAwait(false);
 
+            var result2Room1 = await areaManager.CreateRoomAsync(user.Id, resultArea2.Area!.Id, new RoomArgs()
+            {
+                Name = "Flur",
+                Description = "Ende des Flurs. Hier gehts zur Feuerwehrtreppe.",
+                IsDefaultRoom = false,
+                X = 2,
+                Y = 0
+            }).ConfigureAwait(false);
+            var result2Room2 = await areaManager.CreateRoomAsync(user.Id, resultArea2.Area.Id, new RoomArgs()
+            {
+                Name = "Vorlesungsraum 0/1",
+                Description = "Vorlesungsraum der Elektrotechniker. Man kann auf die Werkstatt durch das Fenster sehen.",
+                IsDefaultRoom = false,
+                X = 0,
+                Y = 1
+            }).ConfigureAwait(false);
+            var result2Room3 = await areaManager.CreateRoomAsync(user.Id, resultArea2.Area.Id, new RoomArgs()
+            {
+                Name = "Vorlesungsraum 1/1",
+                Description = "Vorlesungsraum der Elektrotechniker. Dieser Raum hat zwei Türen.",
+                IsDefaultRoom = false,
+                X = 1,
+                Y = 1
+            }).ConfigureAwait(false);
+            var result2Room4 = await areaManager.CreateRoomAsync(user.Id, resultArea2.Area.Id, new RoomArgs()
+            {
+                Name = "Flur",
+                Description = "Hier stehen die Drucker.",
+                IsDefaultRoom = false,
+                X = 2,
+                Y = 1
+            }).ConfigureAwait(false);
+            var result2Room5 = await areaManager.CreateRoomAsync(user.Id, resultArea2.Area.Id, new RoomArgs()
+            {
+                Name = "Toiletten",
+                Description = "Einzige Toiletten des Stockwerkes. Für Mann, Frau und Divers.",
+                IsDefaultRoom = false,
+                X = 4,
+                Y = 1
+            }).ConfigureAwait(false);
+            var result2Room6 = await areaManager.CreateRoomAsync(user.Id, resultArea2.Area.Id, new RoomArgs()
+            {
+                Name = "Vorlesungsraum 5/1",
+                Description = "Vorlesungsraum der Elektrotechniker. Man kann auf die Feuerwehr durch das Fenster sehen.",
+                IsDefaultRoom = false,
+                X = 5,
+                Y = 1
+            }).ConfigureAwait(false);
+            var result2Room7 = await areaManager.CreateRoomAsync(user.Id, resultArea2.Area.Id, new RoomArgs()
+            {
+                Name = "Flur",
+                Description = "Ende des Flurs. Man gelangt zur Feuerwehrleiter.",
+                IsDefaultRoom = false,
+                X = 0,
+                Y = 2
+            }).ConfigureAwait(false);
+            var result2Room8 = await areaManager.CreateRoomAsync(user.Id, resultArea2.Area.Id, new RoomArgs()
+            {
+                Name = "Flur",
+                Description = "Langweiliger Flur.",
+                IsDefaultRoom = false,
+                X = 1,
+                Y = 2
+            }).ConfigureAwait(false);
+            var result2Room9 = await areaManager.CreateRoomAsync(user.Id, resultArea2.Area.Id, new RoomArgs()
+            {
+                Name = "Flur",
+                Description = "Zentrums des Flures. Man kann in alle Richtungen gehen.",
+                IsDefaultRoom = false,
+                X = 2,
+                Y = 2
+            }).ConfigureAwait(false);
+            var result2Room10 = await areaManager.CreateRoomAsync(user.Id, resultArea2.Area.Id, new RoomArgs()
+            {
+                Name = "Flur",
+                Description = "Langweiliger Flur-Abteil",
+                IsDefaultRoom = false,
+                X = 3,
+                Y = 2
+            }).ConfigureAwait(false);
+            var result2Room11 = await areaManager.CreateRoomAsync(user.Id, resultArea2.Area.Id, new RoomArgs()
+            {
+                Name = "Flur",
+                Description = "Langweiliger Flur.",
+                IsDefaultRoom = false,
+                X = 4,
+                Y = 2
+            }).ConfigureAwait(false);
+            var result2Room12 = await areaManager.CreateRoomAsync(user.Id, resultArea2.Area.Id, new RoomArgs()
+            {
+                Name = "Flur",
+                Description = "Ende des Flurs. Man gelangt zur Feuerwehrtreppe.",
+                IsDefaultRoom = false,
+                X = 5,
+                Y = 2
+            }).ConfigureAwait(false);
+            var result2Room13 = await areaManager.CreateRoomAsync(user.Id, resultArea2.Area.Id, new RoomArgs()
+            {
+                Name = "Vorlesungsraum 1/3",
+                Description = "Vorlesungsraum der Elektrotechniker. Man kann die Straße sehen.",
+                IsDefaultRoom = false,
+                X = 1,
+                Y = 3
+            }).ConfigureAwait(false);
+            var result2Room14 = await areaManager.CreateRoomAsync(user.Id, resultArea2.Area.Id, new RoomArgs()
+            {
+                Name = "Treppenhaus",
+                Description = "Von hier gelangt man in alle anderen Stockwerke.",
+                IsDefaultRoom = false,
+                X = 2,
+                Y = 3
+            }).ConfigureAwait(false);
+            var result2Room15 = await areaManager.CreateRoomAsync(user.Id, resultArea2.Area.Id, new RoomArgs()
+            {
+                Name = "Vorlesungsraum 4/3",
+                Description = "Vorlesungsraum der Elektrotechniker. Direkt über der Kantine.",
+                IsDefaultRoom = false,
+                X = 4,
+                Y = 3
+            }).ConfigureAwait(false);
+            var result2Room16 = await areaManager.CreateRoomAsync(user.Id, resultArea2.Area.Id, new RoomArgs()
+            {
+                Name = "Vorlesungsraum 5/3",
+                Description = "Vorlesungsraum der Elektrotechniker. Man kann die Feuerwehr und die Straße durch das Fenster sehen.",
+                IsDefaultRoom = false,
+                X = 5,
+                Y = 3
+            }).ConfigureAwait(false);
+
             var resultConnection1 = await areaManager.CreateConnectionAsync(user.Id, resultRoom1.Room!.Id, resultRoom2.Room!.Id, new RoomConnectionsArgs()
             {
                 Description = "Flur <=> Außenbereich",
@@ -427,10 +548,139 @@ namespace MUDhub.Core.Services
                 }
             }).ConfigureAwait(false);
 
+            var result2Connection1 = await areaManager.CreateConnectionAsync(user.Id, result2Room1.Room!.Id, result2Room4.Room!.Id, new RoomConnectionsArgs()
+            {
+                Description = "Flur <=> Flur",
+                LockArgs = new LockArgs()
+                {
+                    LockType = LockType.NoLock
+                }
+            }).ConfigureAwait(false);
+            var result2Connection2 = await areaManager.CreateConnectionAsync(user.Id, result2Room2.Room!.Id, result2Room7.Room!.Id, new RoomConnectionsArgs()
+            {
+                Description = "Flur <=> Vorlesungsraum 0/1",
+                LockArgs = new LockArgs()
+                {
+                    LockType = LockType.NoLock
+                }
+            }).ConfigureAwait(false);
+            var result2Connection3 = await areaManager.CreateConnectionAsync(user.Id, result2Room3.Room!.Id, result2Room8.Room!.Id, new RoomConnectionsArgs()
+            {
+                Description = "Flur <=> Vorlesungsraum 1/1",
+                LockArgs = new LockArgs()
+                {
+                    LockType = LockType.NoLock
+                }
+            }).ConfigureAwait(false);
+            var result2Connection4 = await areaManager.CreateConnectionAsync(user.Id, result2Room3.Room!.Id, result2Room4.Room!.Id, new RoomConnectionsArgs()
+            {
+                Description = "Flur <=> Vorlesungsraum 1/1",
+                LockArgs = new LockArgs()
+                {
+                    LockType = LockType.NoLock
+                }
+            }).ConfigureAwait(false);
+            var result2Connection5 = await areaManager.CreateConnectionAsync(user.Id, result2Room4.Room!.Id, result2Room9.Room!.Id, new RoomConnectionsArgs()
+            {
+                Description = "Flur <=> Flur",
+                LockArgs = new LockArgs()
+                {
+                    LockType = LockType.NoLock
+                }
+            }).ConfigureAwait(false);
+            var result2Connection6 = await areaManager.CreateConnectionAsync(user.Id, result2Room5.Room!.Id, result2Room11.Room!.Id, new RoomConnectionsArgs()
+            {
+                Description = "Flur <=> Toiletten",
+                LockArgs = new LockArgs()
+                {
+                    LockType = LockType.NoLock
+                }
+            }).ConfigureAwait(false);
+            var result2Connection7 = await areaManager.CreateConnectionAsync(user.Id, result2Room6.Room!.Id, result2Room12.Room!.Id, new RoomConnectionsArgs()
+            {
+                Description = "Flur <=> Vorlesungsraum 5/1",
+                LockArgs = new LockArgs()
+                {
+                    LockType = LockType.NoLock
+                }
+            }).ConfigureAwait(false);
+            var result2Connection8 = await areaManager.CreateConnectionAsync(user.Id, result2Room7.Room!.Id, result2Room8.Room!.Id, new RoomConnectionsArgs()
+            {
+                Description = "Flur <=> Flur",
+                LockArgs = new LockArgs()
+                {
+                    LockType = LockType.NoLock
+                }
+            }).ConfigureAwait(false);
+            var result2Connection9 = await areaManager.CreateConnectionAsync(user.Id, result2Room8.Room!.Id, result2Room9.Room!.Id, new RoomConnectionsArgs()
+            {
+                Description = "Flur <=> Flur",
+                LockArgs = new LockArgs()
+                {
+                    LockType = LockType.NoLock
+                }
+            }).ConfigureAwait(false);
+            var result2Connection10 = await areaManager.CreateConnectionAsync(user.Id, result2Room9.Room!.Id, result2Room10.Room!.Id, new RoomConnectionsArgs()
+            {
+                Description = "Flur <=> Flur",
+                LockArgs = new LockArgs()
+                {
+                    LockType = LockType.NoLock
+                }
+            }).ConfigureAwait(false);
+            var result2Connection11 = await areaManager.CreateConnectionAsync(user.Id, result2Room10.Room!.Id, result2Room11.Room!.Id, new RoomConnectionsArgs()
+            {
+                Description = "Flur <=> Flur",
+                LockArgs = new LockArgs()
+                {
+                    LockType = LockType.NoLock
+                }
+            }).ConfigureAwait(false);
+            var result2Connection12 = await areaManager.CreateConnectionAsync(user.Id, result2Room11.Room!.Id, result2Room12.Room!.Id, new RoomConnectionsArgs()
+            {
+                Description = "Flur <=> Flur",
+                LockArgs = new LockArgs()
+                {
+                    LockType = LockType.NoLock
+                }
+            }).ConfigureAwait(false);
+            var result2Connection13 = await areaManager.CreateConnectionAsync(user.Id, result2Room8.Room!.Id, result2Room13.Room!.Id, new RoomConnectionsArgs()
+            {
+                Description = "Flur <=> Vorlesungsraum 1/3",
+                LockArgs = new LockArgs()
+                {
+                    LockType = LockType.NoLock
+                }
+            }).ConfigureAwait(false);
+            var result2Connection14 = await areaManager.CreateConnectionAsync(user.Id, result2Room9.Room!.Id, result2Room14.Room!.Id, new RoomConnectionsArgs()
+            {
+                Description = "Flur <=> Treppenhaus",
+                LockArgs = new LockArgs()
+                {
+                    LockType = LockType.NoLock
+                }
+            }).ConfigureAwait(false);
+            var result2Connection15 = await areaManager.CreateConnectionAsync(user.Id, result2Room11.Room!.Id, result2Room15.Room!.Id, new RoomConnectionsArgs()
+            {
+                Description = "Flur <=> Vorlesungsraum 4/3",
+                LockArgs = new LockArgs()
+                {
+                    LockType = LockType.NoLock
+                }
+            }).ConfigureAwait(false);
+            var result2Connection16 = await areaManager.CreateConnectionAsync(user.Id, result2Room12.Room!.Id, result2Room16.Room!.Id, new RoomConnectionsArgs()
+            {
+                Description = "Flur <=> Vorlesungsraum 5/3",
+                LockArgs = new LockArgs()
+                {
+                    LockType = LockType.NoLock
+                }
+            }).ConfigureAwait(false);
+
             var item1 = await itemManager.CreateItemAsync(user.Id, resultGame1!.Id, new ItemArgs()
             {
                 Name = "Apfel",
-                Description = "An Apple a keeps the doctor away.",
+                Description = "An Apple a day keeps the doctor away.",
                 Weight = 5
             }).ConfigureAwait(false);
             var item2 = await itemManager.CreateItemAsync(user.Id, resultGame1!.Id, new ItemArgs()
@@ -472,7 +722,7 @@ namespace MUDhub.Core.Services
             var item8 = await itemManager.CreateItemAsync(user.Id, resultGame1!.Id, new ItemArgs()
             {
                 Name = "Mittagessen",
-                Description = "Vegetarisch",
+                Description = "Vegan für Marvin",
                 Weight = 30
             }).ConfigureAwait(false);
             var item9 = await itemManager.CreateItemAsync(user.Id, resultGame1!.Id, new ItemArgs()
@@ -495,7 +745,7 @@ namespace MUDhub.Core.Services
             }).ConfigureAwait(false);
             var race2 = await characterManager.CreateRaceAsync(user.Id, resultGame1!.Id, new CharacterRaceArgs()
             {
-                Name = "Badenzer",
+                Name = "Badener",
                 Desctiption = "Ein Volk für sich."
             }).ConfigureAwait(false);
             var race3 = await characterManager.CreateRaceAsync(user.Id, resultGame1!.Id, new CharacterRaceArgs()
@@ -527,7 +777,7 @@ namespace MUDhub.Core.Services
             var class3 = await characterManager.CreateClassAsync(user.Id, resultGame1!.Id, new CharacterClassArgs()
             {
                 Name = "Campusleiter",
-                Desctiption = "Nicht zu verwechseln mit der Leiter aus dem Hausmeister-Raum."
+                Desctiption = "Der Boss des Hauses."
             }).ConfigureAwait(false);
             var class4 = await characterManager.CreateClassAsync(user.Id, resultGame1!.Id, new CharacterClassArgs()
             {
@@ -536,67 +786,19 @@ namespace MUDhub.Core.Services
             }).ConfigureAwait(false);
             var class5 = await characterManager.CreateClassAsync(user.Id, resultGame1!.Id, new CharacterClassArgs()
             {
-                Name = "Prüfungsaufsichten",
+                Name = "Prüfungsaufsicht",
                 Desctiption = "Wachsam und Aufmerksam."
             }).ConfigureAwait(false);
         }
 
-        private async Task CreateDefaultMudDataAsync(MudDbContext context, IMudManager mudManager, IAreaManager areaManager)
-        {
-            var user = await context.Users.FirstOrDefaultAsync(u => u.Email == _options.DefaultMudAdminEmail)
-                                        .ConfigureAwait(false);
-            var resultGame = await mudManager.CreateMudAsync("Thors World", new MudCreationArgs
-            {
-                AutoRestart = true,
-                Description = "It's thors 9 worlds!",
-                ImageKey = "some awesome key",
-                IsPublic = true,
-                OwnerId = user.Id
-            }).ConfigureAwait(false);
-
-            var resultArea = await areaManager.CreateAreaAsync(user.Id, resultGame!.Id, new AreaArgs()
-            {
-                Name = "First Etage",
-                Description = "Nice View"
-            }).ConfigureAwait(false);
-
-
-            var resultRoom1 = await areaManager.CreateRoomAsync(user.Id, resultArea.Area!.Id, new RoomArgs()
-            {
-                Name = "Dinner Room",
-                Description = "Yummy Food",
-                IsDefaultRoom = true,
-                X = 1,
-                Y = 1
-            }).ConfigureAwait(false);
-
-            var resultRoom2 = await areaManager.CreateRoomAsync(user.Id, resultArea.Area.Id, new RoomArgs()
-            {
-                Name = "Sleeping Room",
-                Description = "Naughty Things to see",
-                IsDefaultRoom = false,
-                X = 2,
-                Y = 1
-            }).ConfigureAwait(false);
-
-            var resultConnection = await areaManager.CreateConnectionAsync(user.Id, resultRoom1.Room!.Id, resultRoom2.Room!.Id, new RoomConnectionsArgs()
-            {
-                Description = "From Dinner to Sleep",
-                LockArgs = new LockArgs()
-                {
-                    LockType = LockType.NoLock
-                }
-            }).ConfigureAwait(false);
-        }
-
-        private async Task<bool> CreateDefaultUserAsnyc(MudDbContext context, IUserManager userManager)
+        private async Task<bool> CreateDefaultAdminUserAsnyc(MudDbContext context, IUserManager userManager)
         {
 
             var user = await context.Users.FirstOrDefaultAsync(u => u.Email == _options.DefaultMudAdminEmail)
                 .ConfigureAwait(false);
             if (user != null)
             {
-                _logger?.LogWarning($"DefaultUser {_options.DefaultMudAdminEmail} already exists!");
+                _logger?.LogWarning($"DefaultAdminUser {_options.DefaultMudAdminEmail} already exists!");
                 return true;
             }
 
@@ -604,8 +806,8 @@ namespace MUDhub.Core.Services
             {
                 Email = _options.DefaultMudAdminEmail,
                 Password = _options.DefaultMudAdminPassword,
-                Lastname = "",
-                Firstname = "DefaultUser"
+                Lastname = "User",
+                Firstname = "Admin"
             }).ConfigureAwait(false);
 
             if (!registerResult.Success)
@@ -628,6 +830,41 @@ namespace MUDhub.Core.Services
             }
             return true;
         }
+
+        private async Task<bool> CreateDefaultMasterUserAsnyc(MudDbContext context, IUserManager userManager)
+        {
+
+            var user = await context.Users.FirstOrDefaultAsync(u => u.Email == _options.DefaultMudMasterEmail)
+                .ConfigureAwait(false);
+            if (user != null)
+            {
+                _logger?.LogWarning($"DefaultMasterUser {_options.DefaultMudMasterEmail} already exists!");
+                return true;
+            }
+
+            var registerResult = await userManager.RegisterUserAsync(new RegistrationUserArgs
+            {
+                Email = _options.DefaultMudMasterEmail,
+                Password = _options.DefaultMudMasterPassword,
+                Lastname = "Mustermann",
+                Firstname = "Max"
+            }).ConfigureAwait(false);
+
+            if (!registerResult.Success)
+            {
+                _logger?.LogError(registerResult.Errormessage);
+                return false;
+            }
+
+            var success = await userManager.AddRoleToUserAsync(registerResult!.User!.Id, Roles.Master)
+                .ConfigureAwait(false);
+            if (success)
+            {
+                _logger?.LogInformation("The role Master was added to the user");
+            }
+            return true;
+        }
+        
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
