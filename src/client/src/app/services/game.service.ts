@@ -15,6 +15,7 @@ import { ItemTransferMethod } from '../model/game/signalR/ItemTransferMethod';
 import { ICommand } from './command.service';
 import { IInventoryResult } from '../model/game/signalR/InventoryResult';
 import { IRoom } from '../model/areas/IRoom';
+import { IRoomConnectionsResult } from '../model/game/signalR/RoomConnectionsResult';
 
 @Injectable({
 	providedIn: 'root',
@@ -131,26 +132,15 @@ export class GameService {
 	}
 
 	public async tryEnterRoom(direction: Direction, portalName?: string) {
-		const getDirection = (dir: Direction) => {
-			switch (dir) {
-				case Direction.NORTH:
-					return 'Norden';
-				case Direction.SOUTH:
-					return 'Süden';
-				case Direction.EAST:
-					return 'Osten';
-				case Direction.WEST:
-					return 'Westen';
-				case Direction.PORTAL:
-					return 'Portal';
-			}
-		};
 		// TODO: get not only ids from server but actual objects
 		const result = await this.connection.invoke<IEnterRoomResult>('tryEnterRoom', direction, portalName);
 		if (!result.success) {
 			switch (result.errorType) {
+				case NavigationErrorType.NoPortalFound:
+					this.NewGameMessageSubject.next(`Kein Portal '${portalName}' gefunden`);
+					break;
 				case NavigationErrorType.RoomsAreNotConnected:
-					this.NewGameMessageSubject.next(`Kann nicht nach ${getDirection(direction)} gehen`);
+					this.NewGameMessageSubject.next(`Kann nicht nach ${this.getDirection(direction)} gehen`);
 					break;
 				case NavigationErrorType.NoTargetRoomFound:
 					this.NewGameMessageSubject.next('Raum nicht gefunden');
@@ -166,6 +156,21 @@ export class GameService {
 				room: result.activeRoom,
 			});
 			this.NewGameMessageSubject.next(result.activeRoom.enterMessage);
+		}
+	}
+
+	getDirection(dir: Direction) {
+		switch (dir) {
+			case Direction.NORTH:
+				return 'Norden';
+			case Direction.SOUTH:
+				return 'Süden';
+			case Direction.EAST:
+				return 'Osten';
+			case Direction.WEST:
+				return 'Westen';
+			case Direction.PORTAL:
+				return 'Portal';
 		}
 	}
 
@@ -217,10 +222,15 @@ export class GameService {
 	}
 
 	public async showExits() {
-		const result = await this.connection.invoke<ISignalRBaseResult>('');
-		if (result.success) {
-		} else {
-			console.error('Error while fetching connected rooms', result);
+		try {
+			const rooms = await this.connection.invoke<IRoomConnectionsResult[]>('getRoomConnections');
+			let text = 'An diesen Raum grenzen folgende Räume an:<br>';
+			for (const room of rooms) {
+				text += `Im ${this.getDirection(room.direction)}: ${room.roomName}, ${room.description}<br>`;
+			}
+			this.NewGameMessageSubject.next(text);
+		} catch (err) {
+			console.error('Error while fetching exits', err);
 		}
 	}
 }

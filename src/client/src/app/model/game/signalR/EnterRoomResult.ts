@@ -13,5 +13,6 @@ export enum NavigationErrorType {
 	RoomsAreNotConnected,
 	IdenticalRooms,
 	NoCharacterFound,
-	NoTargetRoomFound
+	NoTargetRoomFound,
+	NoPortalFound
 }

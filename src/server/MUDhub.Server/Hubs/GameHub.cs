@@ -142,7 +142,7 @@ namespace MUDhub.Server.Hubs
                 return new EnterRoomResult
                 {
                     Success = false,
-                    ErrorType = NavigationErrorType.RoomsAreNotConnected
+                    ErrorType = direction == Direction.Portal ? NavigationErrorType.NoPortalFound : NavigationErrorType.RoomsAreNotConnected
                 };
             }
 

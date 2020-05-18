@@ -124,6 +124,7 @@ export class CommandService {
 
 		switch (subject) {
 			case 'Ausgänge':
+				await this.game.showExits();
 				break;
 			case 'Boden':
 				await this.game.showRoomInventory();
