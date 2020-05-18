@@ -155,7 +155,7 @@ namespace MUDhub.Server.Hubs
 
                 Context.Items["currentRoomId"] = result.ActiveRoom?.Id;
 
-                await Groups.RemoveFromGroupAsync(Context.ConnectionId, GetCurrentRoomId())
+                await Groups.AddToGroupAsync(Context.ConnectionId, GetCurrentRoomId())
                             .ConfigureAwait(false);
 
             }
