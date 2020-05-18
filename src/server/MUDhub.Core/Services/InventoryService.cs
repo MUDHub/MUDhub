@@ -227,7 +227,9 @@ namespace MUDhub.Core.Services
             }
 
             sourceInventory.ItemInstances.Remove(itemInstance);
+            sourceInventory.UsedCapacity -= itemInstance.Item.Weight;
             targetInventory.ItemInstances.Add(itemInstance);
+            targetInventory.UsedCapacity += itemInstance.Item.Weight;
 
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
