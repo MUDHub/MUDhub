@@ -8,6 +8,7 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	justify-content: space-between;
 	text-align: justify;
 
 	border: 1px solid transparent;
@@ -40,6 +41,11 @@
 	.mud-title {
 		font-size: 120%;
 		font-weight: bold;
+	}
+
+	.mud-actions {
+		display: flex;
+		flex-direction: column;
 	}
 }
 

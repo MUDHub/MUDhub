@@ -323,6 +323,7 @@ namespace MUDhub.Core.Services
                 Description = args.Description,
                 Area = area,
                 ImageKey = args.ImageKey,
+                EnterMessage = args.EnterMessage,
                 X = args.X,
                 Y = args.Y,
                 IsDefaultRoom = args.IsDefaultRoom,
@@ -784,6 +785,10 @@ namespace MUDhub.Core.Services
             if (args.ImageKey != null)
             {
                 room.ImageKey = args.ImageKey;
+            }
+            if (args.EnterMesage != null)
+            {
+                room.EnterMessage = args.EnterMesage;
             }
 
             await _context.SaveChangesAsync()

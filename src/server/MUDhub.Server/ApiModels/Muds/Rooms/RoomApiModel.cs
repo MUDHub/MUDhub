@@ -21,6 +21,7 @@ namespace MUDhub.Server.ApiModels.Muds.Rooms
         public bool IsDefaultRoom { get; set; } = false;
         public IEnumerable<ItemInstanceApiModel>? ItemInstances { get; set; }
         public ConnectionsApiModel? Connections { get; set; }
+        public string EnterMessage { get; set; } = string.Empty;
 
         public static RoomApiModel ConvertFromRoom(Room room, bool depth = true)
         {
@@ -37,6 +38,7 @@ namespace MUDhub.Server.ApiModels.Muds.Rooms
                 X = room.X,
                 Y = room.Y,
                 ImageKey = room.ImageKey,
+                EnterMessage = room.EnterMessage,
                 IsDefaultRoom = room.IsDefaultRoom,
                 ItemInstances = depth ? room.Inventory.ItemInstances.Select(ii => ItemInstanceApiModel.ConvertFromItemInstance(ii)) : null,
                 Connections = depth ? ConnectionsApiModel.CreateFromList(room.AllConnections, room) : null

@@ -131,11 +131,16 @@ export class GameService {
 	public async tryEnterRoom(direction: Direction, portalName?: string) {
 		const getDirection = (dir: Direction) => {
 			switch (dir) {
-				case Direction.NORTH: return 'Norden';
-				case Direction.SOUTH: return 'Süden';
-				case Direction.EAST: return 'Osten';
-				case Direction.WEST: return 'Westen';
-				case Direction.PORTAL: return 'Portal';
+				case Direction.NORTH:
+					return 'Norden';
+				case Direction.SOUTH:
+					return 'Süden';
+				case Direction.EAST:
+					return 'Osten';
+				case Direction.WEST:
+					return 'Westen';
+				case Direction.PORTAL:
+					return 'Portal';
 			}
 		};
 		// TODO: get not only ids from server but actual objects
@@ -143,8 +148,10 @@ export class GameService {
 		if (!result.success) {
 			switch (result.errorType) {
 				case NavigationErrorType.RoomsAreNotConnected:
-				case NavigationErrorType.NoTargetRoomFound:
 					this.NewGameMessageSubject.next(`Kann nicht nach ${getDirection(direction)} gehen`);
+					break;
+				case NavigationErrorType.NoTargetRoomFound:
+					this.NewGameMessageSubject.next('Raum nicht gefunden');
 					break;
 				case NavigationErrorType.LockedByInteraction:
 				case NavigationErrorType.LockedByRessource:
@@ -158,7 +165,6 @@ export class GameService {
 			});
 		}
 	}
-
 
 	public async transferItem(itemName: string, method: ItemTransferMethod) {
 		const result = await this.connection.invoke<ISignalRBaseResult>('tryTransferItem', itemName, method);
@@ -204,6 +210,14 @@ export class GameService {
 			}
 		} else {
 			console.warn(result);
+		}
+	}
+
+	public async showExits() {
+		const result = await this.connection.invoke<ISignalRBaseResult>('');
+		if (result.success) {
+		} else {
+			console.error('Error while fetching connected rooms', result);
 		}
 	}
 }
