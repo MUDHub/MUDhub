@@ -14,6 +14,7 @@ import { IEnterRoomResult, NavigationErrorType } from '../model/game/signalR/Ent
 import { ItemTransferMethod } from '../model/game/signalR/ItemTransferMethod';
 import { ICommand } from './command.service';
 import { IInventoryResult } from '../model/game/signalR/InventoryResult';
+import { IRoom } from '../model/areas/IRoom';
 
 @Injectable({
 	providedIn: 'root',
@@ -88,7 +89,7 @@ export class GameService {
 	}>();
 	public NewPrivateMessage$ = this.NewPrivateMessageSubject.asObservable();
 
-	private ChangeRoomSubject = new Subject<{ roomId: string; areaId: string }>();
+	private ChangeRoomSubject = new Subject<{ room: IRoom; areaId: string }>();
 	public ChangeRoom$ = this.ChangeRoomSubject.asObservable();
 
 	public async joinGame(characterid: string) {
@@ -97,7 +98,8 @@ export class GameService {
 
 			const joinResult = await this.connection.invoke<IJoinMudGameResult>('tryJoinMudGame', characterid);
 			if (joinResult.success) {
-				this.ChangeRoomSubject.next({ roomId: joinResult.roomId, areaId: joinResult.areaId });
+				this.ChangeRoomSubject.next({ room: joinResult.room, areaId: joinResult.areaId });
+				this.NewGameMessageSubject.next(joinResult.room.enterMessage);
 			} else {
 				throw new Error(`Could not join: ${joinResult.errorMessage}`);
 			}
@@ -131,11 +133,16 @@ export class GameService {
 	public async tryEnterRoom(direction: Direction, portalName?: string) {
 		const getDirection = (dir: Direction) => {
 			switch (dir) {
-				case Direction.NORTH: return 'Norden';
-				case Direction.SOUTH: return 'Süden';
-				case Direction.EAST: return 'Osten';
-				case Direction.WEST: return 'Westen';
-				case Direction.PORTAL: return 'Portal';
+				case Direction.NORTH:
+					return 'Norden';
+				case Direction.SOUTH:
+					return 'Süden';
+				case Direction.EAST:
+					return 'Osten';
+				case Direction.WEST:
+					return 'Westen';
+				case Direction.PORTAL:
+					return 'Portal';
 			}
 		};
 		// TODO: get not only ids from server but actual objects
@@ -143,8 +150,10 @@ export class GameService {
 		if (!result.success) {
 			switch (result.errorType) {
 				case NavigationErrorType.RoomsAreNotConnected:
-				case NavigationErrorType.NoTargetRoomFound:
 					this.NewGameMessageSubject.next(`Kann nicht nach ${getDirection(direction)} gehen`);
+					break;
+				case NavigationErrorType.NoTargetRoomFound:
+					this.NewGameMessageSubject.next('Raum nicht gefunden');
 					break;
 				case NavigationErrorType.LockedByInteraction:
 				case NavigationErrorType.LockedByRessource:
@@ -154,11 +163,11 @@ export class GameService {
 		} else {
 			this.ChangeRoomSubject.next({
 				areaId: result.activeAreaId,
-				roomId: result.activeRoomId,
+				room: result.activeRoom,
 			});
+			this.NewGameMessageSubject.next(result.activeRoom.enterMessage);
 		}
 	}
-
 
 	public async transferItem(itemName: string, method: ItemTransferMethod) {
 		const result = await this.connection.invoke<ISignalRBaseResult>('tryTransferItem', itemName, method);
@@ -204,6 +213,14 @@ export class GameService {
 			}
 		} else {
 			console.warn(result);
+		}
+	}
+
+	public async showExits() {
+		const result = await this.connection.invoke<ISignalRBaseResult>('');
+		if (result.success) {
+		} else {
+			console.error('Error while fetching connected rooms', result);
 		}
 	}
 }

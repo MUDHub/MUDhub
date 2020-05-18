@@ -12,6 +12,7 @@ using MUDhub.Core.Models.Rooms;
 using MUDhub.Core.Services;
 using MUDhub.Server.ApiModels.Items;
 using MUDhub.Server.ApiModels.Muds.RoomConnections;
+using MUDhub.Server.ApiModels.Muds.Rooms;
 using MUDhub.Server.Helpers;
 using MUDhub.Server.Hubs.Models;
 using System;
@@ -120,7 +121,7 @@ namespace MUDhub.Server.Hubs
             {
                 Success = true,
                 AreaId = character.ActualRoom.AreaId,
-                RoomId = character.ActualRoomId
+                Room = RoomApiModel.ConvertFromRoom(character.ActualRoom, false)
             };
         }
 

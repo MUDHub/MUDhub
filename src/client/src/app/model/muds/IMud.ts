@@ -7,4 +7,5 @@ export interface IMud {
 	isPublic: boolean;
 	autoRestart: boolean;
 	owner: IUser;
+	isRunning: boolean;
 }

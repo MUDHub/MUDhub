@@ -33,6 +33,7 @@ export class RoomCreateComponent implements OnInit {
 	form = new FormGroup({
 		name: new FormControl('', Validators.required),
 		description: new FormControl(''),
+		enterMessage: new FormControl(''),
 		imageKey: new FormControl(''),
 		isDefault: new FormControl(false),
 	});
@@ -51,6 +52,7 @@ export class RoomCreateComponent implements OnInit {
 			const room = await this.areaService.getRoom(this.roomid);
 			this.form.get('name').setValue(room.name);
 			this.form.get('description').setValue(room.description);
+			this.form.get('enterMessage').setValue(room.enterMessage);
 			this.form.get('isDefault').setValue(room.isDefaultRoom);
 			this.form.get('imageKey').setValue(room.imageKey);
 		}
@@ -74,6 +76,7 @@ export class RoomCreateComponent implements OnInit {
 			name: this.form.get('name').value,
 			description: this.form.get('description').value,
 			isDefaultRoom: this.form.get('isDefault').value,
+			enterMessage: this.form.get('enterMessage').value,
 			imageKey: this.form.get('imageKey').value,
 			areaId: this.areaid,
 			x: this.position.x,

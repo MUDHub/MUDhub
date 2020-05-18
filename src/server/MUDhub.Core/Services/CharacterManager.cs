@@ -46,9 +46,10 @@ namespace MUDhub.Core.Services
             }
 
             //Check if user has rights
+            var isPublic = _context.MudGames.Any(m => m.Id == mudid && m.IsPublic);
             var isOwner = user.MudGames.FirstOrDefault(mg => mg.Id == mudid) != null;
             var canJoin = user.Joins.FirstOrDefault(j => j.MudId == mudid && j.State == MudJoinState.Accepted) != null;
-            if (isOwner || canJoin)
+            if (isPublic || isOwner || canJoin)
             {
                 //Check class id
                 var characterclass = await GetClassByIdAsync(args.ClassId)

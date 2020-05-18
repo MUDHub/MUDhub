@@ -32,7 +32,7 @@ namespace MUDhub.Core.Services
                 return false;
             }
             var mud = user.MudGames.FirstOrDefault(mg => mg.Id == mudId);
-            if (mud.State != MudGameState.InActive)
+            if (mud.State == MudGameState.InEdit)
                 return false;
             mud.State = MudGameState.Active;
             await _context.SaveChangesAsync().ConfigureAwait(false);

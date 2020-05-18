@@ -676,6 +676,14 @@ namespace MUDhub.Core.Services
                     LockType = LockType.NoLock
                 }
             }).ConfigureAwait(false);
+            var result2Connection17 = await areaManager.CreateConnectionAsync(user.Id, result2Room14.Room!.Id, resultRoom16.Room!.Id, new RoomConnectionsArgs()
+            {
+                Description = "Treppenhaus <=> Treppenhaus",
+                LockArgs = new LockArgs()
+                {
+                    LockType = LockType.NoLock
+                }
+            }).ConfigureAwait(false);
 
             var item1 = await itemManager.CreateItemAsync(user.Id, resultGame1!.Id, new ItemArgs()
             {

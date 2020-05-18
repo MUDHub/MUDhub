@@ -43,6 +43,9 @@ $connector-color: #ccc;
 	justify-content: center;
 	align-items: center;
 	z-index: 2;
+
+	overflow: auto;
+	width: 100%;
 }
 
 .map {
