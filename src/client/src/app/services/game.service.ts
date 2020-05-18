@@ -61,7 +61,7 @@ export class GameService {
 			this.NewPrivateMessageSubject.next({ message, caller });
 		});
 
-		this.connection.on('exit', async () => {
+		this.connection.on('kickFromServer', async () => {
 			await this.exitGame();
 			await Swal.fire({
 				icon: 'warning',
