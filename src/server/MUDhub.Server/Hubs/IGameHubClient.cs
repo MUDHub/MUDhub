@@ -10,5 +10,6 @@ namespace MUDhub.Server.Hubs
         Task ReceiveGlobalMessage(string message, string caller, bool serverMessage = false);
         Task ReceiveRoomMessage(string message, string caller);
         Task ReceivePrivateMessage(string mssage, string caller);
+        Task KickFromServer();
     }
 }

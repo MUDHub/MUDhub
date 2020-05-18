@@ -2,6 +2,7 @@
 using MUDhub.Core.Abstracts;
 using MUDhub.Core.Abstracts.Models;
 using MUDhub.Core.Abstracts.Models.Muds;
+using MUDhub.Core.Helper;
 using MUDhub.Core.Models;
 using MUDhub.Core.Models.Muds;
 using MUDhub.Core.Models.Users;
@@ -17,11 +18,13 @@ namespace MUDhub.Core.Services
     {
         private readonly MudDbContext _context;
         private readonly ILogger? _logger;
+        private readonly GameActiveHelper? _helper;
 
-        public MudManager(MudDbContext context, ILogger<MudManager>? logger = null)
+        public MudManager(MudDbContext context, ILogger<MudManager>? logger = null, GameActiveHelper? helper = null)
         {
             _context = context;
             _logger = logger;
+            this._helper = helper;
         }
 
         public async Task<MudGame?> CreateMudAsync(string name, MudCreationArgs args)
@@ -237,6 +240,10 @@ namespace MUDhub.Core.Services
                 return false;
             }
             mud.State = setToInEdit ? MudGameState.InEdit : MudGameState.InActive;
+            if (setToInEdit)
+            {
+                _helper?.GameStopped(mud);
+            }
             await _context.SaveChangesAsync().ConfigureAwait(false);
             return true;
         }
