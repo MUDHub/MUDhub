@@ -36,6 +36,7 @@ export class MapComponent implements OnInit {
 				if (newRoom.areaId !== this.activeArea?.areaId) {
 					this.isLoading = true;
 					this.activeArea = await this.roomsService.getArea(newRoom.areaId);
+					this.map = [[]];
 				}
 				this.rooms = await this.roomsService.getRoomsForArea(this.activeArea.areaId);
 				this.activeRoom = this.rooms.find(r => r.roomId === newRoom.roomId);

@@ -232,13 +232,11 @@ namespace MUDhub.Core.Services
                 return false;
             }
             var result = await ValidateMudAsync(mudId).ConfigureAwait(false);
-            if (   (mud.State == MudGameState.InEdit && setToInEdit) 
-                || (mud.State != MudGameState.InEdit && !setToInEdit)
-                || (mud.State != MudGameState.Active && !result.Valid))
+            if (!setToInEdit && !result.Valid)
             {
                 return false;
             }
-            mud.State = setToInEdit ? MudGameState.InEdit : MudGameState.Active;
+            mud.State = setToInEdit ? MudGameState.InEdit : MudGameState.InActive;
             await _context.SaveChangesAsync().ConfigureAwait(false);
             return true;
         }

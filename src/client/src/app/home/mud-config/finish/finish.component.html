@@ -1,19 +1,22 @@
 <mat-card>
     <div class="center-content">
         <div class="content">
-            <div *ngIf="validationResult.isMudValid">
-                <img src="assets/img/1486564411-checkmark_81522.png"/> 
+            <div *ngIf="validationResult?.isMudValid">
+                <img src="assets/img/1486564411-checkmark_81522.png"/>
             </div>
-            <div *ngIf="!validationResult.isMudValid">
+            <div *ngIf="!validationResult?.isMudValid">
                 <img src="assets/img/1486564399-close_81512.png"/>
             </div>
-    
+
             <h2>Konfiguration</h2>
         </div>
     </div>
     <div class="center-content">
         <div class="error-message">
-            <p *ngFor="let error of validationResult.validationErrors">{{error.message}}</p>
+            <p *ngFor="let error of validationResult?.validationErrors">{{error.message}}</p>
         </div>
-    </div>
+	</div>
+	<mat-card-actions>
+		<button class="finish-button" mat-button (click)="onSubmit()" [disabled]="!validationResult?.isMudValid">Fertigstellen</button>
+	</mat-card-actions>
 </mat-card>

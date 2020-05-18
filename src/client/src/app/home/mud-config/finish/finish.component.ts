@@ -31,6 +31,11 @@ export class FinishComponent implements OnInit {
 		/* Request zur API schicken */
 
 		// Redirect zur MyMuds Seite - Configuration completed
-		this.router.navigate(['/my-muds']);
+		try {
+			await this.mudService.edit(this.mudId, false);
+			this.router.navigate(['/my-muds']);
+		} catch (err) {
+			console.error('Error while finishing mud', err);
+		}
 	}
 }

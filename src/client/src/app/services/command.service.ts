@@ -88,7 +88,6 @@ export class CommandService {
 	 */
 	private async handleMovement(args: string[]) {
 		const dir = args[0];
-		const portalName = args[1];
 		if (!dir) {
 			throw new InvalidCommandException();
 		}
@@ -97,11 +96,7 @@ export class CommandService {
 		if (direction !== Direction.PORTAL) {
 			await this.game.tryEnterRoom(direction);
 		} else {
-			if (portalName) {
-				this.game.tryEnterRoom(direction, portalName);
-			} else {
-				throw new PortalNameUndefinedException();
-			}
+			this.game.tryEnterRoom(direction, dir);
 		}
 	}
 

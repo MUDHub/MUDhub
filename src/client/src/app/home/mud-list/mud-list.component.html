@@ -6,20 +6,25 @@
 		<div class="mud-title">{{ m.mud.name }}</div>
 		<div class="mud-description">{{ m.mud.description }}</div>
 		<div class="mud-actions">
+			<small *ngIf="m.requestState === RequestState.Rejected">Sie wurden blockiert</small>
 			<button
 				mat-stroked-button
 				color="primary"
-				*ngIf="m.mud.isPublic || m.requestState === RequestState.Accepted || m.mud.owner.id == user.id"
+				*ngIf="m.mud.isPublic || m.mud.owner.id == user.id || m.requestState === RequestState.Accepted"
 				[routerLink]="'join'"
 				[queryParams]="{ mudid: m.mud.mudId }"
+				[disabled]="!m.mud.isRunning || m.requestState === RequestState.Rejected"
 			>
 				Spielen
 			</button>
-			<button mat-stroked-button color="primary" *ngIf="!m.mud.isPublic && m.mud.owner.id !== user.id" [disabled]="m.requestState === RequestState.Requested" (click)="requestAccess(m.mud)">
+			<button
+				mat-stroked-button
+				color="primary"
+				*ngIf="!(m.mud.isPublic || m.mud.owner.id == user.id || m.requestState === RequestState.Accepted)"
+				[disabled]="m.requestState === RequestState.Requested || m.requestState === RequestState.Rejected"
+				(click)="requestAccess(m.mud)"
+			>
 				Anfragen
-			</button>
-			<button mat-stroked-button color="primary" *ngIf="m.requestState === RequestState.Rejected" disabled>
-				Abgelehnt
 			</button>
 		</div>
 	</div>

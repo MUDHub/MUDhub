@@ -23,16 +23,28 @@ export class RequestsComponent implements OnInit {
 		this.requests = requests.filter(r => r.state === MudJoinState.Requested);
 		this.accepted = requests.filter(r => r.state === MudJoinState.Accepted);
 		this.rejected = requests.filter(r => r.state === MudJoinState.Rejected);
-
-		console.log({ requests: this.requests, accepted: this.accepted, rejected: this.rejected });
 	}
 
 
 	async allow(userId: string) {
-
+		try {
+			await this.mudService.setRequestState(this.mudId, userId, MudJoinState.Accepted);
+			const requests = this.requests.splice(this.requests.findIndex(r => r.userId === userId), 1);
+			const rejected = this.rejected.splice(this.rejected.findIndex(r => r.userId === userId), 1);
+			this.accepted.push(requests[0] || rejected[0]);
+		} catch (err) {
+			console.error('Error while approving request', err);
+		}
 	}
 
 	async block(userId: string) {
-
+		try {
+			await this.mudService.setRequestState(this.mudId, userId, MudJoinState.Rejected);
+			const requests = this.requests.splice(this.requests.findIndex(r => r.userId === userId), 1);
+			const accepted = this.accepted.splice(this.accepted.findIndex(r => r.userId === userId), 1);
+			this.rejected.push(requests[0] || accepted[0]);
+		} catch (err) {
+			console.error('Error while blocking request', err);
+		}
 	}
 }
