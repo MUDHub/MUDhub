@@ -132,7 +132,6 @@ export class GameService {
 	}
 
 	public async tryEnterRoom(direction: Direction, portalName?: string) {
-		// TODO: get not only ids from server but actual objects
 		const result = await this.connection.invoke<IEnterRoomResult>('tryEnterRoom', direction, portalName);
 		if (!result.success) {
 			switch (result.errorType) {
