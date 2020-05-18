@@ -255,15 +255,15 @@ namespace MUDhub.Server.Hubs
 
         }
 
-        public async Task<IEnumerable<RoomConnectionApiModel>> GetRoomConnections()
+        public async Task<IEnumerable<RoomConnectionSignalRModel>> GetRoomConnections()
         {
             var character = await _context.Characters.FindAsync(GetCharacterId()).ConfigureAwait(false);
             if (character is null)
             {
                 //Note: Should never happen
-                throw new ArgumentException();
+                throw new InvalidOperationException();
             }
-            return character.ActualRoom.AllConnections.Select(rc => RoomConnectionApiModel.ConvertFromRoomConnection(rc));
+            return character.ActualRoom.AllConnections.Select(rc => RoomConnectionSignalRModel.Convert(rc, character.ActualRoom));
         }
 
         public async Task<InventoryResult> GetInventory(bool getActualRoomInventory)

@@ -13,7 +13,7 @@ namespace MUDhub.Server.Hubs
         Task<TransferItemResult> TryTransferItem(string ItemName, ItemTransferMethode reason);
 
         Task<InventoryResult> GetInventory(bool getActualRoomInventory);
-        Task<IEnumerable<RoomConnectionApiModel>> GetRoomConnections();
+        Task<IEnumerable<RoomConnectionSignalRModel>> GetRoomConnections();
 
         Task SendGlobalMessage(string message);
         //Todo: after navigation
