@@ -7,6 +7,6 @@ namespace MUDhub.Core.Abstracts
     {
         Task<ItemInstanceResult> CreateItemInstance(string userId, string inventoryId, string itemId);
         Task<ItemInstanceResult> RemoveItemInstance(string userId, string itemInstanceId);
-        Task<ItemInstanceResult> TransferItem(string itemInstanceId, string targetInventoryId, string sourceInventoryId);
+        Task<ItemInstanceResult> TransferItemAsync(string itemInstanceId, string targetInventoryId, string sourceInventoryId);
     }
 }

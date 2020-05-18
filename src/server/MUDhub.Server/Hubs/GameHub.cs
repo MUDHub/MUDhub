@@ -1,11 +1,22 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.Mvc.Formatters.Xml;
+using Microsoft.AspNetCore.Razor.Hosting;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using MUDhub.Core.Abstracts;
+using MUDhub.Core.Abstracts.Models.Rooms;
 using MUDhub.Core.Models;
+using MUDhub.Core.Models.Characters;
+using MUDhub.Core.Models.Connections;
+using MUDhub.Core.Models.Inventories;
+using MUDhub.Core.Models.Rooms;
 using MUDhub.Core.Services;
+using MUDhub.Server.ApiModels.Items;
+using MUDhub.Server.ApiModels.Muds.RoomConnections;
+using MUDhub.Server.ApiModels.Muds.Rooms;
 using MUDhub.Server.Helpers;
 using MUDhub.Server.Hubs.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,13 +29,19 @@ namespace MUDhub.Server.Hubs
         private readonly MudDbContext _context;
         private readonly SignalRConnectionHandler _connectionHandler;
         private readonly INavigationService _navigationService;
+        private readonly IInventoryService _inventoryService;
         private readonly ILogger<GameHub> _logger;
 
-        public GameHub(MudDbContext context, SignalRConnectionHandler connectionHandler, INavigationService navigationService, ILogger<GameHub> logger)
+        public GameHub(MudDbContext context,
+                       SignalRConnectionHandler connectionHandler,
+                       INavigationService navigationService,
+                       IInventoryService inventoryService,
+                       ILogger<GameHub> logger)
         {
             _context = context;
             _connectionHandler = connectionHandler;
             _navigationService = navigationService;
+            _inventoryService = inventoryService;
             _logger = logger;
         }
 
@@ -61,7 +78,7 @@ namespace MUDhub.Server.Hubs
         public async Task SendRoomMessage(string message)
         {
             await Clients.GroupExcept(GetCurrentRoomId(), Context.ConnectionId)
-                            .ReceivePrivateMessage(message, GetCharacterName())
+                            .ReceiveRoomMessage(message, GetCharacterName())
                             .ConfigureAwait(false);
         }
 
@@ -95,28 +112,191 @@ namespace MUDhub.Server.Hubs
             _connectionHandler.AddConnectionId(characterid, Context.ConnectionId);
             await Groups.AddToGroupAsync(Context.ConnectionId, character.Game.Id).ConfigureAwait(false);
             await Groups.AddToGroupAsync(Context.ConnectionId, character.ActualRoom.Id).ConfigureAwait(false);
-            await Clients.Group(character.Game.Id).ReceiveGlobalMessage($"Charakter: {character.Name} hat das Spiel betreten.", SERVERNAME, true)
+            await Clients.Group(character.Game.Id).ReceiveGlobalMessage($"{character.Name} hat das Spiel betreten.", SERVERNAME, true)
                                                   .ConfigureAwait(false);
+
+            Console.WriteLine(character.ActualRoom.Id);
 
             return new JoinMudGameResult
             {
-                Success = true
+                Success = true,
+                AreaId = character.ActualRoom.AreaId,
+                Room = RoomApiModel.ConvertFromRoom(character.ActualRoom, false)
             };
         }
 
-        public async Task<JoinRoomResult> TryJoinRoom(string roomid)
+        public async Task<EnterRoomResult> TryEnterRoom(Direction direction, string? portalArg = null)
         {
-            var result = await _navigationService.TryEnterRoomAsync(GetCharacterId(), roomid)
-                                                    .ConfigureAwait(false);
-            //var character = await _context.Characters.FindAsync(GetCharacterId()).ConfigureAwait(false);
-            //Todo: the rest, messaging, state management, etc..
+            var character = await _context.Characters.FindAsync(GetCharacterId()).ConfigureAwait(false);
+            string? targetroomid;
+            if (direction == Direction.Portal)
+            {
+                targetroomid = GetRoomIdByPortalName(character.ActualRoom.AllConnections, character.ActualRoom, portalArg!);
+            }
+            else
+            {
+                targetroomid = GetRoomIdByDirection(character.ActualRoom.AllConnections, character.ActualRoom, direction);
+            }
+            if (targetroomid is null)
+            {
+                return new EnterRoomResult
+                {
+                    Success = false,
+                    ErrorType = direction == Direction.Portal ? NavigationErrorType.NoPortalFound : NavigationErrorType.RoomsAreNotConnected
+                };
+            }
 
-            return JoinRoomResult.ConvertFromNavigationResult(result);
+            var result = await _navigationService.TryEnterRoomAsync(GetCharacterId(), targetroomid)
+                                                    .ConfigureAwait(false);
+            if (result.Success)
+            {
+                await Groups.RemoveFromGroupAsync(Context.ConnectionId, GetCurrentRoomId())
+                            .ConfigureAwait(false);
+
+                Context.Items["currentRoomId"] = result.ActiveRoom?.Id;
+
+                await Groups.RemoveFromGroupAsync(Context.ConnectionId, GetCurrentRoomId())
+                            .ConfigureAwait(false);
+
+            }
+
+            return EnterRoomResult.ConvertFromNavigationResult(result);
         }
 
-        public Task<TransferItemResult> TryTransferItem(string itemid, string targetid)
+        public async Task<TransferItemResult> TryTransferItem(string itemName, ItemTransferMethode reason)
         {
-            throw new NotImplementedException();
+            var targetinventoryId = reason switch
+            {
+                ItemTransferMethode.Drop => (await _context.Rooms.FindAsync(GetCurrentRoomId())
+                                                                     .ConfigureAwait(false))?
+                                                                        .Inventory.Id,
+                ItemTransferMethode.Pickup => (await _context.Characters.FindAsync(GetCharacterId())
+                                                                     .ConfigureAwait(false))?
+                                                                        .Inventory.Id,
+                _ => throw new NotSupportedException()
+            };
+
+            if (targetinventoryId is null)
+            {
+                return new TransferItemResult
+                {
+                    Success = false,
+                    ErrorMessage = "No inventoryId found, this should never happen! It's a critical bug on the server."
+                };
+            }
+
+            var soruceinventoryId = reason switch
+            {
+                ItemTransferMethode.Drop => (await _context.Characters.FindAsync(GetCharacterId())
+                                                                     .ConfigureAwait(false))?
+                                                                        .Inventory.Id,
+                ItemTransferMethode.Pickup => (await _context.Rooms.FindAsync(GetCurrentRoomId())
+                                                                     .ConfigureAwait(false))?
+                                                                        .Inventory.Id,
+                _ => throw new NotSupportedException()
+            };
+
+            if (soruceinventoryId is null)
+            {
+                return new TransferItemResult
+                {
+                    Success = false,
+                    ErrorMessage = "No inventoryId found, this should never happen! It's a critical bug on the server."
+                };
+            }
+            var itemId = reason switch
+            {
+                ItemTransferMethode.Drop => (await _context.Characters.FindAsync(GetCharacterId())
+                                                                     .ConfigureAwait(false))?
+                                                                        .Inventory.ItemInstances.FirstOrDefault(i => i.Item.Name == itemName)?.Id,
+                ItemTransferMethode.Pickup => (await _context.Rooms.FindAsync(GetCurrentRoomId())
+                                                                     .ConfigureAwait(false))?
+                                                                        .Inventory.ItemInstances.FirstOrDefault(i => i.Item.Name == itemName)?.Id,
+                _ => throw new NotSupportedException()
+            };
+
+            if (itemId is null)
+            {
+                return new TransferItemResult
+                {
+                    Success = false,
+                    ErrorMessage = $"No Item found in the inventory '{targetinventoryId}'",
+                    DisplayMessage = reason switch
+                    {
+                        ItemTransferMethode.Drop => $"Es gibt kein Gegenstand '{itemName}' in deinem Inventar.",
+                        ItemTransferMethode.Pickup => $"Es gibt kein Gegenstand '{itemName}' im aktuellen Raum.",
+                        _ => throw new NotSupportedException()
+                    }
+                };
+            }
+
+            var result = await _inventoryService.TransferItemAsync(itemId, targetinventoryId, soruceinventoryId).ConfigureAwait(false);
+            if (result.Success)
+            {
+                return new TransferItemResult
+                {
+                    Success = true,
+                    DisplayMessage = reason switch
+                    {
+                        ItemTransferMethode.Drop => $"Gegenstand '{itemName}' weggeworfen.",
+                        ItemTransferMethode.Pickup => $"Gegenstand '{itemName}' aufgeoben und in das Inventar gepackt.",
+                        _ => throw new NotSupportedException()
+                    }
+                };
+            }
+            else
+            {
+                return new TransferItemResult
+                {
+                    Success = false,
+                    DisplayMessage = result.DisplayMessage,
+                    ErrorMessage = result.Errormessage
+                };
+            }
+
+        }
+
+        public async Task<IEnumerable<RoomConnectionSignalRModel>> GetRoomConnections()
+        {
+            var character = await _context.Characters.FindAsync(GetCharacterId()).ConfigureAwait(false);
+            if (character is null)
+            {
+                //Note: Should never happen
+                throw new InvalidOperationException();
+            }
+            return character.ActualRoom.AllConnections.Select(rc => RoomConnectionSignalRModel.Convert(rc, character.ActualRoom));
+        }
+
+        public async Task<InventoryResult> GetInventory(bool getActualRoomInventory)
+        {
+
+            if (getActualRoomInventory)
+            {
+                return new InventoryResult
+                {
+                    Success = true,
+                    Items = (await _context.Rooms.FindAsync(GetCurrentRoomId())
+                                                .ConfigureAwait(false))?
+                                                  .Inventory
+                                                  .ItemInstances
+                                                  .Select(ii => ItemInstanceApiModel.ConvertFromItemInstance(ii))
+                                                  ?? Enumerable.Empty<ItemInstanceApiModel>()
+                };
+            }
+            else
+            {
+                return new InventoryResult
+                {
+                    Success = true,
+                    Items = (await _context.Characters.FindAsync(GetCharacterId())
+                                                 .ConfigureAwait(false))?
+                                                   .Inventory
+                                                   .ItemInstances
+                                                   .Select(ii => ItemInstanceApiModel.ConvertFromItemInstance(ii))
+                                                   ?? Enumerable.Empty<ItemInstanceApiModel>()
+                };
+            }
+
         }
 
         public override async Task OnDisconnectedAsync(Exception exception)
@@ -134,5 +314,60 @@ namespace MUDhub.Server.Hubs
         private string GetCharacterId() => (Context.Items["characterId"] as string)!;
         private string GetCharacterName() => (Context.Items["characterName"] as string)!;
         private string GetCurrentRoomId() => (Context.Items["currentRoomId"] as string)!;
+
+        private static string? GetRoomIdByDirection(IEnumerable<RoomConnection> connections, Room currentRoom, Direction direction)
+        {
+            foreach (var connection in connections)
+            {
+                if (connection.Room1.AreaId == connection.Room2.AreaId)
+                {
+                    int xDif, yDif;
+                    if (currentRoom.Id == connection.Room1.Id)
+                    {
+                        xDif = connection.Room1.X - connection.Room2.X;
+                        yDif = connection.Room1.Y - connection.Room2.Y;
+                    }
+                    else
+                    {
+                        xDif = connection.Room2.X - connection.Room1.X;
+                        yDif = connection.Room2.Y - connection.Room1.Y;
+                    }
+
+                    var id = (xDif, yDif, direction) switch
+                    {
+                        (0, -1, Direction.South) => currentRoom.Id == connection.Room1Id ? connection.Room2Id : connection.Room1Id,
+                        (0, 1, Direction.North) => currentRoom.Id == connection.Room1Id ? connection.Room2Id : connection.Room1Id,
+                        (-1, 0, Direction.East) => currentRoom.Id == connection.Room1Id ? connection.Room2Id : connection.Room1Id,
+                        (1, 0, Direction.West) => currentRoom.Id == connection.Room1Id ? connection.Room2Id : connection.Room1Id,
+                        _ => null
+                    };
+                    if (!(id is null))
+                    {
+                        return id;
+                    }
+                }
+            }
+            return null;
+        }
+
+        private static string? GetRoomIdByPortalName(IEnumerable<RoomConnection> connections, Room currentRoom, string portalname)
+        {
+            foreach (var connection in connections)
+            {
+                if (connection.Room1.AreaId != connection.Room2.AreaId)
+                {
+                    if (connection.Room1Id == currentRoom.Id && connection.Room2.Name == portalname)
+                    {
+                        return connection.Room2Id;
+                    }
+                    if (connection.Room2Id == currentRoom.Id && connection.Room1.Name == portalname)
+                    {
+                        return connection.Room1Id;
+                    }
+                }
+            }
+            return null;
+        }
+
     }
 }

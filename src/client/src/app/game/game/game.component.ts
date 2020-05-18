@@ -17,8 +17,8 @@ export class GameComponent implements OnInit, OnDestroy {
 		console.log('character-id:', this.characterId);
 	}
 
-	ngOnDestroy() {
-		// TODO: leave game when user activly closes the game
+	async ngOnDestroy() {
+		await this.game.exitGame();
 	}
 
 }

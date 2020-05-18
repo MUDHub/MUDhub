@@ -14,12 +14,12 @@
 			<tr *ngFor="let req of requests">
 				<td>{{ req.email }}</td>
 				<td class="action">
-					<button mat-button class="accept">
+					<button mat-button class="accept" (click)="allow(req.userId)">
 						<mat-icon>done</mat-icon>
 					</button>
 				</td>
 				<td class="action">
-					<button mat-button class="block">
+					<button mat-button class="block" (click)="block(req.userId)">
 						<mat-icon>block</mat-icon>
 					</button>
 				</td>
@@ -42,7 +42,7 @@
 				<tr *ngFor="let req of accepted">
 					<td>{{ req.email }}</td>
 					<td class="action">
-						<button mat-button class="block">
+						<button mat-button class="block" (click)="block(req.userId)">
 							<mat-icon>block</mat-icon>
 						</button>
 					</td>
@@ -64,7 +64,7 @@
 				<tr *ngFor="let req of rejected">
 					<td>{{ req.email }}</td>
 					<td class="action">
-						<button mat-button class="accept">
+						<button mat-button class="accept" (click)="allow(req.userId)">
 							<mat-icon>done</mat-icon>
 						</button>
 					</td>

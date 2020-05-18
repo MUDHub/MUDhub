@@ -71,7 +71,7 @@ namespace MUDhub.Server.Controllers
         [ProducesResponseType(typeof(CharacterApiModel), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(CharacterApiModel), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetCharacter([FromQuery] string characterId)
+        public async Task<IActionResult> GetCharacter([FromRoute] string characterId)
         {
             var character = await _context.Characters.FindAsync(characterId).ConfigureAwait(false);
             if (character is null)

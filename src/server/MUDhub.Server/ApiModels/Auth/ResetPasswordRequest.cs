@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace MUDhub.Server.ApiModels.Auth
 {
@@ -12,6 +8,6 @@ namespace MUDhub.Server.ApiModels.Auth
         public string PasswordResetKey { get; set; } = string.Empty;
 
         [Required]
-        public string NewPasword { get; set; } = string.Empty;
+        public string NewPassword { get; set; } = string.Empty;
     }
 }

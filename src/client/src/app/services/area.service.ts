@@ -47,7 +47,7 @@ export class AreaService {
 
 	public async getArea(areaid: string) {
 		return await this.http
-			.get(`${env.api.url}/areas/${areaid}`)
+			.get<IArea>(`${env.api.url}/areas/${areaid}`)
 			.toPromise();
 	}
 

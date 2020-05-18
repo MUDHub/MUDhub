@@ -65,18 +65,22 @@ export class AuthService {
 	public async requestReset(mail: string) {
 		const response = await this.http
 			.get<IPasswordResetResponse>(`${env.api.url}/auth/reset`, {
-				params: { mail },
+				params: {
+					email: mail,
+				},
 			})
 			.toPromise();
 
-		console.log(response);
+		console.log('Called Server with response:', response);
 	}
 
 	public async resetPassword(resetKey: string, newPassword: string) {
-		return await this.http.post<IBaseResponse>(`${env.api.url}/auth/reset`, {
-			passwordResetKey: resetKey,
-			newPassword
-		}).toPromise();
+		return await this.http
+			.post<IBaseResponse>(`${env.api.url}/auth/reset`, {
+				passwordResetKey: resetKey,
+				newPassword,
+			})
+			.toPromise();
 	}
 
 	private setToken(token: string) {

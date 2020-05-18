@@ -164,7 +164,7 @@ namespace MUDhub.Core.Services
         /// <param name="targetInventoryId"></param>
         /// <param name="sourceInventoryId"></param>
         /// <returns></returns>
-        public async Task<ItemInstanceResult> TransferItem(string itemInstanceId, string targetInventoryId, string sourceInventoryId)
+        public async Task<ItemInstanceResult> TransferItemAsync(string itemInstanceId, string targetInventoryId, string sourceInventoryId)
         {
             var itemInstance = await _context.ItemInstances.FindAsync(itemInstanceId)
                    .ConfigureAwait(false);

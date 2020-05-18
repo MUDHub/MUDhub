@@ -7,12 +7,15 @@ import { LogLevel } from '@microsoft/signalr';
 
 export const environment: IEnviromnent = {
 	production: false,
+	resources: {
+		base: 'http://localhost:5000/resources/images/'
+	},
 	api: {
 		url: 'http://localhost:5000/api'
 	},
 	signalr: {
 		url: 'http://localhost:5000/hubs/game',
-		logLevel: LogLevel.Debug
+		logLevel: LogLevel.Information
 	}
 };
 

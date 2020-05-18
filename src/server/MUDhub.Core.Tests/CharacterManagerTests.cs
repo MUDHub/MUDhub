@@ -78,10 +78,10 @@ namespace MUDhub.Core.Tests
             Assert.False(result.Success);
         }
         [Fact]
-        public async Task CreateCharacterAsync_ReturnFalse_UserIsNotOwner()
+        public async Task CreateCharacterAsync_ReturnTrue_UserIsNotOwner()
         {
             var result = await _characterManager.CreateCharacterAsync("2", "1", _createCharacterArgs);
-            Assert.False(result.Success);
+            Assert.True(result.Success);
         }
         [Fact]
         public async Task CreateCharacterAsync_ReturnTrue()

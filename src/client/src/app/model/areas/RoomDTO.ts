@@ -8,6 +8,7 @@ export interface IRoomDeleteResponse extends IBaseResponse {
 export interface IRoomCreateRequest {
 	name: string;
 	description: string;
+	enterMessage: string;
 	imageKey: string;
 	x: number;
 	y: number;
@@ -18,6 +19,7 @@ export interface IRoomCreateRequest {
 export interface IRoomUpdateRequest {
 	name: string;
 	description: string;
+	enterMessage: string;
 	imageKey: string;
 	x: number;
 	y: number;

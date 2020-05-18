@@ -10,7 +10,7 @@ import { ICharacter } from '../model/character/ICharacter';
 export class CharacterService {
 	constructor(private http: HttpClient) {}
 
-	public async getCharacter(mudid: string, characterid: string) {
+	public async getCharacter(characterid: string) {
 		return await this.http.get<ICharacter>(`${env.api.url}/characters/${characterid}`).toPromise();
 	}
 
