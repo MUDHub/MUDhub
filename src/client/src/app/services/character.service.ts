@@ -28,11 +28,11 @@ export class CharacterService {
 			.toPromise();
 	}
 
-	public async getCharactersForPlayerForMud(playerid: string, mudid: string) {
+	public async getCharactersForPlayerForMud(mudid: string) {
 		return await this.http
 			.get<ICharacter[]>(`${env.api.url}/characters`, {
 				params: {
-					userId: playerid,
+					getByUser: 'true',
 					mudId: mudid,
 				},
 			})

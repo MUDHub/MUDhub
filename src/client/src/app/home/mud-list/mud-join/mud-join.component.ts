@@ -89,7 +89,7 @@ export class MudJoinComponent implements OnInit {
 			this.races = await this.mudService.getRaceForMud(this.mud.mudId);
 		}
 
-		this.previousChars = await this.characterService.getCharactersForPlayerForMud(this.auth.user.id, this.mudid);
+		this.previousChars = await this.characterService.getCharactersForPlayerForMud(this.mudid);
 	}
 
 
