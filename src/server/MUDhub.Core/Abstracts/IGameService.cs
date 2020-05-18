@@ -1,4 +1,5 @@
-﻿using MUDhub.Core.Models.Users;
+﻿using MUDhub.Core.Models.Muds;
+using MUDhub.Core.Models.Users;
 using System;
 using System.Collections.Generic;
 using System.Text;
