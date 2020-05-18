@@ -1,5 +1,7 @@
 ﻿using MUDhub.Core.Abstracts;
+using MUDhub.Core.Helper;
 using MUDhub.Core.Models;
+using MUDhub.Core.Models.Muds;
 using MUDhub.Core.Models.Users;
 using System;
 using System.Linq;
@@ -11,11 +13,13 @@ namespace MUDhub.Core.Services
     {
         private readonly MudDbContext _context;
         private readonly IMudManager _mudManager;
+        private readonly GameActiveHelper? _helper;
 
-        public GameService(MudDbContext context, IMudManager mudManager)
+        public GameService(MudDbContext context, IMudManager mudManager, GameActiveHelper? helper = null)
         {
             _context = context;
             _mudManager = mudManager;
+            _helper = helper;
         }
 
         public async Task<bool> StartMudAsync(string mudId, string userid)
@@ -55,6 +59,7 @@ namespace MUDhub.Core.Services
 
             mud.State = MudGameState.InActive;
             await _context.SaveChangesAsync().ConfigureAwait(false);
+            _helper?.GameStopped(mud);
             return true;
         }
     }

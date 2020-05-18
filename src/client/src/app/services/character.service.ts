@@ -22,7 +22,7 @@ export class CharacterService {
 		return await this.http
 			.get<ICharacter[]>(`${env.api.url}/characters`, {
 				params: {
-					userId: playerid,
+					getByUser: 'true'
 				},
 			})
 			.toPromise();

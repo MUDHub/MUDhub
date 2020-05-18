@@ -13,6 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MUDhub.Core.Abstracts;
 using MUDhub.Core.Configurations;
+using MUDhub.Core.Helper;
 using MUDhub.Server.Helpers;
 using MUDhub.Server.Hubs;
 
@@ -40,6 +41,8 @@ namespace MUDhub.Server
 
             //Mud game Services
             services.AddMudServices();
+            services.AddSingleton<GameActiveHelper>();
+            services.AddHostedService<GameSignalRConenctor>();
 
             //Add AspnetCore Common Services
             services.AddControllers();

@@ -23,9 +23,11 @@
 
 	&.server-message {
 		width: 100%;
+		max-width: 100%;
 		text-align: center;
 		font-style: italic;
 		opacity: 0.8;
+		padding: 0 0.7rem;
 	}
 }
 
