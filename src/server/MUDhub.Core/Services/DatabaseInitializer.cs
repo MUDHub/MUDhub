@@ -63,12 +63,17 @@ namespace MUDhub.Core.Services
             }
 
             var userExists = true;
-            if (_options.CreateDefaultUser)
+            if (_options.CreateDefaultAdminUser)
             {
-                userExists = await CreateDefaultUserAsnyc(context, userManager)
+                userExists = await CreateDefaultAdminUserAsnyc(context, userManager)
                          .ConfigureAwait(false);
             }
-            
+            if (_options.CreateDefaultMasterUser)
+            {
+                userExists = await CreateDefaultMasterUserAsnyc(context, userManager)
+                         .ConfigureAwait(false);
+            }
+
             if (_options.CreateDefaultDhbwMudData && userExists)
             {
                 var actualMud = await context.MudGames.FirstOrDefaultAsync(m => m.Name == "DHBW Horb").ConfigureAwait(false);
@@ -786,15 +791,14 @@ namespace MUDhub.Core.Services
             }).ConfigureAwait(false);
         }
 
-
-        private async Task<bool> CreateDefaultUserAsnyc(MudDbContext context, IUserManager userManager)
+        private async Task<bool> CreateDefaultAdminUserAsnyc(MudDbContext context, IUserManager userManager)
         {
 
             var user = await context.Users.FirstOrDefaultAsync(u => u.Email == _options.DefaultMudAdminEmail)
                 .ConfigureAwait(false);
             if (user != null)
             {
-                _logger?.LogWarning($"DefaultUser {_options.DefaultMudAdminEmail} already exists!");
+                _logger?.LogWarning($"DefaultAdminUser {_options.DefaultMudAdminEmail} already exists!");
                 return true;
             }
 
@@ -802,8 +806,8 @@ namespace MUDhub.Core.Services
             {
                 Email = _options.DefaultMudAdminEmail,
                 Password = _options.DefaultMudAdminPassword,
-                Lastname = "",
-                Firstname = "DefaultUser"
+                Lastname = "User",
+                Firstname = "Admin"
             }).ConfigureAwait(false);
 
             if (!registerResult.Success)
@@ -826,6 +830,41 @@ namespace MUDhub.Core.Services
             }
             return true;
         }
+
+        private async Task<bool> CreateDefaultMasterUserAsnyc(MudDbContext context, IUserManager userManager)
+        {
+
+            var user = await context.Users.FirstOrDefaultAsync(u => u.Email == _options.DefaultMudMasterEmail)
+                .ConfigureAwait(false);
+            if (user != null)
+            {
+                _logger?.LogWarning($"DefaultMasterUser {_options.DefaultMudMasterEmail} already exists!");
+                return true;
+            }
+
+            var registerResult = await userManager.RegisterUserAsync(new RegistrationUserArgs
+            {
+                Email = _options.DefaultMudMasterEmail,
+                Password = _options.DefaultMudMasterPassword,
+                Lastname = "Mustermann",
+                Firstname = "Max"
+            }).ConfigureAwait(false);
+
+            if (!registerResult.Success)
+            {
+                _logger?.LogError(registerResult.Errormessage);
+                return false;
+            }
+
+            var success = await userManager.AddRoleToUserAsync(registerResult!.User!.Id, Roles.Master)
+                .ConfigureAwait(false);
+            if (success)
+            {
+                _logger?.LogInformation("The role Master was added to the user");
+            }
+            return true;
+        }
+        
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
