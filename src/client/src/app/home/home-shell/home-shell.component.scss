@@ -9,8 +9,7 @@
 	overflow: auto;
 }
 
-.navbar {
-
+.toolbar {
 	img {
 		width: 6.25rem;
 		height: auto;
@@ -20,6 +19,55 @@
 		margin-left: auto;
 	}
 }
+
+.navbar {
+	background-color: #f5f5f5;
+	display: flex;
+	height: 4rem;
+
+	.navbar-logo {
+		height: 100%;
+		padding: 0.2rem;
+		width: auto;
+	}
+
+
+	.navbar-items {
+		display: flex;
+		flex: 1 0;
+		align-items: center;
+	}
+
+	.navbar-actions {
+		display: flex;
+		align-items: center;
+	}
+}
+
+.nav-item {
+	padding: 1rem 1.5rem;
+	height: 100%;
+	min-width: 100px;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: all 0.2s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+	cursor: pointer;
+	border-bottom: 2px solid transparent;
+
+	outline: none;
+
+	&:hover, &.active {
+		background-color: rgba(0, 0, 0, 0.03);
+		border-bottom-color: transparentize($color-primary, 0.3);
+	}
+
+	&:hover {
+		background-color: rgba(0, 0, 0, 0.06);
+	}
+}
+
 
 .container {
 	width: 100%;
