@@ -22,7 +22,7 @@ $scrollbar-thumb-color: lighten($scrollbar-track-color, 10%);
 
 .message {
 	&:not(:last-child) {
-		margin-bottom: 0.5rem;
+		margin-bottom: 0.75rem;
 	}
 
 	&.error {

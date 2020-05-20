@@ -242,7 +242,7 @@ export class GameService {
 			const rooms = await this.connection.invoke<IRoomConnectionsResult[]>('getRoomConnections');
 			let text = 'An diesen Raum grenzen folgende Räume an:<br>';
 			for (const room of rooms) {
-				text += `Im ${this.getDirection(room.direction)}: ${room.roomName}, ${room.description}<br>`;
+				text += `${this.getDirection(room.direction)} -> ${room.roomName}: ${room.description}<br>`;
 			}
 			this.NewGameMessageSubject.next(text);
 		} catch (err) {
