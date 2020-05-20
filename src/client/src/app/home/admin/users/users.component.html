@@ -35,6 +35,13 @@
 			</button>
 			<button
 				mat-button
+				(click)="removeRole(user.id, UserRole.Master)"
+				*ngIf="user.roles.includes('Master') && !user.roles.includes('Admin')"
+			>
+				Entferne MUD-Master
+			</button>
+			<button
+				mat-button
 				class="delete"
 				(click)="delete(user)"
 				*ngIf="!user.roles.includes('Admin')"
@@ -49,5 +56,6 @@
 </table>
 <mat-paginator
 	[pageSizeOptions]="[5, 10, 20]"
+	[pageSize]="10"
 	showFirstLastButtons
 ></mat-paginator>
