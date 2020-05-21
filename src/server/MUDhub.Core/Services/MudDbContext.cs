@@ -20,21 +20,9 @@ namespace MUDhub.Core.Services
     {
         public MudDbContext(DbContextOptions options,
                             IOptions<DatabaseConfiguration>? conf = null,
-                            ILogger<MudDbContext>? logger = null,
-                            bool useNotInUnitests = true)
+                            ILogger<MudDbContext>? logger = null)
             : base(options)
         {
-
-            if (useNotInUnitests)
-            {
-               
-
-            }
-            else
-            {
-                Database.EnsureDeleted();
-                Database.EnsureCreated();
-            }
         }
         public DbSet<User> Users { get; set; } = null!;
 

@@ -92,7 +92,7 @@ export class RacesComponent implements OnInit {
 					{
 						name: this.form.get('name').value,
 						description: this.form.get('description').value,
-						imageKey: imageKey.imageUrl,
+						imageKey: imageKey?.imageUrl,
 						mudId: this.mudId,
 					}
 				);
