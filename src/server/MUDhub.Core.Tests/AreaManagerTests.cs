@@ -51,6 +51,12 @@ namespace MUDhub.Core.Tests
         //*********************************************************//
 
         [Fact]
+        public async Task CreateAreaAsync_ReturnFalse_ArgsNull()
+        {
+            var result = await _areaManager.CreateAreaAsync("1", "1", null!);
+            Assert.False(result.Success);
+        }
+        [Fact]
         public async Task CreateAreaAsync_ReturnFalse_UserNull()
         {
             var result = await _areaManager.CreateAreaAsync("99", "1", _areaArgs);
@@ -80,6 +86,12 @@ namespace MUDhub.Core.Tests
 
         //*********************************************************//
 
+        [Fact]
+        public async Task CreateConnectionAsync_ReturnFalse_ArgsNull()
+        {
+            var result = await _areaManager.CreateConnectionAsync("1", "2", "3", null!);
+            Assert.False(result.Success);
+        }
         [Fact]
         public async Task CreateConnectionAsync_ReturnFalse_UserNull()
         {
@@ -129,6 +141,12 @@ namespace MUDhub.Core.Tests
 
         //*********************************************************//
 
+        [Fact]
+        public async Task CreateRoomAsync_ReturnFalse_ArgsNull()
+        {
+            var result = await _areaManager.CreateRoomAsync("1", "1", null!);
+            Assert.False(result.Success);
+        }
         [Fact]
         public async Task CreateRoomAsync_ReturnFalse_UserNull()
         {
@@ -295,6 +313,12 @@ namespace MUDhub.Core.Tests
         //*********************************************************//
 
         [Fact]
+        public async Task UpdateAreaAsync_ReturnFalse_ArgsNull()
+        {
+            var result = await _areaManager.UpdateAreaAsync("1", "2", null!);
+            Assert.False(result.Success);
+        }
+        [Fact]
         public async Task UpdateAreaAsync_ReturnFalse_UserNull()
         {
             var result = await _areaManager.UpdateAreaAsync("99", "2", _updateAreaArgs);
@@ -327,6 +351,12 @@ namespace MUDhub.Core.Tests
         //*********************************************************//
 
         [Fact]
+        public async Task UpdateConnectionAsync_ReturnFalse_ArgsNull()
+        {
+            var result = await _areaManager.UpdateConnectionAsync("1", "1", null!);
+            Assert.False(result.Success);
+        }
+        [Fact]
         public async Task UpdateConnectionAsync_ReturnFalse_UserNull()
         {
             var result = await _areaManager.UpdateConnectionAsync("99", "1", _updateRoomConnectionsArgs);
@@ -357,6 +387,12 @@ namespace MUDhub.Core.Tests
 
         //*********************************************************//
 
+        [Fact]
+        public async Task UpdateRoomAsync_ReturnFalse_ArgsNull()
+        {
+            var result = await _areaManager.UpdateRoomAsync("1", "1", null!);
+            Assert.False(result.Success);
+        }
         [Fact]
         public async Task UpdateRoomAsync_ReturnFalse_UserNull()
         {
@@ -411,6 +447,12 @@ namespace MUDhub.Core.Tests
 
         //*********************************************************//
 
+        [Fact]
+        public async Task CreateRoomInteractionAsync_ReturnFalse_ArgsNull()
+        {
+            var result = await _areaManager.CreateRoomInteractionAsync("1", "1", null!);
+            Assert.False(result.Success);
+        }
         [Fact]
         public async Task CreateRoomInteractionAsync_ReturnFalse_UserNull()
         {
@@ -476,7 +518,9 @@ namespace MUDhub.Core.Tests
             var options = new DbContextOptionsBuilder<MudDbContext>()
                 .UseInMemoryDatabase("Testdatabase_AreaManager")
                 .Options;
-            _context = new MudDbContext(options, useNotInUnitests: false);
+            _context = new MudDbContext(options);
+            _context.Database.EnsureDeleted();
+            _context.Database.EnsureCreated();
             _areaManager = new AreaManager(_context);
 
             _user1 = new User("1")

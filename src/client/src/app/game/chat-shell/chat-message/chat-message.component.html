@@ -1,4 +1,4 @@
-<div class="message-sender">
+<div class="message-sender" *ngIf="!message.isServerMessage">
 	{{ message.sender }}
 </div>
 <div class="message-content">

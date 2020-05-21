@@ -24,6 +24,7 @@ namespace MUDhub.Core.Models.Rooms
         public string Id { get; }
 
         public string Description { get; set; } = string.Empty;
+        public string EnterMessage { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public virtual ICollection<RoomConnection> Connections1 { get; set; } = new Collection<RoomConnection>();
         public virtual ICollection<RoomConnection> Connections2 { get; set; } = new Collection<RoomConnection>();
@@ -39,6 +40,7 @@ namespace MUDhub.Core.Models.Rooms
         public virtual MudGame Game { get; set; } = null!;
         public bool IsDefaultRoom { get; set; } = false;
         public virtual ICollection<Character> Characters { get; set; } = new Collection<Character>();
+        public string InventoryId { get; set; } = string.Empty;
         public virtual Inventory Inventory { get; set; } = null!;
     }
 }

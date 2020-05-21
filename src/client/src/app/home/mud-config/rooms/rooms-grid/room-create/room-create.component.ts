@@ -1,12 +1,10 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { IRoom } from 'src/app/model/areas/IRoom';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AreaService } from 'src/app/services/area.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { IRoomCreateRequest } from 'src/app/model/areas/RoomDTO';
 import { ImageService } from 'src/app/services/image.service';
-import { IArea } from 'src/app/model/areas/IArea';
-import { MatSelectChange } from '@angular/material/select';
+import { IImageUploadResponse } from 'src/app/model/FileUploadDTO';
 
 @Component({
 	templateUrl: './room-create.component.html',
@@ -35,6 +33,7 @@ export class RoomCreateComponent implements OnInit {
 	form = new FormGroup({
 		name: new FormControl('', Validators.required),
 		description: new FormControl(''),
+		enterMessage: new FormControl(''),
 		imageKey: new FormControl(''),
 		isDefault: new FormControl(false),
 	});
@@ -53,20 +52,32 @@ export class RoomCreateComponent implements OnInit {
 			const room = await this.areaService.getRoom(this.roomid);
 			this.form.get('name').setValue(room.name);
 			this.form.get('description').setValue(room.description);
+			this.form.get('enterMessage').setValue(room.enterMessage);
 			this.form.get('isDefault').setValue(room.isDefaultRoom);
+			this.form.get('imageKey').setValue(room.imageKey);
 		}
 	}
 
+	fileSelectionChanged(files: FileList) {
+		this.selectedImage = files.item(0);
+	}
+
+
 	async onSubmit() {
-		let imageKey;
 		if (this.selectedImage) {
-			imageKey = this.imageService.uploadFile(this.selectedImage);
+			try {
+				const response = await this.imageService.uploadFile(this.selectedImage);
+				this.form.get('imageKey').setValue(response.imageUrl);
+			} catch (err) {
+				console.error('Error while uploading image', err);
+			}
 		}
 		const room: IRoomCreateRequest = {
 			name: this.form.get('name').value,
 			description: this.form.get('description').value,
 			isDefaultRoom: this.form.get('isDefault').value,
-			imageKey,
+			enterMessage: this.form.get('enterMessage').value,
+			imageKey: this.form.get('imageKey').value,
 			areaId: this.areaid,
 			x: this.position.x,
 			y: this.position.y,

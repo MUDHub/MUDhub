@@ -1,3 +1,5 @@
+import { IMud } from '../muds/IMud';
+
 export interface ICharacter {
 	id: string;
 	name: string;
@@ -6,4 +8,5 @@ export interface ICharacter {
 	raceName: string;
 	className: string;
 	roomName: string;
+	mud: IMud;
 }

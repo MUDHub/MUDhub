@@ -14,11 +14,10 @@ export class GameComponent implements OnInit, OnDestroy {
 
 	ngOnInit() {
 		this.characterId = this.route.snapshot.params.characterid;
-		console.log('character-id:', this.characterId);
 	}
 
-	ngOnDestroy() {
-		// TODO: leave game when user activly closes the game
+	async ngOnDestroy() {
+		await this.game.exitGame();
 	}
 
 }

@@ -1,10 +1,80 @@
-@import "src/variables.scss";
+@import 'src/variables.scss';
 
 :host {
-	display: flex;
-	flex-direction: column;
 	max-height: 100%;
 	position: relative;
+	display: flex;
+	background-color: #eee;
+}
+
+.info-bar {
+	height: 100%;
+	user-select: none;
+
+	display: flex;
+	flex-direction: column;
+
+	background-color: #ddd;
+	color: rgba(0, 0, 0, 0.7);
+
+	border-right: 1px solid rgba(0, 0, 0, 0.3);
+
+	.actions {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		flex: 1;
+		margin-top: 1rem;
+	}
+}
+
+
+.toggler {
+	border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+
+.icon-container {
+	width: 4rem;
+	height: 4rem;
+	position: relative;
+
+	.dot {
+		position: absolute;
+		top: 7%;
+		right: 7%;
+		width: 1rem;
+		height: 1rem;
+		background-color: $color-primary;
+		border-radius: 50%;
+		z-index: 10;
+	}
+
+	.icon {
+		font-size: 3rem;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: 3rem;
+		height: 3rem;
+		transform: translate(-50%, -50%);
+		cursor: pointer;
+		transition: color 0.1s ease-in-out;
+
+		&.active {
+			color: $color-primary;
+		}
+	}
+}
+
+
+
+.chat {
+	flex-grow: 1;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	width: 400px;
 }
 
 .nav {
@@ -28,11 +98,9 @@
 	}
 }
 
-
 .shell {
 	flex-grow: 1;
 	overflow: hidden;
-	padding: 0.5rem;
 
 	font-size: 95%;
 }

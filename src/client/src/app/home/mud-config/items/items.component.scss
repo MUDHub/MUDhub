@@ -1,10 +1,7 @@
-@import '../../../../variables.scss';
+@import 'src/variables.scss';
 
 h1 {
 	text-align: center;
-}
-mat-horizontal-stepper{
-	background-color: #eee;
 }
 
 .table-list {
@@ -17,8 +14,16 @@ mat-horizontal-stepper{
 
 		background-color: white;
 
-		button {
-			background-color: $color-primary;
+		.edits {
+			text-align: center;
+			vertical-align: middle;
+			width: 25%;
+			align-items: center;
+
+			button {
+				background-color: $color-primary;
+				margin: 1rem;
+			}
 		}
 
 		td {
@@ -32,6 +37,7 @@ mat-horizontal-stepper{
 	width: 100%;
 	display: flex;
 	justify-content: flex-end;
+	z-index: 50;
 
 	button {
 		width: 15%;
@@ -57,6 +63,7 @@ mat-horizontal-stepper{
 	bottom: 0px;
 	right: 0px;
 	left: 0px;
+	z-index: 99;
 
 	.add-item {
 		/*Position*/

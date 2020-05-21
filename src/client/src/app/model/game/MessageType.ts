@@ -1,4 +1,5 @@
 export enum MessageType {
 	Server,
-	Client
+	Client,
+	Error
 }

@@ -34,7 +34,7 @@ export class RoomPortalComponent implements OnInit {
 		this._selectedArea = value;
 		this.areaService
 			.getRoomsForArea(value.areaId)
-			.then(rooms => (this.rooms = rooms));
+			.then(rooms => (this.rooms = rooms.sort((a, b) => a.name.localeCompare(b.name))));
 	}
 
 	rooms: IRoom[];
@@ -48,7 +48,7 @@ export class RoomPortalComponent implements OnInit {
 		const room = await this.areaService.getRoom(this.roomid);
 
 		const portals: IPortal[] = [];
-		for (let portal of room.connections.portals) {
+		for (const portal of room.connections.portals) {
 			portals.push({
 				room1: await this.areaService.getRoom(portal.room1Id),
 				room2: await this.areaService.getRoom(portal.room2Id),
@@ -61,21 +61,8 @@ export class RoomPortalComponent implements OnInit {
 		this.areas = await this.areaService.getAreasForMud(this.mudid);
 	}
 
-	async changeSelectedArea(area: IArea) {
-		this.selectedArea = area;
-		if (this.selectedArea) {
-			this.rooms = await this.areaService.getRoomsForArea(
-				this.selectedArea.areaId
-			);
-		} else {
-			this.rooms = undefined;
-		}
-	}
 
 	async create(area: IArea, room: IRoom) {
-		console.log('area', area);
-		console.log('room', room);
-
 		const args: IConnectionCreateRequest = {
 			roomId1: this.roomid,
 			roomId2: room.roomId,

@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Identity;
+using MUDhub.Server.ApiModels.Muds.Rooms;
 
 namespace MUDhub.Server.Hubs.Models
 {
     public class JoinMudGameResult : SignalRBaseResult
     {
+        public RoomApiModel? Room { get; set; }
+        public string? AreaId { get; set; }
     }
 }

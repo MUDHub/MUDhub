@@ -85,6 +85,7 @@ namespace MUDhub.Core.Abstracts
         {
             services.TryAddScoped<IMudManager, MudManager>();
             services.TryAddScoped<IGameService, GameService>();
+            services.AddHostedService<MudGameInitializer>();
             return services;
         }
 

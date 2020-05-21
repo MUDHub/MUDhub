@@ -6,8 +6,7 @@
         public string ConnectionString { get; set; } = string.Empty;
         public string DefaultMudAdminEmail { get; set; } = string.Empty;
         public string DefaultMudAdminPassword { get; set; } = string.Empty;
-        public bool CreateDefaultUser { get; set; } = false;
-        public bool CreateDefaultMudData { get; set; } = false;
+        public bool CreateDefaultAdminUser { get; set; } = false;
         public bool CreateDefaultDhbwMudData { get; set; } = false;
         public bool DeleteDatabase { get; set; } = false;
     }

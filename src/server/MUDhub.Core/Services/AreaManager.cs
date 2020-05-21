@@ -38,7 +38,14 @@ namespace MUDhub.Core.Services
         {
             if (args is null)
             {
-                throw new ArgumentNullException(nameof(args));
+                var message = "No arguments for creating the area were passed.";
+                _logger?.LogWarning(message);
+                return new AreaResult()
+                {
+                    Success = false,
+                    Errormessage = message,
+                    DisplayMessage = "Es wurden keine Argumente für das Erstellen der Area übergeben."
+                };
             }
 
             var user = await GetUserById(userId).ConfigureAwait(false);
@@ -107,7 +114,14 @@ namespace MUDhub.Core.Services
         {
             if (args is null)
             {
-                throw new ArgumentNullException(nameof(args));
+                var message = "No arguments for creating the connection were passed.";
+                _logger?.LogWarning(message);
+                return new ConnectionResult()
+                {
+                    Success = false,
+                    Errormessage = message,
+                    DisplayMessage = "Es wurden keine Argumente für das Erstellen der Verbindung übergeben."
+                };
             }
 
             var user = await GetUserById(userId).ConfigureAwait(false);
@@ -233,7 +247,14 @@ namespace MUDhub.Core.Services
         {
             if (args is null)
             {
-                throw new ArgumentNullException(nameof(args));
+                var message = "No arguments for creating the room were passed.";
+                _logger?.LogWarning(message);
+                return new RoomResult()
+                {
+                    Success = false,
+                    Errormessage = message,
+                    DisplayMessage = "Es wurden keine Argumente für das Erstellen des Raumes übergeben."
+                };
             }
 
             var user = await GetUserById(userId).ConfigureAwait(false);
@@ -302,6 +323,7 @@ namespace MUDhub.Core.Services
                 Description = args.Description,
                 Area = area,
                 ImageKey = args.ImageKey,
+                EnterMessage = args.EnterMessage,
                 X = args.X,
                 Y = args.Y,
                 IsDefaultRoom = args.IsDefaultRoom,
@@ -543,7 +565,14 @@ namespace MUDhub.Core.Services
         {
             if (args is null)
             {
-                throw new ArgumentNullException(nameof(args));
+                var message = "No arguments for updating the area were passed.";
+                _logger?.LogWarning(message);
+                return new AreaResult()
+                {
+                    Success = false,
+                    Errormessage = message,
+                    DisplayMessage = "Es wurden keine Argumente für das Aktualisieren der Area übergeben."
+                };
             }
 
             var user = await GetUserById(userId).ConfigureAwait(false);
@@ -617,7 +646,14 @@ namespace MUDhub.Core.Services
         {
             if (args is null)
             {
-                throw new ArgumentNullException(nameof(args));
+                var message = "No arguments for updating the connection were passed.";
+                _logger?.LogWarning(message);
+                return new ConnectionResult()
+                {
+                    Success = false,
+                    Errormessage = message,
+                    DisplayMessage = "Es wurden keine Argumente für das Aktualisieren der Verbindung übergeben."
+                };
             }
 
             var user = await GetUserById(userId).ConfigureAwait(false);
@@ -678,7 +714,14 @@ namespace MUDhub.Core.Services
         {
             if (args is null)
             {
-                throw new ArgumentNullException(nameof(args));
+                var message = "No arguments for updating the room were passed.";
+                _logger?.LogWarning(message);
+                return new RoomResult()
+                {
+                    Success = false,
+                    Errormessage = message,
+                    DisplayMessage = "Es wurden keine Argumente für das Aktualisieren des Raumes übergeben."
+                };
             }
 
             var user = await GetUserById(userId).ConfigureAwait(false);
@@ -743,6 +786,10 @@ namespace MUDhub.Core.Services
             {
                 room.ImageKey = args.ImageKey;
             }
+            if (args.EnterMesage != null)
+            {
+                room.EnterMessage = args.EnterMesage;
+            }
 
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);
@@ -767,7 +814,14 @@ namespace MUDhub.Core.Services
         {
             if (args is null)
             {
-                throw new ArgumentNullException(nameof(args));
+                var message = "No arguments for creating the room interaction were passed.";
+                _logger?.LogWarning(message);
+                return new RoomInteractionResult()
+                {
+                    Success = false,
+                    Errormessage = message,
+                    DisplayMessage = "Es wurden keine Argumente für das Erstellen der Raum Interaktion übergeben."
+                };
             }
 
             var user = await GetUserById(userId).ConfigureAwait(false);

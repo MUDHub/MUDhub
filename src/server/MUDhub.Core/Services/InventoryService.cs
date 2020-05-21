@@ -164,7 +164,7 @@ namespace MUDhub.Core.Services
         /// <param name="targetInventoryId"></param>
         /// <param name="sourceInventoryId"></param>
         /// <returns></returns>
-        public async Task<ItemInstanceResult> TransferItem(string itemInstanceId, string targetInventoryId, string sourceInventoryId)
+        public async Task<ItemInstanceResult> TransferItemAsync(string itemInstanceId, string targetInventoryId, string sourceInventoryId)
         {
             var itemInstance = await _context.ItemInstances.FindAsync(itemInstanceId)
                    .ConfigureAwait(false);
@@ -217,17 +217,19 @@ namespace MUDhub.Core.Services
             var remainingCapacity = targetInventory.Capacity - targetInventory.UsedCapacity;
             if (remainingCapacity < itemInstance.Item.Weight)
             {
-                var message = $"No matching item instance: {itemInstanceId} was found in the source inventory: {sourceInventory.Id}";
-                _logger?.LogWarning(message);
+                //_logger?.LogWarning(message);
                 return new ItemInstanceResult()
                 {
                     Success = false,
-                    Errormessage = message
+                    Errormessage = "",
+                    DisplayMessage = "Der Gegenstand ist zu schwer für das Inventar."
                 };
             }
 
             sourceInventory.ItemInstances.Remove(itemInstance);
+            sourceInventory.UsedCapacity -= itemInstance.Item.Weight;
             targetInventory.ItemInstances.Add(itemInstance);
+            targetInventory.UsedCapacity += itemInstance.Item.Weight;
 
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);

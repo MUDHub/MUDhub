@@ -1,50 +1,55 @@
 <div class="button-class">
-    <button mat-flat-button color="primary" (click)="changeDialog()">
-        Hinzufügen
-    </button>
+	<button mat-flat-button color="primary" (click)="changeDialog()">
+		Hinzufügen
+	</button>
 </div>
 
 <div class="disable-background" *ngIf="dialog">
-    <div class="add-item">
-        <div class="exit-button">
-            <mh-exit-button (click)="changeDialog()"></mh-exit-button>
-        </div>
+	<div class="add-item">
+		<div class="exit-button">
+			<mh-exit-button (click)="changeDialog()"></mh-exit-button>
+		</div>
 
-        <br />
+		<br />
 
-        <form class="general-form" [formGroup]="form" (ngSubmit)="addItem()">
-            <div class="form-row">
-                <mat-form-field>
-                    <input matInput name="name" type="text" formControlName="name" placeholder="Name" />
-                    <mat-error>Der Name ist erforderlich</mat-error>
-                </mat-form-field>
-            </div>
-            <div class="form-row">
-                <mat-form-field appearance="fill">
-                    <mat-label>Beschreibung</mat-label>
-                    <textarea matInput formControlName="description" placeholder="Beschreibung" rows="5"></textarea>
-                    <mat-error>Eine kurze Beschreibung des Gegenstands ist
-                        erforderlich</mat-error>
-                </mat-form-field>
+		<form class="general-form" [formGroup]="form" (ngSubmit)="addItem()">
+			<div class="form-row">
+				<mat-form-field>
+					<input matInput name="name" type="text" formControlName="name" placeholder="Name" />
+					<mat-error>Der Name ist erforderlich</mat-error>
+				</mat-form-field>
 			</div>
 			<div class="form-row">
-                <mat-form-field>
-                    <input matInput name="weight" type="number" formControlName="weight" placeholder="Gewicht" />
-                    <mat-error>Das Gewicht ist erforderlich</mat-error>
-                </mat-form-field>
-            </div>
-            <div class="form-row">
-                <button mat-flat-button type="submit" color="primary" [disabled]="form.invalid">
-                    Gegenstand hinzufügen
-                </button>
-            </div>
-        </form>
-    </div>
+				<mat-form-field appearance="fill">
+					<mat-label>Beschreibung</mat-label>
+					<textarea matInput formControlName="description" placeholder="Beschreibung" rows="5"></textarea>
+					<mat-error>Eine kurze Beschreibung des Gegenstands ist
+						erforderlich</mat-error>
+				</mat-form-field>
+			</div>
+			<div class="form-row">
+				<mat-form-field>
+					<input matInput name="weight" type="number" formControlName="weight" placeholder="Gewicht" />
+					<mat-error>Das Gewicht ist erforderlich</mat-error>
+				</mat-form-field>
+			</div>
+			<div class="form-row" *ngIf="!edit">
+				<button mat-flat-button type="submit" color="primary" [disabled]="form.invalid">
+					Gegenstand hinzufügen
+				</button>
+			</div>
+			<div class="form-row" *ngIf="edit">
+				<button mat-flat-button type="submit" color="primary" [disabled]="form.invalid">
+					Gegenstand ändern
+				</button>
+			</div>
+		</form>
+	</div>
 </div>
 
 <table class="table-list">
-    <tr class="table-item first">
-        <th>Name</th>
+	<tr class="table-item first">
+		<th>Name</th>
 		<th>Beschreibung</th>
 		<th>Gewicht</th>
         <th>Bearbeiten</th>
@@ -53,16 +58,13 @@
         <td>{{ item.name }}</td>
 		<td>{{ item.description }}</td>
 		<td>{{ item.weight }}</td>
-        <td>
-            <button mat-flat-button color="primary" (click)="deleteRow(index)">
-                Löschen
-            </button>
-        </td>
-    </tr>
+		<td class="edits">
+			<button mat-flat-button color="primary" (click)="editRow(index)">
+				<mat-icon>edit</mat-icon>
+			</button>
+			<button mat-flat-button color="primary" (click)="deleteRow(index)">
+				<mat-icon>delete</mat-icon>
+			</button>
+		</td>
+	</tr>
 </table>
-
-<div class="button-menu">
-    <button mat-flat-button color="warn" routerLink="../../">Abbrechen</button>
-    <button mat-flat-button color="basic" routerLink="../classes">Zurück </button>
-    <button mat-flat-button color="primary" routerLink="../areas">Weiter</button>
-</div>

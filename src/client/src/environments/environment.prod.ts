@@ -3,6 +3,9 @@ import { LogLevel } from '@microsoft/signalr';
 
 export const environment: IEnviromnent = {
 	production: true,
+	resources: {
+		base: '/resources/images/'
+	},
 	api: {
 		url: '/api'
 	},

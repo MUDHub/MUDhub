@@ -4,6 +4,7 @@ import { IMud } from 'src/app/model/muds/IMud';
 import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import Swal from 'sweetalert2';
 
 @Component({
 	templateUrl: './my-muds.component.html',
@@ -36,8 +37,34 @@ export class MyMudsComponent implements OnInit {
 		}
 	}
 
-	editMud(mudId: string) {
-		this.router.navigate(['/my-muds', mudId, 'races']);
+	async editMud(mudId: string) {
+		await this.mudService.edit(mudId, true);
+		await this.router.navigate(['/my-muds', mudId, 'races']);
+	}
+
+	async startMud(mud: IMud) {
+		try {
+			await this.mudService.start(mud.mudId);
+			mud.isRunning = true;
+		} catch (err) {
+			console.error('Error while starting mud', err);
+			if (err.status === 400) {
+				await Swal.fire({
+					icon: 'error',
+					title: 'Fehler',
+					text: 'MUD kann nicht gestartet, checken Sie die Konfiguration oder schließen Sie diese ab'
+				});
+			}
+		}
+	}
+
+	async stopMud(mud: IMud) {
+		try {
+			await this.mudService.stop(mud.mudId);
+			mud.isRunning = false;
+		} catch (err) {
+			console.error('Error while stopping mud', err);
+		}
 	}
 
 	async deleteMud(mudId: string) {

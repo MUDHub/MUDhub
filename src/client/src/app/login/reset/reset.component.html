@@ -18,8 +18,10 @@
 </div>
 
 <div class="form-row">
-	<button (click)="reset()" class="reset-button" mat-flat-button color="primary" [disabled]="mail.invalid">Zurücksetzen</button>
+	<button (click)="reset()" class="reset-button" mat-flat-button color="primary" [disabled]="mail.invalid || wasSent">Zurücksetzen</button>
 </div>
+<p *ngIf="wasSent">Die Anfrage wurde abgesendet</p>
+
 <small class="hint">Es wird eine Email mit einem Rücksetzungslink an die angegebene Addresse geschickt</small>
 <a routerLink="/login">Anmelden</a>
 

@@ -1,1 +1,21 @@
-<p>my-games works!</p>
+<h1 class="title">Meine Charaktere</h1>
+<div class="hint" *ngIf="charsByMuds?.length === 0">Keine Charaktere vorhanden, wähle ein MUD aus der <span class="link" routerLink="/muds">Übersicht</span> aus und starte dein Abenteuer!</div>
+<div class="muds">
+	<div class="mud" *ngFor="let mud of charsByMuds">
+		<h2>{{ mud.mud.name }}</h2>
+		<div class="characters">
+			<mat-card class="character" *ngFor="let character of mud.chars">
+				<div class="infos">
+					<div class="race">{{ character.raceName }}</div>
+					<div class="class">{{ character.className }}</div>
+				</div>
+				<div class="name">{{ character.name }}</div>
+				<div class="actions">
+					<button mat-stroked-button (click)="deleteCharacter(character)">
+						<mat-icon>delete</mat-icon>
+					</button>
+				</div>
+			</mat-card>
+		</div>
+	</div>
+</div>

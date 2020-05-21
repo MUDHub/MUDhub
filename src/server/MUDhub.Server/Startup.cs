@@ -13,6 +13,9 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MUDhub.Core.Abstracts;
 using MUDhub.Core.Configurations;
+using MUDhub.Core.Helper;
+using MUDhub.Server.Helpers;
+using MUDhub.Server.Hubs;
 
 namespace MUDhub.Server
 {
@@ -38,12 +41,15 @@ namespace MUDhub.Server
 
             //Mud game Services
             services.AddMudServices();
+            services.AddSingleton<GameActiveHelper>();
+            services.AddHostedService<GameSignalRConenctor>();
 
             //Add AspnetCore Common Services
             services.AddControllers();
             services.AddSpaStaticFiles(conf => conf.RootPath = _serverConfiguration.Spa.RelativePath);
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "MUDhub API", Version = "v1" }));
-
+            services.AddSignalR();
+            services.AddSingleton<SignalRConnectionHandler>();
             AddJwtAuthentication(services);
         }
 
@@ -87,6 +93,7 @@ namespace MUDhub.Server
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<GameHub>("/hubs/game");
 
             });
 

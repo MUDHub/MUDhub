@@ -78,10 +78,10 @@ namespace MUDhub.Core.Tests
             Assert.False(result.Success);
         }
         [Fact]
-        public async Task CreateCharacterAsync_ReturnFalse_UserIsNotOwner()
+        public async Task CreateCharacterAsync_ReturnTrue_UserIsNotOwner()
         {
             var result = await _characterManager.CreateCharacterAsync("2", "1", _createCharacterArgs);
-            Assert.False(result.Success);
+            Assert.True(result.Success);
         }
         [Fact]
         public async Task CreateCharacterAsync_ReturnTrue()
@@ -276,7 +276,7 @@ namespace MUDhub.Core.Tests
             var options = new DbContextOptionsBuilder<MudDbContext>()
                 .UseInMemoryDatabase("Testdatabase_CharacterManager")
                 .Options;
-            _context = new MudDbContext(options, useNotInUnitests: false);
+            _context = new MudDbContext(options);
             _characterManager = new CharacterManager(_context);
 
             _user1 = new User("1")

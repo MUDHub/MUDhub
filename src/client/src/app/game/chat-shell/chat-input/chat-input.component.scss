@@ -4,6 +4,8 @@ $margin: 0.5rem;
 :host {
 	display: flex;
 
+	padding: 0.5rem;
+
 	input {
 		padding: 1rem 0.5rem;
 		margin-right: $margin;

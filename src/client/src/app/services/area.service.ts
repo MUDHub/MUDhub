@@ -13,6 +13,7 @@ import {
 	IRoomCreateRequest,
 	IRoomCreateResponse,
 	IRoomUpdateRequest,
+	IRoomCreateItemRequest,
 } from '../model/areas/RoomDTO';
 import { Subject } from 'rxjs';
 import {
@@ -46,7 +47,7 @@ export class AreaService {
 
 	public async getArea(areaid: string) {
 		return await this.http
-			.get(`${env.api.url}/areas/${areaid}`)
+			.get<IArea>(`${env.api.url}/areas/${areaid}`)
 			.toPromise();
 	}
 
@@ -87,9 +88,7 @@ export class AreaService {
 			.toPromise();
 	}
 
-	public async createRoom(
-		room: IRoomCreateRequest
-	) {
+	public async createRoom(room: IRoomCreateRequest) {
 		try {
 			const response = await this.http
 				.post<IRoomCreateResponse>(`${env.api.url}/rooms`, room)
@@ -101,10 +100,7 @@ export class AreaService {
 		}
 	}
 
-	public async updateRoom(
-		roomid: string,
-		room: IRoomUpdateRequest
-	) {
+	public async updateRoom(roomid: string, room: IRoomUpdateRequest) {
 		try {
 			const response = await this.http
 				.put<IRoomCreateResponse>(
@@ -122,6 +118,24 @@ export class AreaService {
 	public async deleteRoom(roomid: string) {
 		return await this.http
 			.delete<IRoomDeleteResponse>(`${env.api.url}/rooms/${roomid}`)
+			.toPromise();
+	}
+
+	/* ##### Room Items ##### */
+	public async getItemsForRoom(roomid: string) {
+		const room = await this.getRoom(roomid);
+		return room.itemInstances;
+	}
+
+	public async addItemToRoom(roomid: string, args: IRoomCreateItemRequest) {
+		return await this.http
+			.post(`${env.api.url}/rooms/${roomid}/iteminstances`, args)
+			.toPromise();
+	}
+
+	public async removeItemFromRoom(roomid: string, iteminstanceid: string) {
+		return await this.http
+			.delete(`${env.api.url}/rooms/${roomid}/iteminstances/${iteminstanceid}`)
 			.toPromise();
 	}
 
@@ -152,9 +166,7 @@ export class AreaService {
 			.toPromise();
 	}
 
-	public async createConnection(
-		connection: IConnectionCreateRequest
-	) {
+	public async createConnection(connection: IConnectionCreateRequest) {
 		return await this.http
 			.post<IConnectionCreateResponse>(
 				`${env.api.url}/connections`,
@@ -163,9 +175,7 @@ export class AreaService {
 			.toPromise();
 	}
 
-	public async deleteConnection(
-		connid: string
-	) {
+	public async deleteConnection(connid: string) {
 		return await this.http
 			.delete<IBaseResponse>(`${env.api.url}/connections/${connid}`)
 			.toPromise();

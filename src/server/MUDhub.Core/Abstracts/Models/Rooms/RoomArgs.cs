@@ -3,6 +3,7 @@
     public class RoomArgs
     {
         public string Description { get; set; } = string.Empty;
+        public string EnterMessage { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public string ImageKey { get; set; } = string.Empty;
         public int X { get; set; }
