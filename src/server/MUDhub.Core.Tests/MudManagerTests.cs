@@ -24,6 +24,8 @@ namespace MUDhub.Core.Tests
                 .Options;
 
             _context = new MudDbContext(options);
+            _context.Database.EnsureDeleted();
+            _context.Database.EnsureCreated();
             _mudManager = new MudManager(_context);
             _userManager = new UserManager(_context, Mock.Of<IEmailService>());
             _user = _userManager.RegisterUserAsync(new RegistrationUserArgs

@@ -134,6 +134,8 @@ namespace MUDhub.Core.Tests
                 .UseInMemoryDatabase("Testdatabase_ItemManager")
                 .Options;
             _context = new MudDbContext(options);
+            _context.Database.EnsureDeleted();
+            _context.Database.EnsureCreated();
             _itemManager = new ItemManager(_context);
 
             _user1 = new User("1")

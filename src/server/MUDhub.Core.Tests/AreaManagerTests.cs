@@ -519,6 +519,8 @@ namespace MUDhub.Core.Tests
                 .UseInMemoryDatabase("Testdatabase_AreaManager")
                 .Options;
             _context = new MudDbContext(options);
+            _context.Database.EnsureDeleted();
+            _context.Database.EnsureCreated();
             _areaManager = new AreaManager(_context);
 
             _user1 = new User("1")

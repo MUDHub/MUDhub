@@ -144,6 +144,8 @@ namespace MUDhub.Core.Tests
                 .UseInMemoryDatabase("Testdatabase_InventoryService")
                 .Options;
             _context = new MudDbContext(options);
+            _context.Database.EnsureDeleted();
+            _context.Database.EnsureCreated();
             _inventoryService = new InventoryService(_context);
 
             _user1 = new User("1")
