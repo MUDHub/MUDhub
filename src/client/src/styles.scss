@@ -96,6 +96,7 @@ img {
 	display: flex;
 	justify-content: center;
 
+
 	> * {
 		margin-left: $spacing;
 		margin-right: $spacing;
@@ -106,6 +107,14 @@ img {
 		}
 		&:last-child {
 			margin-right: 0;
+		}
+	}
+
+	@media screen and (max-width: 600px) {
+		flex-direction: column;
+
+		> * {
+			margin: 0;
 		}
 	}
 
@@ -157,4 +166,9 @@ img {
 			margin-right: 0;
 		}
 	}
+}
+
+.link {
+	color: $color-primary;
+	cursor: pointer;
 }
