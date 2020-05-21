@@ -1,4 +1,4 @@
-<mat-toolbar class="navbar">
+<!-- <mat-toolbar class="toolbar">
 	<img src="/assets/img/mudhub_logo.svg" />
 	<button mat-button routerLinkActive="mat-accent" routerLink="/muds">
 		Übersicht
@@ -33,7 +33,35 @@
 	<button class="user-menu" mat-button [matMenuTriggerFor]="userMenu">
 		{{ name }}
 	</button>
-</mat-toolbar>
+</mat-toolbar> -->
+
+
+<div class="navbar">
+	<img class="navbar-logo" src="/assets/img/mudhub_logo.svg" />
+	<div class="navbar-items">
+		<div class="nav-item" routerLink="/muds" routerLinkActive="active">Übersicht</div>
+		<div class="nav-item" routerLink="/my-games" routerLinkActive="active">Meine Charaktere</div>
+		<div class="nav-item" routerLink="/my-muds" routerLinkActive="active" *ngIf="user?.roles.includes('Master')">Meine MUDs</div>
+		<div class="nav-item" routerLinkActive="active" [matMenuTriggerFor]="adminMenu" *ngIf="user?.roles.includes('Admin')">Admin</div>
+		<mat-menu #adminMenu="matMenu">
+			<button mat-menu-item routerLink="/admin/users">
+				Spieler
+			</button>
+			<button mat-menu-item routerLink="/admin/muds">
+				MUDs
+			</button>
+		</mat-menu>
+	</div>
+	<div class="navbar-actions">
+		<div class="nav-item" routerLinkActive="active" [matMenuTriggerFor]="userMenu">
+			{{ name }}
+		</div>
+		<mat-menu #userMenu="matMenu" xPosition="before">
+			<button mat-menu-item routerLink="/profile">Mein Profil</button>
+			<button mat-menu-item (click)="logout()">Logout</button>
+		</mat-menu>
+	</div>
+</div>
 
 <div class="container">
 	<router-outlet></router-outlet>

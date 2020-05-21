@@ -14,6 +14,7 @@ export class ChatService {
 				sender: m.caller,
 				isServerMessage: m.serverMessage,
 			};
+			this.unreadGlobalMessages = true;
 			this._globalHistory.push(message);
 			this.NewGlobalMessageSubject.next(message);
 		});
@@ -23,6 +24,7 @@ export class ChatService {
 				content: m.message,
 				sender: m.caller,
 			};
+			this.unreadRoomMessages = true;
 			this._roomHistory.push(message);
 			this.NewRoomMessageSubject.next(message);
 		});
@@ -30,6 +32,11 @@ export class ChatService {
 		game.OnExit$.subscribe(() => {
 			this._roomHistory = [];
 			this._globalHistory = [];
+		});
+
+		game.ChangeRoom$.subscribe(() => {
+			this._roomHistory = [];
+			this.unreadRoomMessages = false;
 		});
 	}
 
@@ -49,6 +56,9 @@ export class ChatService {
 	public get roomHistory() {
 		return this._roomHistory;
 	}
+
+	public unreadGlobalMessages = false;
+	public unreadRoomMessages = false;
 
 	/**
 	 * Sends a global message via signalR and if succeeded adds it to the global message history

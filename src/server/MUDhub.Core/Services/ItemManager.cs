@@ -146,6 +146,7 @@ namespace MUDhub.Core.Services
             {
                 item.Description = args.Description;
             }
+            item.Weight = args.Weight;
 
             await _context.SaveChangesAsync()
                 .ConfigureAwait(false);

@@ -16,12 +16,14 @@ import { ICommand } from './command.service';
 import { IInventoryResult } from '../model/game/signalR/InventoryResult';
 import { IRoom } from '../model/areas/IRoom';
 import { IRoomConnectionsResult } from '../model/game/signalR/RoomConnectionsResult';
+import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class GameService {
-	constructor(private auth: AuthService) {
+	constructor(private auth: AuthService, private router: Router) {
 		this.connection = new HubConnectionBuilder()
 			.configureLogging(env.signalr.logLevel)
 			.withUrl(env.signalr.url, {
@@ -57,6 +59,20 @@ export class GameService {
 
 		this.connection.on('receivePrivateMessage', (message: string, caller: string) => {
 			this.NewPrivateMessageSubject.next({ message, caller });
+		});
+
+		this.connection.on('kickFromServer', async () => {
+			await this.exitGame();
+			await Swal.fire({
+				icon: 'warning',
+				title: 'MUD wurde beendet',
+				timer: 5000,
+				timerProgressBar: true,
+				allowOutsideClick: false,
+				confirmButtonText: 'OK',
+				text: 'Das MUD wurde vom MUD-Master gestopped, du wirst auf die Startseite umgeleitet'
+			});
+			this.router.navigate(['/']);
 		});
 	}
 
@@ -226,7 +242,7 @@ export class GameService {
 			const rooms = await this.connection.invoke<IRoomConnectionsResult[]>('getRoomConnections');
 			let text = 'An diesen Raum grenzen folgende Räume an:<br>';
 			for (const room of rooms) {
-				text += `Im ${this.getDirection(room.direction)}: ${room.roomName}, ${room.description}<br>`;
+				text += `${this.getDirection(room.direction)} -> ${room.roomName}: ${room.description}<br>`;
 			}
 			this.NewGameMessageSubject.next(text);
 		} catch (err) {

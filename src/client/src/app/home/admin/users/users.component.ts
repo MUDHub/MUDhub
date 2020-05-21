@@ -38,6 +38,15 @@ export class UsersComponent implements OnInit {
 		}
 	}
 
+	async removeRole(id: string, role: UserRole) {
+		try {
+			await this.userService.removeRoleFromUser(id, role);
+			await this.loadUsers();
+		} catch (err) {
+			console.error('Error while adding role to user', err);
+		}
+	}
+
 
 	async delete(user: IUser) {
 		try {
