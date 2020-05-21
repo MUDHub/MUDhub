@@ -23,7 +23,7 @@ namespace MUDhub.Core.Tests
                 .UseInMemoryDatabase("Testdatabase_MudManagment", opt => { })
                 .Options;
 
-            _context = new MudDbContext(options, useNotInUnitests: false);
+            _context = new MudDbContext(options);
             _mudManager = new MudManager(_context);
             _userManager = new UserManager(_context, Mock.Of<IEmailService>());
             _user = _userManager.RegisterUserAsync(new RegistrationUserArgs

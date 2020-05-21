@@ -20,7 +20,7 @@ namespace MUDhub.Core.Tests
             var options = new DbContextOptionsBuilder<MudDbContext>()
                 .UseInMemoryDatabase("Testdatabase_LoginService")
                 .Options;
-            _context = new MudDbContext(options, useNotInUnitests: false);
+            _context = new MudDbContext(options);
 
             _loginService = new LoginService(_context, new ServerConfiguration() { TokenSecret = "sdsdfsdfn 3b4t 45 tb45k n45 ö- zh56 zn56 jb34 " });
             _user = new User("sdfsdf")

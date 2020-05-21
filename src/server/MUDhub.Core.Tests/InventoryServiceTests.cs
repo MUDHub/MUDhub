@@ -143,7 +143,7 @@ namespace MUDhub.Core.Tests
             var options = new DbContextOptionsBuilder<MudDbContext>()
                 .UseInMemoryDatabase("Testdatabase_InventoryService")
                 .Options;
-            _context = new MudDbContext(options, useNotInUnitests: false);
+            _context = new MudDbContext(options);
             _inventoryService = new InventoryService(_context);
 
             _user1 = new User("1")

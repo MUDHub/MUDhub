@@ -276,7 +276,7 @@ namespace MUDhub.Core.Tests
             var options = new DbContextOptionsBuilder<MudDbContext>()
                 .UseInMemoryDatabase("Testdatabase_CharacterManager")
                 .Options;
-            _context = new MudDbContext(options, useNotInUnitests: false);
+            _context = new MudDbContext(options);
             _characterManager = new CharacterManager(_context);
 
             _user1 = new User("1")
