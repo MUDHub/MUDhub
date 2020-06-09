@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { GameService } from './game.service';
 import { Direction } from '../model/game/Direction';
 import { ItemTransferMethod } from '../model/game/signalR/ItemTransferMethod';
+import { Subject } from 'rxjs';
 
 @Injectable({
 	providedIn: 'root',
@@ -65,7 +66,14 @@ export class CommandService {
 		},
 	];
 
+
+	private GameInputSubject = new Subject<string>();
+	public GameInput$ = this.GameInputSubject.asObservable();
+
+
 	async handleInput(input: string) {
+		this.GameInputSubject.next(input);
+
 		const [name, ...args] = input.split(' ');
 
 		const command = this.registeredCommands.find(c => c.keyword === name.toLowerCase() || c.shorthand === name.toLowerCase());
